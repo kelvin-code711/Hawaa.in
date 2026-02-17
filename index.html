@@ -1,0 +1,1176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Hawaa Edge - India's premium air purifier. Experience cleaner air with advanced filtration technology. Made in India with 1 year PAN India warranty.">
+    <meta name="keywords" content="air purifier, Hawaa, Hawaa Edge, clean air, India, premium air purifier">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Hawaa - Premium Air Purifiers">
+    <meta property="og:description" content="Hawaa Edge - India's premium air purifier. Experience cleaner air with advanced filtration technology.">
+    <meta property="og:type" content="website">
+
+    <title>Hawaa - Premium Air Purifiers | Breathe Clean</title>
+
+    <!-- Google Fonts - Outfit + Playfair Display -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" href="public/images/favicon.ico" type="image/x-icon">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header" id="header">
+        <div class="header-container">
+            <a href="/" class="logo">
+                <span class="logo-h">H</span><span class="logo-awaa">awaa</span>
+            </a>
+            <div class="header-actions">
+                <button class="header-profile-btn" id="profile-btn" aria-label="Account">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+                        <circle cx="12" cy="7" r="4"/>
+                    </svg>
+                </button>
+                <a href="buy.html" class="header-cart-btn" id="cart-btn" aria-label="Cart">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+                        <line x1="3" y1="6" x2="21" y2="6"/>
+                        <path d="M16 10a4 4 0 01-8 0"/>
+                    </svg>
+                    <span class="cart-badge" id="cart-badge"></span>
+                </a>
+                <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Expandable Menu -->
+    <div class="menu-overlay" id="menu-overlay"></div>
+    <div class="menu-panel" id="menu-panel">
+        <div class="menu-panel-inner">
+            <nav class="menu-nav">
+                <a href="edge.html" class="menu-nav-item">Hawaa Edge</a>
+                <a href="blogs.html" class="menu-nav-item">Blog</a>
+                <a href="about.html" class="menu-nav-item">About Us</a>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Sign In Modal -->
+    <div class="signin-overlay" id="signin-overlay">
+        <div class="signin-modal" id="signin-modal">
+            <div class="signin-drag-handle"></div>
+            <button class="signin-close" id="signin-close" aria-label="Close">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"/>
+                    <line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+            </button>
+
+            <!-- Phone Number Step -->
+            <div class="signin-step" id="signin-phone-step">
+                <h2 class="signin-title">Sign in</h2>
+                <p class="signin-subtitle">Enter your mobile number to continue</p>
+                <div class="phone-input-group" id="signin-phone-group">
+                    <span class="phone-prefix">+91</span>
+                    <span class="phone-prefix-divider"></span>
+                    <input type="tel" class="phone-input" id="signin-phone" maxlength="10" placeholder="Mobile number" inputmode="numeric" autocomplete="tel-national">
+                </div>
+                <p class="signin-error" id="signin-phone-error"></p>
+                <button class="signin-btn" id="signin-send-otp">Send OTP</button>
+            </div>
+
+            <!-- OTP Verification Step -->
+            <div class="signin-step hidden" id="signin-otp-step">
+                <h2 class="signin-title">Verify OTP</h2>
+                <p class="signin-subtitle">Enter the 6-digit code sent to <span class="signin-phone-display" id="signin-phone-display"></span></p>
+                <div class="otp-input-group">
+                    <input type="text" class="otp-input" maxlength="1" inputmode="numeric" autocomplete="one-time-code">
+                    <input type="text" class="otp-input" maxlength="1" inputmode="numeric">
+                    <input type="text" class="otp-input" maxlength="1" inputmode="numeric">
+                    <input type="text" class="otp-input" maxlength="1" inputmode="numeric">
+                    <input type="text" class="otp-input" maxlength="1" inputmode="numeric">
+                    <input type="text" class="otp-input" maxlength="1" inputmode="numeric">
+                </div>
+                <p class="signin-error" id="signin-otp-error"></p>
+                <button class="signin-btn" id="signin-verify">Verify</button>
+                <div class="signin-actions">
+                    <button class="signin-back" id="signin-back">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M19 12H5"/>
+                            <path d="M12 19l-7-7 7-7"/>
+                        </svg>
+                        Change number
+                    </button>
+                    <button class="signin-resend" id="signin-resend">Resend OTP</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sticky Buy Bar (appears on scroll) -->
+    <div class="sticky-buy-bar" id="sticky-buy-bar">
+        <div class="sticky-buy-bar-content">
+            <span class="sticky-product-name">Hawaa <span class="sticky-edge">EDGE</span></span>
+            <a href="buy.html" class="sticky-buy-btn">Buy Now</a>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <!-- Background Video -->
+        <video
+            class="hero-video"
+            id="hero-video"
+            autoplay
+            muted
+            playsinline
+            loop
+            poster="public/images/hero-poster.webp"
+        >
+            <source src="public/videos/hero-video.webm" type="video/webm">
+            <source src="public/videos/hero-video.webm" type="video/webm">
+            <source src="public/videos/hero-video.webm" type="video/webm">
+        </video>
+
+        <div class="hero-resting-image" id="hero-resting"></div>
+        <div class="hero-overlay"></div>
+
+        <div class="hero-title-container">
+            <h1 class="hero-title">
+                <span class="title-hawaa">Hawaa</span> <span class="title-edge">EDGE</span>
+            </h1>
+        </div>
+
+        <div class="hero-bottom">
+            <div class="cta-container">
+                <a href="buy.html" class="cta-btn cta-primary">
+                    <span>Order Now</span>
+                </a>
+                <a href="edge.html" class="cta-btn cta-secondary">
+                    <span>Explore Edge</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trust Badges Section -->
+    <section class="trust-badges">
+        <div class="trust-container">
+            <div class="trust-header">
+                <p class="trust-subtitle">WHY CUSTOMERS CHOOSE HAWAA</p>
+                <h2 class="trust-title">A trusted brand, built on real outcomes</h2>
+            </div>
+
+            <div class="badges-grid">
+                <div class="badge-item">
+                    <div class="badge-icon">
+                        <svg class="india-flag" viewBox="0 0 900 600" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="900" height="200" fill="#FF9933"/>
+                            <rect y="200" width="900" height="200" fill="#FFFFFF"/>
+                            <rect y="400" width="900" height="200" fill="#138808"/>
+                            <g transform="translate(450, 300)">
+                                <circle r="55" fill="none" stroke="#000080" stroke-width="3"/>
+                                <circle r="9" fill="#000080"/>
+                                <g id="spokes">
+                                    <line x1="12" y1="0" x2="52" y2="0" stroke="#000080" stroke-width="2"/>
+                                    <line x1="10.4" y1="6" x2="45" y2="26" stroke="#000080" stroke-width="2"/>
+                                    <line x1="6" y1="10.4" x2="26" y2="45" stroke="#000080" stroke-width="2"/>
+                                    <line x1="0" y1="12" x2="0" y2="52" stroke="#000080" stroke-width="2"/>
+                                    <line x1="-6" y1="10.4" x2="-26" y2="45" stroke="#000080" stroke-width="2"/>
+                                    <line x1="-10.4" y1="6" x2="-45" y2="26" stroke="#000080" stroke-width="2"/>
+                                    <line x1="-12" y1="0" x2="-52" y2="0" stroke="#000080" stroke-width="2"/>
+                                    <line x1="-10.4" y1="-6" x2="-45" y2="-26" stroke="#000080" stroke-width="2"/>
+                                    <line x1="-6" y1="-10.4" x2="-26" y2="-45" stroke="#000080" stroke-width="2"/>
+                                    <line x1="0" y1="-12" x2="0" y2="-52" stroke="#000080" stroke-width="2"/>
+                                    <line x1="6" y1="-10.4" x2="26" y2="-45" stroke="#000080" stroke-width="2"/>
+                                    <line x1="10.4" y1="-6" x2="45" y2="-26" stroke="#000080" stroke-width="2"/>
+                                </g>
+                            </g>
+                        </svg>
+                    </div>
+                    <p class="badge-text">Made in India</p>
+                </div>
+
+                <div class="badge-item">
+                    <div class="badge-icon rating-icon">
+                        <span class="rating-number">5</span>
+                        <svg class="star-icon" viewBox="0 0 24 24" fill="#FACC15">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                    </div>
+                    <p class="badge-text">Highly Rated</p>
+                </div>
+
+                <div class="badge-item">
+                    <div class="badge-icon warranty-icon">
+                        <span class="warranty-number">1</span>
+                        <span class="warranty-yr">Yr</span>
+                    </div>
+                    <p class="badge-text">PAN India Warranty</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AQI Checker Section - Seamless -->
+    <section class="aqi-section">
+        <div class="aqi-checker">
+            <h3 class="aqi-hook">What does today's air mean for your body?</h3>
+            <p class="aqi-subtext">AQI numbers → real human impact</p>
+
+            <!-- Preview Icons -->
+            <div class="aqi-preview-icons">
+                <div class="preview-icon" title="Cigarette Equivalent">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <rect x="2" y="10" width="16" height="4" rx="1" fill="#e5e5e5" stroke="#999" stroke-width="0.75"/>
+                        <rect x="18" y="10" width="4" height="4" rx="0.5" fill="#ff9966"/>
+                    </svg>
+                </div>
+                <div class="preview-icon" title="Lung Stress">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <path d="M12 4v6" stroke="#666" stroke-width="1" stroke-linecap="round"/>
+                        <path d="M12 10c-4 0-7 3-7 7 0 2 1 4 3 5h8c2-1 3-3 3-5 0-4-3-7-7-7z" fill="#ffcccc" stroke="#cc6666" stroke-width="0.75"/>
+                    </svg>
+                </div>
+                <div class="preview-icon" title="Pollutant Intake">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <circle cx="12" cy="12" r="8" fill="#f0f0f0" stroke="#ccc" stroke-width="0.75"/>
+                        <circle cx="9" cy="10" r="1.5" fill="#999"/>
+                        <circle cx="15" cy="11" r="1" fill="#aaa"/>
+                        <circle cx="12" cy="15" r="2" fill="#888"/>
+                    </svg>
+                </div>
+                <div class="preview-icon" title="Child Exposure">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <circle cx="12" cy="6" r="3" fill="#ffddcc" stroke="#cc9966" stroke-width="0.75"/>
+                        <path d="M12 9v3M10 12h4M8 21h2v-6h4v6h2" stroke="#666" stroke-width="1" stroke-linecap="round"/>
+                        <circle cx="18" cy="8" r="2" fill="#ff6666" opacity="0.8"/>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="aqi-input-wrapper">
+                <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"/>
+                    <path d="M21 21l-4.35-4.35"/>
+                </svg>
+                <input
+                    type="text"
+                    id="city-input"
+                    class="aqi-input"
+                    placeholder="Enter your city"
+                    autocomplete="off"
+                >
+                <div class="city-suggestions" id="city-suggestions"></div>
+            </div>
+
+            <!-- Glassmorphism Button -->
+            <button class="aqi-btn-glass" id="check-aqi-btn">
+                Check Air Impact
+            </button>
+        </div>
+    </section>
+
+    <!-- Feature Slider Section -->
+    <section class="feature-section" id="features">
+        <div class="feature-header">
+            <p class="feature-subtitle">FORM MEETS FUNCTION</p>
+            <h2 class="feature-title">Built for accuracy, designed for <span class="feature-title-italic">your every day</span></h2>
+        </div>
+
+        <div class="feature-slider-wrapper">
+            <div class="feature-slider" id="feature-slider">
+                <!-- Card 1: Gesture Sensor -->
+                <div class="feature-card" data-card="1">
+                    <div class="feature-card-image" style="background-image: url('public/images/feature-gesture.webp')">
+                        <div class="feature-tag">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M14 10c0 1-1 2-3 2s-3-1-3-2c0 0 0-4 3-4s3 4 3 4zM8 8c-2 0-3 2-3 4M19 8c2 0 3 2 3 4M5 16c-1 1-2 3 0 4M19 16c1 1 2 3 0 4"/>
+                            </svg>
+                            <span>Gesture Control</span>
+                        </div>
+                        <button class="feature-expand-btn" data-expand="1">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 5v14M5 12h14"/>
+                            </svg>
+                        </button>
+                        <div class="feature-card-content">
+                            <h3 class="feature-card-title">Control with <span class="italic">a wave</span></h3>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2: 250 m³/h CADR -->
+                <div class="feature-card" data-card="2">
+                    <div class="feature-card-image" style="background-image: url('public/images/feature-cadr.webp')">
+                        <div class="feature-tag">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M4 14h4M6 10h6M4 18h8M14 14c2-2 4-2 6 0M14 10c2-2 5-2 7 0M14 18c1.5-1.5 3-1.5 4.5 0"/>
+                            </svg>
+                            <span>250 m³/hr CADR</span>
+                        </div>
+                        <button class="feature-expand-btn" data-expand="2">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 5v14M5 12h14"/>
+                            </svg>
+                        </button>
+                        <div class="feature-card-content">
+                            <h3 class="feature-card-title">Room refresh in <span class="italic">minutes</span></h3>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3: H13 HEPA -->
+                <div class="feature-card" data-card="3">
+                    <div class="feature-card-image" style="background-image: url('public/images/feature-hepa.webp')">
+                        <div class="feature-tag">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                            </svg>
+                            <span>3-in-1 HEPA H13</span>
+                        </div>
+                        <button class="feature-expand-btn" data-expand="3">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 5v14M5 12h14"/>
+                            </svg>
+                        </button>
+                        <div class="feature-card-content">
+                            <h3 class="feature-card-title">Capture 99.97% of <span class="italic">everything</span></h3>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 4: Google Home -->
+                <div class="feature-card" data-card="4">
+                    <div class="feature-card-image" style="background-image: url('public/images/feature-wifi.webp')">
+                        <div class="feature-tag">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0"/>
+                            </svg>
+                            <span>Smart Home</span>
+                        </div>
+                        <button class="feature-expand-btn" data-expand="4">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 5v14M5 12h14"/>
+                            </svg>
+                        </button>
+                        <div class="feature-card-content">
+                            <h3 class="feature-card-title">Your home, <span class="italic">connected</span></h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slider Controls -->
+        <div class="feature-controls">
+            <div class="feature-progress">
+                <div class="feature-progress-bar" id="feature-progress-bar"></div>
+            </div>
+            <div class="feature-arrows">
+                <button class="feature-arrow feature-arrow-prev" id="feature-prev">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                </button>
+                <button class="feature-arrow feature-arrow-next" id="feature-next">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Replacement Filter Strip -->
+    <section class="filter-section">
+        <div class="filter-section-inner">
+            <div class="filter-badge">Best Value</div>
+            <div class="filter-content">
+                <p class="filter-label">H13 HEPA Replacement Filter</p>
+                <div class="filter-price-row">
+                    <span class="filter-price">₹899</span>
+                    <span class="filter-price-note">only</span>
+                </div>
+                <p class="filter-desc">Premium filtration at India's most affordable price point</p>
+            </div>
+            <a href="#" class="filter-cta">Order Filter</a>
+        </div>
+    </section>
+
+    <!-- Certification Section -->
+    <section class="certification-section" id="certification">
+        <div class="certification-container">
+            <div class="certification-header">
+                <h2 class="certification-title">We don't run on promises. We <span class="italic">certify.</span></h2>
+                <p class="certification-subtitle">Our performance claims are backed by independent lab testing and transparent, side-by-side comparisons.</p>
+            </div>
+
+            <div class="certification-grid">
+                <!-- Lab Reports Card -->
+                <div class="certification-card">
+                    <h3 class="certification-card-title">Independently tested. Clearly documented.</h3>
+                    <p class="certification-card-desc">Filtration efficiency, airflow, and real-world performance verified by certified testing laboratories.</p>
+
+                    <div class="cert-preview-container">
+                        <div class="cert-preview-image" style="background-image: url('public/images/cert-lab-report-preview.webp')"></div>
+                        <div class="cert-preview-blur"></div>
+                        <button class="cert-preview-eye-btn" data-modal="lab-modal" aria-label="View lab report">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                <path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <a href="comparison.html#lab-reports" class="certification-btn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                        </svg>
+                        Lab Reports
+                    </a>
+                </div>
+
+                <!-- Comparison Card -->
+                <div class="certification-card">
+                    <h3 class="certification-card-title">See the difference, side by side.</h3>
+                    <p class="certification-card-desc">Compare Hawaa with leading air purifiers across filtration, airflow, noise levels, and filter replacement cost.</p>
+
+                    <div class="cert-preview-container">
+                        <div class="cert-preview-image" style="background-image: url('public/images/cert-comparison-preview.webp')"></div>
+                        <div class="cert-preview-blur"></div>
+                        <button class="cert-preview-eye-btn" data-modal="comparison-modal" aria-label="View comparison">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                <path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <a href="comparison.html" class="certification-btn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                        </svg>
+                        Comparisons
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Lab Report Modal -->
+    <div class="cert-modal-overlay" id="lab-modal">
+        <div class="cert-modal">
+            <button class="cert-modal-close" data-close="lab-modal">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 6L6 18M6 6l12 12"/>
+                </svg>
+            </button>
+            <div class="cert-modal-content">
+                <img src="public/images/cert-lab-report-full.webp" alt="Lab Report" class="cert-modal-image">
+            </div>
+        </div>
+    </div>
+
+    <!-- Comparison Modal -->
+    <div class="cert-modal-overlay" id="comparison-modal">
+        <div class="cert-modal">
+            <button class="cert-modal-close" data-close="comparison-modal">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 6L6 18M6 6l12 12"/>
+                </svg>
+            </button>
+            <div class="cert-modal-content">
+                <img src="public/images/cert-comparison-full.webp" alt="Comparison Table" class="cert-modal-image">
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================
+         SECTION: BREATHE THEIR WORDS (VIDEO TESTIMONIALS)
+    ======================================== -->
+    <section class="testimonials-section" id="testimonials">
+        <div class="testimonials-container">
+            <div class="testimonials-header">
+                <p class="testimonials-subtitle">BREATHE THEIR WORDS</p>
+                <h2 class="testimonials-title">Real stories from <span class="italic">real homes</span></h2>
+            </div>
+
+            <div class="testimonials-slider-wrapper">
+                <div class="testimonials-slider" id="testimonials-slider">
+                    <!-- Testimonial Card 1 -->
+                    <div class="testimonial-card" data-testimonial="1">
+                        <div class="testimonial-video-container">
+                            <video
+                                class="testimonial-video"
+                                id="testimonial-video-1"
+                                poster="public/images/testimonial_01_poster.webp"
+                                muted
+                                loop
+                                playsinline
+                            >
+                                <source src="public/videos/testimonial_01.webm" type="video/webm">
+                            </video>
+                            <div class="testimonial-overlay">
+                                <div class="testimonial-content">
+                                    <p class="testimonial-person">Anita Sharma</p>
+                                    <p class="testimonial-role">Homemaker, Delhi</p>
+                                </div>
+                                <button class="testimonial-sound-btn" data-video="1">
+                                    <svg class="sound-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M11 5L6 9H2v6h4l5 4V5zM23 9l-6 6M17 9l6 6"/>
+                                    </svg>
+                                    <svg class="sound-on hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M11 5L6 9H2v6h4l5 4V5zM19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Testimonial Card 2 -->
+                    <div class="testimonial-card" data-testimonial="2">
+                        <div class="testimonial-video-container">
+                            <video
+                                class="testimonial-video"
+                                id="testimonial-video-2"
+                                poster="public/images/testimonial_02_poster.webp"
+                                muted
+                                loop
+                                playsinline
+                            >
+                                <source src="public/videos/testimonial_02.webm" type="video/webm">
+                            </video>
+                            <div class="testimonial-overlay">
+                                <div class="testimonial-content">
+                                    <p class="testimonial-person">Rajesh Menon</p>
+                                    <p class="testimonial-role">Software Engineer, Bangalore</p>
+                                </div>
+                                <button class="testimonial-sound-btn" data-video="2">
+                                    <svg class="sound-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M11 5L6 9H2v6h4l5 4V5zM23 9l-6 6M17 9l6 6"/>
+                                    </svg>
+                                    <svg class="sound-on hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M11 5L6 9H2v6h4l5 4V5zM19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Testimonial Card 3 -->
+                    <div class="testimonial-card" data-testimonial="3">
+                        <div class="testimonial-video-container">
+                            <video
+                                class="testimonial-video"
+                                id="testimonial-video-3"
+                                poster="public/images/testimonial_03_poster.webp"
+                                muted
+                                loop
+                                playsinline
+                            >
+                                <source src="public/videos/testimonial_03.webm" type="video/webm">
+                            </video>
+                            <div class="testimonial-overlay">
+                                <div class="testimonial-content">
+                                    <p class="testimonial-person">Dr. Priya Nair</p>
+                                    <p class="testimonial-role">Pediatrician, Mumbai</p>
+                                </div>
+                                <button class="testimonial-sound-btn" data-video="3">
+                                    <svg class="sound-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M11 5L6 9H2v6h4l5 4V5zM23 9l-6 6M17 9l6 6"/>
+                                    </svg>
+                                    <svg class="sound-on hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M11 5L6 9H2v6h4l5 4V5zM19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Testimonial Card 4 -->
+                    <div class="testimonial-card" data-testimonial="4">
+                        <div class="testimonial-video-container">
+                            <video
+                                class="testimonial-video"
+                                id="testimonial-video-4"
+                                poster="public/images/testimonial_04_poster.webp"
+                                muted
+                                loop
+                                playsinline
+                            >
+                                <source src="public/videos/testimonial_04.webm" type="video/webm">
+                            </video>
+                            <div class="testimonial-overlay">
+                                <div class="testimonial-content">
+                                    <p class="testimonial-person">Vikram Singh</p>
+                                    <p class="testimonial-role">Business Owner, Jaipur</p>
+                                </div>
+                                <button class="testimonial-sound-btn" data-video="4">
+                                    <svg class="sound-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M11 5L6 9H2v6h4l5 4V5zM23 9l-6 6M17 9l6 6"/>
+                                    </svg>
+                                    <svg class="sound-on hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M11 5L6 9H2v6h4l5 4V5zM19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Testimonials Controls -->
+            <div class="testimonials-controls">
+                <div class="testimonials-dots" id="testimonials-dots">
+                    <span class="dot active" data-slide="0"></span>
+                    <span class="dot" data-slide="1"></span>
+                    <span class="dot" data-slide="2"></span>
+                    <span class="dot" data-slide="3"></span>
+                </div>
+                <div class="testimonials-arrows">
+                    <button class="testimonials-arrow" id="testimonials-prev">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M19 12H5M12 19l-7-7 7-7"/>
+                        </svg>
+                    </button>
+                    <button class="testimonials-arrow" id="testimonials-next">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================
+         SECTION: REVIEWS
+    ======================================== -->
+    <section class="reviews-section" id="reviews">
+        <div class="reviews-container">
+            <div class="reviews-header">
+                <p class="reviews-subtitle">VERIFIED REVIEWS</p>
+                <h2 class="reviews-title">What our customers <span class="italic">say</span></h2>
+            </div>
+
+            <div class="reviews-slider-wrapper">
+                <div class="reviews-slider" id="reviews-slider">
+                    <!-- Review Card 1 -->
+                    <div class="review-card">
+                        <div class="review-stars">
+                            <svg viewBox="0 0 24 24" fill="#FACC15"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            <svg viewBox="0 0 24 24" fill="#FACC15"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            <svg viewBox="0 0 24 24" fill="#FACC15"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            <svg viewBox="0 0 24 24" fill="#FACC15"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            <svg viewBox="0 0 24 24" fill="#FACC15"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        </div>
+                        <p class="review-text">"As someone with asthma, clean air isn't a luxury — it's essential. This purifier runs so quietly I forget it's on, but my breathing has improved dramatically."</p>
+                        <div class="review-author">
+                            <p class="review-name">Meera L.</p>
+                            <p class="review-location">Bangalore</p>
+                        </div>
+                        <p class="review-product">Hawaa Edge H13</p>
+                    </div>
+
+                    <!-- Review Card 2 -->
+                    <div class="review-card">
+                        <div class="review-stars">
+                            <svg viewBox="0 0 24 24" fill="#FACC15"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            <svg viewBox="0 0 24 24" fill="#FACC15"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            <svg viewBox="0 0 24 24" fill="#FACC15"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            <svg viewBox="0 0 24 24" fill="#FACC15"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            <svg viewBox="0 0 24 24" fill="#FACC15"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        </div>
+                        <p class="review-text">"Finally, an air purifier that doesn't need a PhD to operate. The gesture control is intuitive, and the Google Home integration is seamless."</p>
+                        <div class="review-author">
+                            <p class="review-name">Arjun K.</p>
+                            <p class="review-location">Hyderabad</p>
+                        </div>
+                        <p class="review-product">Hawaa Edge H13</p>
+                    </div>
+
+                    <!-- Review Card 3 -->
+                    <div class="review-card">
+                        <div class="review-stars">
+                            <svg viewBox="0 0 24 24" fill="#FACC15"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            <svg viewBox="0 0 24 24" fill="#FACC15"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            <svg viewBox="0 0 24 24" fill="#FACC15"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            <svg viewBox="0 0 24 24" fill="#FACC15"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            <svg viewBox="0 0 24 24" fill="#FACC15"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        </div>
+                        <p class="review-text">"Worth every rupee. The filter replacement at ₹899 is genuinely affordable compared to other brands charging ₹2000+. Running costs matter."</p>
+                        <div class="review-author">
+                            <p class="review-name">Sunita R.</p>
+                            <p class="review-location">Chennai</p>
+                        </div>
+                        <p class="review-product">Hawaa Edge H13</p>
+                    </div>
+
+                    <!-- Review Card 4 -->
+                    <div class="review-card">
+                        <div class="review-stars">
+                            <svg viewBox="0 0 24 24" fill="#FACC15"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            <svg viewBox="0 0 24 24" fill="#FACC15"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            <svg viewBox="0 0 24 24" fill="#FACC15"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            <svg viewBox="0 0 24 24" fill="#FACC15"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            <svg viewBox="0 0 24 24" fill="#E5E7EB"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        </div>
+                        <p class="review-text">"Bought for my newborn's room. The sleep mode is whisper quiet at 24dB. Peace of mind knowing the air is clean without disturbing her sleep."</p>
+                        <div class="review-author">
+                            <p class="review-name">Neha P.</p>
+                            <p class="review-location">Pune</p>
+                        </div>
+                        <p class="review-product">Hawaa Edge H13</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reviews Controls -->
+            <div class="reviews-controls">
+                <div class="reviews-dots" id="reviews-dots">
+                    <span class="dot active" data-slide="0"></span>
+                    <span class="dot" data-slide="1"></span>
+                    <span class="dot" data-slide="2"></span>
+                    <span class="dot" data-slide="3"></span>
+                </div>
+                <a href="#" class="reviews-cta">Read all reviews</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================
+         SECTION: BLOGS / GUIDES
+    ======================================== -->
+    <section class="blogs-section" id="blogs">
+        <div class="blogs-container">
+            <div class="blogs-header">
+                <p class="blogs-subtitle">LEARN MORE</p>
+                <h2 class="blogs-title">Guides for <span class="italic">cleaner living</span></h2>
+            </div>
+
+            <div class="blogs-slider-wrapper">
+                <div class="blogs-slider" id="blogs-slider">
+                    <!-- Blog Card 1 -->
+                    <a href="#" class="blog-card">
+                        <div class="blog-image" style="background-image: url('public/images/blog_01.webp')"></div>
+                        <div class="blog-overlay">
+                            <div class="blog-content">
+                                <p class="blog-tag">Air Quality</p>
+                                <h3 class="blog-title">Is your air purifier actually working?</h3>
+                                <p class="blog-desc">Learn how to check if your air purifier is effectively cleaning your home's air and when to replace filters.</p>
+                                <span class="blog-cta">Read guide</span>
+                            </div>
+                        </div>
+                    </a>
+
+                    <!-- Blog Card 2 -->
+                    <a href="#" class="blog-card">
+                        <div class="blog-image" style="background-image: url('public/images/blog_02.webp')"></div>
+                        <div class="blog-overlay">
+                            <div class="blog-content">
+                                <p class="blog-tag">Filter Care</p>
+                                <h3 class="blog-title">When to replace your HEPA filter</h3>
+                                <p class="blog-desc">Signs your filter needs changing, and why waiting too long can reduce air quality instead of improving it.</p>
+                                <span class="blog-cta">Read guide</span>
+                            </div>
+                        </div>
+                    </a>
+
+                    <!-- Blog Card 3 -->
+                    <a href="#" class="blog-card">
+                        <div class="blog-image" style="background-image: url('public/images/blog_03.webp')"></div>
+                        <div class="blog-overlay">
+                            <div class="blog-content">
+                                <p class="blog-tag">Health</p>
+                                <h3 class="blog-title">Indoor air quality and children's health</h3>
+                                <p class="blog-desc">Why children are more vulnerable to air pollution, and practical steps to protect them at home.</p>
+                                <span class="blog-cta">Read guide</span>
+                            </div>
+                        </div>
+                    </a>
+
+                    <!-- Blog Card 4 -->
+                    <a href="#" class="blog-card">
+                        <div class="blog-image" style="background-image: url('public/images/blog_04.webp')"></div>
+                        <div class="blog-overlay">
+                            <div class="blog-content">
+                                <p class="blog-tag">Understanding AQI</p>
+                                <h3 class="blog-title">What AQI numbers really mean for your body</h3>
+                                <p class="blog-desc">Decoding air quality index levels and understanding their real impact on respiratory health.</p>
+                                <span class="blog-cta">Read guide</span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Blogs Controls -->
+            <div class="blogs-controls">
+                <div class="blogs-dots" id="blogs-dots">
+                    <span class="dot active" data-slide="0"></span>
+                    <span class="dot" data-slide="1"></span>
+                    <span class="dot" data-slide="2"></span>
+                    <span class="dot" data-slide="3"></span>
+                </div>
+                <a href="blogs.html" class="blogs-read-all-btn">Read All Blogs</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================
+         SECTION: FAQ
+    ======================================== -->
+    <section class="faq-section" id="faq">
+        <div class="faq-container">
+            <div class="faq-header">
+                <p class="faq-subtitle">COMMON QUESTIONS</p>
+                <h2 class="faq-title">Answers to help you <span class="italic">breathe easy</span></h2>
+            </div>
+
+            <div class="faq-list">
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>How often should I replace the HEPA filter?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>We recommend replacing the H13 HEPA filter every 6-12 months, depending on usage and air quality in your area. The Hawaa app will notify you when it's time for a replacement based on actual usage data.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>What room size does Hawaa Edge cover?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Hawaa Edge effectively purifies rooms up to 300 sq ft (28 sq meters). With a CADR of 250 m³/h, it can clean the air in a standard bedroom or living room in under 12 minutes.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>Is the gesture control easy to use?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Yes, the gesture sensor is intuitive and responsive. Simply wave your hand within 10cm of the sensor to turn the device on/off or cycle through fan speeds. No learning curve required.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>Does Hawaa work with Google Home and Alexa?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Yes, Hawaa Edge integrates seamlessly with both Google Home and Amazon Alexa. You can control it with voice commands like "Hey Google, turn on the air purifier" or schedule it through the Hawaa app.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>What is the warranty coverage?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Hawaa Edge comes with a 1-year PAN India warranty covering manufacturing defects. Our support team is available to assist with any issues, and we offer doorstep service in major metros.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================
+         SECTION: NEWSLETTER
+    ======================================== -->
+    <section class="newsletter-section" id="newsletter">
+        <div class="newsletter-container">
+            <div class="newsletter-content">
+                <h3 class="newsletter-title">Stay in the know</h3>
+                <p class="newsletter-desc">Air quality tips, product updates, and exclusive offers — delivered monthly.</p>
+                <form class="newsletter-form" id="newsletter-form">
+                    <input type="email" class="newsletter-input" placeholder="Enter your email" required>
+                    <button type="submit" class="newsletter-btn">Subscribe</button>
+                </form>
+                <p class="newsletter-disclaimer">No spam. Unsubscribe anytime.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================
+         SECTION: FOOTER
+    ======================================== -->
+    <footer class="footer" id="contact">
+        <div class="footer-container">
+            <!-- Brand Info -->
+            <div class="footer-brand">
+                <div class="footer-logo">
+                    <span class="footer-logo-text">HAWAA</span>
+                </div>
+                <p class="footer-tagline">Breathe better. Live better.</p>
+                <div class="footer-contact-info">
+                    <div class="footer-contact-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
+                            <circle cx="12" cy="10" r="3"/>
+                        </svg>
+                        <span>Royal Complex, Bhutkhana Chowk, Rajkot, 360001, Gujarat, India</span>
+                    </div>
+                    <div class="footer-contact-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                            <polyline points="22,6 12,13 2,6"/>
+                        </svg>
+                        <span>support@hawaa.in</span>
+                    </div>
+                    <div class="footer-contact-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/>
+                        </svg>
+                        <span>+91 0000000000</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer Links - Collapsible on mobile -->
+            <div class="footer-links">
+                <div class="footer-links-column" data-footer-section>
+                    <button class="footer-links-header">
+                        <h4 class="footer-links-title">PRODUCTS</h4>
+                        <svg class="footer-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 9l6 6 6-6"/>
+                        </svg>
+                    </button>
+                    <ul class="footer-links-list">
+                        <li><a href="#">Hawaa Edge</a></li>
+                        <li><a href="#">Replacement Filters</a></li>
+                        <li><a href="#">Accessories</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-links-column" data-footer-section>
+                    <button class="footer-links-header">
+                        <h4 class="footer-links-title">SUPPORT</h4>
+                        <svg class="footer-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 9l6 6 6-6"/>
+                        </svg>
+                    </button>
+                    <ul class="footer-links-list">
+                        <li><a href="#">Installation Guide</a></li>
+                        <li><a href="faq.html">FAQ</a></li>
+                        <li><a href="support.html">Product Support</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-links-column" data-footer-section>
+                    <button class="footer-links-header">
+                        <h4 class="footer-links-title">COMPANY</h4>
+                        <svg class="footer-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 9l6 6 6-6"/>
+                        </svg>
+                    </button>
+                    <ul class="footer-links-list">
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="#">Sustainability</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Press & Media</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-links-column" data-footer-section>
+                    <button class="footer-links-header">
+                        <h4 class="footer-links-title">LEGAL</h4>
+                        <svg class="footer-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 9l6 6 6-6"/>
+                        </svg>
+                    </button>
+                    <ul class="footer-links-list">
+                        <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                        <li><a href="terms-of-service.html">Terms of Service</a></li>
+                        <li><a href="#">Shipping & Returns</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Footer Bottom -->
+            <div class="footer-bottom">
+                <div class="footer-social">
+                    <a href="#" class="footer-social-link" aria-label="Facebook">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="footer-social-link" aria-label="Twitter">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="footer-social-link" aria-label="Instagram">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                            <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/>
+                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="footer-social-link" aria-label="YouTube">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M22.54 6.42a2.78 2.78 0 00-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 00-1.94 2A29 29 0 001 11.75a29 29 0 00.46 5.33A2.78 2.78 0 003.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 001.94-2 29 29 0 00.46-5.25 29 29 0 00-.46-5.33z"/>
+                            <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02" fill="white"/>
+                        </svg>
+                    </a>
+                </div>
+                <p class="footer-copyright">&copy; 2025 Hawaa. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Feature Expanded Overlay -->
+    <div class="feature-overlay" id="feature-overlay">
+        <div class="feature-expanded" id="feature-expanded">
+            <div class="feature-expanded-image" id="expanded-image"></div>
+            <div class="feature-expanded-content">
+                <div class="feature-expanded-tag" id="expanded-tag"></div>
+                <button class="feature-close-btn" id="feature-close">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 6L6 18M6 6l12 12"/>
+                    </svg>
+                </button>
+                <h2 class="feature-expanded-title" id="expanded-title"></h2>
+                <p class="feature-expanded-desc" id="expanded-desc"></p>
+                <div class="feature-testimonial">
+                    <p class="testimonial-name" id="testimonial-name"></p>
+                    <p class="testimonial-label">Customer Review</p>
+                    <p class="testimonial-quote" id="testimonial-quote"></p>
+                </div>
+                <div class="feature-expanded-actions">
+                    <a href="buy.html" class="feature-learn-more">Learn More</a>
+                    <div class="feature-expanded-nav">
+                        <button class="feature-expanded-arrow" id="expanded-prev">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M19 12H5M12 19l-7-7 7-7"/>
+                            </svg>
+                        </button>
+                        <button class="feature-expanded-arrow" id="expanded-next">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AQI Result Modal -->
+    <div class="modal-overlay" id="aqi-modal">
+        <div class="modal-content">
+            <button class="modal-close" id="modal-close">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 6L6 18M6 6l12 12"/>
+                </svg>
+            </button>
+
+            <div class="modal-header">
+                <h2 class="modal-city" id="modal-city">Delhi</h2>
+                <p class="modal-aqi" id="modal-aqi">AQI 150 <span class="aqi-label">(Unhealthy)</span></p>
+            </div>
+
+            <div class="card-slider-container">
+                <button class="slider-arrow slider-prev" id="slider-prev">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M15 18l-6-6 6-6"/>
+                    </svg>
+                </button>
+
+                <div class="card-slider" id="card-slider">
+                    <div class="impact-card">
+                        <div class="card-icon">
+                            <svg viewBox="0 0 48 48" fill="none">
+                                <rect x="4" y="20" width="32" height="8" rx="2" fill="#e5e5e5" stroke="#999" stroke-width="1.5"/>
+                                <rect x="36" y="20" width="8" height="8" rx="1" fill="#ff9966" stroke="#cc6633" stroke-width="1.5"/>
+                                <path d="M40 18c0-4 2-6 2-8s-1-4-3-4" stroke="#999" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                            </svg>
+                        </div>
+                        <h4 class="card-title">Cigarette Equivalent</h4>
+                        <p class="card-value" id="cigarette-value">~4 cigarettes/day</p>
+                        <p class="card-detail" id="cigarette-detail">≈ 120 cigarettes per month</p>
+                    </div>
+
+                    <div class="impact-card">
+                        <div class="card-icon">
+                            <svg viewBox="0 0 48 48" fill="none">
+                                <path d="M24 8v12" stroke="#666" stroke-width="2" stroke-linecap="round"/>
+                                <path d="M24 20c-8 0-14 6-14 14 0 4 2 8 6 10h16c4-2 6-6 6-10 0-8-6-14-14-14z" fill="#ffcccc" stroke="#cc6666" stroke-width="1.5"/>
+                                <circle cx="16" cy="28" r="2" fill="#999"/>
+                                <circle cx="32" cy="30" r="1.5" fill="#999"/>
+                                <circle cx="20" cy="34" r="1" fill="#999"/>
+                            </svg>
+                        </div>
+                        <h4 class="card-title">Lung Stress Level</h4>
+                        <p class="card-value" id="lung-value">High Lung Strain</p>
+                        <p class="card-detail" id="lung-detail">Long exposure increases fatigue & breathlessness</p>
+                    </div>
+
+                    <div class="impact-card">
+                        <div class="card-icon">
+                            <svg viewBox="0 0 48 48" fill="none">
+                                <circle cx="24" cy="24" r="16" fill="#f0f0f0" stroke="#ccc" stroke-width="1.5"/>
+                                <circle cx="18" cy="20" r="3" fill="#999"/>
+                                <circle cx="30" cy="22" r="2" fill="#aaa"/>
+                                <circle cx="24" cy="30" r="4" fill="#888"/>
+                                <circle cx="14" cy="28" r="1.5" fill="#bbb"/>
+                                <circle cx="32" cy="32" r="2" fill="#999"/>
+                            </svg>
+                        </div>
+                        <h4 class="card-title">Pollutant Intake Per Day</h4>
+                        <p class="card-value" id="pollutant-value">~650 µg/day</p>
+                        <p class="card-detail" id="pollutant-detail">Particles inhaled in 24 hours of normal breathing</p>
+                    </div>
+
+                    <div class="impact-card">
+                        <div class="card-icon">
+                            <svg viewBox="0 0 48 48" fill="none">
+                                <circle cx="24" cy="12" r="6" fill="#ffddcc" stroke="#cc9966" stroke-width="1.5"/>
+                                <path d="M24 18v6M20 24h8M16 42h4v-12h8v12h4" stroke="#666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <circle cx="36" cy="16" r="4" fill="#ff6666" opacity="0.8"/>
+                                <path d="M36 14v4M36 20v1" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                            </svg>
+                        </div>
+                        <h4 class="card-title">Child Exposure Risk</h4>
+                        <p class="card-value" id="child-value">1.9× higher exposure</p>
+                        <p class="card-detail" id="child-detail">Children breathe more air per kg, increasing risk</p>
+                    </div>
+                </div>
+
+                <button class="slider-arrow slider-next" id="slider-next">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 18l6-6-6-6"/>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="slider-dots" id="slider-dots">
+                <span class="dot active"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/nav.js"></script>
+    <script src="js/script.js"></script>
+</body>
+</html>

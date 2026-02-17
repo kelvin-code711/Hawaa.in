@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Privacy Policy - Hawaa by Havva Innovations Private Limited. Learn how we collect, use, and protect your personal information.">
+    <meta name="keywords" content="Hawaa, privacy policy, data protection, Havva Innovations, air purifier, smart home">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Privacy Policy - Hawaa">
+    <meta property="og:description" content="Privacy Policy for Hawaa by Havva Innovations Private Limited. Your privacy matters to us.">
+    <meta property="og:type" content="website">
+
+    <title>Privacy Policy - Hawaa</title>
+
+    <!-- Google Fonts - Outfit + Playfair Display -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" href="public/images/favicon.ico" type="image/x-icon">
+</head>
+<body class="privacy-page">
+    <!-- Header -->
+    <header class="header scrolled" id="header">
+        <div class="header-container">
+            <a href="index.html" class="logo">
+                <span class="logo-h">H</span><span class="logo-awaa">awaa</span>
+            </a>
+            <div class="header-actions">
+                <button class="header-profile-btn" id="profile-btn" aria-label="Account">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+                        <circle cx="12" cy="7" r="4"/>
+                    </svg>
+                </button>
+                <a href="buy.html" class="header-cart-btn" id="cart-btn" aria-label="Cart">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+                        <line x1="3" y1="6" x2="21" y2="6"/>
+                        <path d="M16 10a4 4 0 01-8 0"/>
+                    </svg>
+                    <span class="cart-badge" id="cart-badge"></span>
+                </a>
+                <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Expandable Menu -->
+    <div class="menu-overlay" id="menu-overlay"></div>
+    <div class="menu-panel" id="menu-panel">
+        <div class="menu-panel-inner">
+            <nav class="menu-nav">
+                <a href="edge.html" class="menu-nav-item">Hawaa Edge</a>
+                <a href="index.html#blogs" class="menu-nav-item">Blog</a>
+                <a href="about.html" class="menu-nav-item">About Us</a>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Sign In Modal -->
+    <div class="signin-overlay" id="signin-overlay">
+        <div class="signin-modal" id="signin-modal">
+            <div class="signin-drag-handle"></div>
+            <button class="signin-close" id="signin-close" aria-label="Close">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"/>
+                    <line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+            </button>
+            <div class="signin-step" id="signin-phone-step">
+                <h2 class="signin-title">Sign in</h2>
+                <p class="signin-subtitle">Enter your mobile number to continue</p>
+                <div class="phone-input-group" id="signin-phone-group">
+                    <span class="phone-prefix">+91</span>
+                    <span class="phone-prefix-divider"></span>
+                    <input type="tel" class="phone-input" id="signin-phone" maxlength="10" placeholder="Mobile number" inputmode="numeric" autocomplete="tel-national">
+                </div>
+                <p class="signin-error" id="signin-phone-error"></p>
+                <button class="signin-btn" id="signin-send-otp">Send OTP</button>
+            </div>
+            <div class="signin-step hidden" id="signin-otp-step">
+                <h2 class="signin-title">Verify OTP</h2>
+                <p class="signin-subtitle">Enter the 6-digit code sent to <span class="signin-phone-display" id="signin-phone-display"></span></p>
+                <div class="otp-input-group">
+                    <input type="text" class="otp-input" maxlength="1" inputmode="numeric" autocomplete="one-time-code">
+                    <input type="text" class="otp-input" maxlength="1" inputmode="numeric">
+                    <input type="text" class="otp-input" maxlength="1" inputmode="numeric">
+                    <input type="text" class="otp-input" maxlength="1" inputmode="numeric">
+                    <input type="text" class="otp-input" maxlength="1" inputmode="numeric">
+                    <input type="text" class="otp-input" maxlength="1" inputmode="numeric">
+                </div>
+                <p class="signin-error" id="signin-otp-error"></p>
+                <button class="signin-btn" id="signin-verify">Verify</button>
+                <div class="signin-actions">
+                    <button class="signin-back" id="signin-back">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M19 12H5"/>
+                            <path d="M12 19l-7-7 7-7"/>
+                        </svg>
+                        Change number
+                    </button>
+                    <button class="signin-resend" id="signin-resend">Resend OTP</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Privacy Policy Content -->
+    <main class="privacy-main">
+        <div class="privacy-container">
+            <p class="privacy-effective-date">Effective date: 08.02.2026</p>
+            <h1 class="privacy-title">Privacy policy.</h1>
+
+            <div class="privacy-list">
+                <!-- Section 1: Information we collect -->
+                <div class="privacy-item">
+                    <button class="privacy-question">
+                        <span>Information we collect.</span>
+                        <svg class="privacy-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M6 9l6 6 6-6"/>
+                        </svg>
+                    </button>
+                    <div class="privacy-answer">
+                        <div class="privacy-answer-content">
+                            <p>When you visit hawaa.in or use our services, we may collect personal information, including but not limited to name, email address, mailing address, phone number, payment information (such as credit card or UPI details), IP address, browser information, and cookies and similar tracking technologies. We collect this information to provide and improve our services, communicate with you, process transactions, and for other lawful purposes.</p>
+                            <p>We may use the information we collect for various purposes, including but not limited to providing and personalising our services, communicating with you, processing transactions, analysing and improving our website and services, preventing fraud and enforcing our policies, and complying with legal obligations.</p>
+                            <p><strong>Smart home data:</strong> When you connect your Hawaa device with Google Home, we may collect device usage data such as fan speed settings, air quality readings, filter status, scheduling preferences, and voice command interactions routed through Google Home. This data is used solely to operate and improve your Hawaa device experience and is processed in accordance with Google's privacy policies for connected home devices.</p>
+                            <p><strong>Device and sensor data:</strong> Our air purifiers may collect ambient air quality readings (PM2.5, PM10, VOC levels), device operational status, filter usage metrics, and environmental conditions. This data helps us provide accurate air quality insights and timely filter replacement reminders.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 2: How we use your information -->
+                <div class="privacy-item">
+                    <button class="privacy-question">
+                        <span>How we use your information.</span>
+                        <svg class="privacy-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M6 9l6 6 6-6"/>
+                        </svg>
+                    </button>
+                    <div class="privacy-answer">
+                        <div class="privacy-answer-content">
+                            <p>We use the information we collect to:</p>
+                            <ul>
+                                <li>Process and fulfil your orders for Hawaa air purifiers, filters, and accessories</li>
+                                <li>Provide customer support and respond to your enquiries</li>
+                                <li>Send you product updates, filter replacement reminders, and air quality alerts</li>
+                                <li>Enable smart home integrations with Google Home, allowing you to control your Hawaa device through voice commands and automated routines</li>
+                                <li>Analyse air quality data to improve our filtration technology and product performance</li>
+                                <li>Personalise your experience on our website and through the Hawaa app</li>
+                                <li>Process subscription deliveries for replacement filters</li>
+                                <li>Comply with applicable laws and regulations, including the Information Technology Act, 2000 and the Digital Personal Data Protection Act, 2023</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 3: Google Home integration -->
+                <div class="privacy-item">
+                    <button class="privacy-question">
+                        <span>Google Home integration.</span>
+                        <svg class="privacy-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M6 9l6 6 6-6"/>
+                        </svg>
+                    </button>
+                    <div class="privacy-answer">
+                        <div class="privacy-answer-content">
+                            <p>Hawaa devices are compatible with Google Home for smart home control. When you link your Hawaa account with Google Home, the following applies:</p>
+                            <p><strong>Data shared with Google:</strong> Device status (on/off, fan speed), air quality readings, and scheduling information are shared with Google to enable voice control and automation features. We share only the minimum data necessary for the integration to function.</p>
+                            <p><strong>Voice commands:</strong> Voice commands such as "Hey Google, turn on the air purifier" or "Hey Google, set Hawaa to auto mode" are processed by Google's services. We receive only the resulting device control instructions, not your voice recordings.</p>
+                            <p><strong>Google's privacy practices:</strong> Data processed by Google through Google Home is subject to Google's own Privacy Policy. We encourage you to review Google's privacy practices at <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">policies.google.com/privacy</a>.</p>
+                            <p><strong>Disconnecting:</strong> You can unlink your Hawaa account from Google Home at any time through the Google Home app or the Hawaa app. Upon unlinking, Google will no longer have access to your Hawaa device data going forward.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 4: Data security -->
+                <div class="privacy-item">
+                    <button class="privacy-question">
+                        <span>Data security.</span>
+                        <svg class="privacy-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M6 9l6 6 6-6"/>
+                        </svg>
+                    </button>
+                    <div class="privacy-answer">
+                        <div class="privacy-answer-content">
+                            <p>We take reasonable measures to protect your personal information from unauthorised access, alteration, disclosure, or destruction. These measures include encryption of data in transit (SSL/TLS), secure server infrastructure, restricted access to personal data on a need-to-know basis, and regular security assessments.</p>
+                            <p>All payment transactions are processed through secure, PCI-DSS compliant payment gateways. We do not store your complete credit card or debit card details on our servers.</p>
+                            <p>While we strive to use commercially acceptable means to protect your personal data, no method of transmission over the internet or method of electronic storage is 100% secure. We cannot guarantee absolute security of your information.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 5: Third-party links -->
+                <div class="privacy-item">
+                    <button class="privacy-question">
+                        <span>Third-party links.</span>
+                        <svg class="privacy-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M6 9l6 6 6-6"/>
+                        </svg>
+                    </button>
+                    <div class="privacy-answer">
+                        <div class="privacy-answer-content">
+                            <p>Our website may contain links to third-party websites or services that are not operated by us. We have no control over and assume no responsibility for the content, privacy policies, or practices of any third-party sites or services.</p>
+                            <p>Your consent to receive text messages or notifications from us is solely for the purposes of delivering order updates, filter replacement reminders, air quality alerts, promotions, or other communications you have agreed to. This information is not shared with any third parties for their marketing purposes.</p>
+                            <p>We may use third-party service providers for payment processing, order fulfilment, analytics, and customer communication. These service providers have access to your personal information only to perform specific tasks on our behalf and are obligated not to disclose or use it for any other purpose.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 6: Your choices -->
+                <div class="privacy-item">
+                    <button class="privacy-question">
+                        <span>Your choices.</span>
+                        <svg class="privacy-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M6 9l6 6 6-6"/>
+                        </svg>
+                    </button>
+                    <div class="privacy-answer">
+                        <div class="privacy-answer-content">
+                            <p>You have the following rights regarding your personal data:</p>
+                            <ul>
+                                <li><strong>Access and correction:</strong> You may request access to, correction, or deletion of your personal data by contacting us at support@hawaa.in</li>
+                                <li><strong>Marketing opt-out:</strong> You can unsubscribe from marketing communications at any time by clicking the unsubscribe link in our emails or by contacting us directly</li>
+                                <li><strong>Cookie preferences:</strong> You can manage your cookie preferences through your browser settings</li>
+                                <li><strong>Smart home data:</strong> You can disconnect your Hawaa device from Google Home at any time, which will stop the sharing of device data with Google</li>
+                                <li><strong>Account deletion:</strong> You may request deletion of your account and associated personal data, subject to any legal obligations requiring us to retain certain information</li>
+                            </ul>
+                            <p>To exercise any of these rights, please contact us at support@hawaa.in. We will respond to your request within 30 days.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 7: Changes to this privacy policy -->
+                <div class="privacy-item">
+                    <button class="privacy-question">
+                        <span>Changes to this privacy policy.</span>
+                        <svg class="privacy-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M6 9l6 6 6-6"/>
+                        </svg>
+                    </button>
+                    <div class="privacy-answer">
+                        <div class="privacy-answer-content">
+                            <p>We may update this privacy policy from time to time to reflect changes in our practices, technology, legal requirements, or other factors. When we make changes, we will update the "Effective date" at the top of this page and, where appropriate, notify you via email or through the Hawaa app.</p>
+                            <p>We encourage you to review this privacy policy periodically to stay informed about how we are protecting your information. Your continued use of our website and services after any changes to this privacy policy constitutes your acceptance of those changes.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 8: Contact us -->
+                <div class="privacy-item">
+                    <button class="privacy-question">
+                        <span>Contact us.</span>
+                        <svg class="privacy-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M6 9l6 6 6-6"/>
+                        </svg>
+                    </button>
+                    <div class="privacy-answer">
+                        <div class="privacy-answer-content">
+                            <p>This website and its services are operated by <strong>Havva Innovations Private Limited</strong>, an Indian private limited company. <strong>Hawaa</strong>&trade; is a registered trademark of Havva Innovations Private Limited. All references to "Hawaa," "we," "us," or "our" in this privacy policy refer to Havva Innovations Private Limited operating under the Hawaa brand.</p>
+                            <p>If you have any questions, concerns, or requests regarding this privacy policy or our data practices, please contact us:</p>
+                            <ul>
+                                <li><strong>Email:</strong> support@hawaa.in</li>
+                                <li><strong>Address:</strong> Havva Innovations Private Limited, Royal Complex, Bhutkhana Chowk, Rajkot, 360001, Gujarat, India</li>
+                                <li><strong>Phone:</strong> +91 0000000000</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer" id="contact">
+        <div class="footer-container">
+            <!-- Brand Info -->
+            <div class="footer-brand">
+                <div class="footer-logo">
+                    <span class="footer-logo-text">HAWAA</span>
+                </div>
+                <p class="footer-tagline">Breathe better. Live better.</p>
+                <div class="footer-contact-info">
+                    <div class="footer-contact-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
+                            <circle cx="12" cy="10" r="3"/>
+                        </svg>
+                        <span>Royal Complex, Bhutkhana Chowk, Rajkot, 360001, Gujarat, India</span>
+                    </div>
+                    <div class="footer-contact-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                            <polyline points="22,6 12,13 2,6"/>
+                        </svg>
+                        <span>support@hawaa.in</span>
+                    </div>
+                    <div class="footer-contact-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/>
+                        </svg>
+                        <span>+91 0000000000</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer Links - Collapsible on mobile -->
+            <div class="footer-links">
+                <div class="footer-links-column" data-footer-section>
+                    <button class="footer-links-header">
+                        <h4 class="footer-links-title">PRODUCTS</h4>
+                        <svg class="footer-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 9l6 6 6-6"/>
+                        </svg>
+                    </button>
+                    <ul class="footer-links-list">
+                        <li><a href="#">Hawaa Edge</a></li>
+                        <li><a href="#">Replacement Filters</a></li>
+                        <li><a href="#">Accessories</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-links-column" data-footer-section>
+                    <button class="footer-links-header">
+                        <h4 class="footer-links-title">SUPPORT</h4>
+                        <svg class="footer-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 9l6 6 6-6"/>
+                        </svg>
+                    </button>
+                    <ul class="footer-links-list">
+                        <li><a href="#">Installation Guide</a></li>
+                        <li><a href="faq.html">FAQ</a></li>
+                        <li><a href="support.html">Product Support</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-links-column" data-footer-section>
+                    <button class="footer-links-header">
+                        <h4 class="footer-links-title">COMPANY</h4>
+                        <svg class="footer-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 9l6 6 6-6"/>
+                        </svg>
+                    </button>
+                    <ul class="footer-links-list">
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="#">Sustainability</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Press & Media</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-links-column" data-footer-section>
+                    <button class="footer-links-header">
+                        <h4 class="footer-links-title">LEGAL</h4>
+                        <svg class="footer-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 9l6 6 6-6"/>
+                        </svg>
+                    </button>
+                    <ul class="footer-links-list">
+                        <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                        <li><a href="terms-of-service.html">Terms of Service</a></li>
+                        <li><a href="#">Shipping & Returns</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Footer Bottom -->
+            <div class="footer-bottom">
+                <div class="footer-social">
+                    <a href="#" class="footer-social-link" aria-label="Facebook">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="footer-social-link" aria-label="Twitter">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="footer-social-link" aria-label="Instagram">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                            <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/>
+                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="footer-social-link" aria-label="YouTube">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M22.54 6.42a2.78 2.78 0 00-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 00-1.94 2A29 29 0 001 11.75a29 29 0 00.46 5.33A2.78 2.78 0 003.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 001.94-2 29 29 0 00.46-5.25 29 29 0 00-.46-5.33z"/>
+                            <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02" fill="white"/>
+                        </svg>
+                    </a>
+                </div>
+                <p class="footer-copyright">&copy; 2025 Hawaa. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/nav.js"></script>
+    <script>
+    // Privacy Policy Accordion
+    document.querySelectorAll('.privacy-item').forEach(function(item) {
+        item.querySelector('.privacy-question').addEventListener('click', function() {
+            var isActive = item.classList.contains('active');
+            document.querySelectorAll('.privacy-item').forEach(function(other) {
+                other.classList.remove('active');
+            });
+            if (!isActive) item.classList.add('active');
+        });
+    });
+    </script>
+</body>
+</html>

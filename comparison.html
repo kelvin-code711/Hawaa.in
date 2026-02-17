@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Compare Hawaa EDGE with Dyson, Coway, and Xiaomi. See real performance differences in CADR, noise, filters, price, and warranty.">
+    <meta name="keywords" content="air purifier comparison, Hawaa Edge vs Dyson, Hawaa vs Coway, Hawaa vs Xiaomi, best air purifier India">
+
+    <meta property="og:title" content="Hawaa EDGE vs the Rest - Air Purifier Comparison">
+    <meta property="og:description" content="See how Hawaa Edge compares to Dyson, Coway, and Xiaomi on real-world performance, price, and value.">
+    <meta property="og:type" content="website">
+
+    <title>Hawaa EDGE vs the Rest - Air Purifier Comparison</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/comparison.css">
+    <link rel="icon" href="public/images/favicon.ico" type="image/x-icon">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header" id="header">
+        <div class="header-container">
+            <a href="index.html" class="logo">
+                <span class="logo-h">H</span><span class="logo-awaa">awaa</span>
+            </a>
+            <div class="header-actions">
+                <button class="header-profile-btn" id="profile-btn" aria-label="Account">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+                        <circle cx="12" cy="7" r="4"/>
+                    </svg>
+                </button>
+                <a href="buy.html" class="header-cart-btn" id="cart-btn" aria-label="Cart">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+                        <line x1="3" y1="6" x2="21" y2="6"/>
+                        <path d="M16 10a4 4 0 01-8 0"/>
+                    </svg>
+                    <span class="cart-badge" id="cart-badge"></span>
+                </a>
+                <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Expandable Menu -->
+    <div class="menu-overlay" id="menu-overlay"></div>
+    <div class="menu-panel" id="menu-panel">
+        <div class="menu-panel-inner">
+            <nav class="menu-nav">
+                <a href="edge.html" class="menu-nav-item">Hawaa Edge</a>
+                <a href="blogs.html" class="menu-nav-item">Blog</a>
+                <a href="about.html" class="menu-nav-item">About Us</a>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Sign In Modal -->
+    <div class="signin-overlay" id="signin-overlay">
+        <div class="signin-modal" id="signin-modal">
+            <div class="signin-drag-handle"></div>
+            <button class="signin-close" id="signin-close" aria-label="Close">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"/>
+                    <line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+            </button>
+            <div class="signin-step" id="signin-phone-step">
+                <h2 class="signin-title">Sign in</h2>
+                <p class="signin-subtitle">Enter your mobile number to continue</p>
+                <div class="phone-input-group" id="signin-phone-group">
+                    <span class="phone-prefix">+91</span>
+                    <span class="phone-prefix-divider"></span>
+                    <input type="tel" class="phone-input" id="signin-phone" maxlength="10" placeholder="Mobile number" inputmode="numeric" autocomplete="tel-national">
+                </div>
+                <p class="signin-error" id="signin-phone-error"></p>
+                <button class="signin-btn" id="signin-send-otp">Send OTP</button>
+            </div>
+            <div class="signin-step hidden" id="signin-otp-step">
+                <h2 class="signin-title">Verify OTP</h2>
+                <p class="signin-subtitle">Enter the 6-digit code sent to <span class="signin-phone-display" id="signin-phone-display"></span></p>
+                <div class="otp-input-group">
+                    <input type="text" class="otp-input" maxlength="1" inputmode="numeric" autocomplete="one-time-code">
+                    <input type="text" class="otp-input" maxlength="1" inputmode="numeric">
+                    <input type="text" class="otp-input" maxlength="1" inputmode="numeric">
+                    <input type="text" class="otp-input" maxlength="1" inputmode="numeric">
+                    <input type="text" class="otp-input" maxlength="1" inputmode="numeric">
+                    <input type="text" class="otp-input" maxlength="1" inputmode="numeric">
+                </div>
+                <p class="signin-error" id="signin-otp-error"></p>
+                <button class="signin-btn" id="signin-verify">Verify</button>
+                <div class="signin-actions">
+                    <button class="signin-back" id="signin-back">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M19 12H5"/>
+                            <path d="M12 19l-7-7 7-7"/>
+                        </svg>
+                        Change number
+                    </button>
+                    <button class="signin-resend" id="signin-resend">Resend OTP</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== HERO ==================== -->
+    <section class="cmp-hero">
+        <div class="cmp-hero-bg"></div>
+        <div class="cmp-hero-content">
+            <span class="cmp-hero-label">COMPARISON</span>
+            <h1 class="cmp-hero-title">Hawaa Edge vs <span class="italic">the rest</span></h1>
+            <p class="cmp-hero-sub">Built for Indian pollution. Tested for real-world performance.</p>
+        </div>
+        <div class="cmp-hero-scroll-hint">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="20" height="20"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+    </section>
+
+    <!-- ==================== KEY DIFFERENCES — HORIZONTAL CAROUSEL ==================== -->
+    <section class="cmp-keydiff" id="comparison">
+        <div class="cmp-section-container">
+            <span class="cmp-section-label">WHY HAWAA EDGE STANDS OUT</span>
+            <h2 class="cmp-section-title">Key differences <span class="italic">at a glance</span></h2>
+        </div>
+        <div class="cmp-keydiff-slider-wrapper">
+            <div class="cmp-keydiff-slider" id="keydiff-slider">
+                <div class="cmp-keydiff-card" style="--card-gradient: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #0c4a6e 100%)">
+                    <div class="cmp-keydiff-card-image">
+                        <div class="cmp-keydiff-tag">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                            <span>Highest CADR</span>
+                        </div>
+                        <div class="cmp-keydiff-card-content">
+                            <h3 class="cmp-keydiff-card-title">410 m³/h — <span class="italic">fastest clean</span></h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="cmp-keydiff-card" style="--card-gradient: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)">
+                    <div class="cmp-keydiff-card-image">
+                        <div class="cmp-keydiff-tag">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 010 7.07"/></svg>
+                            <span>Ultra Quiet</span>
+                        </div>
+                        <div class="cmp-keydiff-card-content">
+                            <h3 class="cmp-keydiff-card-title">24 dB <span class="italic">sleep mode</span></h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="cmp-keydiff-card" style="--card-gradient: linear-gradient(135deg, #1b2838 0%, #2d4059 50%, #1b4332 100%)">
+                    <div class="cmp-keydiff-card-image">
+                        <div class="cmp-keydiff-tag">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 10h20"/></svg>
+                            <span>Low Filter Cost</span>
+                        </div>
+                        <div class="cmp-keydiff-card-content">
+                            <h3 class="cmp-keydiff-card-title">₹1,499 — <span class="italic">save thousands</span></h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="cmp-keydiff-card" style="--card-gradient: linear-gradient(135deg, #2d1b69 0%, #11998e 100%)">
+                    <div class="cmp-keydiff-card-image">
+                        <div class="cmp-keydiff-tag">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+                            <span>Gesture Control</span>
+                        </div>
+                        <div class="cmp-keydiff-card-content">
+                            <h3 class="cmp-keydiff-card-title">Control with <span class="italic">a wave</span></h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="cmp-keydiff-card" style="--card-gradient: linear-gradient(135deg, #1a1a2e 0%, #e94560 100%)">
+                    <div class="cmp-keydiff-card-image">
+                        <div class="cmp-keydiff-tag">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                            <span>2-Year Warranty</span>
+                        </div>
+                        <div class="cmp-keydiff-card-content">
+                            <h3 class="cmp-keydiff-card-title">Double the <span class="italic">coverage</span></h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="cmp-keydiff-card" style="--card-gradient: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%)">
+                    <div class="cmp-keydiff-card-image">
+                        <div class="cmp-keydiff-tag">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v22"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+                            <span>Best Value</span>
+                        </div>
+                        <div class="cmp-keydiff-card-content">
+                            <h3 class="cmp-keydiff-card-title">Premium at <span class="italic">3–7x less</span></h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== SCROLL PROGRESS INDICATOR ==================== -->
+    <div class="cmp-progress" id="cmp-progress">
+        <div class="cmp-progress-inner">
+            <button class="cmp-progress-step active" data-target="cat-1">1</button>
+            <button class="cmp-progress-step" data-target="cat-2">2</button>
+            <button class="cmp-progress-step" data-target="cat-3">3</button>
+            <button class="cmp-progress-step" data-target="cat-4">4</button>
+            <button class="cmp-progress-step" data-target="cat-5">5</button>
+            <button class="cmp-progress-step" data-target="cat-6">6</button>
+            <div class="cmp-progress-bar"><div class="cmp-progress-fill" id="cmp-progress-fill"></div></div>
+        </div>
+    </div>
+
+    <!-- ==================== SCROLL-DRIVEN COMPARISON SECTIONS ==================== -->
+    <div class="cmp-categories">
+
+        <!-- 1. Cleaning Performance -->
+        <section class="cmp-category" id="cat-1" data-category="0">
+            <div class="cmp-category-inner">
+                <div class="cmp-category-context">
+                    <span class="cmp-cat-label">1</span>
+                    <h3 class="cmp-cat-title">Cleaning <span class="italic">Performance</span></h3>
+                    <p class="cmp-cat-desc">CADR tells you how fast a purifier cleans. Higher is better — but what matters is performance relative to room size and price.</p>
+                </div>
+                <div class="cmp-table-wrap">
+                    <div class="cmp-table" data-category-index="0"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. Noise & Comfort -->
+        <section class="cmp-category" id="cat-2" data-category="1">
+            <div class="cmp-category-inner">
+                <div class="cmp-category-context">
+                    <span class="cmp-cat-label">2</span>
+                    <h3 class="cmp-cat-title">Noise &amp; <span class="italic">Comfort</span></h3>
+                    <p class="cmp-cat-desc">A purifier you can't sleep with is one you'll turn off. The balance between noise and useful airflow separates good from great.</p>
+                </div>
+                <div class="cmp-table-wrap">
+                    <div class="cmp-table" data-category-index="1"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. Filtration & Filter Life -->
+        <section class="cmp-category" id="cat-3" data-category="2">
+            <div class="cmp-category-inner">
+                <div class="cmp-category-context">
+                    <span class="cmp-cat-label">3</span>
+                    <h3 class="cmp-cat-title">Filtration &amp; <span class="italic">Filter Life</span></h3>
+                    <p class="cmp-cat-desc">The filter is the engine. HEPA grade and replacement cost in dusty Indian conditions matter more than marketing claims.</p>
+                </div>
+                <div class="cmp-table-wrap">
+                    <div class="cmp-table" data-category-index="2"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Smart Features -->
+        <section class="cmp-category" id="cat-4" data-category="3">
+            <div class="cmp-category-inner">
+                <div class="cmp-category-context">
+                    <span class="cmp-cat-label">4</span>
+                    <h3 class="cmp-cat-title">Smart <span class="italic">Features</span></h3>
+                    <p class="cmp-cat-desc">Gesture control, voice assistants, and real-time AQI — how each purifier fits into your smart home.</p>
+                </div>
+                <div class="cmp-table-wrap">
+                    <div class="cmp-table" data-category-index="3"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. Price & Value -->
+        <section class="cmp-category" id="cat-5" data-category="4">
+            <div class="cmp-category-inner">
+                <div class="cmp-category-context">
+                    <span class="cmp-cat-label">5</span>
+                    <h3 class="cmp-cat-title">Price &amp; <span class="italic">Value</span></h3>
+                    <p class="cmp-cat-desc">The purchase price is just the start. Filter replacements and subscription options determine the true cost of clean air.</p>
+                </div>
+                <div class="cmp-table-wrap">
+                    <div class="cmp-table" data-category-index="4"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. Warranty & Support -->
+        <section class="cmp-category" id="cat-6" data-category="5">
+            <div class="cmp-category-inner">
+                <div class="cmp-category-context">
+                    <span class="cmp-cat-label">6</span>
+                    <h3 class="cmp-cat-title">Warranty &amp; <span class="italic">Support</span></h3>
+                    <p class="cmp-cat-desc">When something goes wrong, response time and coverage matter. Direct brand support vs service center runaround makes a real difference.</p>
+                </div>
+                <div class="cmp-table-wrap">
+                    <div class="cmp-table" data-category-index="5"></div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- ==================== LAB REPORTS ==================== -->
+    <section class="cmp-lab-reports" id="lab-reports">
+        <div class="cmp-section-container">
+            <span class="cmp-section-label">INDEPENDENTLY VERIFIED</span>
+            <h2 class="cmp-section-title">Lab reports &amp; <span class="italic">test results</span></h2>
+            <p class="cmp-lab-reports-desc">Our performance claims are backed by independent lab testing. Every number on this page comes from certified test results.</p>
+        </div>
+        <div class="cmp-lab-slider-wrapper">
+            <div class="cmp-lab-slider" id="lab-slider">
+                <!-- Particle Filtration -->
+                <div class="cmp-lab-card" data-lab="filtration">
+                    <div class="cmp-lab-card-image" style="--lab-gradient: linear-gradient(135deg, #0f172a 0%, #164e63 50%, #0e7490 100%)">
+                        <div class="cmp-lab-tag">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-5"/></svg>
+                            <span>Filtration Test</span>
+                        </div>
+                        <button class="cmp-lab-expand-btn" data-lab-expand="filtration" aria-label="View details">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+                        </button>
+                        <div class="cmp-lab-card-content">
+                            <div class="cmp-lab-stat-overlay">
+                                <span class="cmp-lab-stat-big">&gt;99.95%</span>
+                                <span class="cmp-lab-stat-sub">filtration efficiency</span>
+                            </div>
+                            <h3 class="cmp-lab-card-title">Particle <span class="italic">Filtration</span></h3>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Airflow / CADR -->
+                <div class="cmp-lab-card" data-lab="cadr">
+                    <div class="cmp-lab-card-image" style="--lab-gradient: linear-gradient(135deg, #1e293b 0%, #1e3a5f 50%, #0c4a6e 100%)">
+                        <div class="cmp-lab-tag">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9.59 4.59A2 2 0 1111 8H2m10.59 11.41A2 2 0 1014 16H2m15.73-8.27A2.5 2.5 0 1119.5 12H2"/></svg>
+                            <span>CADR Test</span>
+                        </div>
+                        <button class="cmp-lab-expand-btn" data-lab-expand="cadr" aria-label="View details">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+                        </button>
+                        <div class="cmp-lab-card-content">
+                            <div class="cmp-lab-stat-overlay">
+                                <span class="cmp-lab-stat-big">410 m³/h</span>
+                                <span class="cmp-lab-stat-sub">verified CADR</span>
+                            </div>
+                            <h3 class="cmp-lab-card-title">Airflow &amp; <span class="italic">CADR</span></h3>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Noise Level -->
+                <div class="cmp-lab-card" data-lab="noise">
+                    <div class="cmp-lab-card-image" style="--lab-gradient: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)">
+                        <div class="cmp-lab-tag">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 010 7.07"/></svg>
+                            <span>Noise Test</span>
+                        </div>
+                        <button class="cmp-lab-expand-btn" data-lab-expand="noise" aria-label="View details">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+                        </button>
+                        <div class="cmp-lab-card-content">
+                            <div class="cmp-lab-stat-overlay">
+                                <span class="cmp-lab-stat-big">24 dB</span>
+                                <span class="cmp-lab-stat-sub">sleep mode verified</span>
+                            </div>
+                            <h3 class="cmp-lab-card-title">Noise <span class="italic">Level</span></h3>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Energy Consumption -->
+                <div class="cmp-lab-card" data-lab="energy">
+                    <div class="cmp-lab-card-image" style="--lab-gradient: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%)">
+                        <div class="cmp-lab-tag">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                            <span>Energy Test</span>
+                        </div>
+                        <button class="cmp-lab-expand-btn" data-lab-expand="energy" aria-label="View details">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+                        </button>
+                        <div class="cmp-lab-card-content">
+                            <div class="cmp-lab-stat-overlay">
+                                <span class="cmp-lab-stat-big">45W</span>
+                                <span class="cmp-lab-stat-sub">max power draw</span>
+                            </div>
+                            <h3 class="cmp-lab-card-title">Energy <span class="italic">Consumption</span></h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="cmp-lab-controls">
+                <div class="cmp-lab-progress">
+                    <div class="cmp-lab-progress-bar" id="lab-progress-bar"></div>
+                </div>
+                <div class="cmp-lab-arrows">
+                    <button class="cmp-lab-arrow" id="lab-prev" aria-label="Previous">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+                    </button>
+                    <button class="cmp-lab-arrow" id="lab-next" aria-label="Next">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+                    </button>
+                </div>
+            </div>
+
+        <!-- Lab Report Expanded Overlay (matches home page feature popup) -->
+        <div class="feature-overlay" id="cmp-lab-overlay">
+            <div class="feature-expanded">
+                <div class="feature-expanded-image" id="cmp-lab-expanded-image"></div>
+                <div class="feature-expanded-content">
+                    <div class="feature-expanded-tag" id="cmp-lab-expanded-tag"></div>
+                    <button class="feature-close-btn" id="cmp-lab-close" aria-label="Close">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 6L6 18M6 6l12 12"/>
+                        </svg>
+                    </button>
+                    <h2 class="feature-expanded-title" id="cmp-lab-expanded-title"></h2>
+                    <p class="feature-expanded-desc" id="cmp-lab-expanded-desc"></p>
+                    <div class="feature-testimonial" id="cmp-lab-expanded-stats"></div>
+                    <div class="feature-expanded-actions">
+                        <a href="#" class="feature-learn-more"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" style="flex-shrink:0"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>Report</a>
+                        <div class="feature-expanded-nav">
+                            <button class="feature-expanded-arrow" id="cmp-lab-prev-expanded" aria-label="Previous">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                                </svg>
+                            </button>
+                            <button class="feature-expanded-arrow" id="cmp-lab-next-expanded" aria-label="Next">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="cmp-section-container">
+            <p class="cmp-lab-disclaimer">All tests conducted by independent certified laboratories. Full reports available on request — contact support@hawaa.in</p>
+        </div>
+    </section>
+
+    <!-- ==================== BOTTOM CTA ==================== -->
+    <section class="cmp-bottom-cta">
+        <div class="cmp-section-container">
+            <h2 class="cmp-section-title">Ready to breathe <span class="italic">better?</span></h2>
+            <p class="cmp-bottom-cta-desc">Hawaa Edge — designed for real Indian homes, priced for real families.</p>
+            <div class="cmp-hero-ctas">
+                <a href="buy.html" class="cmp-cta-buy">Order Hawaa Edge</a>
+                <a href="edge.html" class="cmp-cta-secondary-dark">Explore features</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" id="contact">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <div class="footer-logo">
+                    <span class="footer-logo-text">HAWAA</span>
+                </div>
+                <p class="footer-tagline">Breathe better. Live better.</p>
+                <div class="footer-contact-info">
+                    <div class="footer-contact-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                        <span>Royal Complex, Bhutkhana Chowk, Rajkot, 360001, Gujarat, India</span>
+                    </div>
+                    <div class="footer-contact-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                        <span>support@hawaa.in</span>
+                    </div>
+                    <div class="footer-contact-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+                        <span>+91 0000000000</span>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-links">
+                <div class="footer-links-column" data-footer-section>
+                    <button class="footer-links-header">
+                        <h4 class="footer-links-title">PRODUCTS</h4>
+                        <svg class="footer-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                    </button>
+                    <ul class="footer-links-list">
+                        <li><a href="edge.html">Hawaa Edge</a></li>
+                        <li><a href="#">Replacement Filters</a></li>
+                        <li><a href="#">Accessories</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links-column" data-footer-section>
+                    <button class="footer-links-header">
+                        <h4 class="footer-links-title">SUPPORT</h4>
+                        <svg class="footer-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                    </button>
+                    <ul class="footer-links-list">
+                        <li><a href="#">Installation Guide</a></li>
+                        <li><a href="faq.html">FAQ</a></li>
+                        <li><a href="support.html">Product Support</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links-column" data-footer-section>
+                    <button class="footer-links-header">
+                        <h4 class="footer-links-title">COMPANY</h4>
+                        <svg class="footer-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                    </button>
+                    <ul class="footer-links-list">
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="#">Sustainability</a></li>
+                        <li><a href="blogs.html">Blog</a></li>
+                        <li><a href="#">Press & Media</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links-column" data-footer-section>
+                    <button class="footer-links-header">
+                        <h4 class="footer-links-title">LEGAL</h4>
+                        <svg class="footer-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                    </button>
+                    <ul class="footer-links-list">
+                        <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                        <li><a href="terms-of-service.html">Terms of Service</a></li>
+                        <li><a href="#">Shipping & Returns</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="footer-social">
+                    <a href="#" class="footer-social-link" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a>
+                    <a href="#" class="footer-social-link" aria-label="Twitter"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/></svg></a>
+                    <a href="#" class="footer-social-link" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+                    <a href="#" class="footer-social-link" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M22.54 6.42a2.78 2.78 0 00-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 00-1.94 2A29 29 0 001 11.75a29 29 0 00.46 5.33A2.78 2.78 0 003.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 001.94-2 29 29 0 00.46-5.25 29 29 0 00-.46-5.33z"/><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02" fill="white"/></svg></a>
+                </div>
+                <p class="footer-copyright">&copy; 2025 Hawaa. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/nav.js"></script>
+    <script src="js/comparison.js"></script>
+</body>
+</html>

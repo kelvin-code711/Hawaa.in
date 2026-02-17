@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Buy Hawaa EDGE - India's premium air purifier with H13 HEPA filtration, gesture control, and smart home integration. Starting at ₹5,499 with subscription.">
+    <meta name="keywords" content="Buy Hawaa EDGE, air purifier, H13 HEPA, order, subscribe, clean air, India">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Buy Hawaa EDGE - Pure Air, Designed to Belong">
+    <meta property="og:description" content="Order Hawaa EDGE air purifier. One-time purchase at ₹5,999 or subscribe & save at ₹5,499 with automatic filter delivery.">
+    <meta property="og:type" content="product">
+
+    <title>Buy Hawaa EDGE - Order Now</title>
+
+    <!-- Google Fonts - Outfit + Playfair Display -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" href="public/images/favicon.ico" type="image/x-icon">
+</head>
+<body class="buy-page">
+    <!-- Header -->
+    <header class="header scrolled" id="header">
+        <div class="header-container">
+            <a href="index.html" class="logo">
+                <span class="logo-h">H</span><span class="logo-awaa">awaa</span>
+            </a>
+            <div class="header-actions">
+                <button class="header-profile-btn" id="profile-btn" aria-label="Account">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+                        <circle cx="12" cy="7" r="4"/>
+                    </svg>
+                </button>
+                <button class="header-cart-btn" id="cart-btn" aria-label="Cart">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+                        <line x1="3" y1="6" x2="21" y2="6"/>
+                        <path d="M16 10a4 4 0 01-8 0"/>
+                    </svg>
+                    <span class="cart-badge" id="cart-badge"></span>
+                </button>
+                <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Expandable Menu -->
+    <div class="menu-overlay" id="menu-overlay"></div>
+    <div class="menu-panel" id="menu-panel">
+        <div class="menu-panel-inner">
+            <nav class="menu-nav">
+                <a href="edge.html" class="menu-nav-item">Hawaa Edge</a>
+                <a href="index.html#blogs" class="menu-nav-item">Blog</a>
+                <a href="about.html" class="menu-nav-item">About Us</a>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Sign In Modal -->
+    <div class="signin-overlay" id="signin-overlay">
+        <div class="signin-modal" id="signin-modal">
+            <div class="signin-drag-handle"></div>
+            <button class="signin-close" id="signin-close" aria-label="Close">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"/>
+                    <line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+            </button>
+            <div class="signin-step" id="signin-phone-step">
+                <h2 class="signin-title">Sign in</h2>
+                <p class="signin-subtitle">Enter your mobile number to continue</p>
+                <div class="phone-input-group" id="signin-phone-group">
+                    <span class="phone-prefix">+91</span>
+                    <span class="phone-prefix-divider"></span>
+                    <input type="tel" class="phone-input" id="signin-phone" maxlength="10" placeholder="Mobile number" inputmode="numeric" autocomplete="tel-national">
+                </div>
+                <p class="signin-error" id="signin-phone-error"></p>
+                <button class="signin-btn" id="signin-send-otp">Send OTP</button>
+            </div>
+            <div class="signin-step hidden" id="signin-otp-step">
+                <h2 class="signin-title">Verify OTP</h2>
+                <p class="signin-subtitle">Enter the 6-digit code sent to <span class="signin-phone-display" id="signin-phone-display"></span></p>
+                <div class="otp-input-group">
+                    <input type="text" class="otp-input" maxlength="1" inputmode="numeric" autocomplete="one-time-code">
+                    <input type="text" class="otp-input" maxlength="1" inputmode="numeric">
+                    <input type="text" class="otp-input" maxlength="1" inputmode="numeric">
+                    <input type="text" class="otp-input" maxlength="1" inputmode="numeric">
+                    <input type="text" class="otp-input" maxlength="1" inputmode="numeric">
+                    <input type="text" class="otp-input" maxlength="1" inputmode="numeric">
+                </div>
+                <p class="signin-error" id="signin-otp-error"></p>
+                <button class="signin-btn" id="signin-verify">Verify</button>
+                <div class="signin-actions">
+                    <button class="signin-back" id="signin-back">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M19 12H5"/>
+                            <path d="M12 19l-7-7 7-7"/>
+                        </svg>
+                        Change number
+                    </button>
+                    <button class="signin-resend" id="signin-resend">Resend OTP</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Buy Page Main Content -->
+    <main class="buy-main">
+        <!-- Product Image Section with Carousel -->
+        <div class="buy-product-image">
+            <div class="buy-carousel" id="buy-carousel">
+                <div class="buy-carousel-track" id="buy-carousel-track">
+                    <div class="buy-carousel-slide active">
+                        <img src="public/images/hero-poster.webp" alt="Hawaa EDGE Air Purifier - Front View" class="buy-hero-img" draggable="false">
+                    </div>
+                    <div class="buy-carousel-slide">
+                        <img src="public/images/hero-resting.webp" alt="Hawaa EDGE Air Purifier - Side View" class="buy-hero-img" draggable="false">
+                    </div>
+                    <div class="buy-carousel-slide">
+                        <img src="public/images/hero-poster.webp" alt="Hawaa EDGE Air Purifier - Detail View" class="buy-hero-img" draggable="false">
+                    </div>
+                </div>
+                <!-- Carousel Counter -->
+                <div class="buy-carousel-counter" id="buy-carousel-counter">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                        <circle cx="8.5" cy="8.5" r="1.5"/>
+                        <polyline points="21 15 16 10 5 21"/>
+                    </svg>
+                    <span id="buy-carousel-index">1/3</span>
+                </div>
+                <!-- Details Button -->
+                <button class="buy-details-btn" id="buy-details-btn">Details</button>
+            </div>
+        </div>
+
+        <!-- Right Side: Steps + Content (wrapped for desktop layout) -->
+        <div class="buy-details-column">
+            <!-- Step Navigation -->
+            <nav class="buy-steps" id="buy-steps">
+                <button class="buy-step active" data-step="1" id="step-1">
+                    <span class="buy-step-num">1.</span> Purifier
+                </button>
+                <button class="buy-step" data-step="2" id="step-2">
+                    <span class="buy-step-num">2.</span> Accessories
+                </button>
+            </nav>
+
+            <!-- Step 1: Purifier -->
+            <section class="buy-step-content active" id="step-content-1">
+                <div class="buy-content-inner">
+                    <!-- Product Title -->
+                    <h1 class="buy-title">Hawaa Edge</h1>
+                    <p class="buy-subtitle-text">Air Purifier</p>
+
+                    <!-- Price -->
+                    <p class="buy-price" id="buy-price">&#8377;5,999</p>
+
+                    <!-- Purchase Type Cards (Veloretti-style side-by-side) -->
+                    <div class="buy-variant-cards">
+                        <button class="buy-variant-card active" data-type="onetime" id="btn-onetime">
+                            <span class="buy-variant-name">One-time</span>
+                            <p class="buy-variant-desc">Premium air purifier with H13 HEPA filter included.</p>
+                            <span class="buy-variant-price">&#8377;5,999</span>
+                        </button>
+                        <button class="buy-variant-card" data-type="subscribe" id="btn-subscribe">
+                            <span class="buy-variant-name">Subscribe</span>
+                            <p class="buy-variant-desc">Save &#8377;500 with auto filter delivery plan.</p>
+                            <span class="buy-variant-price">&#8377;5,499</span>
+                        </button>
+                    </div>
+
+                    <!-- Subscription Filter Plan (shown when Subscribe selected) -->
+                    <div class="buy-filter-plans" id="buy-filter-plans">
+                        <p class="buy-filter-plans-title">Filter Delivery Plan</p>
+                        <p class="buy-filter-plans-desc">Replacement filters delivered to your door automatically</p>
+                        <div class="buy-filter-plan-cards">
+                            <button class="buy-filter-plan-card active" data-interval="5" id="filter-5">
+                                <span class="buy-filter-plan-name">Every 5 months</span>
+                                <span class="buy-filter-plan-detail">Recommended for high-pollution areas</span>
+                                <span class="buy-filter-plan-tag">Recommended</span>
+                            </button>
+                            <button class="buy-filter-plan-card" data-interval="6" id="filter-6">
+                                <span class="buy-filter-plan-name">Every 6 months</span>
+                                <span class="buy-filter-plan-detail">Standard usage cycle</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Colour Info (Single colour - Almond Beige) -->
+                    <div class="buy-colour-info">
+                        <span class="buy-colour-label">Colour</span>
+                        <div class="buy-colour-display">
+                            <span class="buy-colour-dot" style="background: #d4c5a9;"></span>
+                            <span class="buy-colour-name-static">Almond Beige</span>
+                        </div>
+                    </div>
+
+                    <!-- Divider -->
+                    <div class="buy-divider"></div>
+
+                    <!-- Trust Indicators -->
+                    <div class="buy-trust-row">
+                        <div class="buy-trust-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                            <span>Free Delivery</span>
+                        </div>
+                        <div class="buy-trust-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                            </svg>
+                            <span>1-Year Warranty</span>
+                        </div>
+                        <div class="buy-trust-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="1 4 1 10 7 10"/>
+                                <path d="M3.51 15a9 9 0 102.13-9.36L1 10"/>
+                            </svg>
+                            <span>14-Day Returns</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Step 2: Accessories -->
+            <section class="buy-step-content" id="step-content-2">
+                <div class="buy-content-inner">
+                    <h2 class="buy-section-heading">Accessories</h2>
+                    <p class="buy-section-subtext">Hawaa Edge</p>
+
+                    <!-- Replacement Filters -->
+                    <div class="buy-accessory-card">
+                        <div class="buy-accessory-info">
+                            <span class="buy-accessory-name">Replacement Filter</span>
+                            <span class="buy-accessory-detail">3-in-1 H13 HEPA + Activated Carbon</span>
+                        </div>
+                        <div class="buy-accessory-action">
+                            <span class="buy-accessory-price">&#8377;1,499</span>
+                            <button class="buy-accessory-add" id="acc-filter-btn">Add</button>
+                        </div>
+                    </div>
+
+                    <!-- What's in the Box -->
+                    <div class="buy-inbox-section">
+                        <p class="buy-inbox-title">What's in the box</p>
+                        <ul class="buy-inbox-list">
+                            <li>Hawaa EDGE Air Purifier</li>
+                            <li>3-in-1 Filter (Pre-installed)</li>
+                            <li>Power Adapter & Cable</li>
+                            <li>Quick Start Guide</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Details Modal -->
+    <div class="buy-details-overlay" id="buy-details-overlay">
+        <div class="buy-details-modal" id="buy-details-modal">
+            <button class="buy-details-close" id="buy-details-close" aria-label="Close details">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"/>
+                    <line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+            </button>
+
+            <!-- Details Carousel -->
+            <div class="buy-details-carousel" id="buy-details-carousel">
+                <div class="buy-details-slides" id="buy-details-slides">
+                    <!-- Slide 1: Specs -->
+                    <div class="buy-details-slide active">
+                        <div class="buy-details-slide-img">
+                            <img src="public/images/hero-poster.webp" alt="Hawaa EDGE Specifications" draggable="false">
+                        </div>
+                        <div class="buy-details-slide-content">
+                            <h3>Specifications</h3>
+                            <p>Engineered for rooms up to 450 sq ft with 360-degree air intake.</p>
+                            <p>CADR: 250 m&sup3;/h. Noise level as low as 22 dB. Energy-efficient at just 45W.</p>
+                        </div>
+                    </div>
+                    <!-- Slide 2: H13 HEPA -->
+                    <div class="buy-details-slide">
+                        <div class="buy-details-slide-img">
+                            <img src="public/images/hero-resting.webp" alt="H13 HEPA Filtration" draggable="false">
+                        </div>
+                        <div class="buy-details-slide-content">
+                            <h3>H13 HEPA Filtration</h3>
+                            <p>3-in-1 filter system captures 99.97% of particles down to 0.3 microns.</p>
+                            <p>Pre-filter, activated carbon, and H13 HEPA work together for complete air purification.</p>
+                        </div>
+                    </div>
+                    <!-- Slide 3: Smart Features -->
+                    <div class="buy-details-slide">
+                        <div class="buy-details-slide-img">
+                            <img src="public/images/hero-poster.webp" alt="Smart Home Integration" draggable="false">
+                        </div>
+                        <div class="buy-details-slide-content">
+                            <h3>Smart Features</h3>
+                            <p>Gesture control for touchless operation. Wave to change fan speed or turn off.</p>
+                            <p>Works with Alexa and Google Home. Real-time air quality monitoring via the Hawaa app.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Details Navigation -->
+                <div class="buy-details-nav">
+                    <button class="buy-details-arrow buy-details-prev" id="buy-details-prev" aria-label="Previous">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M19 12H5"/>
+                            <path d="M12 19l-7-7 7-7"/>
+                        </svg>
+                    </button>
+                    <div class="buy-details-dots" id="buy-details-dots">
+                        <span class="buy-details-dot active"></span>
+                        <span class="buy-details-dot"></span>
+                        <span class="buy-details-dot"></span>
+                    </div>
+                    <button class="buy-details-arrow buy-details-next" id="buy-details-next" aria-label="Next">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M5 12h14"/>
+                            <path d="M12 5l7 7-7 7"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Overlay -->
+    <div class="cart-overlay" id="cart-overlay">
+        <div class="cart-panel" id="cart-panel">
+            <div class="cart-header">
+                <h2 class="cart-title">Cart</h2>
+                <button class="cart-close" id="cart-close" aria-label="Close cart">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"/>
+                        <line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Cart Items -->
+            <div class="cart-body" id="cart-body">
+                <div class="cart-empty" id="cart-empty">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+                        <line x1="3" y1="6" x2="21" y2="6"/>
+                        <path d="M16 10a4 4 0 01-8 0"/>
+                    </svg>
+                    <p>Your cart is empty</p>
+                </div>
+                <div class="cart-items" id="cart-items"></div>
+            </div>
+
+            <!-- Cart Footer with Price Breakdown -->
+            <div class="cart-footer" id="cart-footer">
+                <!-- Add Filter Upsell -->
+                <div class="cart-upsell" id="cart-upsell">
+                    <div class="cart-upsell-info">
+                        <span class="cart-upsell-name">Add Replacement Filter</span>
+                        <span class="cart-upsell-detail">3-in-1 H13 HEPA + Activated Carbon</span>
+                    </div>
+                    <div class="cart-upsell-action">
+                        <span class="cart-upsell-price">&#8377;1,499</span>
+                        <button class="cart-upsell-btn" id="cart-add-filter">Add</button>
+                    </div>
+                </div>
+
+                <!-- Price Breakdown Toggle -->
+                <button class="cart-breakdown-toggle" id="cart-breakdown-toggle">
+                    <span>Price Details</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 9l6 6 6-6"/>
+                    </svg>
+                </button>
+                <div class="cart-breakdown" id="cart-breakdown">
+                    <div class="cart-breakdown-row">
+                        <span>Subtotal</span>
+                        <span id="cart-subtotal">&#8377;0</span>
+                    </div>
+                    <div class="cart-breakdown-row">
+                        <span>GST (18%)</span>
+                        <span id="cart-gst">&#8377;0</span>
+                    </div>
+                    <div class="cart-breakdown-row">
+                        <span>Delivery Fee</span>
+                        <span id="cart-delivery" class="cart-free">Free</span>
+                    </div>
+                    <div class="cart-breakdown-row">
+                        <span>Shipping Fee</span>
+                        <span id="cart-shipping" class="cart-free">Free</span>
+                    </div>
+                </div>
+
+                <!-- Total -->
+                <div class="cart-total-row">
+                    <span>Total</span>
+                    <span id="cart-total">&#8377;0</span>
+                </div>
+
+                <button class="cart-checkout-btn" id="cart-checkout-btn">Checkout</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sticky Bottom Bar (Always visible) -->
+    <div class="buy-sticky-bottom" id="buy-sticky-bottom">
+        <div class="buy-sticky-inner">
+            <div class="buy-sticky-row">
+                <span class="buy-sticky-price" id="buy-sticky-price">&#8377;5,999</span>
+                <span class="buy-sticky-delivery">Delivery: 5-15 business days</span>
+            </div>
+            <button class="buy-sticky-btn" id="buy-sticky-btn">Add to Cart</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer" id="contact">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <div class="footer-logo">
+                    <span class="footer-logo-text">HAWAA</span>
+                </div>
+                <p class="footer-tagline">Breathe better. Live better.</p>
+                <div class="footer-contact-info">
+                    <div class="footer-contact-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
+                            <circle cx="12" cy="10" r="3"/>
+                        </svg>
+                        <span>Royal Complex, Bhutkhana Chowk, Rajkot, 360001, Gujarat, India</span>
+                    </div>
+                    <div class="footer-contact-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                            <polyline points="22,6 12,13 2,6"/>
+                        </svg>
+                        <span>support@hawaa.in</span>
+                    </div>
+                    <div class="footer-contact-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/>
+                        </svg>
+                        <span>+91 0000000000</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-links">
+                <div class="footer-links-column" data-footer-section>
+                    <button class="footer-links-header">
+                        <h4 class="footer-links-title">PRODUCTS</h4>
+                        <svg class="footer-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 9l6 6 6-6"/>
+                        </svg>
+                    </button>
+                    <ul class="footer-links-list">
+                        <li><a href="#">Replacement Filters</a></li>
+                        <li><a href="#">Accessories</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links-column" data-footer-section>
+                    <button class="footer-links-header">
+                        <h4 class="footer-links-title">SUPPORT</h4>
+                        <svg class="footer-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 9l6 6 6-6"/>
+                        </svg>
+                    </button>
+                    <ul class="footer-links-list">
+                        <li><a href="#">Installation Guide</a></li>
+                        <li><a href="faq.html">FAQ</a></li>
+                        <li><a href="support.html">Product Support</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links-column" data-footer-section>
+                    <button class="footer-links-header">
+                        <h4 class="footer-links-title">COMPANY</h4>
+                        <svg class="footer-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 9l6 6 6-6"/>
+                        </svg>
+                    </button>
+                    <ul class="footer-links-list">
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="#">Sustainability</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Press & Media</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links-column" data-footer-section>
+                    <button class="footer-links-header">
+                        <h4 class="footer-links-title">LEGAL</h4>
+                        <svg class="footer-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 9l6 6 6-6"/>
+                        </svg>
+                    </button>
+                    <ul class="footer-links-list">
+                        <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                        <li><a href="terms-of-service.html">Terms of Service</a></li>
+                        <li><a href="#">Shipping & Returns</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <div class="footer-social">
+                    <a href="#" class="footer-social-link" aria-label="Facebook">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="footer-social-link" aria-label="Twitter">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="footer-social-link" aria-label="Instagram">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                            <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/>
+                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="footer-social-link" aria-label="YouTube">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M22.54 6.42a2.78 2.78 0 00-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 00-1.94 2A29 29 0 001 11.75a29 29 0 00.46 5.33A2.78 2.78 0 003.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 001.94-2 29 29 0 00.46-5.25 29 29 0 00-.46-5.33z"/>
+                            <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02" fill="white"/>
+                        </svg>
+                    </a>
+                </div>
+                <p class="footer-copyright">&copy; 2025 Hawaa. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/nav.js"></script>
+    <script src="js/buy.js"></script>
+</body>
+</html>

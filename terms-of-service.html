@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Terms of Service - Hawaa by Havva Innovations Private Limited. Read our terms and conditions for using our website and services.">
+    <meta name="keywords" content="Hawaa, terms of service, terms and conditions, Havva Innovations, air purifier, smart home">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Terms of Service - Hawaa">
+    <meta property="og:description" content="Terms of Service for Hawaa by Havva Innovations Private Limited.">
+    <meta property="og:type" content="website">
+
+    <title>Terms of Service - Hawaa</title>
+
+    <!-- Google Fonts - Outfit + Playfair Display -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" href="public/images/favicon.ico" type="image/x-icon">
+</head>
+<body class="privacy-page">
+    <!-- Header -->
+    <header class="header scrolled" id="header">
+        <div class="header-container">
+            <a href="index.html" class="logo">
+                <span class="logo-h">H</span><span class="logo-awaa">awaa</span>
+            </a>
+            <div class="header-actions">
+                <button class="header-profile-btn" id="profile-btn" aria-label="Account">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+                        <circle cx="12" cy="7" r="4"/>
+                    </svg>
+                </button>
+                <a href="buy.html" class="header-cart-btn" id="cart-btn" aria-label="Cart">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+                        <line x1="3" y1="6" x2="21" y2="6"/>
+                        <path d="M16 10a4 4 0 01-8 0"/>
+                    </svg>
+                    <span class="cart-badge" id="cart-badge"></span>
+                </a>
+                <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Expandable Menu -->
+    <div class="menu-overlay" id="menu-overlay"></div>
+    <div class="menu-panel" id="menu-panel">
+        <div class="menu-panel-inner">
+            <nav class="menu-nav">
+                <a href="edge.html" class="menu-nav-item">Hawaa Edge</a>
+                <a href="index.html#blogs" class="menu-nav-item">Blog</a>
+                <a href="about.html" class="menu-nav-item">About Us</a>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Sign In Modal -->
+    <div class="signin-overlay" id="signin-overlay">
+        <div class="signin-modal" id="signin-modal">
+            <div class="signin-drag-handle"></div>
+            <button class="signin-close" id="signin-close" aria-label="Close">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"/>
+                    <line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+            </button>
+            <div class="signin-step" id="signin-phone-step">
+                <h2 class="signin-title">Sign in</h2>
+                <p class="signin-subtitle">Enter your mobile number to continue</p>
+                <div class="phone-input-group" id="signin-phone-group">
+                    <span class="phone-prefix">+91</span>
+                    <span class="phone-prefix-divider"></span>
+                    <input type="tel" class="phone-input" id="signin-phone" maxlength="10" placeholder="Mobile number" inputmode="numeric" autocomplete="tel-national">
+                </div>
+                <p class="signin-error" id="signin-phone-error"></p>
+                <button class="signin-btn" id="signin-send-otp">Send OTP</button>
+            </div>
+            <div class="signin-step hidden" id="signin-otp-step">
+                <h2 class="signin-title">Verify OTP</h2>
+                <p class="signin-subtitle">Enter the 6-digit code sent to <span class="signin-phone-display" id="signin-phone-display"></span></p>
+                <div class="otp-input-group">
+                    <input type="text" class="otp-input" maxlength="1" inputmode="numeric" autocomplete="one-time-code">
+                    <input type="text" class="otp-input" maxlength="1" inputmode="numeric">
+                    <input type="text" class="otp-input" maxlength="1" inputmode="numeric">
+                    <input type="text" class="otp-input" maxlength="1" inputmode="numeric">
+                    <input type="text" class="otp-input" maxlength="1" inputmode="numeric">
+                    <input type="text" class="otp-input" maxlength="1" inputmode="numeric">
+                </div>
+                <p class="signin-error" id="signin-otp-error"></p>
+                <button class="signin-btn" id="signin-verify">Verify</button>
+                <div class="signin-actions">
+                    <button class="signin-back" id="signin-back">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M19 12H5"/>
+                            <path d="M12 19l-7-7 7-7"/>
+                        </svg>
+                        Change number
+                    </button>
+                    <button class="signin-resend" id="signin-resend">Resend OTP</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Terms of Service Content -->
+    <main class="privacy-main">
+        <div class="privacy-container">
+            <p class="privacy-effective-date">Effective date: 16.02.2026</p>
+            <h1 class="privacy-title">Terms of service.</h1>
+
+            <div class="privacy-list">
+                <!-- Section 1: Acceptance of Terms -->
+                <div class="privacy-item">
+                    <button class="privacy-question">
+                        <span>Acceptance of terms.</span>
+                        <svg class="privacy-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M6 9l6 6 6-6"/>
+                        </svg>
+                    </button>
+                    <div class="privacy-answer">
+                        <div class="privacy-answer-content">
+                            <p>Welcome to hawaa.in, operated by <strong>Havva Innovations Private Limited</strong> ("Hawaa," "we," "us," or "our"). By accessing or using our website, purchasing our products, or using any of our services, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our website or services.</p>
+                            <p>These terms apply to all visitors, users, and customers of hawaa.in and any related applications or services offered by Hawaa. We reserve the right to update or modify these terms at any time, and your continued use of our services following any changes constitutes your acceptance of the revised terms.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 2: Products & Services -->
+                <div class="privacy-item">
+                    <button class="privacy-question">
+                        <span>Products & services.</span>
+                        <svg class="privacy-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M6 9l6 6 6-6"/>
+                        </svg>
+                    </button>
+                    <div class="privacy-answer">
+                        <div class="privacy-answer-content">
+                            <p>Hawaa designs and sells smart air purifiers, replacement filters, and related accessories. All product descriptions, images, and specifications on our website are provided for informational purposes and may be subject to change without notice.</p>
+                            <p>We make every effort to display product colours and features as accurately as possible. However, we cannot guarantee that your device's display accurately reflects the actual appearance of our products. Product availability is subject to change, and we reserve the right to limit quantities or discontinue any product at any time.</p>
+                            <p><strong>Smart home features:</strong> Certain Hawaa products offer integration with Google Home and other smart home platforms. These integrations are subject to the availability and terms of the respective third-party platforms, and we do not guarantee uninterrupted compatibility with third-party services.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 3: Orders & Payments -->
+                <div class="privacy-item">
+                    <button class="privacy-question">
+                        <span>Orders & payments.</span>
+                        <svg class="privacy-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M6 9l6 6 6-6"/>
+                        </svg>
+                    </button>
+                    <div class="privacy-answer">
+                        <div class="privacy-answer-content">
+                            <p>By placing an order on hawaa.in, you are making an offer to purchase the selected products subject to these terms. All orders are subject to acceptance and product availability. We reserve the right to refuse or cancel any order for any reason, including but not limited to product availability, errors in pricing or product information, or suspected fraudulent activity.</p>
+                            <p><strong>Pricing:</strong> All prices are listed in Indian Rupees (INR) and are inclusive of applicable taxes unless otherwise stated. We reserve the right to change prices at any time without prior notice. The price applicable to your order is the price displayed at the time of purchase.</p>
+                            <p><strong>Payment methods:</strong> We accept payments via credit cards, debit cards, UPI, net banking, and other payment methods as displayed at checkout. All payments are processed through secure, PCI-DSS compliant payment gateways. You agree to provide accurate and complete payment information.</p>
+                            <p><strong>Order confirmation:</strong> Upon placing an order, you will receive an email confirmation with your order details. This confirmation does not constitute acceptance of your order. We will notify you when your order has been dispatched.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 4: Shipping & Delivery -->
+                <div class="privacy-item">
+                    <button class="privacy-question">
+                        <span>Shipping & delivery.</span>
+                        <svg class="privacy-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M6 9l6 6 6-6"/>
+                        </svg>
+                    </button>
+                    <div class="privacy-answer">
+                        <div class="privacy-answer-content">
+                            <p>We currently ship to addresses within India. Delivery timelines are estimates and may vary depending on your location, product availability, and shipping conditions. We are not liable for delays caused by circumstances beyond our control, including but not limited to natural disasters, transportation disruptions, or customs processing.</p>
+                            <p><strong>Shipping charges:</strong> Shipping fees, if applicable, will be calculated and displayed at checkout before you complete your purchase. We may offer free shipping promotions from time to time at our discretion.</p>
+                            <p><strong>Risk of loss:</strong> The risk of loss for purchased products passes to you upon delivery to the shipping carrier. We recommend inspecting your package upon delivery and reporting any damage or discrepancies within 48 hours of receipt.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 5: Returns & Refunds -->
+                <div class="privacy-item">
+                    <button class="privacy-question">
+                        <span>Returns & refunds.</span>
+                        <svg class="privacy-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M6 9l6 6 6-6"/>
+                        </svg>
+                    </button>
+                    <div class="privacy-answer">
+                        <div class="privacy-answer-content">
+                            <p>We want you to be completely satisfied with your Hawaa purchase. If you are not satisfied, you may request a return within 15 days of delivery, subject to the following conditions:</p>
+                            <ul>
+                                <li>The product must be unused, in its original packaging, and in the same condition as received</li>
+                                <li>Replacement filters and accessories that have been opened or used are not eligible for return</li>
+                                <li>Products damaged due to misuse, negligence, or unauthorised modifications are not eligible for return</li>
+                                <li>Return shipping costs may apply and will be communicated at the time of return authorisation</li>
+                            </ul>
+                            <p><strong>Refund processing:</strong> Once we receive and inspect the returned product, we will notify you of the approval or rejection of your refund. Approved refunds will be processed to the original payment method within 7-10 business days.</p>
+                            <p>To initiate a return, please contact our support team at <a href="mailto:support@hawaa.in">support@hawaa.in</a> with your order number and reason for return.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 6: Product Warranty -->
+                <div class="privacy-item">
+                    <button class="privacy-question">
+                        <span>Product warranty.</span>
+                        <svg class="privacy-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M6 9l6 6 6-6"/>
+                        </svg>
+                    </button>
+                    <div class="privacy-answer">
+                        <div class="privacy-answer-content">
+                            <p>Hawaa air purifiers come with a limited manufacturer's warranty covering defects in materials and workmanship under normal use. The warranty period and coverage details are specified with each product at the time of purchase.</p>
+                            <p><strong>What is covered:</strong> Manufacturing defects, faulty components, and hardware malfunctions that occur under normal use conditions during the warranty period.</p>
+                            <p><strong>What is not covered:</strong></p>
+                            <ul>
+                                <li>Damage caused by misuse, accidents, negligence, or unauthorised modifications</li>
+                                <li>Normal wear and tear, including filter degradation from regular use</li>
+                                <li>Damage resulting from use with incompatible accessories or power sources</li>
+                                <li>Cosmetic damage such as scratches or dents that do not affect functionality</li>
+                                <li>Damage caused by exposure to extreme environmental conditions beyond specified operating ranges</li>
+                            </ul>
+                            <p>To make a warranty claim, please contact us at <a href="mailto:support@hawaa.in">support@hawaa.in</a> with your proof of purchase and a description of the issue.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 7: User Accounts -->
+                <div class="privacy-item">
+                    <button class="privacy-question">
+                        <span>User accounts.</span>
+                        <svg class="privacy-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M6 9l6 6 6-6"/>
+                        </svg>
+                    </button>
+                    <div class="privacy-answer">
+                        <div class="privacy-answer-content">
+                            <p>To access certain features of our website and services, you may be required to create an account. You are responsible for maintaining the confidentiality of your account credentials and for all activities that occur under your account.</p>
+                            <p>You agree to provide accurate, current, and complete information during registration and to update your information as necessary. We reserve the right to suspend or terminate accounts that contain inaccurate or incomplete information, or that are used in violation of these terms.</p>
+                            <p>You must notify us immediately at <a href="mailto:support@hawaa.in">support@hawaa.in</a> if you become aware of any unauthorised use of your account or any other breach of security.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 8: Intellectual Property -->
+                <div class="privacy-item">
+                    <button class="privacy-question">
+                        <span>Intellectual property.</span>
+                        <svg class="privacy-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M6 9l6 6 6-6"/>
+                        </svg>
+                    </button>
+                    <div class="privacy-answer">
+                        <div class="privacy-answer-content">
+                            <p>All content on hawaa.in, including but not limited to text, graphics, logos, icons, images, audio clips, video clips, digital downloads, and software, is the property of Havva Innovations Private Limited or its content suppliers and is protected by Indian and international intellectual property laws.</p>
+                            <p>The <strong>Hawaa</strong>&trade; name, logo, and all related product names, design marks, and slogans are trademarks of Havva Innovations Private Limited. You may not use, reproduce, or distribute any of our trademarks without prior written permission.</p>
+                            <p>You are granted a limited, non-exclusive, non-transferable licence to access and use our website for personal, non-commercial purposes. This licence does not permit you to modify, copy, distribute, transmit, display, reproduce, or create derivative works from our website or its content.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 9: Limitation of Liability -->
+                <div class="privacy-item">
+                    <button class="privacy-question">
+                        <span>Limitation of liability.</span>
+                        <svg class="privacy-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M6 9l6 6 6-6"/>
+                        </svg>
+                    </button>
+                    <div class="privacy-answer">
+                        <div class="privacy-answer-content">
+                            <p>To the fullest extent permitted by applicable law, Havva Innovations Private Limited, its directors, employees, partners, agents, and affiliates shall not be liable for any indirect, incidental, special, consequential, or punitive damages, including but not limited to loss of profits, data, use, goodwill, or other intangible losses resulting from:</p>
+                            <ul>
+                                <li>Your use or inability to use our website or services</li>
+                                <li>Any unauthorised access to or alteration of your data or transmissions</li>
+                                <li>Any third-party content or conduct on our website</li>
+                                <li>Any interruption or cessation of our services</li>
+                            </ul>
+                            <p>In no event shall our total liability to you exceed the amount you paid to us for the specific product or service giving rise to the claim. This limitation applies regardless of the legal theory under which liability is asserted.</p>
+                            <p>Nothing in these terms shall exclude or limit liability for death or personal injury caused by negligence, fraud, or any other liability that cannot be excluded or limited under applicable Indian law.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 10: Indemnification -->
+                <div class="privacy-item">
+                    <button class="privacy-question">
+                        <span>Indemnification.</span>
+                        <svg class="privacy-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M6 9l6 6 6-6"/>
+                        </svg>
+                    </button>
+                    <div class="privacy-answer">
+                        <div class="privacy-answer-content">
+                            <p>You agree to indemnify, defend, and hold harmless Havva Innovations Private Limited, its officers, directors, employees, agents, and affiliates from and against any and all claims, liabilities, damages, losses, costs, and expenses (including reasonable legal fees) arising from or related to your use of our website or services, your violation of these terms, or your infringement of any intellectual property or other rights of any third party.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 11: Governing Law -->
+                <div class="privacy-item">
+                    <button class="privacy-question">
+                        <span>Governing law & disputes.</span>
+                        <svg class="privacy-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M6 9l6 6 6-6"/>
+                        </svg>
+                    </button>
+                    <div class="privacy-answer">
+                        <div class="privacy-answer-content">
+                            <p>These Terms of Service shall be governed by and construed in accordance with the laws of India, without regard to conflict of law principles. Any disputes arising out of or in connection with these terms shall be subject to the exclusive jurisdiction of the courts in Rajkot, Gujarat, India.</p>
+                            <p>We encourage you to contact us first at <a href="mailto:support@hawaa.in">support@hawaa.in</a> to resolve any disputes amicably before pursuing formal legal proceedings. We will make reasonable efforts to resolve your concerns in a timely manner.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 12: Changes to These Terms -->
+                <div class="privacy-item">
+                    <button class="privacy-question">
+                        <span>Changes to these terms.</span>
+                        <svg class="privacy-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M6 9l6 6 6-6"/>
+                        </svg>
+                    </button>
+                    <div class="privacy-answer">
+                        <div class="privacy-answer-content">
+                            <p>We reserve the right to modify or replace these Terms of Service at any time at our sole discretion. When we make material changes, we will update the "Effective date" at the top of this page and, where appropriate, notify you via email or through a notice on our website.</p>
+                            <p>Your continued use of our website and services after any changes to these terms constitutes your acceptance of those changes. We encourage you to review these terms periodically to stay informed about our terms and conditions.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 13: Contact Us -->
+                <div class="privacy-item">
+                    <button class="privacy-question">
+                        <span>Contact us.</span>
+                        <svg class="privacy-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M6 9l6 6 6-6"/>
+                        </svg>
+                    </button>
+                    <div class="privacy-answer">
+                        <div class="privacy-answer-content">
+                            <p>This website and its services are operated by <strong>Havva Innovations Private Limited</strong>, an Indian private limited company. <strong>Hawaa</strong>&trade; is a registered trademark of Havva Innovations Private Limited. All references to "Hawaa," "we," "us," or "our" in these terms refer to Havva Innovations Private Limited operating under the Hawaa brand.</p>
+                            <p>If you have any questions or concerns regarding these Terms of Service, please contact us:</p>
+                            <ul>
+                                <li><strong>Email:</strong> support@hawaa.in</li>
+                                <li><strong>Address:</strong> Havva Innovations Private Limited, Royal Complex, Bhutkhana Chowk, Rajkot, 360001, Gujarat, India</li>
+                                <li><strong>Phone:</strong> +91 0000000000</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer" id="contact">
+        <div class="footer-container">
+            <!-- Brand Info -->
+            <div class="footer-brand">
+                <div class="footer-logo">
+                    <span class="footer-logo-text">HAWAA</span>
+                </div>
+                <p class="footer-tagline">Breathe better. Live better.</p>
+                <div class="footer-contact-info">
+                    <div class="footer-contact-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
+                            <circle cx="12" cy="10" r="3"/>
+                        </svg>
+                        <span>Royal Complex, Bhutkhana Chowk, Rajkot, 360001, Gujarat, India</span>
+                    </div>
+                    <div class="footer-contact-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                            <polyline points="22,6 12,13 2,6"/>
+                        </svg>
+                        <span>support@hawaa.in</span>
+                    </div>
+                    <div class="footer-contact-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/>
+                        </svg>
+                        <span>+91 0000000000</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer Links - Collapsible on mobile -->
+            <div class="footer-links">
+                <div class="footer-links-column" data-footer-section>
+                    <button class="footer-links-header">
+                        <h4 class="footer-links-title">PRODUCTS</h4>
+                        <svg class="footer-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 9l6 6 6-6"/>
+                        </svg>
+                    </button>
+                    <ul class="footer-links-list">
+                        <li><a href="#">Hawaa Edge</a></li>
+                        <li><a href="#">Replacement Filters</a></li>
+                        <li><a href="#">Accessories</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-links-column" data-footer-section>
+                    <button class="footer-links-header">
+                        <h4 class="footer-links-title">SUPPORT</h4>
+                        <svg class="footer-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 9l6 6 6-6"/>
+                        </svg>
+                    </button>
+                    <ul class="footer-links-list">
+                        <li><a href="#">Installation Guide</a></li>
+                        <li><a href="faq.html">FAQ</a></li>
+                        <li><a href="support.html">Product Support</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-links-column" data-footer-section>
+                    <button class="footer-links-header">
+                        <h4 class="footer-links-title">COMPANY</h4>
+                        <svg class="footer-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 9l6 6 6-6"/>
+                        </svg>
+                    </button>
+                    <ul class="footer-links-list">
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="#">Sustainability</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Press & Media</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-links-column" data-footer-section>
+                    <button class="footer-links-header">
+                        <h4 class="footer-links-title">LEGAL</h4>
+                        <svg class="footer-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 9l6 6 6-6"/>
+                        </svg>
+                    </button>
+                    <ul class="footer-links-list">
+                        <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                        <li><a href="terms-of-service.html">Terms of Service</a></li>
+                        <li><a href="#">Shipping & Returns</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Footer Bottom -->
+            <div class="footer-bottom">
+                <div class="footer-social">
+                    <a href="#" class="footer-social-link" aria-label="Facebook">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="footer-social-link" aria-label="Twitter">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="footer-social-link" aria-label="Instagram">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                            <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/>
+                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="footer-social-link" aria-label="YouTube">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M22.54 6.42a2.78 2.78 0 00-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 00-1.94 2A29 29 0 001 11.75a29 29 0 00.46 5.33A2.78 2.78 0 003.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 001.94-2 29 29 0 00.46-5.25 29 29 0 00-.46-5.33z"/>
+                            <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02" fill="white"/>
+                        </svg>
+                    </a>
+                </div>
+                <p class="footer-copyright">&copy; 2025 Hawaa. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/nav.js"></script>
+    <script>
+    // Terms of Service Accordion
+    document.querySelectorAll('.privacy-item').forEach(function(item) {
+        item.querySelector('.privacy-question').addEventListener('click', function() {
+            var isActive = item.classList.contains('active');
+            document.querySelectorAll('.privacy-item').forEach(function(other) {
+                other.classList.remove('active');
+            });
+            if (!isActive) item.classList.add('active');
+        });
+    });
+    </script>
+</body>
+</html>
