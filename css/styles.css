@@ -7339,13 +7339,16 @@ body.tos-page .header-profile-btn {
 /* Section header (number + title) */
 .tos-section-header {
     display: flex;
-    align-items: baseline;
-    gap: 16px;
+    flex-direction: column;
+    gap: 8px;
     margin-bottom: 20px;
 }
 
 @media (min-width: 768px) {
     .tos-section-header {
+        flex-direction: row;
+        align-items: baseline;
+        gap: 16px;
         margin-bottom: 0;
     }
 }
