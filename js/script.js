@@ -17,14 +17,15 @@ function handleScroll() {
     }
 
     // Toggle between header and sticky buy bar based on hero section
-    if (scrollY > heroHeight - 100) {
-        // Past hero section - show buy bar, hide header
-        header.classList.add('hidden');
-        stickyBuyBar.classList.add('visible');
-    } else {
-        // In hero section - show header, hide buy bar
-        header.classList.remove('hidden');
-        stickyBuyBar.classList.remove('visible');
+    // Only applies on pages that have both a .hero section and a sticky buy bar
+    if (stickyBuyBar) {
+        if (scrollY > heroHeight - 100) {
+            header.classList.add('hidden');
+            stickyBuyBar.classList.add('visible');
+        } else {
+            header.classList.remove('hidden');
+            stickyBuyBar.classList.remove('visible');
+        }
     }
 }
 
