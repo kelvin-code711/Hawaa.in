@@ -5830,31 +5830,6 @@ a {
     flex-shrink: 0;
 }
 
-.edge-decor-expand {
-    width: 32px;
-    height: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(255, 255, 255, 0.22);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 50%;
-    color: white;
-    cursor: pointer;
-    padding: 0;
-    transition: background 0.2s ease;
-}
-
-.edge-decor-expand:hover {
-    background: rgba(255, 255, 255, 0.38);
-}
-
-.edge-decor-expand svg {
-    width: 14px;
-    height: 14px;
-}
 
 /* Controls: progress bar + arrows */
 .edge-decor-controls {
