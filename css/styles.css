@@ -5719,14 +5719,6 @@ a {
     font-weight: 500;
 }
 
-.edge-decor-desc {
-    font-family: 'Outfit', sans-serif;
-    font-size: 0.9rem;
-    font-weight: 400;
-    color: #6b7280;
-    line-height: 1.5;
-    max-width: 480px;
-}
 
 /* Slider */
 .edge-decor-slider-wrapper {
@@ -5900,10 +5892,6 @@ a {
 
     .edge-decor-title {
         font-size: 2rem;
-    }
-
-    .edge-decor-desc {
-        font-size: 0.95rem;
     }
 
     .edge-decor-slider {
