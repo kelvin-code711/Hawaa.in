@@ -5491,7 +5491,7 @@ a {
 
 /* Product label & tagline block - positioned above bottom bar */
 .edge-hero-text {
-    margin-bottom: 40px;
+    margin-bottom: 24px;
 }
 
 .edge-product-label {
@@ -5508,7 +5508,7 @@ a {
 .edge-tagline {
     font-family: 'Outfit', sans-serif;
     font-size: 2rem;
-    font-weight: 600;
+    font-weight: 300;
     color: white;
     line-height: 1.2;
     max-width: 500px;
@@ -5521,13 +5521,13 @@ a {
     font-weight: 500;
 }
 
-/* Bottom bar - three columns: chevron | buy btn | price */
+/* Bottom bar - three columns: chevron/text | price (desktop) | price-inline (mobile) / buy btn (desktop) */
 .edge-hero-bottom {
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 20px 0;
-    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    border-top: 1px solid rgba(255, 255, 255, 0.25);
     margin-bottom: env(safe-area-inset-bottom, 16px);
 }
 
@@ -5535,7 +5535,20 @@ a {
     flex: 0 0 auto;
 }
 
+/* "Scroll to Discover" text — hidden on mobile, shown on desktop */
+.edge-scroll-text {
+    display: none;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    color: rgba(255, 255, 255, 0.7);
+    text-transform: uppercase;
+}
+
+/* Bouncing chevron — shown on mobile, hidden on desktop */
 .edge-scroll-chevron {
+    display: block;
     width: 24px;
     height: 24px;
     color: rgba(255, 255, 255, 0.7);
@@ -5551,46 +5564,53 @@ a {
     }
 }
 
+/* Center: price — hidden on mobile, flex row on desktop */
 .edge-hero-bottom-center {
+    display: none;
     flex: 0 0 auto;
+    align-items: baseline;
+    gap: 6px;
 }
 
-/* Blue Buy Now CTA button */
-.edge-buy-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    padding: 14px 36px;
-    background: linear-gradient(135deg, #0ea5e9 0%, #0891b2 100%);
-    border: 1px solid rgba(56, 189, 248, 0.5);
-    border-radius: 9999px;
-    color: white;
-    font-family: 'Outfit', sans-serif;
-    font-size: 0.95rem;
-    font-weight: 600;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 20px rgba(14, 165, 233, 0.4),
-                inset 0 1px 0 rgba(255, 255, 255, 0.2);
-}
-
-.edge-buy-btn:hover {
-    background: linear-gradient(135deg, #38bdf8 0%, #0ea5e9 100%);
-    border-color: rgba(56, 189, 248, 0.7);
-    box-shadow: 0 6px 24px rgba(14, 165, 233, 0.55),
-                inset 0 1px 0 rgba(255, 255, 255, 0.25);
-    transform: scale(1.03);
-}
-
-/* Price display - right side of bottom bar */
+/* Right column */
 .edge-hero-bottom-right {
     flex: 0 0 auto;
     display: flex;
-    flex-direction: column;
-    align-items: flex-end;
+    align-items: center;
+    gap: 0;
 }
 
+/* Inline price (mobile) — FROM ₹5,999 on one line */
+.edge-price-inline {
+    display: flex;
+    align-items: baseline;
+    gap: 5px;
+}
+
+/* Buy Now button — hidden on mobile, shown on desktop */
+.edge-buy-btn {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 36px;
+    background: #ffffff;
+    border: none;
+    border-radius: 9999px;
+    color: #111827;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.edge-buy-btn:hover {
+    background: rgba(255, 255, 255, 0.88);
+    transform: scale(1.02);
+}
+
+/* Shared price label & value styles */
 .edge-price-label {
     font-family: 'Outfit', sans-serif;
     font-size: 0.65rem;
@@ -5598,7 +5618,6 @@ a {
     letter-spacing: 0.2em;
     color: rgba(255, 255, 255, 0.7);
     text-transform: uppercase;
-    margin-bottom: 2px;
 }
 
 .edge-price-value {
@@ -5616,7 +5635,7 @@ a {
     }
 
     .edge-hero-text {
-        margin-bottom: 48px;
+        margin-bottom: 32px;
     }
 
     .edge-product-label {
@@ -5639,11 +5658,6 @@ a {
         height: 28px;
     }
 
-    .edge-buy-btn {
-        padding: 16px 44px;
-        font-size: 1rem;
-    }
-
     .edge-price-label {
         font-size: 0.75rem;
     }
@@ -5653,10 +5667,14 @@ a {
     }
 }
 
-/* ---- Desktop (1024px+) ---- */
+/* ---- Desktop (1024px+): 3-column layout — SCROLL TO DISCOVER | price | Buy Now ---- */
 @media (min-width: 1024px) {
     .edge-hero-content {
         padding: 0 60px;
+    }
+
+    .edge-hero-text {
+        margin-bottom: 40px;
     }
 
     .edge-tagline {
@@ -5669,13 +5687,37 @@ a {
         margin-bottom: 32px;
     }
 
-    .edge-buy-btn {
-        padding: 16px 48px;
-        font-size: 1.05rem;
+    /* Show text label, hide bouncing chevron */
+    .edge-scroll-text {
+        display: block;
     }
 
-    .edge-price-value {
+    .edge-scroll-chevron {
+        display: none;
+    }
+
+    /* Show price in center */
+    .edge-hero-bottom-center {
+        display: flex;
+    }
+
+    .edge-hero-bottom-center .edge-price-label {
+        font-size: 0.7rem;
+    }
+
+    .edge-hero-bottom-center .edge-price-value {
         font-size: 2rem;
+    }
+
+    /* Hide mobile inline price, show Buy Now button */
+    .edge-price-inline {
+        display: none;
+    }
+
+    .edge-buy-btn {
+        display: inline-flex;
+        padding: 16px 48px;
+        font-size: 1rem;
     }
 }
 

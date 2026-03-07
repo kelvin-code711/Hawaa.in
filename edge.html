@@ -130,21 +130,29 @@
                 <h1 class="edge-tagline">Pure air meant to <span class="italic">be lived.</span></h1>
             </div>
 
-            <!-- Bottom Bar: Scroll indicator, Buy CTA, Price -->
+            <!-- Bottom Bar: Scroll indicator | Price (desktop center) | Price inline (mobile) + Buy Now (desktop) -->
             <div class="edge-hero-bottom">
+                <!-- Left: chevron bounce (mobile) / "Scroll to Discover" text (desktop) -->
                 <div class="edge-hero-bottom-left">
+                    <span class="edge-scroll-text">Scroll to Discover</span>
                     <svg class="edge-scroll-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M6 9l6 6 6-6"/>
                     </svg>
                 </div>
 
+                <!-- Center: price (desktop only) -->
                 <div class="edge-hero-bottom-center">
-                    <a href="buy.html" class="edge-buy-btn">Buy Now</a>
-                </div>
-
-                <div class="edge-hero-bottom-right">
                     <span class="edge-price-label">FROM</span>
                     <span class="edge-price-value">₹5,999</span>
+                </div>
+
+                <!-- Right: inline price (mobile) / Buy Now button (desktop) -->
+                <div class="edge-hero-bottom-right">
+                    <div class="edge-price-inline">
+                        <span class="edge-price-label">FROM</span>
+                        <span class="edge-price-value">₹5,999</span>
+                    </div>
+                    <a href="buy.html" class="edge-buy-btn">Buy Now</a>
                 </div>
             </div>
         </div>
