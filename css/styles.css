@@ -5891,7 +5891,7 @@ a {
 }
 
 .edge-gestures-inner {
-    max-width: 440px;
+    max-width: 340px;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
@@ -5916,24 +5916,13 @@ a {
     color: #111827;
     text-align: center;
     line-height: 1.3;
-    margin-bottom: 44px;
+    margin-bottom: 40px;
 }
 
 .edge-gestures-title .italic {
     font-family: 'Playfair Display', serif;
     font-style: italic;
     font-weight: 500;
-}
-
-/* Card wrapper */
-.edge-gestures-card-wrap {
-    width: 100%;
-    max-width: 300px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 16px;
-    margin-bottom: 28px;
 }
 
 /* The dark swipeable card */
@@ -5964,49 +5953,46 @@ a {
     will-change: transform;
 }
 
-/* Individual gesture slide */
+/* Individual gesture slide — images/gifs fill this */
 .edge-gesture-slide {
     width: 25%;
     height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 28px 24px;
+    overflow: hidden;
 }
 
-.edge-gesture-slide svg {
+.edge-gesture-slide img,
+.edge-gesture-slide video {
     width: 100%;
     height: 100%;
-    max-width: 200px;
-    max-height: 260px;
+    object-fit: cover;
+    display: block;
 }
 
-/* Swipe hint below card */
-.edge-gesture-hint {
+/* Bottom overlay: gradient + text + dots */
+.edge-gesture-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 60px 20px 20px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.72) 0%, transparent 100%);
+    border-radius: 0 0 24px 24px;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 6px;
-    font-family: 'Outfit', sans-serif;
-    font-size: 0.68rem;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    color: #9ca3af;
+    gap: 14px;
+    pointer-events: none;
+    z-index: 2;
 }
 
-.edge-gesture-hint svg {
-    opacity: 0.7;
-}
-
-/* Gesture info text block */
+/* Gesture info text */
 .edge-gesture-info {
     width: 100%;
-    height: 52px;
+    height: 46px;
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
-    margin-bottom: 24px;
 }
 
 .edge-gesture-info-item {
@@ -6014,9 +6000,9 @@ a {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 4px;
+    gap: 3px;
     opacity: 0;
-    transform: translateY(6px);
+    transform: translateY(5px);
     transition: opacity 0.3s ease, transform 0.3s ease;
     pointer-events: none;
     text-align: center;
@@ -6025,12 +6011,11 @@ a {
 .edge-gesture-info-item.active {
     opacity: 1;
     transform: translateY(0);
-    pointer-events: auto;
 }
 
 .edge-gesture-action {
     font-family: 'Outfit', sans-serif;
-    font-size: 0.68rem;
+    font-size: 0.65rem;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.15em;
@@ -6039,9 +6024,9 @@ a {
 
 .edge-gesture-desc {
     font-family: 'Outfit', sans-serif;
-    font-size: 1rem;
+    font-size: 0.95rem;
     font-weight: 500;
-    color: #111827;
+    color: rgba(255, 255, 255, 0.92);
     white-space: nowrap;
 }
 
@@ -6049,14 +6034,15 @@ a {
 .edge-gesture-dots {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
+    pointer-events: auto;
 }
 
 .edge-gesture-dot {
-    width: 6px;
-    height: 6px;
+    width: 5px;
+    height: 5px;
     border-radius: 50%;
-    background: #d1d5db;
+    background: rgba(255, 255, 255, 0.3);
     border: none;
     padding: 0;
     cursor: pointer;
@@ -6064,7 +6050,7 @@ a {
 }
 
 .edge-gesture-dot.active {
-    background: #111827;
+    background: #ffffff;
     transform: scale(1.5);
 }
 
@@ -6073,8 +6059,8 @@ a {
         padding: 80px 24px 100px;
     }
 
-    .edge-gestures-card-wrap {
-        max-width: 320px;
+    .edge-gestures-inner {
+        max-width: 360px;
     }
 }
 
