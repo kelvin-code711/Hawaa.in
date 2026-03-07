@@ -5687,6 +5687,201 @@ a {
 
 
 /* ========================================
+   EDGE STACKED SPECS SECTION
+======================================== */
+
+.edge-specs-section {
+    height: 300vh;
+    position: relative;
+}
+
+.edge-specs-sticky {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
+}
+
+/* Individual spec cards */
+.edge-spec-card {
+    position: absolute;
+    inset: 0;
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    will-change: transform;
+}
+
+.edge-spec-card[data-card="0"] {
+    z-index: 1;
+    transform: translateY(0);
+}
+
+.edge-spec-card[data-card="1"] {
+    z-index: 2;
+    transform: translateY(100%);
+}
+
+.edge-spec-card[data-card="2"] {
+    z-index: 3;
+    transform: translateY(100%);
+}
+
+/* Card inner layout */
+.edge-spec-card-inner {
+    text-align: center;
+    padding: 0 24px;
+    max-width: 640px;
+    width: 100%;
+}
+
+/* Small index label */
+.edge-spec-index {
+    display: block;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.6rem;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    color: rgba(17, 24, 39, 0.3);
+    text-transform: uppercase;
+    margin-bottom: 36px;
+}
+
+/* Big stat row */
+.edge-spec-stat {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 6px;
+    margin-bottom: 16px;
+    line-height: 1;
+}
+
+.edge-spec-number {
+    font-family: 'Outfit', sans-serif;
+    font-size: clamp(4.5rem, 17vw, 10rem);
+    font-weight: 300;
+    color: #111827;
+    line-height: 1;
+    letter-spacing: -0.03em;
+}
+
+.edge-spec-unit {
+    font-family: 'Outfit', sans-serif;
+    font-size: clamp(1.2rem, 3.5vw, 2rem);
+    font-weight: 300;
+    color: rgba(17, 24, 39, 0.38);
+    letter-spacing: 0.02em;
+    margin-bottom: 0.15em;
+    align-self: flex-end;
+}
+
+/* Italic label below number */
+.edge-spec-label {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(1.1rem, 2.8vw, 1.6rem);
+    font-weight: 400;
+    color: #111827;
+    letter-spacing: 0.01em;
+    margin-bottom: 18px;
+}
+
+/* Description */
+.edge-spec-desc {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 400;
+    color: rgba(17, 24, 39, 0.48);
+    line-height: 1.75;
+    max-width: 320px;
+    margin: 0 auto;
+}
+
+/* Side progress dots */
+.edge-specs-dots {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 7px;
+    z-index: 10;
+}
+
+.edge-specs-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: rgba(17, 24, 39, 0.15);
+    transition: background 0.35s ease, transform 0.35s ease;
+}
+
+.edge-specs-dot.active {
+    background: #111827;
+    transform: scale(1.4);
+}
+
+/* Scroll hint chevron (fades out after first card) */
+.edge-specs-scroll-hint {
+    position: absolute;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    opacity: 1;
+    transition: opacity 0.4s ease;
+}
+
+.edge-specs-scroll-hint.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.edge-specs-scroll-hint svg {
+    width: 22px;
+    height: 22px;
+    color: rgba(17, 24, 39, 0.28);
+    animation: edge-bounce 2.2s ease-in-out infinite;
+}
+
+@media (min-width: 768px) {
+    .edge-spec-index {
+        margin-bottom: 44px;
+        font-size: 0.65rem;
+    }
+
+    .edge-spec-desc {
+        font-size: 0.95rem;
+        max-width: 380px;
+    }
+
+    .edge-specs-dots {
+        right: 32px;
+        gap: 9px;
+    }
+
+    .edge-specs-dot {
+        width: 6px;
+        height: 6px;
+    }
+
+    .edge-specs-scroll-hint {
+        bottom: 36px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .edge-spec-desc {
+        font-size: 1rem;
+    }
+}
+
+/* ========================================
    PRIVACY POLICY PAGE
 ======================================== */
 
