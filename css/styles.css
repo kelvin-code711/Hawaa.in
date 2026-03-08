@@ -7604,3 +7604,183 @@ body.tos-page .header-profile-btn {
     color: #374151;
     font-weight: 600;
 }
+
+/* ========================================
+   EDGE — SMART INTEGRATIONS (Section 5)
+======================================== */
+
+.edge-integrations-section {
+    padding: 60px 16px;
+    background: white;
+}
+
+@media (min-width: 768px) {
+    .edge-integrations-section {
+        padding: 80px 24px;
+    }
+}
+
+.edge-integrations-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.edge-integrations-label {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: #6b7280;
+    margin-bottom: 12px;
+}
+
+.edge-integrations-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #111827;
+    line-height: 1.3;
+    margin: 0 0 32px;
+}
+
+@media (min-width: 768px) {
+    .edge-integrations-title {
+        font-size: 2.25rem;
+        margin-bottom: 40px;
+    }
+}
+
+.edge-integrations-title .italic {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-weight: 400;
+}
+
+/* Bento grid — 2-col on mobile, bento on desktop */
+.edge-integrations-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+@media (min-width: 768px) {
+    .edge-integrations-grid {
+        gap: 16px;
+    }
+
+    .edge-int-card--tall {
+        grid-row: span 2;
+    }
+
+    .edge-int-card--wide {
+        grid-column: span 2;
+    }
+}
+
+/* Individual bento card */
+.edge-int-card {
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+@media (min-width: 768px) {
+    .edge-int-card {
+        padding: 28px;
+    }
+}
+
+.edge-int-card:hover {
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
+}
+
+/* Tall card: push text to bottom on desktop */
+@media (min-width: 768px) {
+    .edge-int-card--tall {
+        justify-content: space-between;
+    }
+
+    .edge-int-card--tall .edge-int-body {
+        margin-top: auto;
+    }
+}
+
+/* Wide card: horizontal layout on desktop */
+@media (min-width: 768px) {
+    .edge-int-card--wide {
+        flex-direction: row;
+        align-items: center;
+        gap: 28px;
+    }
+
+    .edge-int-card--wide .edge-int-icon {
+        width: 52px;
+        height: 52px;
+        flex-shrink: 0;
+    }
+
+    .edge-int-card--wide .edge-int-icon svg {
+        width: 26px;
+        height: 26px;
+    }
+}
+
+/* Icon container */
+.edge-int-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f9fafb;
+    border-radius: 12px;
+    color: #111827;
+    flex-shrink: 0;
+}
+
+.edge-int-icon svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* Text body */
+.edge-int-body {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.edge-int-name {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #111827;
+    margin: 0 0 4px;
+}
+
+@media (min-width: 768px) {
+    .edge-int-name {
+        font-size: 1.05rem;
+    }
+}
+
+.edge-int-text {
+    font-size: 0.8rem;
+    color: #6b7280;
+    line-height: 1.55;
+    margin: 0;
+}
+
+@media (min-width: 768px) {
+    .edge-int-text {
+        font-size: 0.875rem;
+    }
+}
