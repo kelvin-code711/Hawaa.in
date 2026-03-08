@@ -8307,11 +8307,15 @@ body.tos-page .header-profile-btn {
     flex-direction: column;
     gap: 0;
     touch-action: pan-y;
+    min-height: 200px;
+    height: 200px;
 }
 
 /* Content area that fades on swap */
 .edge-review-card-content {
     transition: opacity 0.18s ease;
+    flex: 1;
+    overflow: hidden;
 }
 
 .edge-review-card-content.fade-out {
@@ -8427,5 +8431,7 @@ body.tos-page .header-profile-btn {
 
     .edge-review-card {
         padding: 24px 20px 20px;
+        height: 210px;
+        min-height: 210px;
     }
 }
