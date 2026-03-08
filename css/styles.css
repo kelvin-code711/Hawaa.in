@@ -8249,3 +8249,227 @@ body.tos-page .header-profile-btn {
         padding: 0 0 18px 60px;
     }
 }
+
+/* ========================================
+   EDGE REVIEWS SECTION (Section 8)
+======================================== */
+
+.edge-reviews-section {
+    background: #f9fafb;
+    padding: 80px 24px;
+}
+
+.edge-reviews-inner {
+    max-width: 860px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.edge-reviews-label {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: #6b7280;
+    margin-bottom: 12px;
+}
+
+.edge-reviews-title {
+    font-size: 2.25rem;
+    font-weight: 600;
+    color: #111827;
+    line-height: 1.3;
+    margin-bottom: 48px;
+}
+
+.edge-reviews-title .italic {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-weight: 500;
+}
+
+/* Carousel wrapper */
+.edge-reviews-carousel {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+/* Viewport — clips the sliding track */
+.edge-reviews-viewport {
+    flex: 1;
+    overflow: hidden;
+}
+
+/* Track — all cards in a row */
+.edge-reviews-track {
+    display: flex;
+    transition: transform 0.4s ease;
+    will-change: transform;
+}
+
+/* Individual card */
+.edge-review-card {
+    flex: 0 0 100%;
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: 20px;
+    padding: 48px 48px 40px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    text-align: center;
+}
+
+/* Stars */
+.edge-review-stars {
+    display: flex;
+    gap: 4px;
+    justify-content: center;
+}
+
+.edge-review-stars svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* Review quote */
+.edge-review-text {
+    font-size: 1.15rem;
+    font-weight: 400;
+    color: #111827;
+    line-height: 1.65;
+    max-width: 540px;
+    margin: 0 auto;
+}
+
+/* Author block */
+.edge-review-author {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    margin-top: 4px;
+}
+
+/* Avatar circle — shows initials until an image is provided */
+.edge-review-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: #f3f4f6;
+    border: 1px solid #e5e7eb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #374151;
+    overflow: hidden;
+    flex-shrink: 0;
+    letter-spacing: 0.02em;
+}
+
+.edge-review-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.edge-review-name {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #111827;
+}
+
+/* Arrow buttons */
+.edge-reviews-arrow {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: #374151;
+}
+
+.edge-reviews-arrow:hover {
+    background: #111827;
+    border-color: #111827;
+    color: white;
+}
+
+.edge-reviews-arrow:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.edge-reviews-arrow svg {
+    width: 18px;
+    height: 18px;
+}
+
+/* Dots */
+.edge-reviews-dots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 24px;
+}
+
+.edge-reviews-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #e5e7eb;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 0;
+}
+
+.edge-reviews-dot.active {
+    width: 20px;
+    border-radius: 4px;
+    background: #111827;
+}
+
+/* Mobile */
+@media (max-width: 767px) {
+    .edge-reviews-section {
+        padding: 60px 16px;
+    }
+
+    .edge-reviews-title {
+        font-size: 1.5rem;
+        margin-bottom: 32px;
+    }
+
+    .edge-reviews-arrow {
+        display: none;
+    }
+
+    .edge-review-card {
+        padding: 32px 24px 28px;
+        gap: 16px;
+        border-radius: 16px;
+    }
+
+    .edge-review-text {
+        font-size: 1rem;
+    }
+
+    .edge-review-stars svg {
+        width: 18px;
+        height: 18px;
+    }
+}
