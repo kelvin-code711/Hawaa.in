@@ -8103,3 +8103,166 @@ body.tos-page .header-profile-btn {
         height: 20px;
     }
 }
+
+/* ============================================================
+   EDGE — Filter Technology Section (Section 7)
+   ============================================================ */
+
+.edge-filter-section {
+    background: #ffffff;
+    padding: 80px 24px;
+}
+
+.edge-filter-inner {
+    max-width: 680px;
+    margin: 0 auto;
+}
+
+.edge-filter-label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #6b7280;
+    margin-bottom: 12px;
+}
+
+.edge-filter-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 2rem;
+    font-weight: 600;
+    color: #111827;
+    margin: 0 0 40px;
+    line-height: 1.25;
+}
+
+.edge-filter-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.edge-filter-item {
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.edge-filter-item:hover {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+}
+
+.edge-filter-item.active {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    border-color: rgba(0, 0, 0, 0.1);
+}
+
+.edge-filter-header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 22px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    gap: 16px;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.edge-filter-header-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.edge-filter-thumb {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    background: #f3f4f6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background 0.3s ease;
+}
+
+.edge-filter-thumb svg {
+    width: 22px;
+    height: 22px;
+    color: #9ca3af;
+    transition: color 0.3s ease;
+}
+
+.edge-filter-item.active .edge-filter-thumb {
+    background: #f0f9ff;
+}
+
+.edge-filter-item.active .edge-filter-thumb svg {
+    color: #0891b2;
+}
+
+.edge-filter-name {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.975rem;
+    font-weight: 600;
+    color: #111827;
+    letter-spacing: -0.01em;
+}
+
+.edge-filter-toggle {
+    font-size: 1.4rem;
+    font-weight: 300;
+    color: #9ca3af;
+    line-height: 1;
+    flex-shrink: 0;
+    transition: transform 0.3s ease, color 0.3s ease;
+    user-select: none;
+}
+
+.edge-filter-item.active .edge-filter-toggle {
+    transform: rotate(45deg);
+    color: #0891b2;
+}
+
+.edge-filter-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease;
+}
+
+.edge-filter-item.active .edge-filter-body {
+    max-height: 260px;
+}
+
+.edge-filter-desc {
+    padding: 0 22px 22px 80px;
+    font-size: 0.88rem;
+    line-height: 1.75;
+    color: #6b7280;
+    margin: 0;
+}
+
+@media (max-width: 640px) {
+    .edge-filter-section {
+        padding: 60px 16px;
+    }
+
+    .edge-filter-title {
+        font-size: 1.6rem;
+        margin-bottom: 28px;
+    }
+
+    .edge-filter-header {
+        padding: 16px 18px;
+    }
+
+    .edge-filter-desc {
+        padding: 0 18px 18px 76px;
+    }
+}
