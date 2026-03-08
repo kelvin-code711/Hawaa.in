@@ -7784,3 +7784,328 @@ body.tos-page .header-profile-btn {
         font-size: 0.875rem;
     }
 }
+
+/* ============================================================
+   SECTION 6 — TOUCH CONTROLS
+   Full-black background, LED button strip, explanation panel
+   ============================================================ */
+
+.edge-controls-section {
+    background: #000;
+    padding: 80px 24px 100px;
+}
+
+.edge-controls-inner {
+    max-width: 680px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.edge-controls-label {
+    display: inline-block;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.35);
+    margin-bottom: 20px;
+}
+
+.edge-controls-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: #fff;
+    line-height: 1.25;
+    margin: 0 0 56px;
+}
+
+.edge-controls-title .italic {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-style: italic;
+    font-weight: 400;
+}
+
+@media (min-width: 768px) {
+    .edge-controls-title {
+        font-size: 2.25rem;
+    }
+}
+
+/* ---- Button + Indicator Strip ---- */
+
+.edge-controls-strip {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: nowrap;
+    margin-bottom: 16px;
+}
+
+/* Touch Buttons */
+.edge-ctrl-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    user-select: none;
+    padding: 20px 16px;
+    border-radius: 20px;
+    transition: opacity 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+    outline: none;
+    /* Inactive / LED off */
+    opacity: 0.22;
+}
+
+.edge-ctrl-btn:focus-visible {
+    outline: 2px solid rgba(255, 255, 255, 0.4);
+    outline-offset: 2px;
+}
+
+/* Active button — LED on, full glow */
+.edge-ctrl-btn.active {
+    opacity: 1;
+    background: rgba(255, 255, 255, 0.04);
+    box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.18),
+        0 0 16px rgba(255, 255, 255, 0.12),
+        0 0 40px rgba(255, 255, 255, 0.06);
+}
+
+/* Icon circle */
+.edge-ctrl-btn-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.03);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+}
+
+.edge-ctrl-btn-icon svg {
+    width: 22px;
+    height: 22px;
+    color: #fff;
+}
+
+/* Active icon circle — bright LED ring */
+.edge-ctrl-btn.active .edge-ctrl-btn-icon {
+    border-color: rgba(255, 255, 255, 0.55);
+    background: rgba(255, 255, 255, 0.06);
+    box-shadow:
+        0 0 0 3px rgba(255, 255, 255, 0.06),
+        0 0 20px rgba(255, 255, 255, 0.18),
+        inset 0 0 8px rgba(255, 255, 255, 0.06);
+}
+
+.edge-ctrl-btn-label {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.6);
+    transition: color 0.3s ease;
+}
+
+.edge-ctrl-btn.active .edge-ctrl-btn-label {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* Hover — slightly brighten inactive buttons */
+.edge-ctrl-btn:not(.active):hover {
+    opacity: 0.45;
+}
+
+/* ---- Divider ---- */
+.edge-ctrl-divider {
+    align-self: stretch;
+    width: 1px;
+    background: rgba(255, 255, 255, 0.08);
+    margin: 4px 8px;
+    border-radius: 1px;
+    min-height: 72px;
+}
+
+/* ---- Indicators ---- */
+.edge-ctrl-indicator {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 20px 12px;
+    cursor: default;
+}
+
+.edge-ctrl-indicator-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.02);
+    position: relative;
+}
+
+.edge-ctrl-indicator-icon svg {
+    width: 20px;
+    height: 20px;
+    color: rgba(255, 255, 255, 0.3);
+}
+
+/* Small LED dot — top-right of indicator circle */
+.edge-ctrl-led {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+}
+
+.edge-ctrl-led--cyan {
+    background: #06b6d4;
+    box-shadow: 0 0 6px rgba(6, 182, 212, 0.9), 0 0 12px rgba(6, 182, 212, 0.4);
+}
+
+.edge-ctrl-led--amber {
+    background: #f59e0b;
+    box-shadow: 0 0 6px rgba(245, 158, 11, 0.9), 0 0 12px rgba(245, 158, 11, 0.4);
+}
+
+.edge-ctrl-indicator-label {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.25);
+}
+
+/* ---- Indicators note ---- */
+.edge-controls-indicator-note {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.72rem;
+    color: rgba(255, 255, 255, 0.2);
+    letter-spacing: 0.02em;
+    margin: 0 0 56px;
+    font-style: italic;
+}
+
+/* ---- Explanation Info Panel ---- */
+.edge-controls-info {
+    width: 100%;
+    max-width: 480px;
+    min-height: 120px;
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.edge-ctrl-info {
+    display: none;
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.35s ease, transform 0.35s ease;
+    pointer-events: none;
+}
+
+.edge-ctrl-info.active {
+    display: flex;
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+.edge-ctrl-info-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.4);
+    margin: 0;
+}
+
+.edge-ctrl-info-text {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.65);
+    line-height: 1.7;
+    margin: 0;
+}
+
+@media (min-width: 640px) {
+    .edge-controls-strip {
+        gap: 4px;
+    }
+    .edge-ctrl-btn {
+        padding: 20px 20px;
+    }
+    .edge-ctrl-info-text {
+        font-size: 1rem;
+    }
+}
+
+@media (min-width: 768px) {
+    .edge-controls-section {
+        padding: 100px 24px 120px;
+    }
+    .edge-ctrl-btn-icon {
+        width: 64px;
+        height: 64px;
+    }
+    .edge-ctrl-btn-icon svg {
+        width: 24px;
+        height: 24px;
+    }
+    .edge-ctrl-indicator-icon {
+        width: 64px;
+        height: 64px;
+    }
+    .edge-controls-strip {
+        gap: 8px;
+    }
+}
+
+/* Narrow mobile: shrink a little */
+@media (max-width: 400px) {
+    .edge-ctrl-btn {
+        padding: 16px 10px;
+    }
+    .edge-ctrl-btn-icon {
+        width: 48px;
+        height: 48px;
+    }
+    .edge-ctrl-btn-icon svg {
+        width: 19px;
+        height: 19px;
+    }
+    .edge-ctrl-indicator-icon {
+        width: 48px;
+        height: 48px;
+    }
+    .edge-ctrl-indicator-icon svg {
+        width: 17px;
+        height: 17px;
+    }
+    .edge-ctrl-divider {
+        margin: 4px 4px;
+    }
+}

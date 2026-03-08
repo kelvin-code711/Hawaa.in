@@ -387,6 +387,117 @@
         </div>
     </section>
 
+    <!-- Touch Controls Section (Section 6) -->
+    <section class="edge-controls-section" id="edge-controls">
+        <div class="edge-controls-inner">
+            <span class="edge-controls-label">Touch Controls</span>
+            <h2 class="edge-controls-title">One touch. <span class="italic">Total control.</span></h2>
+
+            <!-- Button + Indicator Strip -->
+            <div class="edge-controls-strip" role="group" aria-label="Touch controls">
+
+                <!-- Touch Buttons -->
+                <div class="edge-ctrl-btn active" role="button" tabindex="0" data-ctrl="power" aria-pressed="true" aria-label="Power button">
+                    <div class="edge-ctrl-btn-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18.36 6.64a9 9 0 11-12.73 0"/>
+                            <line x1="12" y1="2" x2="12" y2="12"/>
+                        </svg>
+                    </div>
+                    <span class="edge-ctrl-btn-label">Power</span>
+                </div>
+
+                <div class="edge-ctrl-btn" role="button" tabindex="0" data-ctrl="fan" aria-pressed="false" aria-label="Fan speed button">
+                    <div class="edge-ctrl-btn-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 12c2.21 0 4-1.79 4-4s-3-7-4-7-4 4.79-4 7 1.79 4 4 4z"/>
+                            <path d="M12 12c-2.21 0-4 1.79-4 4s3 7 4 7 4-4.79 4-7-1.79-4-4-4z"/>
+                            <path d="M12 12c0 2.21 1.79 4 4 4s7-3 7-4-4.79-4-7-4-4 1.79-4 4z"/>
+                            <path d="M12 12c0-2.21-1.79-4-4-4s-7 3-7 4 4.79 4 7 4 4-1.79 4-4z"/>
+                        </svg>
+                    </div>
+                    <span class="edge-ctrl-btn-label">Fan Speed</span>
+                </div>
+
+                <div class="edge-ctrl-btn" role="button" tabindex="0" data-ctrl="timer" aria-pressed="false" aria-label="Timer button">
+                    <div class="edge-ctrl-btn-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"/>
+                            <polyline points="12 6 12 12 16 14"/>
+                        </svg>
+                    </div>
+                    <span class="edge-ctrl-btn-label">Timer</span>
+                </div>
+
+                <div class="edge-ctrl-btn" role="button" tabindex="0" data-ctrl="sleep" aria-pressed="false" aria-label="Sleep mode button">
+                    <div class="edge-ctrl-btn-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
+                        </svg>
+                    </div>
+                    <span class="edge-ctrl-btn-label">Sleep</span>
+                </div>
+
+                <!-- Divider -->
+                <div class="edge-ctrl-divider" aria-hidden="true"></div>
+
+                <!-- Indicators (passive — no touch required) -->
+                <div class="edge-ctrl-indicator" aria-label="Wi-Fi indicator">
+                    <div class="edge-ctrl-indicator-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M5 12.55a11 11 0 0114.08 0"/>
+                            <path d="M1.42 9a16 16 0 0121.16 0"/>
+                            <path d="M8.53 16.11a6 6 0 016.95 0"/>
+                            <circle cx="12" cy="20" r="1" fill="currentColor"/>
+                        </svg>
+                        <span class="edge-ctrl-led edge-ctrl-led--cyan"></span>
+                    </div>
+                    <span class="edge-ctrl-indicator-label">Wi-Fi</span>
+                </div>
+
+                <div class="edge-ctrl-indicator" aria-label="Filter change indicator">
+                    <div class="edge-ctrl-indicator-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
+                        </svg>
+                        <span class="edge-ctrl-led edge-ctrl-led--amber"></span>
+                    </div>
+                    <span class="edge-ctrl-indicator-label">Filter</span>
+                </div>
+
+            </div><!-- end strip -->
+
+            <!-- Indicators note -->
+            <p class="edge-controls-indicator-note">Indicators glow automatically — no touch needed</p>
+
+            <!-- Explanation Panel -->
+            <div class="edge-controls-info" aria-live="polite">
+
+                <div class="edge-ctrl-info active" data-ctrl="power">
+                    <h3 class="edge-ctrl-info-title">Power</h3>
+                    <p class="edge-ctrl-info-text">A single touch turns your EDGE on or off. No long press, no sequence — just instant control at your fingertip.</p>
+                </div>
+
+                <div class="edge-ctrl-info" data-ctrl="fan">
+                    <h3 class="edge-ctrl-info-title">Fan Speed</h3>
+                    <p class="edge-ctrl-info-text">Each touch cycles through fan speeds — Low, Medium, High, and Turbo. The LED brightens as speed increases, so you always know where you are.</p>
+                </div>
+
+                <div class="edge-ctrl-info" data-ctrl="timer">
+                    <h3 class="edge-ctrl-info-title">Timer</h3>
+                    <p class="edge-ctrl-info-text">Set a 1, 2, or 4-hour auto-shutoff countdown. Tap once to activate, again to cycle through, once more to cancel. Perfect for sleeping without worrying about leaving it on.</p>
+                </div>
+
+                <div class="edge-ctrl-info" data-ctrl="sleep">
+                    <h3 class="edge-ctrl-info-title">Sleep Mode</h3>
+                    <p class="edge-ctrl-info-text">Drops to whisper-quiet operation and dims all LEDs to near-invisible. Your room stays clean and silent through the night — undisturbed.</p>
+                </div>
+
+            </div><!-- end info -->
+
+        </div>
+    </section>
+
     <!-- Footer (same as landing page) -->
     <footer class="footer" id="contact">
         <div class="footer-container">
@@ -515,6 +626,67 @@
 
     <script src="js/nav.js"></script>
     <script src="js/script.js"></script>
+
+    <!-- Touch Controls: button selection & info panel -->
+    <script>
+        (function () {
+            var btns  = document.querySelectorAll('.edge-ctrl-btn');
+            var infos = document.querySelectorAll('.edge-ctrl-info');
+            if (!btns.length) return;
+
+            function activate(target) {
+                // Deactivate all
+                btns.forEach(function (btn) {
+                    btn.classList.remove('active');
+                    btn.setAttribute('aria-pressed', 'false');
+                });
+                infos.forEach(function (info) {
+                    info.classList.remove('active');
+                });
+
+                // Activate clicked
+                target.classList.add('active');
+                target.setAttribute('aria-pressed', 'true');
+
+                var key = target.getAttribute('data-ctrl');
+                var panel = document.querySelector('.edge-ctrl-info[data-ctrl="' + key + '"]');
+                if (panel) {
+                    // Force reflow so transition fires even when toggling same panel
+                    panel.style.transition = 'none';
+                    panel.style.opacity = '0';
+                    panel.style.transform = 'translateY(6px)';
+                    panel.classList.add('active');
+                    requestAnimationFrame(function () {
+                        requestAnimationFrame(function () {
+                            panel.style.transition = '';
+                            panel.style.opacity = '';
+                            panel.style.transform = '';
+                        });
+                    });
+                }
+            }
+
+            btns.forEach(function (btn) {
+                btn.addEventListener('click', function () { activate(btn); });
+                btn.addEventListener('keydown', function (e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        activate(btn);
+                    }
+                    // Arrow key navigation between buttons
+                    if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+                        var list = Array.from(btns);
+                        var idx  = list.indexOf(btn);
+                        var next = e.key === 'ArrowRight'
+                            ? list[idx + 1] || list[0]
+                            : list[idx - 1] || list[list.length - 1];
+                        next.focus();
+                        activate(next);
+                    }
+                });
+            });
+        })();
+    </script>
 
     <!-- Edge Gestures: swipeable card carousel -->
     <script>
