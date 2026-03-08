@@ -8260,7 +8260,7 @@ body.tos-page .header-profile-btn {
 }
 
 .edge-reviews-inner {
-    max-width: 860px;
+    max-width: 700px;
     margin: 0 auto;
     text-align: center;
 }
@@ -8280,7 +8280,7 @@ body.tos-page .header-profile-btn {
     font-weight: 600;
     color: #111827;
     line-height: 1.3;
-    margin-bottom: 48px;
+    margin-bottom: 40px;
 }
 
 .edge-reviews-title .italic {
@@ -8289,107 +8289,99 @@ body.tos-page .header-profile-btn {
     font-weight: 500;
 }
 
-/* Carousel wrapper */
+/* Carousel row: arrow — card — arrow */
 .edge-reviews-carousel {
     display: flex;
     align-items: center;
     gap: 16px;
 }
 
-/* Viewport — clips the sliding track */
-.edge-reviews-viewport {
-    flex: 1;
-    overflow: hidden;
-}
-
-/* Track — all cards in a row */
-.edge-reviews-track {
-    display: flex;
-    transition: transform 0.4s ease;
-    will-change: transform;
-}
-
-/* Individual card */
+/* Single card */
 .edge-review-card {
-    flex: 0 0 100%;
+    flex: 1;
     background: white;
-    border: 1px solid rgba(0, 0, 0, 0.06);
-    border-radius: 20px;
-    padding: 48px 48px 40px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-    text-align: center;
-}
-
-/* Stars */
-.edge-review-stars {
-    display: flex;
-    gap: 4px;
-    justify-content: center;
-}
-
-.edge-review-stars svg {
-    width: 20px;
-    height: 20px;
-}
-
-/* Review quote */
-.edge-review-text {
-    font-size: 1.15rem;
-    font-weight: 400;
-    color: #111827;
-    line-height: 1.65;
-    max-width: 540px;
-    margin: 0 auto;
-}
-
-/* Author block */
-.edge-review-author {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    margin-top: 4px;
-}
-
-/* Avatar circle — shows initials until an image is provided */
-.edge-review-avatar {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    background: #f3f4f6;
     border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    padding: 28px 32px 24px;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: #374151;
-    overflow: hidden;
-    flex-shrink: 0;
-    letter-spacing: 0.02em;
+    flex-direction: column;
+    gap: 0;
+    touch-action: pan-y;
 }
 
-.edge-review-avatar img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+/* Content area that fades on swap */
+.edge-review-card-content {
+    transition: opacity 0.18s ease;
+}
+
+.edge-review-card-content.fade-out {
+    opacity: 0;
+}
+
+/* Top row: name left, stars right */
+.edge-review-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
 }
 
 .edge-review-name {
-    font-size: 0.95rem;
-    font-weight: 500;
+    font-size: 0.9rem;
+    font-weight: 600;
     color: #111827;
+}
+
+.edge-review-stars {
+    display: flex;
+    gap: 3px;
+}
+
+.edge-review-stars svg {
+    width: 15px;
+    height: 15px;
+}
+
+/* Review text */
+.edge-review-text {
+    font-size: 0.95rem;
+    font-weight: 400;
+    color: #374151;
+    line-height: 1.65;
+    margin: 0;
+    text-align: left;
+}
+
+/* Dots — inside the card */
+.edge-reviews-dots {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 20px;
+}
+
+.edge-reviews-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #d1d5db;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 0;
+}
+
+.edge-reviews-dot.active {
+    width: 16px;
+    border-radius: 3px;
+    background: #111827;
 }
 
 /* Arrow buttons */
 .edge-reviews-arrow {
     flex-shrink: 0;
-    width: 40px;
-    height: 40px;
+    width: 36px;
+    height: 36px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -8408,39 +8400,14 @@ body.tos-page .header-profile-btn {
 }
 
 .edge-reviews-arrow:disabled {
-    opacity: 0.3;
+    opacity: 0.25;
     cursor: not-allowed;
     pointer-events: none;
 }
 
 .edge-reviews-arrow svg {
-    width: 18px;
-    height: 18px;
-}
-
-/* Dots */
-.edge-reviews-dots {
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-    margin-top: 24px;
-}
-
-.edge-reviews-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: #e5e7eb;
-    border: none;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    padding: 0;
-}
-
-.edge-reviews-dot.active {
-    width: 20px;
-    border-radius: 4px;
-    background: #111827;
+    width: 16px;
+    height: 16px;
 }
 
 /* Mobile */
@@ -8451,7 +8418,7 @@ body.tos-page .header-profile-btn {
 
     .edge-reviews-title {
         font-size: 1.5rem;
-        margin-bottom: 32px;
+        margin-bottom: 28px;
     }
 
     .edge-reviews-arrow {
@@ -8459,17 +8426,6 @@ body.tos-page .header-profile-btn {
     }
 
     .edge-review-card {
-        padding: 32px 24px 28px;
-        gap: 16px;
-        border-radius: 16px;
-    }
-
-    .edge-review-text {
-        font-size: 1rem;
-    }
-
-    .edge-review-stars svg {
-        width: 18px;
-        height: 18px;
+        padding: 24px 20px 20px;
     }
 }
