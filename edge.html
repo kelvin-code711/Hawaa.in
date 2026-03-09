@@ -604,6 +604,88 @@
         </div>
     </section>
 
+    <!-- What's In The Box / Lab Reports / Comparison (Section 9) -->
+    <section class="edge-info-section" id="edge-info">
+        <div class="edge-info-container">
+
+            <!-- Accordion: What's in the box -->
+            <div class="edge-info-row">
+                <button class="edge-info-accordion-trigger" id="edge-witb-trigger" aria-expanded="false" aria-controls="edge-witb-body">
+                    <span class="edge-info-row-label">What's in the box</span>
+                    <span class="edge-info-row-icon" aria-hidden="true">
+                        <svg class="edge-witb-icon-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round">
+                            <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+                        </svg>
+                    </span>
+                </button>
+                <div class="edge-witb-body" id="edge-witb-body" role="region" aria-labelledby="edge-witb-trigger">
+                    <div class="edge-witb-items">
+                        <!-- Purifier -->
+                        <div class="edge-witb-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="5" y="2" width="14" height="20" rx="2"/><line x1="9" y1="6" x2="15" y2="6"/><circle cx="12" cy="14" r="3"/>
+                            </svg>
+                            <span>Hawaa Edge</span>
+                        </div>
+                        <!-- Power Cable -->
+                        <div class="edge-witb-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 2v4M8 6h8M9 6v3a3 3 0 006 0V6M12 12v4M8 20h8" />
+                            </svg>
+                            <span>Power Cable</span>
+                        </div>
+                        <!-- Pre-installed Filter -->
+                        <div class="edge-witb-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="9" x2="9" y2="21"/><line x1="15" y1="9" x2="15" y2="21"/>
+                            </svg>
+                            <span>HEPA Filter</span>
+                        </div>
+                        <!-- Quick Start Guide -->
+                        <div class="edge-witb-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/>
+                            </svg>
+                            <span>Quick Start Guide</span>
+                        </div>
+                        <!-- Warranty Card -->
+                        <div class="edge-witb-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/>
+                            </svg>
+                            <span>Warranty Card</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="edge-info-divider"></div>
+
+            <!-- Lab Reports link -->
+            <a class="edge-info-link-row" href="comparison.html#lab-reports">
+                <span class="edge-info-row-label">Lab Reports</span>
+                <span class="edge-info-row-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+                    </svg>
+                </span>
+            </a>
+
+            <div class="edge-info-divider"></div>
+
+            <!-- Comparison link -->
+            <a class="edge-info-link-row" href="comparison.html">
+                <span class="edge-info-row-label">Comparison</span>
+                <span class="edge-info-row-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+                    </svg>
+                </span>
+            </a>
+
+        </div>
+    </section>
+
     <!-- Footer (same as landing page) -->
     <footer class="footer" id="contact">
         <div class="footer-container">
@@ -1047,6 +1129,21 @@
                 const diff = touchStartX - e.changedTouches[0].screenX;
                 if (Math.abs(diff) > 50) scrollSlider(diff > 0 ? 1 : -1);
             }, { passive: true });
+        })();
+    </script>
+
+    <!-- Section 9: What's in the box accordion -->
+    <script>
+        (function () {
+            var trigger = document.getElementById('edge-witb-trigger');
+            var body    = document.getElementById('edge-witb-body');
+            if (!trigger || !body) return;
+
+            trigger.addEventListener('click', function () {
+                var isOpen = trigger.getAttribute('aria-expanded') === 'true';
+                trigger.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
+                body.classList.toggle('open', !isOpen);
+            });
         })();
     </script>
 </body>
