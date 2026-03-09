@@ -8435,3 +8435,194 @@ body.tos-page .header-profile-btn {
         min-height: 210px;
     }
 }
+
+/* ===================================================
+   Section 9: What's In The Box / Lab Reports / Comparison
+   =================================================== */
+
+.edge-info-section {
+    background: #ffffff;
+    padding: 70px 20px;
+}
+
+.edge-info-container {
+    max-width: 680px;
+    margin: 0 auto;
+}
+
+/* Row: shared layout for accordion trigger & link rows */
+.edge-info-row,
+.edge-info-link-row {
+    display: block;
+}
+
+.edge-info-accordion-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    background: none;
+    border: none;
+    padding: 28px 0;
+    cursor: pointer;
+    text-align: left;
+    gap: 16px;
+}
+
+.edge-info-link-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 28px 0;
+    text-decoration: none;
+    color: #111827;
+    gap: 16px;
+    transition: color 0.2s ease;
+}
+
+.edge-info-link-row:hover {
+    color: #0891b2;
+}
+
+/* Large label text */
+.edge-info-row-label {
+    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 1.65rem;
+    font-weight: 600;
+    color: inherit;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+}
+
+.edge-info-accordion-trigger .edge-info-row-label {
+    color: #111827;
+    transition: color 0.2s ease;
+}
+
+.edge-info-accordion-trigger:hover .edge-info-row-label {
+    color: #0891b2;
+}
+
+/* Icon circle */
+.edge-info-row-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border: 1.5px solid #d1d5db;
+    border-radius: 50%;
+    flex-shrink: 0;
+    color: #111827;
+    transition: border-color 0.2s ease, color 0.2s ease, transform 0.25s ease;
+}
+
+.edge-info-accordion-trigger:hover .edge-info-row-icon,
+.edge-info-link-row:hover .edge-info-row-icon {
+    border-color: #0891b2;
+    color: #0891b2;
+}
+
+.edge-info-link-row:hover .edge-info-row-icon {
+    transform: translateX(3px);
+}
+
+.edge-info-row-icon svg {
+    width: 18px;
+    height: 18px;
+    transition: transform 0.25s ease;
+}
+
+/* Plus icon rotation when open */
+.edge-info-accordion-trigger[aria-expanded="true"] .edge-info-row-icon {
+    border-color: #111827;
+    color: #111827;
+}
+
+.edge-info-accordion-trigger[aria-expanded="true"] .edge-witb-icon-plus {
+    transform: rotate(45deg);
+}
+
+/* Divider */
+.edge-info-divider {
+    height: 1px;
+    background: #e5e7eb;
+    margin: 0;
+}
+
+/* Accordion body */
+.edge-witb-body {
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    transition: max-height 0.42s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.3s ease;
+}
+
+.edge-witb-body.open {
+    max-height: 320px;
+    opacity: 1;
+}
+
+/* Items grid */
+.edge-witb-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px 32px;
+    padding: 4px 0 32px;
+}
+
+.edge-witb-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    min-width: 72px;
+}
+
+.edge-witb-item svg {
+    width: 28px;
+    height: 28px;
+    color: #374151;
+    flex-shrink: 0;
+}
+
+.edge-witb-item span {
+    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: #6b7280;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    line-height: 1.3;
+    max-width: 80px;
+}
+
+/* Desktop */
+@media (min-width: 768px) {
+    .edge-info-section {
+        padding: 90px 24px;
+    }
+
+    .edge-info-row-label {
+        font-size: 2.1rem;
+    }
+
+    .edge-witb-items {
+        gap: 28px 44px;
+    }
+
+    .edge-witb-item {
+        min-width: 80px;
+    }
+
+    .edge-witb-item svg {
+        width: 32px;
+        height: 32px;
+    }
+
+    .edge-witb-item span {
+        font-size: 0.72rem;
+    }
+}
