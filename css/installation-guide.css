@@ -902,3 +902,482 @@
 .ig-reveal-delay-3 { transition-delay: 0.3s; }
 .ig-reveal-delay-4 { transition-delay: 0.4s; }
 .ig-reveal-delay-5 { transition-delay: 0.5s; }
+
+/* ============================================================
+   INTERACTIVE CONTROL GUIDE  (Step 05)
+   Light background, two-column: sticky player + sidebar
+   ============================================================ */
+.ig-control-guide {
+    background: #ffffff;
+    padding: 80px 0;
+    overflow: hidden;
+}
+
+@media (min-width: 768px) {
+    .ig-control-guide {
+        padding: 100px 0;
+    }
+}
+
+/* Section header — left-aligned */
+.ig-cg-header {
+    margin-bottom: 48px;
+}
+
+.ig-control-guide .ig-section-title {
+    margin-bottom: 12px;
+}
+
+.ig-control-guide .ig-section-desc {
+    margin-bottom: 0;
+}
+
+.ig-title-italic {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-weight: 400;
+    color: #0891b2;
+}
+
+/* Two-column layout */
+.ig-cg-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 40px;
+    align-items: start;
+}
+
+@media (min-width: 1024px) {
+    .ig-cg-layout {
+        grid-template-columns: 1fr 380px;
+        gap: 48px;
+    }
+}
+
+/* ── Video player ─────────────────────────────────────────── */
+.ig-cg-player-wrap {
+    position: sticky;
+    top: 100px;
+}
+
+.ig-cg-player {
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    background: #111827;
+    aspect-ratio: 16 / 9;
+    cursor: pointer;
+    box-shadow:
+        0 4px 20px rgba(0, 0, 0, 0.08),
+        0 0 0 1px rgba(0, 0, 0, 0.06);
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+/* Reveal controls on hover or when `.controls-visible` is toggled by JS */
+.ig-cg-player:hover .ig-cg-controls,
+.ig-cg-player.controls-visible .ig-cg-controls {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* ── Video element ── */
+.ig-cg-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* ── Placeholder (shown when no src) ── */
+.ig-cg-placeholder {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    background: linear-gradient(160deg, #1e293b 0%, #0f172a 100%);
+}
+
+.ig-cg-placeholder-ring {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.04);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* subtle pulse */
+    animation: ig-cg-pulse 3s ease-in-out infinite;
+}
+
+@keyframes ig-cg-pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(6, 182, 212, 0); }
+    50%       { box-shadow: 0 0 0 12px rgba(6, 182, 212, 0.06); }
+}
+
+.ig-cg-placeholder-label {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.25);
+}
+
+/* ── Chapter badge (top-left of player) ── */
+.ig-cg-chapter-badge {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 5px 12px 5px 9px;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 9999px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.75);
+    letter-spacing: 0.05em;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.ig-cg-chapter-badge-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #06b6d4;
+    flex-shrink: 0;
+    animation: ig-blink 1.4s ease-in-out infinite;
+}
+
+/* ── Controls overlay ── */
+.ig-cg-controls {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 0 0 18px;
+    /* gradient: top shadow + bottom bar shadow */
+    background: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.28) 0%,
+        transparent 28%,
+        transparent 55%,
+        rgba(0, 0, 0, 0.6) 100%
+    );
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+/* Centre play / pause */
+.ig-cg-play-btn {
+    align-self: center;
+    margin: auto;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.18);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+    flex-shrink: 0;
+}
+
+.ig-cg-play-btn:hover {
+    background: rgba(255, 255, 255, 0.28);
+    transform: scale(1.08);
+}
+
+.ig-cg-play-btn:active {
+    transform: scale(0.94);
+}
+
+/* Bottom bar */
+.ig-cg-bar {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 0 18px;
+}
+
+/* Progress track */
+.ig-cg-progress-track {
+    position: relative;
+    height: 4px;
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.22);
+    cursor: pointer;
+    transition: height 0.2s ease;
+}
+
+.ig-cg-progress-track:hover {
+    height: 6px;
+}
+
+.ig-cg-progress-fill {
+    position: absolute;
+    inset: 0 auto 0 0;
+    border-radius: 9999px;
+    background: linear-gradient(90deg, #0ea5e9 0%, #06b6d4 100%);
+    width: 0%;
+    transition: width 0.12s linear;
+    pointer-events: none;
+}
+
+.ig-cg-progress-thumb {
+    position: absolute;
+    top: 50%;
+    left: 0%;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #ffffff;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease, left 0.12s linear;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+}
+
+.ig-cg-progress-track:hover .ig-cg-progress-thumb {
+    opacity: 1;
+}
+
+/* Chapter pips on the progress bar */
+.ig-cg-chapter-pip {
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    pointer-events: none;
+    transition: background 0.3s ease;
+}
+
+.ig-cg-chapter-pip.passed {
+    background: rgba(56, 189, 248, 0.8);
+}
+
+/* Time + fullscreen row */
+.ig-cg-bar-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.ig-cg-time {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.65);
+    letter-spacing: 0.04em;
+    font-variant-numeric: tabular-nums;
+}
+
+.ig-cg-fullscreen-btn {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.65);
+    cursor: pointer;
+    border-radius: 8px;
+    transition: color 0.2s ease, background 0.2s ease;
+}
+
+.ig-cg-fullscreen-btn:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* ── Sidebar ──────────────────────────────────────────────── */
+.ig-cg-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.ig-cg-sidebar-label {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #9ca3af;
+    margin: 0;
+}
+
+/* Chapter nav */
+.ig-cg-chapters {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.ig-cg-chapter-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 14px;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 12px;
+    cursor: pointer;
+    text-align: left;
+    width: 100%;
+    transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.ig-cg-chapter-item:hover {
+    background: rgba(8, 145, 178, 0.05);
+    border-color: rgba(8, 145, 178, 0.12);
+}
+
+.ig-cg-chapter-item.active {
+    background: rgba(8, 145, 178, 0.07);
+    border-color: rgba(8, 145, 178, 0.2);
+}
+
+.ig-cg-chapter-num {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 600;
+    color: #d1d5db;
+    letter-spacing: 0.04em;
+    min-width: 18px;
+    transition: color 0.2s ease;
+}
+
+.ig-cg-chapter-item.active .ig-cg-chapter-num {
+    color: #0891b2;
+}
+
+.ig-cg-chapter-name {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: #6b7280;
+    flex: 1;
+    transition: color 0.2s ease;
+}
+
+.ig-cg-chapter-item.active .ig-cg-chapter-name {
+    color: #111827;
+}
+
+.ig-cg-chapter-ts {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 400;
+    color: #d1d5db;
+    letter-spacing: 0.02em;
+    font-variant-numeric: tabular-nums;
+}
+
+/* Stat / fact card block */
+.ig-cg-stat-blocks {
+    position: relative;
+    /* height is held open by the active (in-flow) card */
+}
+
+.ig-cg-stat {
+    /* hidden cards are absolutely stacked, so they don't push layout */
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transform: translateY(6px);
+    pointer-events: none;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: 16px;
+    padding: 20px 22px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* The active card is in-flow (not absolute) so it sets the container height */
+.ig-cg-stat.active {
+    position: relative;
+    inset: auto;
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+.ig-cg-stat-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #0891b2;
+}
+
+.ig-cg-stat-body {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.875rem;
+    line-height: 1.65;
+    color: #4b5563;
+    margin: 0;
+}
+
+.ig-cg-stat-metric {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    margin-top: 4px;
+}
+
+.ig-cg-stat-val {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.7rem;
+    font-weight: 600;
+    color: #111827;
+    line-height: 1;
+    letter-spacing: -0.02em;
+}
+
+.ig-cg-stat-unit {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.75rem;
+    color: #9ca3af;
+    font-weight: 400;
+}
+
+/* Touch: show controls briefly on tap */
+@media (hover: none) {
+    .ig-cg-controls {
+        opacity: 1;
+        pointer-events: auto;
+    }
+}
