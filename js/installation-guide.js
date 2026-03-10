@@ -24,6 +24,7 @@
         initPlacementAnimation();
         initControlGuide();
         initGoogleHomeCards();
+        initFilterMaintenance();
         initRevealObserver();
         initTipsAccordion();
         initSmoothScroll();
@@ -494,6 +495,172 @@
         /* Activate first card immediately */
         var firstCard = track.querySelector('.ig-gh-step-card');
         if (firstCard) firstCard.classList.add('active');
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       FILTER MAINTENANCE — EXPLODED VIEW
+       Scrubs a GSAP timeline tied to the user's scroll position
+       inside the sticky split-screen section:
+         · Cap + Shell rise and rotate CCW (outer housing removed)
+         · Inner layers (pre-filter, HEPA, carbon, base) spread apart
+         · SVG labels + hotspot dots fade in once layers are separated
+         · Left-column step panels crossfade at 33 % and 66 %
+       Respects prefers-reduced-motion and small viewports.
+       ══════════════════════════════════════════════════════════ */
+    function initFilterMaintenance() {
+        var section = document.getElementById('ig-filter-maintenance');
+        if (!section) return;
+
+        var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        var isMobile       = window.innerWidth < 768;
+
+        var cap    = document.getElementById('ig-fm-g-cap');
+        var shell  = document.getElementById('ig-fm-g-shell');
+        var pre    = document.getElementById('ig-fm-g-prefilter');
+        var hepa   = document.getElementById('ig-fm-g-hepa');
+        var carbon = document.getElementById('ig-fm-g-carbon');
+        var base   = document.getElementById('ig-fm-g-base');
+        var labels    = section.querySelectorAll('.ig-fm-label');
+        var hotspots  = section.querySelectorAll('.ig-fm-hotspot');
+        var steps     = section.querySelectorAll('.ig-fm-step');
+        var scrollCue = document.getElementById('ig-fm-scroll-cue');
+
+        /* ── Helper: show one step panel ─────────────────── */
+        function showStep(idx) {
+            steps.forEach(function (s, i) {
+                if (i === idx) {
+                    s.style.pointerEvents = 'auto';
+                } else {
+                    s.style.pointerEvents = 'none';
+                }
+            });
+        }
+
+        /* ── Helper: set fully-exploded static state ─────── */
+        function applyExplodedState() {
+            if (cap)    gsap.set(cap,    { y: -86, rotation: -15, transformOrigin: '170px 95px' });
+            if (shell)  gsap.set(shell,  { y: -52, rotation: -5,  transformOrigin: '170px 274px' });
+            if (pre)    gsap.set(pre,    { y: -18 });
+            if (carbon) gsap.set(carbon, { y: 42 });
+            if (base)   gsap.set(base,   { y: 62 });
+            labels.forEach(function (l) { gsap.set(l, { opacity: 1 }); });
+            hotspots.forEach(function (h) {
+                gsap.set(h, { opacity: 1 });
+                h.classList.add('visible');
+            });
+        }
+
+        /* ── Reduced motion / mobile: static exploded view ── */
+        if (prefersReduced || isMobile) {
+            applyExplodedState();
+            steps.forEach(function (s) {
+                gsap.set(s, { opacity: 1, y: 0 });
+                s.style.pointerEvents = 'auto';
+            });
+            return;
+        }
+
+        if (!cap || !shell) return;
+
+        /* ── Set initial opacity on step panels via GSAP ──── */
+        /* Step 0 visible; 1 & 2 hidden */
+        gsap.set(steps[0], { opacity: 1, y: 0 });
+        if (steps[1]) gsap.set(steps[1], { opacity: 0, y: 18 });
+        if (steps[2]) gsap.set(steps[2], { opacity: 0, y: 18 });
+
+        /* ── Build master scroll-scrub timeline ─────────── */
+        var tl = gsap.timeline({ paused: true, defaults: { ease: 'none' } });
+
+        /* ─ Phase 1 (0.00 – 0.42): Shell + cap lift and rotate CCW */
+        tl.to(cap, {
+            y: -86,
+            rotation: -15,
+            transformOrigin: '170px 95px',
+            duration: 0.42,
+        }, 0);
+
+        tl.to(shell, {
+            y: -52,
+            rotation: -5,
+            transformOrigin: '170px 274px',
+            duration: 0.42,
+        }, 0);
+
+        /* ─ Phase 2 (0.30 – 0.72): Inner layers spread apart */
+        tl.to(pre, {
+            y: -18,
+            duration: 0.38,
+        }, 0.30);
+
+        tl.to(carbon, {
+            y: 42,
+            duration: 0.38,
+        }, 0.34);
+
+        tl.to(base, {
+            y: 62,
+            duration: 0.38,
+        }, 0.38);
+
+        /* ─ Phase 3 (0.60 – 0.85): Labels + hotspots appear */
+        tl.to(labels, {
+            opacity: 1,
+            duration: 0.14,
+            stagger: 0.035,
+        }, 0.62);
+
+        tl.to(hotspots, {
+            opacity: 1,
+            duration: 0.10,
+            stagger: 0.04,
+            onComplete: function () {
+                hotspots.forEach(function (h) { h.classList.add('visible'); });
+            },
+        }, 0.70);
+
+        /* ─ Step panels crossfade at 33 % and 66 % ───────── */
+        /* Scroll cue fades away immediately */
+        if (scrollCue) {
+            tl.to(scrollCue, { opacity: 0, duration: 0.05 }, 0.04);
+        }
+
+        /* Step 0 → out at 0.30 */
+        tl.to(steps[0], { opacity: 0, y: -16, duration: 0.06 }, 0.30);
+
+        /* Step 1 → in at 0.32, out at 0.62 */
+        if (steps[1]) {
+            tl.fromTo(steps[1],
+                { opacity: 0, y: 18 },
+                { opacity: 1, y: 0, duration: 0.06 },
+                0.32
+            );
+            tl.to(steps[1], { opacity: 0, y: -16, duration: 0.06 }, 0.62);
+        }
+
+        /* Step 2 → in at 0.64 */
+        if (steps[2]) {
+            tl.fromTo(steps[2],
+                { opacity: 0, y: 18 },
+                { opacity: 1, y: 0, duration: 0.06 },
+                0.64
+            );
+        }
+
+        /* ─ Connect timeline to scroll via ScrollTrigger ─── */
+        ScrollTrigger.create({
+            trigger: section,
+            start: 'top top',
+            end: 'bottom bottom',
+            scrub: 1.2,
+            animation: tl,
+            onUpdate: function (self) {
+                /* Sync pointer-events with visible step panel */
+                var p = self.progress;
+                if      (p < 0.31) { showStep(0); }
+                else if (p < 0.63) { showStep(1); }
+                else               { showStep(2); }
+            },
+        });
     }
 
     /* ══════════════════════════════════════════════════════════

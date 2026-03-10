@@ -848,6 +848,490 @@
 }
 
 /* ============================================================
+   8. FILTER MAINTENANCE — EXPLODED VIEW  (Step 07)
+   Sticky split-screen: text left, SVG diagram right.
+   GSAP ScrollTrigger scrubs a timeline that separates
+   filter layers as the user scrolls.
+   ============================================================ */
+
+/* Section root */
+.ig-filter-maintenance {
+    background: #111827;
+    position: relative;
+}
+
+/* Tall wrapper — creates scroll travel for the sticky panel */
+.ig-fm-scroll-wrapper {
+    height: 260vh;
+    position: relative;
+}
+
+/* Sticky panel — occupies full viewport height during scroll */
+.ig-fm-sticky {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    overflow: hidden;
+}
+
+/* ── LEFT: Text column ─────────────────────────────────── */
+.ig-fm-text-col {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 48px 56px 48px 40px;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.ig-fm-header {
+    margin-bottom: 36px;
+}
+
+/* Step panels — absolutely stacked; GSAP controls opacity/y */
+.ig-fm-steps-track {
+    position: relative;
+    height: 280px;
+}
+
+.ig-fm-step {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+/* Step number badge */
+.ig-fm-step-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: rgba(8, 145, 178, 0.12);
+    border: 1px solid rgba(6, 182, 212, 0.28);
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #06b6d4;
+    margin-bottom: 14px;
+}
+
+.ig-fm-step-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #ffffff;
+    margin: 0 0 10px;
+    line-height: 1.3;
+}
+
+.ig-fm-step-desc {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.88rem;
+    line-height: 1.72;
+    color: rgba(255, 255, 255, 0.52);
+    margin: 0 0 20px;
+    max-width: 48ch;
+}
+
+/* Spec list (Step 0) */
+.ig-fm-spec-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+}
+
+.ig-fm-spec-list li {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.45);
+    padding-left: 15px;
+    position: relative;
+    line-height: 1.5;
+}
+
+.ig-fm-spec-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 6px;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: #06b6d4;
+    opacity: 0.8;
+}
+
+/* Alert note (Step 1) */
+.ig-fm-alert {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 11px 15px;
+    background: rgba(245, 158, 11, 0.07);
+    border: 1px solid rgba(245, 158, 11, 0.2);
+    border-radius: 10px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.78rem;
+    line-height: 1.5;
+    color: rgba(251, 191, 36, 0.78);
+}
+
+.ig-fm-alert svg {
+    flex-shrink: 0;
+    color: rgba(251, 191, 36, 0.78);
+}
+
+/* Replacement schedule (Step 2) */
+.ig-fm-replace-guide {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.ig-fm-replace-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 10px;
+    gap: 12px;
+}
+
+.ig-fm-replace-label {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.83rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.82);
+}
+
+.ig-fm-replace-freq {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.76rem;
+    color: #06b6d4;
+    white-space: nowrap;
+}
+
+/* ── RIGHT: Canvas column ──────────────────────────────── */
+.ig-fm-canvas-col {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    /* Subtle left border between columns */
+}
+
+.ig-fm-canvas-col::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 8%;
+    height: 84%;
+    width: 1px;
+    background: linear-gradient(
+        to bottom,
+        transparent,
+        rgba(255, 255, 255, 0.055) 25%,
+        rgba(255, 255, 255, 0.055) 75%,
+        transparent
+    );
+    pointer-events: none;
+}
+
+/* Canvas wrapper — holds SVG + hotspot divs */
+.ig-fm-canvas {
+    position: relative;
+    width: 100%;
+    max-width: 360px;
+    height: 85vh;
+    max-height: 600px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* SVG scales within canvas */
+.ig-fm-svg {
+    width: 100%;
+    height: 100%;
+    max-height: 78vh;
+    object-fit: contain;
+    overflow: visible;
+}
+
+/* Scroll-down cue label at canvas bottom */
+.ig-fm-scroll-cue {
+    position: absolute;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.62rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.22);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+    pointer-events: none;
+}
+
+.ig-fm-scroll-cue::before {
+    content: '';
+    display: block;
+    width: 1px;
+    height: 36px;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.22), transparent);
+    animation: ig-scroll-line 1.8s ease-in-out infinite;
+}
+
+/* ── Hotspot dots ──────────────────────────────────────── */
+.ig-fm-hotspot {
+    position: absolute;
+    opacity: 0;       /* GSAP fades in */
+    pointer-events: none;
+    z-index: 10;
+}
+
+.ig-fm-hotspot.visible {
+    pointer-events: auto;
+}
+
+/* Pulsing dot */
+.ig-fm-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #06b6d4;
+    cursor: pointer;
+    position: relative;
+    z-index: 2;
+    animation: ig-hotspot-pulse 2.2s ease-in-out infinite;
+    outline: none;
+}
+
+.ig-fm-dot:focus-visible {
+    box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.45);
+}
+
+@keyframes ig-hotspot-pulse {
+    0%   { box-shadow: 0 0 0 0 rgba(6, 182, 212, 0.55); }
+    65%  { box-shadow: 0 0 0 9px rgba(6, 182, 212, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(6, 182, 212, 0); }
+}
+
+/* Tooltip card */
+.ig-fm-tooltip {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    /* Default: tooltip opens to the LEFT of the dot */
+    right: calc(100% + 14px);
+    left: auto;
+    width: 196px;
+    background: rgba(9, 15, 28, 0.96);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: 12px;
+    padding: 14px 16px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.22s ease;
+    z-index: 20;
+}
+
+/* Tooltip open states */
+.ig-fm-hotspot:hover .ig-fm-tooltip,
+.ig-fm-hotspot:focus-within .ig-fm-tooltip {
+    opacity: 1;
+}
+
+/* Connector notch pointing right */
+.ig-fm-tooltip::after {
+    content: '';
+    position: absolute;
+    right: -5px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 8px;
+    height: 8px;
+    background: rgba(9, 15, 28, 0.96);
+    border-right: 1px solid rgba(255, 255, 255, 0.09);
+    border-top: 1px solid rgba(255, 255, 255, 0.09);
+    transform: translateY(-50%) rotate(45deg);
+}
+
+.ig-fm-tooltip strong {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #ffffff;
+    display: block;
+    margin-bottom: 6px;
+}
+
+.ig-fm-tooltip p {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.74rem;
+    line-height: 1.62;
+    color: rgba(255, 255, 255, 0.52);
+    margin: 0;
+}
+
+/* SVG text labels (fade in during animation) */
+.ig-fm-label text {
+    user-select: none;
+    pointer-events: none;
+}
+
+/* ── Reduced motion ────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+    .ig-fm-scroll-wrapper {
+        height: auto;
+    }
+
+    .ig-fm-sticky {
+        position: static;
+        height: auto;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .ig-fm-steps-track {
+        height: auto;
+    }
+
+    .ig-fm-step {
+        position: static;
+        opacity: 1 !important;
+        transform: none !important;
+        pointer-events: auto;
+        margin-bottom: 20px;
+    }
+
+    .ig-fm-canvas {
+        height: 50vw;
+        min-height: 280px;
+        max-height: 420px;
+    }
+
+    .ig-fm-hotspot {
+        opacity: 1 !important;
+        pointer-events: auto;
+    }
+
+    .ig-fm-scroll-cue {
+        display: none;
+    }
+
+    .ig-fm-dot {
+        animation: none;
+    }
+
+    .ig-fm-label {
+        opacity: 1 !important;
+    }
+
+    .ig-fm-text-col {
+        justify-content: flex-start;
+        padding-top: 60px;
+    }
+}
+
+/* ── Mobile ≤ 767 px ───────────────────────────────────── */
+@media (max-width: 767px) {
+    .ig-fm-scroll-wrapper {
+        height: auto;
+    }
+
+    .ig-fm-sticky {
+        position: static;
+        height: auto;
+        grid-template-columns: 1fr;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .ig-fm-canvas-col {
+        height: 72vw;
+        min-height: 260px;
+        max-height: 380px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .ig-fm-canvas-col::before {
+        display: none;
+    }
+
+    .ig-fm-canvas {
+        max-width: 100%;
+        height: 100%;
+        max-height: 100%;
+    }
+
+    .ig-fm-text-col {
+        padding: 40px 24px 56px;
+        justify-content: flex-start;
+    }
+
+    .ig-fm-steps-track {
+        height: auto;
+    }
+
+    .ig-fm-step {
+        position: static;
+        opacity: 1 !important;
+        transform: none !important;
+        pointer-events: auto;
+        margin-bottom: 20px;
+    }
+
+    .ig-fm-hotspot {
+        display: none;
+    }
+
+    .ig-fm-scroll-cue {
+        display: none;
+    }
+
+    .ig-fm-dot {
+        animation: none;
+    }
+}
+
+/* ── Tablet 768 – 1023 px ──────────────────────────────── */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .ig-fm-text-col {
+        padding: 40px 32px 40px 32px;
+    }
+
+    .ig-fm-canvas {
+        max-width: 300px;
+    }
+}
+
+/* ── Desktop ≥ 1024 px ─────────────────────────────────── */
+@media (min-width: 1280px) {
+    .ig-fm-text-col {
+        padding: 60px 64px 60px 48px;
+    }
+}
+
+/* ============================================================
    9. SUPPORT BANNER
    Dark gradient, CTA
    ============================================================ */
