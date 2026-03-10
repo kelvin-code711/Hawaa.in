@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Step-by-step installation guide for the Hawaa Edge air purifier — physical placement, optimal clearance, and first-time power on.">
+    <meta name="keywords" content="Hawaa, installation, setup, guide, air purifier, placement, Hawaa Edge">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Installation Guide &mdash; Hawaa">
+    <meta property="og:description" content="Set up your Hawaa Edge in minutes. Placement, power on, and first breath — all in one guide.">
+    <meta property="og:type" content="website">
+
+    <title>Installation Guide &mdash; Hawaa</title>
+
+    <!-- Google Fonts: Outfit + Playfair Display -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/installation.css">
+    <link rel="icon" href="public/images/favicon.ico" type="image/x-icon">
+</head>
+<body class="installation-page">
+
+    <!-- ========================================================
+         HEADER
+    ======================================================== -->
+    <header class="header" id="header">
+        <div class="header-container">
+            <a href="index.html" class="logo">
+                <span class="logo-h">H</span><span class="logo-awaa">awaa</span>
+            </a>
+            <div class="header-actions">
+                <button class="header-profile-btn" id="profile-btn" aria-label="Account">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                         stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+                        <circle cx="12" cy="7" r="4"/>
+                    </svg>
+                </button>
+                <a href="buy.html" class="header-cart-btn" id="cart-btn" aria-label="Cart">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                         stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+                        <line x1="3" y1="6" x2="21" y2="6"/>
+                        <path d="M16 10a4 4 0 01-8 0"/>
+                    </svg>
+                    <span class="cart-badge" id="cart-badge"></span>
+                </a>
+                <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Expandable Menu -->
+    <div class="menu-overlay" id="menu-overlay"></div>
+    <div class="menu-panel" id="menu-panel">
+        <div class="menu-panel-inner">
+            <nav class="menu-nav">
+                <a href="edge.html" class="menu-nav-item">Hawaa Edge</a>
+                <a href="blogs.html" class="menu-nav-item">Blog</a>
+                <a href="about.html" class="menu-nav-item">About Us</a>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Sign In Modal -->
+    <div class="signin-overlay" id="signin-overlay">
+        <div class="signin-modal" id="signin-modal">
+            <div class="signin-drag-handle"></div>
+            <button class="signin-close" id="signin-close" aria-label="Close">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                     stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"/>
+                    <line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+            </button>
+            <div class="signin-step" id="signin-phone-step">
+                <h2 class="signin-title">Sign in</h2>
+                <p class="signin-subtitle">Enter your mobile number to continue</p>
+                <div class="phone-input-group" id="signin-phone-group">
+                    <span class="phone-prefix">+91</span>
+                    <span class="phone-prefix-divider"></span>
+                    <input type="tel" class="phone-input" id="signin-phone" maxlength="10"
+                           placeholder="Mobile number" inputmode="numeric" autocomplete="tel-national">
+                </div>
+                <p class="signin-error" id="signin-phone-error"></p>
+                <button class="signin-btn" id="signin-send-otp">Send OTP</button>
+            </div>
+            <div class="signin-step hidden" id="signin-otp-step">
+                <h2 class="signin-title">Verify OTP</h2>
+                <p class="signin-subtitle">Enter the 6-digit code sent to
+                    <span class="signin-phone-display" id="signin-phone-display"></span></p>
+                <div class="otp-input-group">
+                    <input type="text" class="otp-input" maxlength="1"
+                           inputmode="numeric" autocomplete="one-time-code">
+                    <input type="text" class="otp-input" maxlength="1" inputmode="numeric">
+                    <input type="text" class="otp-input" maxlength="1" inputmode="numeric">
+                    <input type="text" class="otp-input" maxlength="1" inputmode="numeric">
+                    <input type="text" class="otp-input" maxlength="1" inputmode="numeric">
+                    <input type="text" class="otp-input" maxlength="1" inputmode="numeric">
+                </div>
+                <p class="signin-error" id="signin-otp-error"></p>
+                <button class="signin-btn" id="signin-verify">Verify</button>
+                <div class="signin-actions">
+                    <button class="signin-back" id="signin-back">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                             stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M19 12H5"/>
+                            <path d="M12 19l-7-7 7-7"/>
+                        </svg>
+                        Change number
+                    </button>
+                    <button class="signin-resend" id="signin-resend">Resend OTP</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================
+         PHASE I · HERO SECTION
+         Full-viewport, dark, immersive — device fades up on load
+    ======================================================== -->
+    <section class="ig-hero" id="ig-hero" aria-label="Installation guide introduction">
+
+        <!-- Ambient background shapes — bleed to all edges -->
+        <div class="ig-hero-bg" aria-hidden="true">
+            <div class="ig-blob ig-blob-1"></div>
+            <div class="ig-blob ig-blob-2"></div>
+            <div class="ig-blob ig-blob-3"></div>
+        </div>
+
+        <!-- Device visual — 3D render, fades + slides up -->
+        <div class="ig-hero-device" aria-hidden="true">
+            <div class="ig-device-glow"></div>
+            <img
+                src="public/images/hero-resting.webp"
+                alt=""
+                class="ig-device-img"
+                loading="eager"
+                fetchpriority="high"
+                draggable="false"
+            >
+        </div>
+
+        <!-- Headline copy — constrained to ~70 chars per line -->
+        <div class="ig-hero-content">
+            <span class="ig-hero-tag" aria-label="Phase 1 — Physical Setup">
+                Phase 1 &mdash; Physical Setup
+            </span>
+            <h1 class="ig-hero-title">
+                Set up your Hawaa<br>
+                <span class="ig-hero-title-accent">in minutes.</span>
+            </h1>
+            <p class="ig-hero-subtitle">
+                From unboxing to first breath, three simple steps.<br>
+                Everything you need, right here.
+            </p>
+            <a href="#ig-placement" class="ig-hero-scroll-cta" aria-label="Begin setup — scroll to placement guide">
+                Begin
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M12 5v14M5 12l7 7 7-7"/>
+                </svg>
+            </a>
+        </div>
+
+        <!-- Animated scroll line -->
+        <div class="ig-scroll-line" aria-hidden="true">
+            <div class="ig-scroll-line-inner"></div>
+        </div>
+
+    </section>
+
+    <!-- ========================================================
+         STEP PROGRESS NAV — sticky indicator
+    ======================================================== -->
+    <nav class="ig-progress" id="ig-progress" aria-label="Installation steps">
+        <div class="ig-progress-track">
+            <a href="#ig-placement" class="ig-progress-step active" data-section="ig-placement"
+               aria-label="Step 1: Placement">
+                <span class="ig-progress-num">01</span>
+                <span class="ig-progress-label">Placement</span>
+            </a>
+            <div class="ig-progress-divider" aria-hidden="true"></div>
+            <a href="#ig-power" class="ig-progress-step" data-section="ig-power"
+               aria-label="Step 2: Power on">
+                <span class="ig-progress-num">02</span>
+                <span class="ig-progress-label">Power on</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- ========================================================
+         PHASE I · SECTION 1 — PLACEMENT
+         Scroll-triggered isometric room animation
+         showing 3.5-foot clearance radius
+    ======================================================== -->
+    <section class="ig-section ig-placement-section" id="ig-placement"
+             aria-labelledby="placement-heading">
+
+        <div class="ig-section-inner">
+
+            <!-- Section copy -->
+            <div class="ig-section-text">
+                <span class="ig-section-tag ig-reveal">01 &mdash; Placement</span>
+
+                <h2 class="ig-section-heading ig-reveal ig-reveal--delay-1"
+                    id="placement-heading">
+                    Give it room<br>to breathe.
+                </h2>
+
+                <p class="ig-section-body ig-reveal ig-reveal--delay-2">
+                    Your Hawaa purifies best when air can move freely
+                    in and out of the unit. Place it where nothing
+                    crowds or corners it.
+                </p>
+
+                <p class="ig-section-body ig-reveal ig-reveal--delay-3">
+                    Keep at least <strong>3.5 feet of clearance</strong>
+                    on all sides — away from walls, corners, and
+                    furniture that might restrict airflow.
+                </p>
+
+                <p class="ig-section-body ig-reveal ig-reveal--delay-4">
+                    A flat, stable surface at least one foot above
+                    the floor gives Hawaa the best reach across
+                    your entire room.
+                </p>
+            </div>
+
+            <!-- Isometric room — scroll-triggered animation -->
+            <div class="ig-room-wrapper ig-reveal ig-reveal--delay-2"
+                 aria-label="Animated top-down room diagram showing Hawaa placement with 3.5-foot clearance zone">
+                <div class="ig-room-stage" role="button" tabindex="0"
+                     aria-label="Room placement diagram — tap to replay animation">
+
+                    <div class="ig-room-3d">
+
+                        <!-- ============================================
+                             ISOMETRIC ROOM SVG
+                             Top-down floor plan; CSS perspective gives
+                             the isometric 3D effect.
+                             Stages (JS-driven class sequence):
+                               stage-1 → floor + walls
+                               stage-2 → furniture + plant
+                               stage-3 → Hawaa device
+                               stage-4 → 3.5 ft clearance ring
+                               stage-5 → dimension labels
+                        ============================================ -->
+                        <svg class="ig-room-svg" id="ig-room-svg"
+                             viewBox="0 0 360 330"
+                             fill="none"
+                             xmlns="http://www.w3.org/2000/svg"
+                             aria-hidden="true">
+
+                            <defs>
+                                <!-- Arrow marker for dimension lines -->
+                                <marker id="arrow-start" markerWidth="6" markerHeight="6"
+                                        refX="3" refY="3" orient="auto-start-reverse">
+                                    <path d="M0,0 L6,3 L0,6 Z" fill="#6b7280"/>
+                                </marker>
+                                <marker id="arrow-end" markerWidth="6" markerHeight="6"
+                                        refX="3" refY="3" orient="auto">
+                                    <path d="M0,0 L6,3 L0,6 Z" fill="#6b7280"/>
+                                </marker>
+
+                                <!-- Subtle drop shadow for device -->
+                                <filter id="device-shadow" x="-30%" y="-30%" width="160%" height="160%">
+                                    <feDropShadow dx="0" dy="2" stdDeviation="4"
+                                                  flood-color="#0891b2" flood-opacity="0.35"/>
+                                </filter>
+                            </defs>
+
+                            <!-- ── STAGE 1: Room floor + walls ── -->
+
+                            <!-- Floor fill -->
+                            <rect class="room-floor"
+                                  x="20" y="20" width="320" height="290"
+                                  rx="6"
+                                  fill="#f4f6f8"
+                                  stroke="#e2e8f0"
+                                  stroke-width="1.5"/>
+
+                            <!-- Skirting / inner wall detail -->
+                            <rect class="room-floor"
+                                  x="28" y="28" width="304" height="274"
+                                  rx="4"
+                                  fill="none"
+                                  stroke="#eaecf0"
+                                  stroke-width="0.75"
+                                  stroke-dasharray="4 6"/>
+
+                            <!-- Top wall (far) -->
+                            <line class="room-wall-line" x1="20" y1="20" x2="200" y2="20"
+                                  stroke="#c8d0dc" stroke-width="2.5" stroke-linecap="round"/>
+                            <!-- Door gap in top wall (200→260) -->
+                            <line class="room-door" x1="200" y1="20" x2="260" y2="20"
+                                  stroke="#dce3ee" stroke-width="1.5"
+                                  stroke-dasharray="3 4" stroke-linecap="round"/>
+                            <line class="room-wall-line" x1="260" y1="20" x2="340" y2="20"
+                                  stroke="#c8d0dc" stroke-width="2.5" stroke-linecap="round"/>
+
+                            <!-- Right wall -->
+                            <line class="room-wall-line" x1="340" y1="20" x2="340" y2="310"
+                                  stroke="#c8d0dc" stroke-width="2.5" stroke-linecap="round"/>
+
+                            <!-- Bottom wall (near) -->
+                            <line class="room-wall-line" x1="340" y1="310" x2="20" y2="310"
+                                  stroke="#c8d0dc" stroke-width="2.5" stroke-linecap="round"/>
+
+                            <!-- Left wall -->
+                            <line class="room-wall-line" x1="20" y1="310" x2="20" y2="20"
+                                  stroke="#c8d0dc" stroke-width="2.5" stroke-linecap="round"/>
+
+                            <!-- Floor tiles (subtle grid) -->
+                            <line class="room-floor" x1="20" y1="100" x2="340" y2="100"
+                                  stroke="#eaecf0" stroke-width="0.75"/>
+                            <line class="room-floor" x1="20" y1="175" x2="340" y2="175"
+                                  stroke="#eaecf0" stroke-width="0.75"/>
+                            <line class="room-floor" x1="20" y1="240" x2="340" y2="240"
+                                  stroke="#eaecf0" stroke-width="0.75"/>
+                            <line class="room-floor" x1="100" y1="20" x2="100" y2="310"
+                                  stroke="#eaecf0" stroke-width="0.75"/>
+                            <line class="room-floor" x1="180" y1="20" x2="180" y2="310"
+                                  stroke="#eaecf0" stroke-width="0.75"/>
+                            <line class="room-floor" x1="260" y1="20" x2="260" y2="310"
+                                  stroke="#eaecf0" stroke-width="0.75"/>
+
+
+                            <!-- ── STAGE 2: Furniture ── -->
+
+                            <!-- Sofa — bottom-left -->
+                            <rect class="room-sofa" x="28" y="245" width="115" height="56"
+                                  rx="8"
+                                  fill="#dde5f0" stroke="#c9d4e6" stroke-width="1.5"/>
+                            <!-- Sofa back cushion -->
+                            <rect class="room-sofa" x="28" y="245" width="115" height="18"
+                                  rx="6"
+                                  fill="#c9d4e6" stroke="none"/>
+                            <!-- Sofa seat split -->
+                            <line class="room-sofa" x1="85" y1="263" x2="85" y2="301"
+                                  stroke="#c9d4e6" stroke-width="1"/>
+
+                            <!-- Coffee table -->
+                            <rect class="room-table" x="56" y="200" width="68" height="40"
+                                  rx="6"
+                                  fill="#e8ecf2" stroke="#d0d9e8" stroke-width="1.5"/>
+                            <!-- Table top shine -->
+                            <line class="room-table" x1="62" y1="206" x2="116" y2="206"
+                                  stroke="#f0f3f8" stroke-width="1.5" stroke-linecap="round"/>
+
+                            <!-- Bookshelf — top-left wall -->
+                            <rect class="room-shelf" x="28" y="28" width="76" height="24"
+                                  rx="4"
+                                  fill="#dde3ee" stroke="#c9d2e4" stroke-width="1.5"/>
+                            <!-- Shelf dividers -->
+                            <line class="room-shelf" x1="52" y1="28" x2="52" y2="52"
+                                  stroke="#c9d2e4" stroke-width="1"/>
+                            <line class="room-shelf" x1="76" y1="28" x2="76" y2="52"
+                                  stroke="#c9d2e4" stroke-width="1"/>
+                            <!-- Books -->
+                            <rect class="room-shelf" x="30" y="30" width="6" height="18"
+                                  rx="1" fill="#a8b4c8"/>
+                            <rect class="room-shelf" x="37" y="32" width="5" height="16"
+                                  rx="1" fill="#9aa8bf"/>
+                            <rect class="room-shelf" x="43" y="29" width="7" height="19"
+                                  rx="1" fill="#b0bcd0"/>
+
+                            <!-- Rug under coffee table -->
+                            <ellipse class="room-rug" cx="90" cy="248" rx="72" ry="28"
+                                     fill="#e4e8f4" stroke="#d6dcee" stroke-width="1.5"
+                                     opacity="0.7"/>
+
+                            <!-- Potted plant — top-right -->
+                            <circle class="room-plant" cx="308" cy="50" r="22"
+                                    fill="#bbf7d0" stroke="#86efac" stroke-width="1.5"/>
+                            <!-- Leaf detail -->
+                            <circle class="room-plant" cx="298" cy="42" r="9"
+                                    fill="#a7f3c0" stroke="#86efac" stroke-width="1"/>
+                            <circle class="room-plant" cx="316" cy="40" r="10"
+                                    fill="#a7f3c0" stroke="#86efac" stroke-width="1"/>
+                            <circle class="room-plant" cx="308" cy="38" r="8"
+                                    fill="#bbf7d0" stroke="#86efac" stroke-width="1"/>
+                            <!-- Plant pot -->
+                            <rect class="room-plant" x="300" y="68" width="16" height="10"
+                                  rx="3" fill="#d0d9e8" stroke="#c0ccdc" stroke-width="1"/>
+
+                            <!-- TV console — right wall -->
+                            <rect class="room-shelf" x="296" y="130" width="36" height="80"
+                                  rx="5"
+                                  fill="#dde3ee" stroke="#c9d2e4" stroke-width="1.5"/>
+                            <!-- TV screen suggestion -->
+                            <rect class="room-shelf" x="300" y="135" width="28" height="32"
+                                  rx="3"
+                                  fill="#0f172a" stroke="#1e293b" stroke-width="1"/>
+                            <!-- TV screen glow -->
+                            <rect class="room-shelf" x="302" y="137" width="24" height="28"
+                                  rx="2"
+                                  fill="#1e3a5f" stroke="none" opacity="0.8"/>
+
+
+                            <!-- ── STAGE 3: Hawaa device ── -->
+
+                            <!-- Device outer ring -->
+                            <circle class="room-device-outer" cx="190" cy="168" r="20"
+                                    fill="white"
+                                    stroke="#0891b2" stroke-width="2"
+                                    filter="url(#device-shadow)"/>
+
+                            <!-- Device inner fill -->
+                            <circle class="room-device-inner" cx="190" cy="168" r="14"
+                                    fill="#e0f7fd"/>
+
+                            <!-- Fan / air-flow icon (simplified) -->
+                            <!-- Center dot -->
+                            <circle class="room-device-icon" cx="190" cy="168" r="3"
+                                    fill="#0891b2"/>
+                            <!-- Fan blades -->
+                            <path class="room-device-icon"
+                                  d="M190 168 C190 158 196 156 198 162"
+                                  stroke="#0891b2" stroke-width="2" stroke-linecap="round" fill="none"/>
+                            <path class="room-device-icon"
+                                  d="M190 168 C198 172 198 178 192 176"
+                                  stroke="#0891b2" stroke-width="2" stroke-linecap="round" fill="none"/>
+                            <path class="room-device-icon"
+                                  d="M190 168 C182 164 180 158 186 158"
+                                  stroke="#0891b2" stroke-width="2" stroke-linecap="round" fill="none"/>
+
+
+                            <!-- ── STAGE 4: Clearance zone ── -->
+
+                            <!-- Clearance fill (soft cyan wash) -->
+                            <circle class="room-clearance-fill" cx="190" cy="168" r="71"
+                                    fill="rgba(8,145,178,0.07)"
+                                    stroke="none"/>
+
+                            <!-- Clearance dashed ring — draws itself via dashoffset -->
+                            <!-- Circumference = 2π × 71 ≈ 446 -->
+                            <circle class="room-clearance-ring" cx="190" cy="168" r="71"
+                                    stroke="#0891b2"
+                                    stroke-width="1.5"
+                                    stroke-dasharray="5 4"
+                                    stroke-linecap="round"
+                                    fill="none"/>
+
+
+                            <!-- ── STAGE 5: Dimension labels ── -->
+
+                            <!-- Horizontal dimension arrow — device edge → clearance ring -->
+                            <g class="room-label-group">
+                                <!-- Horizontal guideline -->
+                                <line x1="190" y1="152"
+                                      x2="119" y2="152"
+                                      stroke="#94a3b8" stroke-width="1"
+                                      marker-start="url(#arrow-start)"
+                                      marker-end="url(#arrow-end)"/>
+
+                                <!-- "3.5 ft" label pill -->
+                                <rect x="128" y="141" width="46" height="18"
+                                      rx="5" fill="white"
+                                      stroke="#e2e8f0" stroke-width="1"/>
+                                <text x="151" y="153.5"
+                                      font-family="Outfit, sans-serif"
+                                      font-size="9"
+                                      font-weight="600"
+                                      fill="#0891b2"
+                                      text-anchor="middle">3.5 ft</text>
+
+                                <!-- "HAWAA" label under device -->
+                                <rect x="173" y="192" width="34" height="14"
+                                      rx="4" fill="#0891b2"/>
+                                <text x="190" y="202.5"
+                                      font-family="Outfit, sans-serif"
+                                      font-size="7"
+                                      font-weight="700"
+                                      fill="white"
+                                      text-anchor="middle"
+                                      letter-spacing="0.08em">HAWAA</text>
+
+                                <!-- North tick -->
+                                <line x1="190" y1="96" x2="190" y2="88"
+                                      stroke="#94a3b8" stroke-width="1" stroke-linecap="round"/>
+                                <!-- East tick -->
+                                <line x1="261" y1="168" x2="269" y2="168"
+                                      stroke="#94a3b8" stroke-width="1" stroke-linecap="round"/>
+                                <!-- South tick -->
+                                <line x1="190" y1="239" x2="190" y2="247"
+                                      stroke="#94a3b8" stroke-width="1" stroke-linecap="round"/>
+                                <!-- West tick -->
+                                <line x1="119" y1="168" x2="111" y2="168"
+                                      stroke="#94a3b8" stroke-width="1" stroke-linecap="round"/>
+                            </g>
+
+                        </svg>
+                        <!-- END ig-room-svg -->
+
+                    </div>
+                    <!-- END ig-room-3d -->
+
+                </div>
+                <!-- END ig-room-stage -->
+
+                <p class="ig-room-caption" aria-hidden="true">Tap to replay &nbsp;&middot;&nbsp; Isometric top-down view</p>
+            </div>
+            <!-- END ig-room-wrapper -->
+
+        </div>
+        <!-- END ig-section-inner -->
+
+        <!-- Placement tips strip -->
+        <div class="ig-tips">
+            <div class="ig-tips-inner">
+
+                <!-- Tip 1 -->
+                <div class="ig-tip-card ig-reveal">
+                    <div class="ig-tip-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                             stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"/>
+                            <circle cx="12" cy="12" r="3"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="ig-tip-title">Near the centre</h3>
+                        <p class="ig-tip-body">Central placement lets Hawaa reach every corner of the room with equal efficiency.</p>
+                    </div>
+                </div>
+
+                <!-- Tip 2 -->
+                <div class="ig-tip-card ig-reveal ig-reveal--delay-1">
+                    <div class="ig-tip-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                             stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="ig-tip-title">Away from sunlight</h3>
+                        <p class="ig-tip-body">Direct sun heats the sensors. Keep Hawaa in a shaded spot for accurate air readings.</p>
+                    </div>
+                </div>
+
+                <!-- Tip 3 -->
+                <div class="ig-tip-card ig-reveal ig-reveal--delay-2">
+                    <div class="ig-tip-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                             stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="18" height="18" rx="3"/>
+                            <path d="M3 9h18M9 21V9"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="ig-tip-title">Elevated surface</h3>
+                        <p class="ig-tip-body">Place at least 1 foot off the floor — a shelf or side table is ideal — for optimal circulation.</p>
+                    </div>
+                </div>
+
+                <!-- Tip 4 -->
+                <div class="ig-tip-card ig-reveal ig-reveal--delay-3">
+                    <div class="ig-tip-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                             stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M17.5 19H9a7 7 0 01-7-7 7 7 0 017-7 7 7 0 016.71 5h.79a4.5 4.5 0 010 9z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="ig-tip-title">Open air path</h3>
+                        <p class="ig-tip-body">Nothing above or below the unit. Hawaa pulls air from the base and expels clean air from the top.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </section>
+
+    <!-- ========================================================
+         PHASE I · SECTION 2 — POWER ON
+         Looping macro-video of the premium power cable
+    ======================================================== -->
+    <section class="ig-section ig-power-section" id="ig-power"
+             aria-labelledby="power-heading">
+
+        <div class="ig-section-inner ig-section-inner--reversed">
+
+            <!-- Macro video -->
+            <div class="ig-video-wrapper ig-reveal">
+                <div class="ig-video-frame">
+                    <video
+                        class="ig-power-video"
+                        autoplay
+                        loop
+                        muted
+                        playsinline
+                        preload="metadata"
+                        poster="public/images/hero-poster.webp"
+                        aria-hidden="true">
+                        <source src="public/videos/hero-video.webm" type="video/webm">
+                    </video>
+                    <!-- Gradient overlay at bottom for text legibility -->
+                    <div class="ig-video-overlay" aria-hidden="true"></div>
+                </div>
+            </div>
+
+            <!-- Section copy + steps -->
+            <div class="ig-section-text">
+
+                <span class="ig-section-tag ig-reveal">02 &mdash; Power On</span>
+
+                <h2 class="ig-section-heading ig-reveal ig-reveal--delay-1"
+                    id="power-heading">
+                    One connection.<br>
+                    <em class="ig-accent">A breath of difference.</em>
+                </h2>
+
+                <p class="ig-section-body ig-reveal ig-reveal--delay-2">
+                    Plug in using the included premium cable and
+                    press the soft-touch power ring. A gentle chime
+                    and a warm glow confirm Hawaa is alive.
+                </p>
+
+                <!-- Numbered steps -->
+                <ol class="ig-power-steps ig-reveal ig-reveal--delay-3"
+                    aria-label="Power-on steps">
+
+                    <li>
+                        <span class="ig-step-badge" aria-hidden="true">01</span>
+                        <div>
+                            <h4>Locate the power port</h4>
+                            <p>Found at the base of the unit, on the
+                               rear-facing panel — a recessed, flush port.</p>
+                        </div>
+                    </li>
+
+                    <li>
+                        <span class="ig-step-badge" aria-hidden="true">02</span>
+                        <div>
+                            <h4>Connect the cable</h4>
+                            <p>Use only the included braided cable for
+                               clean, stable power delivery.</p>
+                        </div>
+                    </li>
+
+                    <li>
+                        <span class="ig-step-badge" aria-hidden="true">03</span>
+                        <div>
+                            <h4>Press the power ring</h4>
+                            <p>One press wakes Hawaa. The top ring
+                               illuminates softly and the welcome chime plays.</p>
+                        </div>
+                    </li>
+
+                </ol>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ========================================================
+         NEXT STEPS / PHASE CTA
+    ======================================================== -->
+    <section class="ig-next-section" aria-label="Next steps after physical setup">
+        <div class="ig-next-inner">
+
+            <span class="ig-next-tag">You&rsquo;re almost there</span>
+
+            <h2 class="ig-next-heading ig-reveal">
+                Phase 1 complete.<br>
+                Let&rsquo;s connect to the Hawaa app.
+            </h2>
+
+            <p class="ig-next-body ig-reveal ig-reveal--delay-1">
+                With your device placed and powered, the next step
+                is pairing it with the Hawaa app for real-time air
+                quality data and smart controls.
+            </p>
+
+            <div class="ig-next-actions ig-reveal ig-reveal--delay-2">
+                <a href="support.html" class="ig-next-btn ig-next-btn--primary">
+                    Continue to app setup
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="2.5"
+                         stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </a>
+                <a href="faq.html" class="ig-next-btn ig-next-btn--ghost">
+                    Browse FAQ
+                </a>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ========================================================
+         FOOTER — consistent across all Hawaa pages
+    ======================================================== -->
+    <footer class="footer" id="contact">
+        <div class="footer-container">
+
+            <!-- Brand -->
+            <div class="footer-brand">
+                <div class="footer-logo">
+                    <span class="footer-logo-text">HAWAA</span>
+                </div>
+                <p class="footer-tagline">Breathe better. Live better.</p>
+                <div class="footer-contact-info">
+                    <div class="footer-contact-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
+                            <circle cx="12" cy="10" r="3"/>
+                        </svg>
+                        <span>Royal Complex, Bhutkhana Chowk, Rajkot, 360001, Gujarat, India</span>
+                    </div>
+                    <div class="footer-contact-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                            <polyline points="22,6 12,13 2,6"/>
+                        </svg>
+                        <span>support@hawaa.in</span>
+                    </div>
+                    <div class="footer-contact-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/>
+                        </svg>
+                        <span>+91 0000000000</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer Links -->
+            <div class="footer-links">
+
+                <div class="footer-links-column" data-footer-section>
+                    <button class="footer-links-header">
+                        <h4 class="footer-links-title">PRODUCTS</h4>
+                        <svg class="footer-chevron" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2">
+                            <path d="M6 9l6 6 6-6"/>
+                        </svg>
+                    </button>
+                    <ul class="footer-links-list">
+                        <li><a href="edge.html">Hawaa Edge</a></li>
+                        <li><a href="#">Replacement Filters</a></li>
+                        <li><a href="#">Accessories</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-links-column" data-footer-section>
+                    <button class="footer-links-header">
+                        <h4 class="footer-links-title">SUPPORT</h4>
+                        <svg class="footer-chevron" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2">
+                            <path d="M6 9l6 6 6-6"/>
+                        </svg>
+                    </button>
+                    <ul class="footer-links-list">
+                        <li><a href="installation-guide.html" aria-current="page">Installation Guide</a></li>
+                        <li><a href="faq.html">FAQ</a></li>
+                        <li><a href="support.html">Product Support</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-links-column" data-footer-section>
+                    <button class="footer-links-header">
+                        <h4 class="footer-links-title">COMPANY</h4>
+                        <svg class="footer-chevron" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2">
+                            <path d="M6 9l6 6 6-6"/>
+                        </svg>
+                    </button>
+                    <ul class="footer-links-list">
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="#">Sustainability</a></li>
+                        <li><a href="blogs.html">Blog</a></li>
+                        <li><a href="#">Press &amp; Media</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-links-column" data-footer-section>
+                    <button class="footer-links-header">
+                        <h4 class="footer-links-title">LEGAL</h4>
+                        <svg class="footer-chevron" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2">
+                            <path d="M6 9l6 6 6-6"/>
+                        </svg>
+                    </button>
+                    <ul class="footer-links-list">
+                        <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                        <li><a href="terms-of-service.html">Terms of Service</a></li>
+                        <li><a href="#">Shipping &amp; Returns</a></li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <!-- Footer Bottom -->
+            <div class="footer-bottom">
+                <div class="footer-social">
+                    <a href="#" class="footer-social-link" aria-label="Facebook">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="footer-social-link" aria-label="Twitter">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="footer-social-link" aria-label="Instagram">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                            <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/>
+                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="footer-social-link" aria-label="YouTube">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M22.54 6.42a2.78 2.78 0 00-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 00-1.94 2A29 29 0 001 11.75a29 29 0 00.46 5.33A2.78 2.78 0 003.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 001.94-2 29 29 0 00.46-5.25 29 29 0 00-.46-5.33z"/>
+                            <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02" fill="white"/>
+                        </svg>
+                    </a>
+                </div>
+                <p class="footer-copyright">&copy; 2025 Hawaa. All rights reserved.</p>
+            </div>
+
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/nav.js"></script>
+    <script src="js/installation.js"></script>
+
+</body>
+</html>
