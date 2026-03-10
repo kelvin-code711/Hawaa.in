@@ -1,0 +1,1036 @@
+/* ============================================================
+   Installation Guide Page Styles
+   Follows Hawaa Design System
+   ============================================================ */
+
+/* ── Page-level reset ───────────────────────────────────────── */
+.installation-page {
+    overflow-x: hidden;
+}
+
+/* ── Shared section wrapper ─────────────────────────────────── */
+.ig-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+/* ============================================================
+   1. HERO SECTION
+   Full-viewport, dark background, ambient shapes
+   ============================================================ */
+.ig-hero {
+    position: relative;
+    min-height: 100svh;
+    background: #111827;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+/* Ambient gradient orbs — bleed to every edge */
+.ig-hero-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(120px);
+    pointer-events: none;
+    will-change: transform;
+}
+
+.ig-hero-orb--cyan {
+    width: 640px;
+    height: 640px;
+    background: radial-gradient(circle, rgba(8, 145, 178, 0.22) 0%, transparent 70%);
+    top: -160px;
+    right: -160px;
+}
+
+.ig-hero-orb--blue {
+    width: 480px;
+    height: 480px;
+    background: radial-gradient(circle, rgba(37, 99, 235, 0.16) 0%, transparent 70%);
+    bottom: -120px;
+    left: -120px;
+}
+
+.ig-hero-orb--mid {
+    width: 320px;
+    height: 320px;
+    background: radial-gradient(circle, rgba(14, 165, 233, 0.12) 0%, transparent 70%);
+    top: 50%;
+    left: 30%;
+    transform: translateY(-50%);
+}
+
+/* Noise texture overlay */
+.ig-hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+/* Grid */
+.ig-hero-inner {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 120px 24px 80px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 48px;
+    align-items: center;
+}
+
+@media (min-width: 1024px) {
+    .ig-hero-inner {
+        grid-template-columns: 1fr 1fr;
+        gap: 80px;
+        padding: 140px 40px 100px;
+    }
+}
+
+/* Hero copy */
+.ig-hero-copy {
+    opacity: 0;
+    transform: translateY(32px);
+}
+
+.ig-hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #06b6d4;
+    margin-bottom: 20px;
+}
+
+.ig-hero-eyebrow-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #06b6d4;
+    animation: ig-pulse 2s ease-in-out infinite;
+}
+
+@keyframes ig-pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+}
+
+.ig-hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.4rem, 5vw, 4.2rem);
+    font-weight: 300;
+    line-height: 1.1;
+    color: #ffffff;
+    margin: 0 0 24px;
+}
+
+.ig-hero-title em {
+    font-style: italic;
+    color: #38bdf8;
+}
+
+.ig-hero-desc {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.6);
+    max-width: 52ch;
+    margin: 0 0 36px;
+}
+
+/* CTA buttons */
+.ig-hero-ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+}
+
+.ig-btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 28px;
+    background: linear-gradient(135deg, #0ea5e9 0%, #0891b2 100%);
+    border: 1px solid rgba(56, 189, 248, 0.5);
+    border-radius: 9999px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #ffffff;
+    text-decoration: none;
+    box-shadow: 0 2px 12px rgba(14, 165, 233, 0.45),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    transition: box-shadow 0.3s ease, transform 0.2s ease;
+    cursor: pointer;
+}
+
+.ig-btn-primary:hover {
+    box-shadow: 0 4px 24px rgba(14, 165, 233, 0.6),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    transform: translateY(-1px);
+}
+
+.ig-btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 28px;
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 9999px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    transition: background 0.3s ease, border-color 0.3s ease;
+    cursor: pointer;
+}
+
+.ig-btn-ghost:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Hero product image */
+.ig-hero-visual {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transform: translateY(24px);
+}
+
+.ig-hero-img-wrap {
+    position: relative;
+    display: inline-block;
+}
+
+.ig-hero-img-glow {
+    position: absolute;
+    inset: -40px;
+    background: radial-gradient(ellipse at 50% 80%, rgba(8, 145, 178, 0.35) 0%, transparent 65%);
+    border-radius: 50%;
+    filter: blur(40px);
+    pointer-events: none;
+}
+
+.ig-hero-img {
+    position: relative;
+    z-index: 1;
+    max-width: 360px;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 40px 80px rgba(0, 0, 0, 0.6));
+}
+
+/* Scroll cue */
+.ig-hero-scroll {
+    position: absolute;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    opacity: 0;
+}
+
+.ig-hero-scroll-label {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.35);
+}
+
+.ig-hero-scroll-line {
+    width: 1px;
+    height: 48px;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.3), transparent);
+    animation: ig-scroll-line 1.8s ease-in-out infinite;
+}
+
+@keyframes ig-scroll-line {
+    0% { transform: scaleY(0); transform-origin: top; }
+    50% { transform: scaleY(1); transform-origin: top; }
+    51% { transform-origin: bottom; }
+    100% { transform: scaleY(0); transform-origin: bottom; }
+}
+
+/* ============================================================
+   2. QUICK STEPS NAV BAR
+   Sticky progress indicator
+   ============================================================ */
+.ig-steps-bar {
+    position: sticky;
+    top: 72px;
+    z-index: 40;
+    background: rgba(17, 24, 39, 0.85);
+    backdrop-filter: blur(20px) saturate(160%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    padding: 0 24px;
+}
+
+.ig-steps-bar-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.ig-steps-bar-inner::-webkit-scrollbar { display: none; }
+
+.ig-step-tab {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 20px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.4);
+    white-space: nowrap;
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    transition: color 0.25s ease, border-color 0.25s ease;
+}
+
+.ig-step-tab:hover,
+.ig-step-tab.active {
+    color: #06b6d4;
+    border-bottom-color: #06b6d4;
+}
+
+.ig-step-tab-num {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.65rem;
+    font-weight: 700;
+    transition: background 0.25s ease;
+}
+
+.ig-step-tab.active .ig-step-tab-num {
+    background: #0891b2;
+    color: #fff;
+}
+
+/* ============================================================
+   3. UNBOXING SECTION
+   What's in the box — light background
+   ============================================================ */
+.ig-unboxing {
+    background: #ffffff;
+    padding: 80px 24px;
+}
+
+.ig-section-eyebrow {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #0891b2;
+    margin-bottom: 12px;
+}
+
+.ig-section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    font-weight: 400;
+    line-height: 1.15;
+    color: #111827;
+    margin: 0 0 16px;
+}
+
+.ig-section-desc {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1rem;
+    line-height: 1.7;
+    color: #4b5563;
+    max-width: 62ch;
+    margin: 0 0 48px;
+}
+
+.ig-unbox-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+@media (min-width: 640px) {
+    .ig-unbox-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .ig-unbox-grid {
+        grid-template-columns: repeat(5, 1fr);
+    }
+}
+
+.ig-unbox-card {
+    background: #f9fafb;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: 16px;
+    padding: 24px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    text-align: center;
+    transition: box-shadow 0.3s ease, transform 0.2s ease;
+}
+
+.ig-unbox-card:hover {
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+    transform: translateY(-3px);
+}
+
+.ig-unbox-icon {
+    width: 56px;
+    height: 56px;
+    background: linear-gradient(135deg, #e0f2fe, #bae6fd);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #0891b2;
+}
+
+.ig-unbox-icon svg {
+    width: 28px;
+    height: 28px;
+}
+
+.ig-unbox-name {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #111827;
+    line-height: 1.3;
+}
+
+.ig-unbox-qty {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.75rem;
+    color: #6b7280;
+}
+
+/* ============================================================
+   4. PHYSICAL PLACEMENT SECTION
+   Isometric room — dark background, ScrollTrigger
+   ============================================================ */
+.ig-placement {
+    background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+    padding: 80px 24px;
+    overflow: hidden;
+}
+
+.ig-placement .ig-section-title,
+.ig-placement .ig-section-eyebrow {
+    color: #fff;
+}
+
+.ig-placement .ig-section-title {
+    color: #fff;
+}
+
+.ig-placement .ig-section-desc {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+/* Two-column layout */
+.ig-placement-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 48px;
+    align-items: start;
+}
+
+@media (min-width: 1024px) {
+    .ig-placement-layout {
+        grid-template-columns: 1fr 1fr;
+        gap: 80px;
+        align-items: center;
+    }
+}
+
+/* Room illustration container */
+.ig-room-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ig-room-svg {
+    width: 100%;
+    max-width: 520px;
+    height: auto;
+}
+
+/* Glowing ring — starts invisible, triggered by JS */
+#ig-clearance-ring {
+    opacity: 0;
+    transform-origin: center center;
+    transform-box: fill-box;
+}
+
+#ig-clearance-ring-2 {
+    opacity: 0;
+    transform-origin: center center;
+    transform-box: fill-box;
+}
+
+/* Placement rules */
+.ig-placement-rules {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.ig-rule-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 20px;
+    transition: background 0.3s ease;
+}
+
+.ig-rule-card:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.ig-rule-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.ig-rule-icon--cyan {
+    background: rgba(8, 145, 178, 0.2);
+    color: #06b6d4;
+}
+
+.ig-rule-icon--green {
+    background: rgba(34, 197, 94, 0.15);
+    color: #22c55e;
+}
+
+.ig-rule-icon--amber {
+    background: rgba(245, 158, 11, 0.15);
+    color: #f59e0b;
+}
+
+.ig-rule-icon--red {
+    background: rgba(239, 68, 68, 0.15);
+    color: #ef4444;
+}
+
+.ig-rule-icon svg {
+    width: 22px;
+    height: 22px;
+}
+
+.ig-rule-text h4 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #ffffff;
+    margin: 0 0 4px;
+}
+
+.ig-rule-text p {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.82rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.55);
+    margin: 0;
+    max-width: 46ch;
+}
+
+/* ============================================================
+   5. POWER CONNECTION SECTION
+   Video + text, alternating light/dark
+   ============================================================ */
+.ig-power {
+    background: #f9fafb;
+    padding: 80px 24px;
+}
+
+.ig-power-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 48px;
+    align-items: center;
+}
+
+@media (min-width: 1024px) {
+    .ig-power-layout {
+        grid-template-columns: 1fr 1fr;
+        gap: 80px;
+    }
+
+    .ig-power-copy { order: 1; }
+    .ig-power-visual { order: 2; }
+}
+
+/* Video container */
+.ig-video-wrap {
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    background: #111827;
+    aspect-ratio: 4/3;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+}
+
+.ig-video-placeholder {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.ig-video-placeholder-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ig-video-placeholder-label {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.ig-video-loop {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.ig-video-badge {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 9999px;
+    padding: 6px 14px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.7);
+    letter-spacing: 0.06em;
+}
+
+.ig-video-badge-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #22c55e;
+    animation: ig-blink 1.4s ease-in-out infinite;
+}
+
+@keyframes ig-blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.2; }
+}
+
+/* Power steps */
+.ig-power-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.ig-power-step {
+    display: flex;
+    gap: 16px;
+    padding: 20px 0;
+    position: relative;
+}
+
+.ig-power-step + .ig-power-step::before {
+    content: '';
+    position: absolute;
+    left: 19px;
+    top: 0;
+    width: 1px;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.08);
+}
+
+.ig-power-step-num {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #111827;
+    color: #fff;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+}
+
+.ig-power-step-body h4 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #111827;
+    margin: 8px 0 4px;
+}
+
+.ig-power-step-body p {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.85rem;
+    line-height: 1.65;
+    color: #6b7280;
+    margin: 0;
+    max-width: 54ch;
+}
+
+/* ============================================================
+   6. SETUP STEPS SECTION
+   Numbered, dark background
+   ============================================================ */
+.ig-setup {
+    background: #111827;
+    padding: 80px 24px;
+}
+
+.ig-setup .ig-section-title,
+.ig-setup .ig-section-eyebrow {
+    color: #fff;
+}
+
+.ig-setup .ig-section-desc {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.ig-setup-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+}
+
+@media (min-width: 768px) {
+    .ig-setup-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .ig-setup-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.ig-setup-card {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 20px;
+    padding: 28px;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+.ig-setup-card:hover {
+    background: rgba(255, 255, 255, 0.07);
+    border-color: rgba(8, 145, 178, 0.3);
+}
+
+.ig-setup-card-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.5rem;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.06);
+    line-height: 1;
+    position: absolute;
+    top: 16px;
+    right: 20px;
+    pointer-events: none;
+}
+
+.ig-setup-card-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: rgba(8, 145, 178, 0.15);
+    color: #06b6d4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+}
+
+.ig-setup-card-icon svg {
+    width: 24px;
+    height: 24px;
+}
+
+.ig-setup-card h3 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #ffffff;
+    margin: 0 0 8px;
+}
+
+.ig-setup-card p {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.85rem;
+    line-height: 1.65;
+    color: rgba(255, 255, 255, 0.5);
+    margin: 0;
+    max-width: 44ch;
+}
+
+/* ============================================================
+   7. FIRST RUN INDICATOR GUIDE
+   Light section with visual AQI indicators
+   ============================================================ */
+.ig-firstrun {
+    background: #ffffff;
+    padding: 80px 24px;
+}
+
+.ig-indicator-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+@media (min-width: 640px) {
+    .ig-indicator-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+.ig-indicator-card {
+    border-radius: 16px;
+    padding: 20px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    text-align: center;
+}
+
+.ig-indicator-ring {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    border: 3px solid currentColor;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ig-indicator-ring svg {
+    width: 22px;
+    height: 22px;
+}
+
+.ig-indicator-label {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+.ig-indicator-desc {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.72rem;
+    line-height: 1.5;
+    color: #6b7280;
+}
+
+/* Colour variants */
+.ig-indicator-card--blue   { background: #eff6ff; color: #2563eb; }
+.ig-indicator-card--green  { background: #f0fdf4; color: #16a34a; }
+.ig-indicator-card--amber  { background: #fffbeb; color: #d97706; }
+.ig-indicator-card--red    { background: #fef2f2; color: #dc2626; }
+
+/* ============================================================
+   8. TIPS SECTION
+   FAQ-style, light grey background
+   ============================================================ */
+.ig-tips {
+    background: #f9fafb;
+    padding: 80px 24px;
+}
+
+.ig-tips-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    max-width: 720px;
+    margin: 0 auto;
+}
+
+.ig-tip-item {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+}
+
+.ig-tip-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 20px 0;
+    width: 100%;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+}
+
+.ig-tip-question {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #111827;
+    max-width: 60ch;
+}
+
+.ig-tip-chevron {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    color: #6b7280;
+    transition: transform 0.3s ease;
+}
+
+.ig-tip-item.active .ig-tip-chevron {
+    transform: rotate(180deg);
+}
+
+.ig-tip-answer {
+    display: none;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.88rem;
+    line-height: 1.7;
+    color: #4b5563;
+    padding-bottom: 20px;
+    max-width: 66ch;
+}
+
+.ig-tip-item.active .ig-tip-answer {
+    display: block;
+}
+
+/* ============================================================
+   9. SUPPORT BANNER
+   Dark gradient, CTA
+   ============================================================ */
+.ig-support-banner {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    padding: 64px 24px;
+    text-align: center;
+}
+
+.ig-support-banner h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.6rem, 3vw, 2.4rem);
+    font-weight: 400;
+    color: #ffffff;
+    margin: 0 0 12px;
+}
+
+.ig-support-banner p {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.55);
+    max-width: 56ch;
+    margin: 0 auto 32px;
+    line-height: 1.7;
+}
+
+.ig-support-ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ============================================================
+   SCROLL REVEAL UTILITY
+   Used by IntersectionObserver
+   ============================================================ */
+.ig-reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.ig-reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.ig-reveal-delay-1 { transition-delay: 0.1s; }
+.ig-reveal-delay-2 { transition-delay: 0.2s; }
+.ig-reveal-delay-3 { transition-delay: 0.3s; }
+.ig-reveal-delay-4 { transition-delay: 0.4s; }
+.ig-reveal-delay-5 { transition-delay: 0.5s; }
