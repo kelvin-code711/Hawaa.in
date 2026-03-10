@@ -22,7 +22,6 @@
 
         initHeroAnimations();
         initPlacementAnimation();
-        initStepTabHighlight();
         initRevealObserver();
         initTipsAccordion();
         initSmoothScroll();
@@ -161,45 +160,7 @@
     }
 
     /* ══════════════════════════════════════════════════════════
-       3. STEP TAB HIGHLIGHT
-          Updates the active pill in the sticky nav bar as the
-          user scrolls through each section.
-       ══════════════════════════════════════════════════════════ */
-    function initStepTabHighlight() {
-        var tabs = document.querySelectorAll('.ig-step-tab[data-step]');
-        if (!tabs.length) return;
-
-        var sectionIds = Array.from(tabs).map(function (t) { return t.dataset.step; });
-
-        function getActiveSection() {
-            var scrollY = window.scrollY + window.innerHeight * 0.35;
-            var active = sectionIds[0];
-            for (var i = 0; i < sectionIds.length; i++) {
-                var el = document.getElementById(sectionIds[i]);
-                if (el && el.getBoundingClientRect().top + window.scrollY <= scrollY) {
-                    active = sectionIds[i];
-                }
-            }
-            return active;
-        }
-
-        function updateTabs() {
-            var active = getActiveSection();
-            tabs.forEach(function (tab) {
-                if (tab.dataset.step === active) {
-                    tab.classList.add('active');
-                } else {
-                    tab.classList.remove('active');
-                }
-            });
-        }
-
-        window.addEventListener('scroll', updateTabs, { passive: true });
-        updateTabs();
-    }
-
-    /* ══════════════════════════════════════════════════════════
-       4. SCROLL REVEAL
+       3. SCROLL REVEAL
           Lightweight IntersectionObserver for .ig-reveal elements.
           GSAP ScrollTrigger is reserved for the complex SVG animation;
           the reveal system uses the native API to keep the page light.
@@ -224,7 +185,7 @@
     }
 
     /* ══════════════════════════════════════════════════════════
-       5. TIPS ACCORDION
+       4. TIPS ACCORDION
           Expand / collapse tip answers.
        ══════════════════════════════════════════════════════════ */
     function initTipsAccordion() {
@@ -250,7 +211,7 @@
     }
 
     /* ══════════════════════════════════════════════════════════
-       6. SMOOTH SCROLL for anchor links
+       5. SMOOTH SCROLL for anchor links
           Respects prefers-reduced-motion.
        ══════════════════════════════════════════════════════════ */
     function initSmoothScroll() {
