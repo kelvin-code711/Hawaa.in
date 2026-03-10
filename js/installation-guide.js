@@ -22,6 +22,7 @@
 
         initHeroAnimations();
         initPlacementAnimation();
+        initControlGuide();
         initRevealObserver();
         initTipsAccordion();
         initSmoothScroll();
@@ -157,6 +158,298 @@
             ease: 'none',
             repeat: -1,
         });
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       3. INTERACTIVE CONTROL GUIDE
+          Custom chromeless HTML5 player with:
+          – Translucent blur overlay that fades on hover / tap
+          – Progress bar with chapter pips
+          – Chapter nav list that highlights by currentTime
+          – Stat cards that fade in per chapter
+          Falls back to a simulated timer when no video src exists.
+       ══════════════════════════════════════════════════════════ */
+    function initControlGuide() {
+        var player        = document.getElementById('ig-cg-player');
+        var video         = document.getElementById('ig-cg-video');
+        var placeholder   = document.getElementById('ig-cg-placeholder');
+        var controls      = document.getElementById('ig-cg-controls');
+        var playBtn       = document.getElementById('ig-cg-play-btn');
+        var iconPlay      = playBtn  ? playBtn.querySelector('.ig-cg-icon-play')  : null;
+        var iconPause     = playBtn  ? playBtn.querySelector('.ig-cg-icon-pause') : null;
+        var progressTrack = document.getElementById('ig-cg-progress-track');
+        var progressFill  = document.getElementById('ig-cg-progress-fill');
+        var progressThumb = document.getElementById('ig-cg-progress-thumb');
+        var timeEl        = document.getElementById('ig-cg-time');
+        var fsBtn         = document.getElementById('ig-cg-fullscreen-btn');
+        var iconExpand    = fsBtn ? fsBtn.querySelector('.ig-cg-icon-expand')   : null;
+        var iconCompress  = fsBtn ? fsBtn.querySelector('.ig-cg-icon-compress') : null;
+        var chaptersNav   = document.getElementById('ig-cg-chapters');
+        var statBlocks    = document.getElementById('ig-cg-stat-blocks');
+        var badgeText     = document.getElementById('ig-cg-chapter-badge-text');
+
+        if (!player || !video) return;
+
+        /* ── Chapter data ──────────────────────────────────── */
+        var CHAPTERS = [
+            { name: 'Power',       time: 0  },
+            { name: 'Fan Speed',   time: 8  },
+            { name: 'Timer',       time: 16 },
+            { name: 'Auto Mode',   time: 24 },
+            { name: 'Oscillation', time: 32 },
+        ];
+        var TOTAL_DURATION = 40; /* seconds — matches last chapter + 8 s buffer */
+
+        var chapterBtns = chaptersNav  ? chaptersNav.querySelectorAll('.ig-cg-chapter-item') : [];
+        var statCards   = statBlocks   ? statBlocks.querySelectorAll('.ig-cg-stat')          : [];
+        var chapterPips = progressTrack ? progressTrack.querySelectorAll('.ig-cg-chapter-pip') : [];
+
+        var currentChapter = 0;
+        var isPlaying      = false;
+
+        /* ── Demo mode (no video src) ──────────────────────── */
+        var hasSource  = !!(video.currentSrc || (video.querySelector && video.querySelector('source[src]')));
+        var demoTime   = 0;
+        var demoRaf    = null;
+        var demoLast   = null;
+
+        /* ── Inactivity timer for controls ─────────────────── */
+        var hideTimer = null;
+
+        function showControls() {
+            player.classList.add('controls-visible');
+            clearTimeout(hideTimer);
+            hideTimer = setTimeout(function () {
+                if (isPlaying) player.classList.remove('controls-visible');
+            }, 2800);
+        }
+
+        player.addEventListener('mousemove',  showControls);
+        player.addEventListener('touchstart', showControls, { passive: true });
+        player.addEventListener('mouseleave', function () {
+            clearTimeout(hideTimer);
+            if (isPlaying) player.classList.remove('controls-visible');
+        });
+
+        /* ── Helpers ───────────────────────────────────────── */
+        function formatTime(s) {
+            var m = Math.floor(s / 60);
+            var sec = Math.floor(s % 60);
+            return m + ':' + (sec < 10 ? '0' : '') + sec;
+        }
+
+        function getChapterIndex(t) {
+            var idx = 0;
+            for (var i = 0; i < CHAPTERS.length; i++) {
+                if (t >= CHAPTERS[i].time) idx = i;
+            }
+            return idx;
+        }
+
+        function setActiveChapter(idx) {
+            if (idx === currentChapter) return;
+            currentChapter = idx;
+
+            /* Chapter nav highlight */
+            chapterBtns.forEach(function (btn, i) {
+                btn.classList.toggle('active', i === idx);
+            });
+
+            /* Chapter badge text */
+            if (badgeText) badgeText.textContent = CHAPTERS[idx].name;
+
+            /* Stat cards: swap active card */
+            statCards.forEach(function (card, i) {
+                card.classList.toggle('active', i === idx);
+            });
+        }
+
+        function updateProgress(t, duration) {
+            var pct = duration > 0 ? Math.min(t / duration, 1) : 0;
+            var pctStr = (pct * 100).toFixed(2) + '%';
+
+            if (progressFill)  progressFill.style.width  = pctStr;
+            if (progressThumb) progressThumb.style.left  = pctStr;
+            if (progressTrack) progressTrack.setAttribute('aria-valuenow', Math.round(pct * 100));
+            if (timeEl) timeEl.textContent = formatTime(t);
+
+            /* Mark passed chapter pips */
+            chapterPips.forEach(function (pip, i) {
+                pip.classList.toggle('passed', t >= CHAPTERS[i].time);
+            });
+
+            setActiveChapter(getChapterIndex(t));
+        }
+
+        function setPlayState(playing) {
+            isPlaying = playing;
+            if (iconPlay)  iconPlay.style.display  = playing ? 'none'  : '';
+            if (iconPause) iconPause.style.display = playing ? ''      : 'none';
+            if (playBtn) playBtn.setAttribute('aria-label', playing ? 'Pause' : 'Play');
+        }
+
+        /* ── Demo mode loop ────────────────────────────────── */
+        function demoTick(timestamp) {
+            if (!isPlaying) return;
+            if (demoLast === null) demoLast = timestamp;
+            var delta = (timestamp - demoLast) / 1000;
+            demoLast = timestamp;
+            demoTime = Math.min(demoTime + delta, TOTAL_DURATION);
+            updateProgress(demoTime, TOTAL_DURATION);
+            if (demoTime < TOTAL_DURATION) {
+                demoRaf = requestAnimationFrame(demoTick);
+            } else {
+                /* Reached end — stop */
+                isPlaying = false;
+                setPlayState(false);
+                demoLast = null;
+                player.classList.add('controls-visible');
+            }
+        }
+
+        /* ── Play / pause ──────────────────────────────────── */
+        function togglePlay() {
+            if (hasSource) {
+                if (video.paused) {
+                    video.play().catch(function () {});
+                } else {
+                    video.pause();
+                }
+            } else {
+                /* Demo mode */
+                isPlaying = !isPlaying;
+                setPlayState(isPlaying);
+                if (isPlaying) {
+                    if (demoTime >= TOTAL_DURATION) demoTime = 0;
+                    demoLast = null;
+                    demoRaf = requestAnimationFrame(demoTick);
+                } else {
+                    cancelAnimationFrame(demoRaf);
+                    demoLast = null;
+                }
+            }
+        }
+
+        /* Click on player body (not on controls) → toggle play */
+        player.addEventListener('click', function (e) {
+            if (e.target === player || e.target === placeholder ||
+                e.target.closest('.ig-cg-placeholder')) {
+                togglePlay();
+            }
+        });
+
+        if (playBtn) {
+            playBtn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                togglePlay();
+            });
+        }
+
+        /* ── Real video events ─────────────────────────────── */
+        if (hasSource) {
+            video.addEventListener('play',  function () { setPlayState(true);  });
+            video.addEventListener('pause', function () { setPlayState(false); player.classList.add('controls-visible'); });
+            video.addEventListener('ended', function () { setPlayState(false); player.classList.add('controls-visible'); });
+            video.addEventListener('timeupdate', function () {
+                updateProgress(video.currentTime, video.duration || TOTAL_DURATION);
+            });
+            /* Hide placeholder when video loads */
+            video.addEventListener('loadeddata', function () {
+                if (placeholder) placeholder.style.display = 'none';
+            });
+        }
+
+        /* ── Progress bar scrubbing ────────────────────────── */
+        var isScrubbing = false;
+
+        function scrubTo(e) {
+            var rect = progressTrack.getBoundingClientRect();
+            var x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
+            var pct = Math.max(0, Math.min(x / rect.width, 1));
+            var t = pct * TOTAL_DURATION;
+
+            if (hasSource && isFinite(video.duration)) {
+                video.currentTime = pct * video.duration;
+            } else {
+                demoTime = t;
+                updateProgress(demoTime, TOTAL_DURATION);
+            }
+        }
+
+        if (progressTrack) {
+            progressTrack.addEventListener('mousedown', function (e) {
+                isScrubbing = true;
+                showControls();
+                scrubTo(e);
+            });
+            progressTrack.addEventListener('touchstart', function (e) {
+                isScrubbing = true;
+                scrubTo(e);
+            }, { passive: true });
+
+            /* Keyboard: left / right arrows */
+            progressTrack.addEventListener('keydown', function (e) {
+                var step = (e.key === 'ArrowRight') ? 2 : (e.key === 'ArrowLeft') ? -2 : 0;
+                if (!step) return;
+                e.preventDefault();
+                if (hasSource && isFinite(video.duration)) {
+                    video.currentTime = Math.max(0, Math.min(video.currentTime + step, video.duration));
+                } else {
+                    demoTime = Math.max(0, Math.min(demoTime + step, TOTAL_DURATION));
+                    updateProgress(demoTime, TOTAL_DURATION);
+                }
+            });
+        }
+
+        document.addEventListener('mousemove', function (e) {
+            if (!isScrubbing) return;
+            scrubTo(e);
+        });
+        document.addEventListener('mouseup', function () { isScrubbing = false; });
+        document.addEventListener('touchend', function () { isScrubbing = false; });
+
+        /* ── Chapter nav buttons ───────────────────────────── */
+        chapterBtns.forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                var t = parseFloat(btn.getAttribute('data-time')) || 0;
+                if (hasSource && isFinite(video.duration)) {
+                    video.currentTime = t;
+                } else {
+                    demoTime = t;
+                    updateProgress(demoTime, TOTAL_DURATION);
+                    /* Auto-play when user taps a chapter */
+                    if (!isPlaying) {
+                        isPlaying = true;
+                        setPlayState(true);
+                        demoLast = null;
+                        demoRaf = requestAnimationFrame(demoTick);
+                    }
+                }
+                showControls();
+            });
+        });
+
+        /* ── Fullscreen ────────────────────────────────────── */
+        if (fsBtn) {
+            fsBtn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                if (!document.fullscreenElement) {
+                    player.requestFullscreen && player.requestFullscreen();
+                } else {
+                    document.exitFullscreen && document.exitFullscreen();
+                }
+            });
+
+            document.addEventListener('fullscreenchange', function () {
+                var isFs = !!document.fullscreenElement;
+                if (iconExpand)   iconExpand.style.display   = isFs ? 'none' : '';
+                if (iconCompress) iconCompress.style.display = isFs ? ''     : 'none';
+            });
+        }
+
+        /* ── Init: activate first chapter card ─────────────── */
+        if (statCards.length) statCards[0].classList.add('active');
+        updateProgress(0, TOTAL_DURATION);
     }
 
     /* ══════════════════════════════════════════════════════════
