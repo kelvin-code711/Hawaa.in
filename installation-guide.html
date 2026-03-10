@@ -369,10 +369,813 @@
         </section>
 
 
-        <!-- ── TIPS & CARE ───────────────────────────────────── -->
+        <!-- ── 5. INTERACTIVE CONTROL GUIDE ─────────────── -->
+        <section class="ig-control-guide" id="ig-control" aria-labelledby="control-title">
+            <div class="ig-container">
+
+                <div class="ig-cg-header ig-reveal">
+                    <p class="ig-section-eyebrow">Step 05</p>
+                    <h2 class="ig-section-title ig-reveal ig-reveal-delay-1" id="control-title">
+                        Interactive control <em class="ig-title-italic">guide</em>
+                    </h2>
+                    <p class="ig-section-desc ig-reveal ig-reveal-delay-2">
+                        Watch how each control works — tap a chapter
+                        to jump directly to that feature.
+                    </p>
+                </div>
+
+                <div class="ig-cg-layout">
+
+                    <!-- ── Video player ────────────────────── -->
+                    <div class="ig-cg-player-wrap ig-reveal ig-reveal-delay-1">
+                        <div class="ig-cg-player" id="ig-cg-player">
+
+                            <!-- Video element — add src when file is available -->
+                            <video
+                                class="ig-cg-video"
+                                id="ig-cg-video"
+                                preload="none"
+                                playsinline
+                                aria-label="Interactive control guide for Hawaa Edge"
+                            >
+                                <!-- <source src="public/videos/control-guide.webm" type="video/webm"> -->
+                            </video>
+
+                            <!-- Placeholder shown when no video source -->
+                            <div class="ig-cg-placeholder" id="ig-cg-placeholder" aria-hidden="true">
+                                <div class="ig-cg-placeholder-ring">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="1.5" width="32" height="32">
+                                        <polygon points="5 3 19 12 5 21 5 3"/>
+                                    </svg>
+                                </div>
+                                <span class="ig-cg-placeholder-label">Control guide video</span>
+                            </div>
+
+                            <!-- Chapter label badge -->
+                            <div class="ig-cg-chapter-badge" id="ig-cg-chapter-badge" aria-live="polite">
+                                <span class="ig-cg-chapter-badge-dot" aria-hidden="true"></span>
+                                <span id="ig-cg-chapter-badge-text">Power</span>
+                            </div>
+
+                            <!-- Translucent controls overlay — fades in on hover / tap -->
+                            <div class="ig-cg-controls" id="ig-cg-controls" aria-label="Video controls">
+
+                                <!-- Centre play / pause -->
+                                <button class="ig-cg-play-btn" id="ig-cg-play-btn" aria-label="Play">
+                                    <svg class="ig-cg-icon-play" viewBox="0 0 24 24" fill="currentColor" width="22" height="22" aria-hidden="true">
+                                        <polygon points="5 3 19 12 5 21 5 3"/>
+                                    </svg>
+                                    <svg class="ig-cg-icon-pause" viewBox="0 0 24 24" fill="currentColor" width="22" height="22" aria-hidden="true" style="display:none">
+                                        <rect x="6" y="4" width="4" height="16" rx="1"/>
+                                        <rect x="14" y="4" width="4" height="16" rx="1"/>
+                                    </svg>
+                                </button>
+
+                                <!-- Bottom bar -->
+                                <div class="ig-cg-bar">
+
+                                    <!-- Progress track + chapter markers -->
+                                    <div
+                                        class="ig-cg-progress-track"
+                                        id="ig-cg-progress-track"
+                                        role="slider"
+                                        aria-label="Video progress"
+                                        aria-valuemin="0"
+                                        aria-valuemax="100"
+                                        aria-valuenow="0"
+                                        tabindex="0"
+                                    >
+                                        <div class="ig-cg-progress-fill" id="ig-cg-progress-fill"></div>
+                                        <div class="ig-cg-progress-thumb" id="ig-cg-progress-thumb"></div>
+                                        <!-- Chapter markers at 0 / 20 / 40 / 60 / 80 % -->
+                                        <div class="ig-cg-chapter-pip" style="left:0%"   aria-hidden="true"></div>
+                                        <div class="ig-cg-chapter-pip" style="left:20%"  aria-hidden="true"></div>
+                                        <div class="ig-cg-chapter-pip" style="left:40%"  aria-hidden="true"></div>
+                                        <div class="ig-cg-chapter-pip" style="left:60%"  aria-hidden="true"></div>
+                                        <div class="ig-cg-chapter-pip" style="left:80%"  aria-hidden="true"></div>
+                                    </div>
+
+                                    <!-- Time display + fullscreen -->
+                                    <div class="ig-cg-bar-meta">
+                                        <span class="ig-cg-time" id="ig-cg-time" aria-label="Current time">0:00</span>
+                                        <button class="ig-cg-fullscreen-btn" id="ig-cg-fullscreen-btn" aria-label="Toggle fullscreen">
+                                            <svg class="ig-cg-icon-expand" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" aria-hidden="true">
+                                                <path d="M8 3H5a2 2 0 00-2 2v3M21 8V5a2 2 0 00-2-2h-3M16 21h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/>
+                                            </svg>
+                                            <svg class="ig-cg-icon-compress" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" aria-hidden="true" style="display:none">
+                                                <path d="M8 3v3a2 2 0 01-2 2H3M21 8h-3a2 2 0 01-2-2V3M3 16h3a2 2 0 012 2v3M16 21v-3a2 2 0 012-2h3"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+
+                                </div><!-- /.ig-cg-bar -->
+
+                            </div><!-- /.ig-cg-controls -->
+
+                        </div><!-- /.ig-cg-player -->
+                    </div><!-- /.ig-cg-player-wrap -->
+
+                    <!-- ── Sidebar: chapter nav + stat cards ─ -->
+                    <div class="ig-cg-sidebar ig-reveal ig-reveal-delay-2">
+
+                        <p class="ig-cg-sidebar-label">Chapters</p>
+
+                        <!-- Chapter navigation list -->
+                        <nav class="ig-cg-chapters" id="ig-cg-chapters" aria-label="Video chapters">
+
+                            <button class="ig-cg-chapter-item active" data-chapter="0" data-time="0">
+                                <span class="ig-cg-chapter-num" aria-hidden="true">01</span>
+                                <span class="ig-cg-chapter-name">Power</span>
+                                <span class="ig-cg-chapter-ts">0:00</span>
+                            </button>
+
+                            <button class="ig-cg-chapter-item" data-chapter="1" data-time="8">
+                                <span class="ig-cg-chapter-num" aria-hidden="true">02</span>
+                                <span class="ig-cg-chapter-name">Fan Speed</span>
+                                <span class="ig-cg-chapter-ts">0:08</span>
+                            </button>
+
+                            <button class="ig-cg-chapter-item" data-chapter="2" data-time="16">
+                                <span class="ig-cg-chapter-num" aria-hidden="true">03</span>
+                                <span class="ig-cg-chapter-name">Timer</span>
+                                <span class="ig-cg-chapter-ts">0:16</span>
+                            </button>
+
+                            <button class="ig-cg-chapter-item" data-chapter="3" data-time="24">
+                                <span class="ig-cg-chapter-num" aria-hidden="true">04</span>
+                                <span class="ig-cg-chapter-name">Auto Mode</span>
+                                <span class="ig-cg-chapter-ts">0:24</span>
+                            </button>
+
+                            <button class="ig-cg-chapter-item" data-chapter="4" data-time="32">
+                                <span class="ig-cg-chapter-num" aria-hidden="true">05</span>
+                                <span class="ig-cg-chapter-name">Oscillation</span>
+                                <span class="ig-cg-chapter-ts">0:32</span>
+                            </button>
+
+                        </nav>
+
+                        <!-- Stat / fact cards — one per chapter, fade in at timestamp -->
+                        <div class="ig-cg-stat-blocks" id="ig-cg-stat-blocks" aria-live="polite" aria-atomic="true">
+
+                            <div class="ig-cg-stat" data-chapter="0">
+                                <div class="ig-cg-stat-label">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="14" height="14" aria-hidden="true"><path d="M18.36 6.64a9 9 0 11-12.73 0M12 2v10"/></svg>
+                                    Power
+                                </div>
+                                <p class="ig-cg-stat-body">Single press to wake. LED glows blue for 8 s during boot, then switches to live air-quality colour.</p>
+                                <div class="ig-cg-stat-metric">
+                                    <span class="ig-cg-stat-val">8 s</span>
+                                    <span class="ig-cg-stat-unit">boot time</span>
+                                </div>
+                            </div>
+
+                            <div class="ig-cg-stat" data-chapter="1">
+                                <div class="ig-cg-stat-label">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="14" height="14" aria-hidden="true"><path d="M12 2a5 5 0 015 5c0 5.25-5 13-5 13S7 12.25 7 7a5 5 0 015-5z"/><circle cx="12" cy="7" r="2"/></svg>
+                                    Fan Speed
+                                </div>
+                                <p class="ig-cg-stat-body">Three manual speeds — low · medium · high. Cycle with a single press. Returns to low on next power-on.</p>
+                                <div class="ig-cg-stat-metric">
+                                    <span class="ig-cg-stat-val">28 dB</span>
+                                    <span class="ig-cg-stat-unit">at low speed</span>
+                                </div>
+                            </div>
+
+                            <div class="ig-cg-stat" data-chapter="2">
+                                <div class="ig-cg-stat-label">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="14" height="14" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                                    Timer
+                                </div>
+                                <p class="ig-cg-stat-body">Set 1, 2, 4, or 8-hour auto-off. Hold the timer button to cycle through durations. LED pulses while active.</p>
+                                <div class="ig-cg-stat-metric">
+                                    <span class="ig-cg-stat-val">4</span>
+                                    <span class="ig-cg-stat-unit">duration presets</span>
+                                </div>
+                            </div>
+
+                            <div class="ig-cg-stat" data-chapter="3">
+                                <div class="ig-cg-stat-label">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="14" height="14" aria-hidden="true"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                                    Auto Mode
+                                </div>
+                                <p class="ig-cg-stat-body">Fan speed self-adjusts to real-time PM 2.5 readings. Drops to near-silent when air is already clean.</p>
+                                <div class="ig-cg-stat-metric">
+                                    <span class="ig-cg-stat-val">8 W</span>
+                                    <span class="ig-cg-stat-unit">avg draw at auto-low</span>
+                                </div>
+                            </div>
+
+                            <div class="ig-cg-stat" data-chapter="4">
+                                <div class="ig-cg-stat-label">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="14" height="14" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                    Oscillation
+                                </div>
+                                <p class="ig-cg-stat-body">Enable 90° horizontal sweep to distribute purified air evenly across every corner of the room.</p>
+                                <div class="ig-cg-stat-metric">
+                                    <span class="ig-cg-stat-val">90°</span>
+                                    <span class="ig-cg-stat-unit">sweep arc</span>
+                                </div>
+                            </div>
+
+                        </div><!-- /.ig-cg-stat-blocks -->
+
+                    </div><!-- /.ig-cg-sidebar -->
+
+                </div><!-- /.ig-cg-layout -->
+
+            </div><!-- /.ig-container -->
+        </section>
+
+
+        <!-- ── 6. GOOGLE HOME INTEGRATION ────────────────── -->
+        <section class="ig-google-home" id="ig-google-home" aria-labelledby="google-home-title">
+            <div class="ig-container">
+
+                <p class="ig-section-eyebrow ig-reveal">Step 06</p>
+                <h2 class="ig-section-title ig-reveal ig-reveal-delay-1" id="google-home-title">
+                    Google Home <em class="ig-title-italic">integration</em>
+                </h2>
+                <p class="ig-section-desc ig-reveal ig-reveal-delay-2">
+                    Link Hawaa Edge to Google Home for hands-free voice control and smart routines.
+                    Scan the code to deep-link instantly, or follow the manual steps below.
+                </p>
+
+                <!-- ── QR block ───────────────────────────────────── -->
+                <div class="ig-gh-qr-block ig-reveal ig-reveal-delay-2">
+
+                    <div class="ig-gh-qr-visual">
+                        <div class="ig-gh-qr-frame" role="img" aria-label="QR code to link Hawaa Edge with Google Home app">
+                            <svg class="ig-gh-qr-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <!-- White background -->
+                                <rect width="200" height="200" fill="#ffffff"/>
+                                <!-- ── Finder: top-left ── -->
+                                <rect x="16" y="16" width="56" height="56" rx="4" fill="#111827"/>
+                                <rect x="24" y="24" width="40" height="40" rx="2" fill="#fff"/>
+                                <rect x="32" y="32" width="24" height="24" rx="1" fill="#111827"/>
+                                <!-- ── Finder: top-right ── -->
+                                <rect x="128" y="16" width="56" height="56" rx="4" fill="#111827"/>
+                                <rect x="136" y="24" width="40" height="40" rx="2" fill="#fff"/>
+                                <rect x="144" y="32" width="24" height="24" rx="1" fill="#111827"/>
+                                <!-- ── Finder: bottom-left ── -->
+                                <rect x="16" y="128" width="56" height="56" rx="4" fill="#111827"/>
+                                <rect x="24" y="136" width="40" height="40" rx="2" fill="#fff"/>
+                                <rect x="32" y="144" width="24" height="24" rx="1" fill="#111827"/>
+                                <!-- ── Timing patterns ── -->
+                                <rect x="80" y="64" width="8" height="8" fill="#111827"/>
+                                <rect x="96" y="64" width="8" height="8" fill="#111827"/>
+                                <rect x="112" y="64" width="8" height="8" fill="#111827"/>
+                                <rect x="64" y="80" width="8" height="8" fill="#111827"/>
+                                <rect x="64" y="96" width="8" height="8" fill="#111827"/>
+                                <rect x="64" y="112" width="8" height="8" fill="#111827"/>
+                                <!-- ── Alignment pattern (bottom-right zone) ── -->
+                                <rect x="136" y="136" width="32" height="32" rx="2" fill="#111827"/>
+                                <rect x="144" y="144" width="16" height="16" rx="1" fill="#fff"/>
+                                <rect x="148" y="148" width="8" height="8" fill="#111827"/>
+                                <!-- ── Data modules (plausible scatter) ── -->
+                                <rect x="80" y="80" width="8" height="8" fill="#111827"/>
+                                <rect x="96" y="80" width="16" height="8" fill="#111827"/>
+                                <rect x="120" y="80" width="8" height="8" fill="#111827"/>
+                                <rect x="80" y="96" width="8" height="8" fill="#111827"/>
+                                <rect x="104" y="96" width="8" height="8" fill="#111827"/>
+                                <rect x="120" y="96" width="16" height="8" fill="#111827"/>
+                                <rect x="80" y="104" width="16" height="8" fill="#111827"/>
+                                <rect x="104" y="104" width="8" height="8" fill="#111827"/>
+                                <rect x="80" y="120" width="8" height="8" fill="#111827"/>
+                                <rect x="96" y="120" width="16" height="8" fill="#111827"/>
+                                <rect x="120" y="120" width="8" height="8" fill="#111827"/>
+                                <!-- right data column -->
+                                <rect x="136" y="80" width="8" height="8" fill="#111827"/>
+                                <rect x="152" y="80" width="16" height="8" fill="#111827"/>
+                                <rect x="144" y="88" width="8" height="8" fill="#111827"/>
+                                <rect x="160" y="88" width="8" height="8" fill="#111827"/>
+                                <rect x="136" y="96" width="16" height="8" fill="#111827"/>
+                                <rect x="160" y="96" width="8" height="8" fill="#111827"/>
+                                <rect x="152" y="104" width="16" height="8" fill="#111827"/>
+                                <rect x="136" y="112" width="8" height="8" fill="#111827"/>
+                                <rect x="152" y="112" width="8" height="8" fill="#111827"/>
+                                <rect x="168" y="112" width="8" height="8" fill="#111827"/>
+                                <!-- bottom data row -->
+                                <rect x="80" y="136" width="8" height="8" fill="#111827"/>
+                                <rect x="96" y="136" width="16" height="8" fill="#111827"/>
+                                <rect x="120" y="136" width="8" height="8" fill="#111827"/>
+                                <rect x="80" y="144" width="16" height="8" fill="#111827"/>
+                                <rect x="104" y="144" width="8" height="8" fill="#111827"/>
+                                <rect x="120" y="144" width="8" height="8" fill="#111827"/>
+                                <rect x="80" y="152" width="8" height="8" fill="#111827"/>
+                                <rect x="96" y="152" width="8" height="8" fill="#111827"/>
+                                <rect x="112" y="152" width="16" height="8" fill="#111827"/>
+                                <rect x="80" y="160" width="24" height="8" fill="#111827"/>
+                                <rect x="112" y="160" width="8" height="8" fill="#111827"/>
+                                <rect x="128" y="160" width="8" height="8" fill="#111827"/>
+                                <!-- format info strips -->
+                                <rect x="80" y="16" width="8" height="8" fill="#111827"/>
+                                <rect x="96" y="16" width="8" height="8" fill="#111827"/>
+                                <rect x="112" y="16" width="8" height="8" fill="#111827"/>
+                                <rect x="16" y="80" width="8" height="8" fill="#111827"/>
+                                <rect x="16" y="96" width="8" height="8" fill="#111827"/>
+                                <rect x="16" y="112" width="8" height="8" fill="#111827"/>
+                                <rect x="80" y="24" width="8" height="8" fill="#111827"/>
+                                <rect x="112" y="24" width="8" height="8" fill="#111827"/>
+                                <rect x="24" y="80" width="8" height="8" fill="#111827"/>
+                                <rect x="24" y="112" width="8" height="8" fill="#111827"/>
+                                <!-- Logo clear zone (white) -->
+                                <rect x="84" y="84" width="32" height="32" rx="4" fill="#ffffff"/>
+                            </svg>
+                            <!-- Hawaa brand mark centred on QR -->
+                            <div class="ig-gh-qr-logo" aria-hidden="true">
+                                <span class="ig-gh-qr-logo-h">H</span>
+                            </div>
+                        </div>
+                        <p class="ig-gh-qr-hint">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <path d="M3 9V5a2 2 0 012-2h4M3 15v4a2 2 0 002 2h4M21 9V5a2 2 0 00-2-2h-4M21 15v4a2 2 0 01-2 2h-4"/>
+                            </svg>
+                            Scan with Google Home · 10–30 cm range
+                        </p>
+                    </div>
+
+                    <div class="ig-gh-qr-info">
+                        <div class="ig-gh-works-badge" aria-label="Works with Google Home">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                                <circle cx="12" cy="9" r="5"/>
+                                <path d="M12 14v4M8 22h8"/>
+                            </svg>
+                            Works with Google
+                        </div>
+                        <h3 class="ig-gh-info-title">Deep-link QR code</h3>
+                        <p class="ig-gh-info-desc">
+                            Open Google Home, tap <strong>+</strong> → <strong>Set up device</strong>,
+                            and point your camera at this code. Hawaa Edge appears instantly in your
+                            Home graph — no manual pairing needed.
+                        </p>
+                        <ul class="ig-gh-feature-list" aria-label="QR code specifications">
+                            <li>
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                                Error correction level H — 30% damage tolerance
+                            </li>
+                            <li>
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                                Safe ratio: 1 cm width per 10 cm viewing distance
+                            </li>
+                            <li>
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                                Android 6.0+ · iOS 14+ · Google Home 2.47+
+                            </li>
+                        </ul>
+                    </div>
+
+                </div><!-- /.ig-gh-qr-block -->
+
+                <!-- ── Stacked step cards ─────────────────────────── -->
+                <div class="ig-gh-steps-wrap ig-reveal">
+                    <p class="ig-gh-label">Manual setup guide</p>
+                    <div class="ig-gh-steps-track" id="ig-gh-steps-track" aria-label="Three-step manual setup">
+
+                        <!-- Step 1 -->
+                        <div class="ig-gh-step-panel">
+                            <div class="ig-gh-step-card" data-step="1">
+                                <div class="ig-gh-step-header">
+                                    <span class="ig-gh-step-num" aria-hidden="true">01</span>
+                                    <div class="ig-gh-step-icon ig-gh-step-icon--cyan" aria-hidden="true">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                                            <path d="M1.05 12a11 11 0 0121.9 0M5 12a7 7 0 0114 0M9 12a3 3 0 016 0"/>
+                                            <circle cx="12" cy="12" r="1" fill="currentColor"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <h3 class="ig-gh-step-title">Connect Wi-Fi</h3>
+                                <p class="ig-gh-step-desc">
+                                    Make sure your phone is on the <strong>2.4 GHz</strong> band of your home
+                                    network. In the Hawaa app, tap <strong>Add Device</strong> and enter your
+                                    Wi-Fi credentials. The Edge LED ring turns solid cyan once connected.
+                                </p>
+                                <span class="ig-gh-step-tag">2.4 GHz · WPA2 / WPA3</span>
+                            </div>
+                        </div>
+
+                        <!-- Step 2 -->
+                        <div class="ig-gh-step-panel">
+                            <div class="ig-gh-step-card" data-step="2">
+                                <div class="ig-gh-step-header">
+                                    <span class="ig-gh-step-num" aria-hidden="true">02</span>
+                                    <div class="ig-gh-step-icon ig-gh-step-icon--blue" aria-hidden="true">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                                            <rect x="5" y="2" width="14" height="20" rx="2"/>
+                                            <path d="M12 18h.01"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <h3 class="ig-gh-step-title">Launch Google Home</h3>
+                                <p class="ig-gh-step-desc">
+                                    Open the Google Home app and tap <strong>+</strong> → <strong>Set up device</strong>
+                                    → <strong>Works with Google</strong>. Search for <em>Hawaa</em> and sign in
+                                    with the same account used in the Hawaa app to authorise the link.
+                                </p>
+                                <span class="ig-gh-step-tag">Google Home 2.47+</span>
+                            </div>
+                        </div>
+
+                        <!-- Step 3 -->
+                        <div class="ig-gh-step-panel">
+                            <div class="ig-gh-step-card" data-step="3">
+                                <div class="ig-gh-step-header">
+                                    <span class="ig-gh-step-num" aria-hidden="true">03</span>
+                                    <div class="ig-gh-step-icon ig-gh-step-icon--green" aria-hidden="true">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                                            <path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/>
+                                            <path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <h3 class="ig-gh-step-title">Link Account</h3>
+                                <p class="ig-gh-step-desc">
+                                    Authorise Google to access your Hawaa account via OAuth 2.0.
+                                    Assign the device to a room in your Home graph. Then say
+                                    <em>"Hey Google, turn on Hawaa"</em> to confirm the link is live.
+                                </p>
+                                <span class="ig-gh-step-tag">OAuth 2.0 · ~60 seconds</span>
+                            </div>
+                        </div>
+
+                    </div><!-- /.ig-gh-steps-track -->
+                </div><!-- /.ig-gh-steps-wrap -->
+
+                <!-- ── Voice commands matrix ──────────────────────── -->
+                <div class="ig-gh-voice-wrap ig-reveal ig-reveal-delay-1">
+                    <p class="ig-gh-label">Voice commands</p>
+                    <div class="ig-gh-voice-grid" role="table" aria-label="Google Assistant voice commands for Hawaa Edge">
+                        <div class="ig-gh-voice-head" role="row">
+                            <span role="columnheader">Say this</span>
+                            <span role="columnheader">Hawaa responds</span>
+                        </div>
+                        <div class="ig-gh-voice-row" role="row">
+                            <span class="ig-gh-voice-cmd" role="cell">"Hey Google, turn on Hawaa"</span>
+                            <span class="ig-gh-voice-res" role="cell">Powers on at last used setting</span>
+                        </div>
+                        <div class="ig-gh-voice-row" role="row">
+                            <span class="ig-gh-voice-cmd" role="cell">"Hey Google, turn off Hawaa"</span>
+                            <span class="ig-gh-voice-res" role="cell">Powers the device off</span>
+                        </div>
+                        <div class="ig-gh-voice-row" role="row">
+                            <span class="ig-gh-voice-cmd" role="cell">"Hey Google, set fan speed to 5"</span>
+                            <span class="ig-gh-voice-res" role="cell">Adjusts fan to level 5 of 10</span>
+                        </div>
+                        <div class="ig-gh-voice-row" role="row">
+                            <span class="ig-gh-voice-cmd" role="cell">"Hey Google, set Hawaa to auto"</span>
+                            <span class="ig-gh-voice-res" role="cell">Enables PM2.5 auto mode</span>
+                        </div>
+                        <div class="ig-gh-voice-row" role="row">
+                            <span class="ig-gh-voice-cmd" role="cell">"Hey Google, set Hawaa speed to low"</span>
+                            <span class="ig-gh-voice-res" role="cell">Sets fan to low / sleep mode</span>
+                        </div>
+                        <div class="ig-gh-voice-row" role="row">
+                            <span class="ig-gh-voice-cmd" role="cell">"Hey Google, what's the air quality?"</span>
+                            <span class="ig-gh-voice-res" role="cell">Reads current PM2.5 &amp; AQI level</span>
+                        </div>
+                    </div><!-- /.ig-gh-voice-grid -->
+                </div><!-- /.ig-gh-voice-wrap -->
+
+            </div><!-- /.ig-container -->
+        </section>
+
+
+        <!-- ── 7. FILTER MAINTENANCE — EXPLODED VIEW ────────── -->
+        <section class="ig-filter-maintenance" id="ig-filter-maintenance" aria-labelledby="filter-maintenance-title">
+
+            <!-- Tall scroll wrapper — creates the scroll travel for sticky panel -->
+            <div class="ig-fm-scroll-wrapper">
+
+                <!-- Sticky split-screen panel -->
+                <div class="ig-fm-sticky" id="ig-fm-sticky">
+
+                    <!-- ── LEFT: Text column ─────────────────────────── -->
+                    <div class="ig-fm-text-col">
+
+                        <div class="ig-fm-header">
+                            <p class="ig-section-eyebrow">Step 07</p>
+                            <h2 class="ig-section-title" id="filter-maintenance-title">
+                                Filter maintenance <em class="ig-title-italic">exploded view</em>
+                            </h2>
+                            <p class="ig-section-desc">
+                                Scroll to disassemble the Hawaa Edge filter cartridge
+                                and understand every purification layer inside.
+                            </p>
+                        </div>
+
+                        <!-- Step panels — one shown at a time, GSAP-controlled -->
+                        <div class="ig-fm-steps-track" id="ig-fm-steps-track">
+
+                            <!-- Panel 0: Overview -->
+                            <div class="ig-fm-step" id="ig-fm-step-0">
+                                <div class="ig-fm-step-num" aria-hidden="true">01</div>
+                                <h3 class="ig-fm-step-title">Filter assembly overview</h3>
+                                <p class="ig-fm-step-desc">
+                                    The Hawaa Edge uses a sealed tri-stage filter
+                                    cartridge. Three distinct layers work together to
+                                    remove particles, gases, and odours from your room air.
+                                </p>
+                                <ul class="ig-fm-spec-list">
+                                    <li>H13 HEPA — captures 99.97 % of particles ≥ 0.3 µm</li>
+                                    <li>Activated Carbon — neutralises VOCs and cooking odours</li>
+                                    <li>Pre-filter mesh — catches large debris, extends HEPA life</li>
+                                </ul>
+                            </div>
+
+                            <!-- Panel 1: Remove Shell -->
+                            <div class="ig-fm-step" id="ig-fm-step-1">
+                                <div class="ig-fm-step-num" aria-hidden="true">02</div>
+                                <h3 class="ig-fm-step-title">Remove the outer shell</h3>
+                                <p class="ig-fm-step-desc">
+                                    Power off and unplug the unit first. Grip the outer
+                                    shell with both hands, twist counter-clockwise by 45°
+                                    until the safety lock releases, then lift straight up.
+                                </p>
+                                <div class="ig-fm-alert" role="note">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="14" height="14" aria-hidden="true">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <line x1="12" y1="8" x2="12" y2="12"/>
+                                        <line x1="12" y1="16" x2="12.01" y2="16"/>
+                                    </svg>
+                                    Always power off before opening the unit.
+                                </div>
+                            </div>
+
+                            <!-- Panel 2: Inspect & Replace -->
+                            <div class="ig-fm-step" id="ig-fm-step-2">
+                                <div class="ig-fm-step-num" aria-hidden="true">03</div>
+                                <h3 class="ig-fm-step-title">Inspect &amp; replace the cartridge</h3>
+                                <p class="ig-fm-step-desc">
+                                    Pull the filter cartridge straight up. Check filter life
+                                    in the Hawaa app — replace when below 10 %. Slot a new
+                                    genuine Hawaa H13 cartridge in and lock the shell.
+                                </p>
+                                <div class="ig-fm-replace-guide" role="list" aria-label="Filter replacement schedule">
+                                    <div class="ig-fm-replace-item" role="listitem">
+                                        <span class="ig-fm-replace-label">HEPA + Carbon cartridge</span>
+                                        <span class="ig-fm-replace-freq">Every 6 – 12 months</span>
+                                    </div>
+                                    <div class="ig-fm-replace-item" role="listitem">
+                                        <span class="ig-fm-replace-label">Pre-filter mesh</span>
+                                        <span class="ig-fm-replace-freq">Wipe monthly</span>
+                                    </div>
+                                    <div class="ig-fm-replace-item" role="listitem">
+                                        <span class="ig-fm-replace-label">Outer shell</span>
+                                        <span class="ig-fm-replace-freq">Wipe with damp cloth</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div><!-- /.ig-fm-steps-track -->
+
+                    </div><!-- /.ig-fm-text-col -->
+
+                    <!-- ── RIGHT: Diagram canvas ──────────────────────── -->
+                    <div class="ig-fm-canvas-col">
+
+                        <div class="ig-fm-canvas" id="ig-fm-canvas">
+
+                            <!-- ── SVG Exploded Diagram ──────────────────── -->
+                            <svg
+                                class="ig-fm-svg"
+                                id="ig-fm-svg"
+                                viewBox="0 0 340 490"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                                aria-hidden="true"
+                                focusable="false"
+                            >
+                                <!-- Ambient glow -->
+                                <ellipse cx="170" cy="280" rx="140" ry="200" fill="rgba(8,145,178,0.04)"/>
+
+                                <!-- ── BASE PLATE (drawn first / bottom z) ── -->
+                                <g id="ig-fm-g-base">
+                                    <!-- Back-face ellipse -->
+                                    <ellipse cx="170" cy="432" rx="100" ry="18" fill="#09111f" stroke="rgba(30,41,59,0.6)" stroke-width="1"/>
+                                    <!-- Side body -->
+                                    <rect x="70" y="402" width="200" height="30" fill="#0d1829"/>
+                                    <!-- Left/right depth edges -->
+                                    <rect x="70" y="402" width="12" height="30" fill="rgba(0,0,0,0.25)"/>
+                                    <rect x="258" y="402" width="12" height="30" fill="rgba(0,0,0,0.15)"/>
+                                    <!-- Top-face ellipse -->
+                                    <ellipse cx="170" cy="402" rx="100" ry="18" fill="#172035" stroke="#2d3d52" stroke-width="1"/>
+                                    <!-- Slot detail -->
+                                    <line x1="110" y1="418" x2="230" y2="418" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+                                    <!-- Label -->
+                                    <g class="ig-fm-label" opacity="0">
+                                        <line x1="270" y1="418" x2="304" y2="418" stroke="rgba(99,116,140,0.55)" stroke-width="1"/>
+                                        <text x="307" y="422" font-family="Outfit,sans-serif" font-size="9" fill="rgba(107,114,128,0.75)" letter-spacing="0.09em">BASE</text>
+                                    </g>
+                                </g>
+
+                                <!-- ── ACTIVATED CARBON LAYER ── -->
+                                <g id="ig-fm-g-carbon">
+                                    <!-- Back-face ellipse -->
+                                    <ellipse cx="170" cy="390" rx="96" ry="17" fill="#08101c" stroke="rgba(25,38,58,0.6)" stroke-width="1"/>
+                                    <!-- Side body -->
+                                    <rect x="74" y="328" width="192" height="62" fill="rgba(9,17,32,0.96)"/>
+                                    <!-- Carbon granule texture -->
+                                    <circle cx="94"  cy="351" r="1.5" fill="rgba(6,182,212,0.13)"/>
+                                    <circle cx="109" cy="364" r="1.5" fill="rgba(6,182,212,0.10)"/>
+                                    <circle cx="124" cy="344" r="2"   fill="rgba(6,182,212,0.14)"/>
+                                    <circle cx="139" cy="358" r="1.5" fill="rgba(6,182,212,0.09)"/>
+                                    <circle cx="154" cy="348" r="2"   fill="rgba(6,182,212,0.13)"/>
+                                    <circle cx="170" cy="366" r="1.5" fill="rgba(6,182,212,0.10)"/>
+                                    <circle cx="186" cy="342" r="2"   fill="rgba(6,182,212,0.12)"/>
+                                    <circle cx="201" cy="356" r="1.5" fill="rgba(6,182,212,0.09)"/>
+                                    <circle cx="216" cy="370" r="1.5" fill="rgba(6,182,212,0.11)"/>
+                                    <circle cx="231" cy="346" r="2"   fill="rgba(6,182,212,0.13)"/>
+                                    <circle cx="246" cy="360" r="1.5" fill="rgba(6,182,212,0.09)"/>
+                                    <!-- Depth edges -->
+                                    <rect x="74" y="328" width="10" height="62" fill="rgba(0,0,0,0.28)"/>
+                                    <rect x="256" y="328" width="10" height="62" fill="rgba(0,0,0,0.18)"/>
+                                    <!-- Top-face ellipse (blue-tinted = carbon indicator) -->
+                                    <ellipse cx="170" cy="328" rx="96" ry="17" fill="#0d1e36" stroke="rgba(8,145,178,0.55)" stroke-width="1.5"/>
+                                    <!-- Label -->
+                                    <g class="ig-fm-label" opacity="0">
+                                        <line x1="266" y1="359" x2="300" y2="359" stroke="rgba(99,116,140,0.55)" stroke-width="1"/>
+                                        <text x="303" y="355" font-family="Outfit,sans-serif" font-size="9" fill="rgba(107,114,128,0.75)" letter-spacing="0.09em">ACTIVATED</text>
+                                        <text x="303" y="365" font-family="Outfit,sans-serif" font-size="9" fill="rgba(107,114,128,0.75)" letter-spacing="0.09em">CARBON</text>
+                                    </g>
+                                </g>
+
+                                <!-- ── H13 HEPA FILTER (main, tallest layer) ── -->
+                                <g id="ig-fm-g-hepa">
+                                    <!-- Back-face ellipse -->
+                                    <ellipse cx="170" cy="320" rx="97" ry="17" fill="#08111e" stroke="rgba(25,38,58,0.6)" stroke-width="1"/>
+                                    <!-- Side body -->
+                                    <rect x="73" y="157" width="194" height="163" fill="rgba(9,16,30,0.97)"/>
+                                    <!-- HEPA pleat lines (vertical) -->
+                                    <line x1="89"  y1="157" x2="89"  y2="320" stroke="rgba(6,182,212,0.06)" stroke-width="1"/>
+                                    <line x1="103" y1="157" x2="103" y2="320" stroke="rgba(6,182,212,0.06)" stroke-width="1"/>
+                                    <line x1="117" y1="157" x2="117" y2="320" stroke="rgba(6,182,212,0.06)" stroke-width="1"/>
+                                    <line x1="131" y1="157" x2="131" y2="320" stroke="rgba(6,182,212,0.06)" stroke-width="1"/>
+                                    <line x1="145" y1="157" x2="145" y2="320" stroke="rgba(6,182,212,0.06)" stroke-width="1"/>
+                                    <line x1="159" y1="157" x2="159" y2="320" stroke="rgba(6,182,212,0.07)" stroke-width="1"/>
+                                    <line x1="173" y1="157" x2="173" y2="320" stroke="rgba(6,182,212,0.06)" stroke-width="1"/>
+                                    <line x1="187" y1="157" x2="187" y2="320" stroke="rgba(6,182,212,0.06)" stroke-width="1"/>
+                                    <line x1="201" y1="157" x2="201" y2="320" stroke="rgba(6,182,212,0.06)" stroke-width="1"/>
+                                    <line x1="215" y1="157" x2="215" y2="320" stroke="rgba(6,182,212,0.06)" stroke-width="1"/>
+                                    <line x1="229" y1="157" x2="229" y2="320" stroke="rgba(6,182,212,0.06)" stroke-width="1"/>
+                                    <line x1="243" y1="157" x2="243" y2="320" stroke="rgba(6,182,212,0.06)" stroke-width="1"/>
+                                    <line x1="257" y1="157" x2="257" y2="320" stroke="rgba(6,182,212,0.06)" stroke-width="1"/>
+                                    <!-- Depth edges -->
+                                    <rect x="73" y="157" width="11" height="163" fill="rgba(0,0,0,0.22)"/>
+                                    <rect x="256" y="157" width="11" height="163" fill="rgba(0,0,0,0.14)"/>
+                                    <!-- Top-face ellipse (bright cyan = H13 indicator) -->
+                                    <ellipse cx="170" cy="157" rx="97" ry="17" fill="#0b1e3d" stroke="#06b6d4" stroke-width="2"/>
+                                    <!-- H13 mark on top face -->
+                                    <text x="153" y="162" font-family="Outfit,sans-serif" font-size="9" font-weight="700" fill="rgba(6,182,212,0.9)" letter-spacing="0.12em">H13</text>
+                                    <!-- Label -->
+                                    <g class="ig-fm-label" opacity="0">
+                                        <line x1="267" y1="238" x2="300" y2="238" stroke="rgba(99,116,140,0.55)" stroke-width="1"/>
+                                        <text x="303" y="234" font-family="Outfit,sans-serif" font-size="9" fill="rgba(107,114,128,0.75)" letter-spacing="0.09em">H13 HEPA</text>
+                                        <text x="303" y="244" font-family="Outfit,sans-serif" font-size="9" fill="rgba(107,114,128,0.75)" letter-spacing="0.09em">FILTER</text>
+                                    </g>
+                                </g>
+
+                                <!-- ── PRE-FILTER MESH ── -->
+                                <g id="ig-fm-g-prefilter">
+                                    <!-- Back-face ellipse -->
+                                    <ellipse cx="170" cy="150" rx="98" ry="17" fill="#09121f" stroke="rgba(25,38,58,0.5)" stroke-width="1"/>
+                                    <!-- Side body (thin mesh layer) -->
+                                    <rect x="72" y="115" width="196" height="35" fill="rgba(11,19,34,0.88)"/>
+                                    <!-- Mesh cross-hatch texture -->
+                                    <line x1="88"  y1="115" x2="88"  y2="150" stroke="rgba(255,255,255,0.055)" stroke-width="1"/>
+                                    <line x1="104" y1="115" x2="104" y2="150" stroke="rgba(255,255,255,0.055)" stroke-width="1"/>
+                                    <line x1="120" y1="115" x2="120" y2="150" stroke="rgba(255,255,255,0.055)" stroke-width="1"/>
+                                    <line x1="136" y1="115" x2="136" y2="150" stroke="rgba(255,255,255,0.055)" stroke-width="1"/>
+                                    <line x1="152" y1="115" x2="152" y2="150" stroke="rgba(255,255,255,0.055)" stroke-width="1"/>
+                                    <line x1="168" y1="115" x2="168" y2="150" stroke="rgba(255,255,255,0.055)" stroke-width="1"/>
+                                    <line x1="184" y1="115" x2="184" y2="150" stroke="rgba(255,255,255,0.055)" stroke-width="1"/>
+                                    <line x1="200" y1="115" x2="200" y2="150" stroke="rgba(255,255,255,0.055)" stroke-width="1"/>
+                                    <line x1="216" y1="115" x2="216" y2="150" stroke="rgba(255,255,255,0.055)" stroke-width="1"/>
+                                    <line x1="232" y1="115" x2="232" y2="150" stroke="rgba(255,255,255,0.055)" stroke-width="1"/>
+                                    <line x1="248" y1="115" x2="248" y2="150" stroke="rgba(255,255,255,0.055)" stroke-width="1"/>
+                                    <line x1="72"  y1="125" x2="268" y2="125" stroke="rgba(255,255,255,0.045)" stroke-width="1"/>
+                                    <line x1="72"  y1="133" x2="268" y2="133" stroke="rgba(255,255,255,0.045)" stroke-width="1"/>
+                                    <line x1="72"  y1="141" x2="268" y2="141" stroke="rgba(255,255,255,0.035)" stroke-width="1"/>
+                                    <!-- Depth edges -->
+                                    <rect x="72" y="115" width="10" height="35" fill="rgba(0,0,0,0.22)"/>
+                                    <rect x="258" y="115" width="10" height="35" fill="rgba(0,0,0,0.14)"/>
+                                    <!-- Top-face ellipse (dashed = mesh indicator) -->
+                                    <ellipse cx="170" cy="115" rx="98" ry="17" fill="#182d45" stroke="#38bdf8" stroke-width="1" stroke-dasharray="5 3"/>
+                                    <!-- Label -->
+                                    <g class="ig-fm-label" opacity="0">
+                                        <line x1="268" y1="132" x2="300" y2="132" stroke="rgba(99,116,140,0.55)" stroke-width="1"/>
+                                        <text x="303" y="128" font-family="Outfit,sans-serif" font-size="9" fill="rgba(107,114,128,0.75)" letter-spacing="0.09em">PRE-FILTER</text>
+                                        <text x="303" y="138" font-family="Outfit,sans-serif" font-size="9" fill="rgba(107,114,128,0.75)" letter-spacing="0.09em">MESH</text>
+                                    </g>
+                                </g>
+
+                                <!-- ── OUTER SHELL (semi-transparent, painted over inner layers) ── -->
+                                <g id="ig-fm-g-shell">
+                                    <!-- Shell bottom ring -->
+                                    <ellipse cx="170" cy="440" rx="106" ry="19" fill="#0c1929" stroke="rgba(37,99,235,0.3)" stroke-width="1"/>
+                                    <!-- Inner void at base -->
+                                    <ellipse cx="170" cy="438" rx="90" ry="14" fill="#070d18"/>
+                                    <!-- Shell body (semi-opaque — covers inner layers in assembled state) -->
+                                    <rect x="64" y="108" width="212" height="332" fill="rgba(10,18,34,0.92)"/>
+                                    <!-- Depth edges -->
+                                    <rect x="64" y="108" width="15" height="332" fill="rgba(0,0,0,0.30)"/>
+                                    <rect x="261" y="108" width="15" height="332" fill="rgba(0,0,0,0.20)"/>
+                                    <!-- Vent slot lines (horizontal) -->
+                                    <line x1="68" y1="210" x2="272" y2="210" stroke="rgba(255,255,255,0.04)" stroke-width="1.5"/>
+                                    <line x1="68" y1="228" x2="272" y2="228" stroke="rgba(255,255,255,0.04)" stroke-width="1.5"/>
+                                    <line x1="68" y1="246" x2="272" y2="246" stroke="rgba(255,255,255,0.04)" stroke-width="1.5"/>
+                                    <line x1="68" y1="264" x2="272" y2="264" stroke="rgba(255,255,255,0.035)" stroke-width="1.5"/>
+                                    <line x1="68" y1="282" x2="272" y2="282" stroke="rgba(255,255,255,0.035)" stroke-width="1.5"/>
+                                    <line x1="68" y1="300" x2="272" y2="300" stroke="rgba(255,255,255,0.03)" stroke-width="1.5"/>
+                                    <line x1="68" y1="318" x2="272" y2="318" stroke="rgba(255,255,255,0.03)" stroke-width="1.5"/>
+                                    <line x1="68" y1="336" x2="272" y2="336" stroke="rgba(255,255,255,0.03)" stroke-width="1.5"/>
+                                    <line x1="68" y1="354" x2="272" y2="354" stroke="rgba(255,255,255,0.025)" stroke-width="1.5"/>
+                                    <!-- Shell top collar -->
+                                    <ellipse cx="170" cy="108" rx="106" ry="19" fill="#1a2d48" stroke="rgba(37,99,235,0.55)" stroke-width="1.5"/>
+                                    <!-- LED ring indicator -->
+                                    <ellipse cx="170" cy="108" rx="84" ry="14" fill="none" stroke="rgba(6,182,212,0.5)" stroke-width="2"/>
+                                    <!-- Label -->
+                                    <g class="ig-fm-label" opacity="0">
+                                        <line x1="270" y1="274" x2="300" y2="274" stroke="rgba(99,116,140,0.55)" stroke-width="1"/>
+                                        <text x="303" y="270" font-family="Outfit,sans-serif" font-size="9" fill="rgba(107,114,128,0.75)" letter-spacing="0.09em">OUTER</text>
+                                        <text x="303" y="280" font-family="Outfit,sans-serif" font-size="9" fill="rgba(107,114,128,0.75)" letter-spacing="0.09em">SHELL</text>
+                                    </g>
+                                </g>
+
+                                <!-- ── TOP CAP (painted last / highest z) ── -->
+                                <g id="ig-fm-g-cap">
+                                    <!-- Cap bottom join ring -->
+                                    <ellipse cx="170" cy="112" rx="106" ry="19" fill="#0c1929" stroke="rgba(25,38,58,0.4)" stroke-width="1"/>
+                                    <!-- Cap side body -->
+                                    <rect x="64" y="78" width="212" height="34" fill="#1f3248"/>
+                                    <!-- Depth edges -->
+                                    <rect x="64" y="78" width="14" height="34" fill="rgba(0,0,0,0.28)"/>
+                                    <rect x="262" y="78" width="14" height="34" fill="rgba(0,0,0,0.18)"/>
+                                    <!-- Cap top face -->
+                                    <ellipse cx="170" cy="78" rx="106" ry="19" fill="#253c58" stroke="#3d5570" stroke-width="1.5"/>
+                                    <!-- Grip ring on top face -->
+                                    <ellipse cx="170" cy="78" rx="38" ry="7" fill="none" stroke="rgba(255,255,255,0.09)" stroke-width="1"/>
+                                    <!-- Hawaa H mark -->
+                                    <text x="163" y="83" font-family="Outfit,sans-serif" font-size="12" font-weight="600" fill="rgba(255,255,255,0.32)" letter-spacing="0.04em">H</text>
+                                    <!-- CCW rotation arc (shows twist direction) -->
+                                    <path d="M 130 66 A 40 8 0 0 0 160 58" stroke="rgba(6,182,212,0.35)" stroke-width="1.5" fill="none"/>
+                                    <path d="M 130 66 L 125 63 M 130 66 L 133 61" stroke="rgba(6,182,212,0.35)" stroke-width="1.5" stroke-linecap="round"/>
+                                    <!-- Label -->
+                                    <g class="ig-fm-label" opacity="0">
+                                        <line x1="270" y1="96" x2="300" y2="96" stroke="rgba(99,116,140,0.55)" stroke-width="1"/>
+                                        <text x="303" y="92" font-family="Outfit,sans-serif" font-size="9" fill="rgba(107,114,128,0.75)" letter-spacing="0.09em">TOP CAP</text>
+                                        <text x="303" y="102" font-family="Outfit,sans-serif" font-size="9" fill="rgba(6,182,212,0.6)" letter-spacing="0.08em">TWIST 45°</text>
+                                    </g>
+                                </g>
+
+                            </svg><!-- /.ig-fm-svg -->
+
+                            <!-- ── Hotspot: Pre-filter ─────────────────── -->
+                            <div class="ig-fm-hotspot ig-fm-hotspot--tooltip-left" id="ig-fm-hs-pre" style="top:19%;right:16%" aria-label="Pre-filter hotspot">
+                                <div class="ig-fm-dot" tabindex="0" role="button" aria-haspopup="true" aria-label="Pre-filter mesh info"></div>
+                                <div class="ig-fm-tooltip" role="tooltip" id="ig-fm-tip-pre">
+                                    <strong>Pre-filter Mesh</strong>
+                                    <p>Captures hair, lint, and coarse dust. Wipe monthly with a dry brush to extend HEPA life significantly.</p>
+                                </div>
+                            </div>
+
+                            <!-- ── Hotspot: H13 HEPA ───────────────────── -->
+                            <div class="ig-fm-hotspot ig-fm-hotspot--tooltip-left" id="ig-fm-hs-hepa" style="top:46%;right:16%" aria-label="HEPA filter hotspot">
+                                <div class="ig-fm-dot" tabindex="0" role="button" aria-haspopup="true" aria-label="H13 HEPA filter info"></div>
+                                <div class="ig-fm-tooltip" role="tooltip" id="ig-fm-tip-hepa">
+                                    <strong>H13 HEPA Filter</strong>
+                                    <p>Medical-grade filtration — removes 99.97 % of particles ≥ 0.3 µm including PM2.5, pollen, and allergens.</p>
+                                </div>
+                            </div>
+
+                            <!-- ── Hotspot: Activated Carbon ──────────── -->
+                            <div class="ig-fm-hotspot ig-fm-hotspot--tooltip-left" id="ig-fm-hs-carbon" style="top:74%;right:16%" aria-label="Carbon layer hotspot">
+                                <div class="ig-fm-dot" tabindex="0" role="button" aria-haspopup="true" aria-label="Activated carbon layer info"></div>
+                                <div class="ig-fm-tooltip" role="tooltip" id="ig-fm-tip-carbon">
+                                    <strong>Activated Carbon</strong>
+                                    <p>Adsorbs VOCs, formaldehyde, and household odours from cooking, pets, and cleaning products.</p>
+                                </div>
+                            </div>
+
+                        </div><!-- /.ig-fm-canvas -->
+
+                        <!-- Scroll cue -->
+                        <div class="ig-fm-scroll-cue" id="ig-fm-scroll-cue" aria-hidden="true">
+                            <span>Scroll to explode</span>
+                        </div>
+
+                    </div><!-- /.ig-fm-canvas-col -->
+
+                </div><!-- /.ig-fm-sticky -->
+
+            </div><!-- /.ig-fm-scroll-wrapper -->
+
+        </section>
+
+
+        <!-- ── 8. TIPS & CARE ─────────────────────────────── -->
         <section class="ig-tips" id="ig-tips" aria-labelledby="tips-title">
             <div class="ig-container">
-                <p class="ig-section-eyebrow ig-reveal" style="text-align:center">Step 06</p>
+                <p class="ig-section-eyebrow ig-reveal" style="text-align:center">Step 08</p>
                 <h2 class="ig-section-title ig-reveal ig-reveal-delay-1" style="text-align:center; margin:0 auto 16px;" id="tips-title">
                     Tips &amp; ongoing care
                 </h2>
