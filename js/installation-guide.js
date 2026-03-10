@@ -23,6 +23,7 @@
         initHeroAnimations();
         initPlacementAnimation();
         initControlGuide();
+        initGoogleHomeCards();
         initRevealObserver();
         initTipsAccordion();
         initSmoothScroll();
@@ -450,6 +451,49 @@
         /* ── Init: activate first chapter card ─────────────── */
         if (statCards.length) statCards[0].classList.add('active');
         updateProgress(0, TOTAL_DURATION);
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       GOOGLE HOME — stacked cards active-state highlight
+       Uses ScrollTrigger to mark the frontmost card `.active`
+       so the card that is "on top" can get a subtle accent border.
+       ══════════════════════════════════════════════════════════ */
+    function initGoogleHomeCards() {
+        var track = document.getElementById('ig-gh-steps-track');
+        if (!track) return;
+
+        var panels = track.querySelectorAll('.ig-gh-step-panel');
+        if (!panels.length) return;
+
+        panels.forEach(function (panel, idx) {
+            var card = panel.querySelector('.ig-gh-step-card');
+            if (!card) return;
+
+            ScrollTrigger.create({
+                trigger: panel,
+                start: 'top 55%',
+                end: 'bottom 20%',
+                onEnter: function () {
+                    panels.forEach(function (p) {
+                        var c = p.querySelector('.ig-gh-step-card');
+                        if (c) c.classList.remove('active');
+                    });
+                    card.classList.add('active');
+                },
+                onEnterBack: function () {
+                    /* Re-activate this card when scrolling back up */
+                    panels.forEach(function (p) {
+                        var c = p.querySelector('.ig-gh-step-card');
+                        if (c) c.classList.remove('active');
+                    });
+                    card.classList.add('active');
+                },
+            });
+        });
+
+        /* Activate first card immediately */
+        var firstCard = track.querySelector('.ig-gh-step-card');
+        if (firstCard) firstCard.classList.add('active');
     }
 
     /* ══════════════════════════════════════════════════════════

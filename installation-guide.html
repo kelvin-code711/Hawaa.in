@@ -801,10 +801,262 @@
         </section>
 
 
+        <!-- ── 6. GOOGLE HOME INTEGRATION ────────────────── -->
+        <section class="ig-google-home" id="ig-google-home" aria-labelledby="google-home-title">
+            <div class="ig-container">
+
+                <p class="ig-section-eyebrow ig-reveal">Step 06</p>
+                <h2 class="ig-section-title ig-reveal ig-reveal-delay-1" id="google-home-title">
+                    Google Home <em class="ig-title-italic">integration</em>
+                </h2>
+                <p class="ig-section-desc ig-reveal ig-reveal-delay-2">
+                    Link Hawaa Edge to Google Home for hands-free voice control and smart routines.
+                    Scan the code to deep-link instantly, or follow the manual steps below.
+                </p>
+
+                <!-- ── QR block ───────────────────────────────────── -->
+                <div class="ig-gh-qr-block ig-reveal ig-reveal-delay-2">
+
+                    <div class="ig-gh-qr-visual">
+                        <div class="ig-gh-qr-frame" role="img" aria-label="QR code to link Hawaa Edge with Google Home app">
+                            <svg class="ig-gh-qr-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <!-- White background -->
+                                <rect width="200" height="200" fill="#ffffff"/>
+                                <!-- ── Finder: top-left ── -->
+                                <rect x="16" y="16" width="56" height="56" rx="4" fill="#111827"/>
+                                <rect x="24" y="24" width="40" height="40" rx="2" fill="#fff"/>
+                                <rect x="32" y="32" width="24" height="24" rx="1" fill="#111827"/>
+                                <!-- ── Finder: top-right ── -->
+                                <rect x="128" y="16" width="56" height="56" rx="4" fill="#111827"/>
+                                <rect x="136" y="24" width="40" height="40" rx="2" fill="#fff"/>
+                                <rect x="144" y="32" width="24" height="24" rx="1" fill="#111827"/>
+                                <!-- ── Finder: bottom-left ── -->
+                                <rect x="16" y="128" width="56" height="56" rx="4" fill="#111827"/>
+                                <rect x="24" y="136" width="40" height="40" rx="2" fill="#fff"/>
+                                <rect x="32" y="144" width="24" height="24" rx="1" fill="#111827"/>
+                                <!-- ── Timing patterns ── -->
+                                <rect x="80" y="64" width="8" height="8" fill="#111827"/>
+                                <rect x="96" y="64" width="8" height="8" fill="#111827"/>
+                                <rect x="112" y="64" width="8" height="8" fill="#111827"/>
+                                <rect x="64" y="80" width="8" height="8" fill="#111827"/>
+                                <rect x="64" y="96" width="8" height="8" fill="#111827"/>
+                                <rect x="64" y="112" width="8" height="8" fill="#111827"/>
+                                <!-- ── Alignment pattern (bottom-right zone) ── -->
+                                <rect x="136" y="136" width="32" height="32" rx="2" fill="#111827"/>
+                                <rect x="144" y="144" width="16" height="16" rx="1" fill="#fff"/>
+                                <rect x="148" y="148" width="8" height="8" fill="#111827"/>
+                                <!-- ── Data modules (plausible scatter) ── -->
+                                <rect x="80" y="80" width="8" height="8" fill="#111827"/>
+                                <rect x="96" y="80" width="16" height="8" fill="#111827"/>
+                                <rect x="120" y="80" width="8" height="8" fill="#111827"/>
+                                <rect x="80" y="96" width="8" height="8" fill="#111827"/>
+                                <rect x="104" y="96" width="8" height="8" fill="#111827"/>
+                                <rect x="120" y="96" width="16" height="8" fill="#111827"/>
+                                <rect x="80" y="104" width="16" height="8" fill="#111827"/>
+                                <rect x="104" y="104" width="8" height="8" fill="#111827"/>
+                                <rect x="80" y="120" width="8" height="8" fill="#111827"/>
+                                <rect x="96" y="120" width="16" height="8" fill="#111827"/>
+                                <rect x="120" y="120" width="8" height="8" fill="#111827"/>
+                                <!-- right data column -->
+                                <rect x="136" y="80" width="8" height="8" fill="#111827"/>
+                                <rect x="152" y="80" width="16" height="8" fill="#111827"/>
+                                <rect x="144" y="88" width="8" height="8" fill="#111827"/>
+                                <rect x="160" y="88" width="8" height="8" fill="#111827"/>
+                                <rect x="136" y="96" width="16" height="8" fill="#111827"/>
+                                <rect x="160" y="96" width="8" height="8" fill="#111827"/>
+                                <rect x="152" y="104" width="16" height="8" fill="#111827"/>
+                                <rect x="136" y="112" width="8" height="8" fill="#111827"/>
+                                <rect x="152" y="112" width="8" height="8" fill="#111827"/>
+                                <rect x="168" y="112" width="8" height="8" fill="#111827"/>
+                                <!-- bottom data row -->
+                                <rect x="80" y="136" width="8" height="8" fill="#111827"/>
+                                <rect x="96" y="136" width="16" height="8" fill="#111827"/>
+                                <rect x="120" y="136" width="8" height="8" fill="#111827"/>
+                                <rect x="80" y="144" width="16" height="8" fill="#111827"/>
+                                <rect x="104" y="144" width="8" height="8" fill="#111827"/>
+                                <rect x="120" y="144" width="8" height="8" fill="#111827"/>
+                                <rect x="80" y="152" width="8" height="8" fill="#111827"/>
+                                <rect x="96" y="152" width="8" height="8" fill="#111827"/>
+                                <rect x="112" y="152" width="16" height="8" fill="#111827"/>
+                                <rect x="80" y="160" width="24" height="8" fill="#111827"/>
+                                <rect x="112" y="160" width="8" height="8" fill="#111827"/>
+                                <rect x="128" y="160" width="8" height="8" fill="#111827"/>
+                                <!-- format info strips -->
+                                <rect x="80" y="16" width="8" height="8" fill="#111827"/>
+                                <rect x="96" y="16" width="8" height="8" fill="#111827"/>
+                                <rect x="112" y="16" width="8" height="8" fill="#111827"/>
+                                <rect x="16" y="80" width="8" height="8" fill="#111827"/>
+                                <rect x="16" y="96" width="8" height="8" fill="#111827"/>
+                                <rect x="16" y="112" width="8" height="8" fill="#111827"/>
+                                <rect x="80" y="24" width="8" height="8" fill="#111827"/>
+                                <rect x="112" y="24" width="8" height="8" fill="#111827"/>
+                                <rect x="24" y="80" width="8" height="8" fill="#111827"/>
+                                <rect x="24" y="112" width="8" height="8" fill="#111827"/>
+                                <!-- Logo clear zone (white) -->
+                                <rect x="84" y="84" width="32" height="32" rx="4" fill="#ffffff"/>
+                            </svg>
+                            <!-- Hawaa brand mark centred on QR -->
+                            <div class="ig-gh-qr-logo" aria-hidden="true">
+                                <span class="ig-gh-qr-logo-h">H</span>
+                            </div>
+                        </div>
+                        <p class="ig-gh-qr-hint">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <path d="M3 9V5a2 2 0 012-2h4M3 15v4a2 2 0 002 2h4M21 9V5a2 2 0 00-2-2h-4M21 15v4a2 2 0 01-2 2h-4"/>
+                            </svg>
+                            Scan with Google Home · 10–30 cm range
+                        </p>
+                    </div>
+
+                    <div class="ig-gh-qr-info">
+                        <div class="ig-gh-works-badge" aria-label="Works with Google Home">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                                <circle cx="12" cy="9" r="5"/>
+                                <path d="M12 14v4M8 22h8"/>
+                            </svg>
+                            Works with Google
+                        </div>
+                        <h3 class="ig-gh-info-title">Deep-link QR code</h3>
+                        <p class="ig-gh-info-desc">
+                            Open Google Home, tap <strong>+</strong> → <strong>Set up device</strong>,
+                            and point your camera at this code. Hawaa Edge appears instantly in your
+                            Home graph — no manual pairing needed.
+                        </p>
+                        <ul class="ig-gh-feature-list" aria-label="QR code specifications">
+                            <li>
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                                Error correction level H — 30% damage tolerance
+                            </li>
+                            <li>
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                                Safe ratio: 1 cm width per 10 cm viewing distance
+                            </li>
+                            <li>
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                                Android 6.0+ · iOS 14+ · Google Home 2.47+
+                            </li>
+                        </ul>
+                    </div>
+
+                </div><!-- /.ig-gh-qr-block -->
+
+                <!-- ── Stacked step cards ─────────────────────────── -->
+                <div class="ig-gh-steps-wrap ig-reveal">
+                    <p class="ig-gh-label">Manual setup guide</p>
+                    <div class="ig-gh-steps-track" id="ig-gh-steps-track" aria-label="Three-step manual setup">
+
+                        <!-- Step 1 -->
+                        <div class="ig-gh-step-panel">
+                            <div class="ig-gh-step-card" data-step="1">
+                                <div class="ig-gh-step-header">
+                                    <span class="ig-gh-step-num" aria-hidden="true">01</span>
+                                    <div class="ig-gh-step-icon ig-gh-step-icon--cyan" aria-hidden="true">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                                            <path d="M1.05 12a11 11 0 0121.9 0M5 12a7 7 0 0114 0M9 12a3 3 0 016 0"/>
+                                            <circle cx="12" cy="12" r="1" fill="currentColor"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <h3 class="ig-gh-step-title">Connect Wi-Fi</h3>
+                                <p class="ig-gh-step-desc">
+                                    Make sure your phone is on the <strong>2.4 GHz</strong> band of your home
+                                    network. In the Hawaa app, tap <strong>Add Device</strong> and enter your
+                                    Wi-Fi credentials. The Edge LED ring turns solid cyan once connected.
+                                </p>
+                                <span class="ig-gh-step-tag">2.4 GHz · WPA2 / WPA3</span>
+                            </div>
+                        </div>
+
+                        <!-- Step 2 -->
+                        <div class="ig-gh-step-panel">
+                            <div class="ig-gh-step-card" data-step="2">
+                                <div class="ig-gh-step-header">
+                                    <span class="ig-gh-step-num" aria-hidden="true">02</span>
+                                    <div class="ig-gh-step-icon ig-gh-step-icon--blue" aria-hidden="true">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                                            <rect x="5" y="2" width="14" height="20" rx="2"/>
+                                            <path d="M12 18h.01"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <h3 class="ig-gh-step-title">Launch Google Home</h3>
+                                <p class="ig-gh-step-desc">
+                                    Open the Google Home app and tap <strong>+</strong> → <strong>Set up device</strong>
+                                    → <strong>Works with Google</strong>. Search for <em>Hawaa</em> and sign in
+                                    with the same account used in the Hawaa app to authorise the link.
+                                </p>
+                                <span class="ig-gh-step-tag">Google Home 2.47+</span>
+                            </div>
+                        </div>
+
+                        <!-- Step 3 -->
+                        <div class="ig-gh-step-panel">
+                            <div class="ig-gh-step-card" data-step="3">
+                                <div class="ig-gh-step-header">
+                                    <span class="ig-gh-step-num" aria-hidden="true">03</span>
+                                    <div class="ig-gh-step-icon ig-gh-step-icon--green" aria-hidden="true">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                                            <path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/>
+                                            <path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <h3 class="ig-gh-step-title">Link Account</h3>
+                                <p class="ig-gh-step-desc">
+                                    Authorise Google to access your Hawaa account via OAuth 2.0.
+                                    Assign the device to a room in your Home graph. Then say
+                                    <em>"Hey Google, turn on Hawaa"</em> to confirm the link is live.
+                                </p>
+                                <span class="ig-gh-step-tag">OAuth 2.0 · ~60 seconds</span>
+                            </div>
+                        </div>
+
+                    </div><!-- /.ig-gh-steps-track -->
+                </div><!-- /.ig-gh-steps-wrap -->
+
+                <!-- ── Voice commands matrix ──────────────────────── -->
+                <div class="ig-gh-voice-wrap ig-reveal ig-reveal-delay-1">
+                    <p class="ig-gh-label">Voice commands</p>
+                    <div class="ig-gh-voice-grid" role="table" aria-label="Google Assistant voice commands for Hawaa Edge">
+                        <div class="ig-gh-voice-head" role="row">
+                            <span role="columnheader">Say this</span>
+                            <span role="columnheader">Hawaa responds</span>
+                        </div>
+                        <div class="ig-gh-voice-row" role="row">
+                            <span class="ig-gh-voice-cmd" role="cell">"Hey Google, turn on Hawaa"</span>
+                            <span class="ig-gh-voice-res" role="cell">Powers on at last used setting</span>
+                        </div>
+                        <div class="ig-gh-voice-row" role="row">
+                            <span class="ig-gh-voice-cmd" role="cell">"Hey Google, turn off Hawaa"</span>
+                            <span class="ig-gh-voice-res" role="cell">Powers the device off</span>
+                        </div>
+                        <div class="ig-gh-voice-row" role="row">
+                            <span class="ig-gh-voice-cmd" role="cell">"Hey Google, set fan speed to 5"</span>
+                            <span class="ig-gh-voice-res" role="cell">Adjusts fan to level 5 of 10</span>
+                        </div>
+                        <div class="ig-gh-voice-row" role="row">
+                            <span class="ig-gh-voice-cmd" role="cell">"Hey Google, set Hawaa to auto"</span>
+                            <span class="ig-gh-voice-res" role="cell">Enables PM2.5 auto mode</span>
+                        </div>
+                        <div class="ig-gh-voice-row" role="row">
+                            <span class="ig-gh-voice-cmd" role="cell">"Hey Google, set Hawaa speed to low"</span>
+                            <span class="ig-gh-voice-res" role="cell">Sets fan to low / sleep mode</span>
+                        </div>
+                        <div class="ig-gh-voice-row" role="row">
+                            <span class="ig-gh-voice-cmd" role="cell">"Hey Google, what's the air quality?"</span>
+                            <span class="ig-gh-voice-res" role="cell">Reads current PM2.5 &amp; AQI level</span>
+                        </div>
+                    </div><!-- /.ig-gh-voice-grid -->
+                </div><!-- /.ig-gh-voice-wrap -->
+
+            </div><!-- /.ig-container -->
+        </section>
+
+
         <!-- ── 7. TIPS & CARE ─────────────────────────────── -->
         <section class="ig-tips" id="ig-tips" aria-labelledby="tips-title">
             <div class="ig-container">
-                <p class="ig-section-eyebrow ig-reveal" style="text-align:center">Step 06</p>
+                <p class="ig-section-eyebrow ig-reveal" style="text-align:center">Step 07</p>
                 <h2 class="ig-section-title ig-reveal ig-reveal-delay-1" style="text-align:center; margin:0 auto 16px;" id="tips-title">
                     Tips &amp; ongoing care
                 </h2>
