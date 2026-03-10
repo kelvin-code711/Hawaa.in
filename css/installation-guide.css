@@ -278,73 +278,7 @@
 }
 
 /* ============================================================
-   2. QUICK STEPS NAV BAR
-   Sticky progress indicator
-   ============================================================ */
-.ig-steps-bar {
-    position: sticky;
-    top: 72px;
-    z-index: 40;
-    background: rgba(17, 24, 39, 0.85);
-    backdrop-filter: blur(20px) saturate(160%);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
-    padding: 0 24px;
-}
-
-.ig-steps-bar-inner {
-    max-width: 1280px;
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    gap: 0;
-    overflow-x: auto;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-}
-
-.ig-steps-bar-inner::-webkit-scrollbar { display: none; }
-
-.ig-step-tab {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 14px 20px;
-    font-family: 'Outfit', sans-serif;
-    font-size: 0.78rem;
-    font-weight: 500;
-    color: rgba(255, 255, 255, 0.4);
-    white-space: nowrap;
-    text-decoration: none;
-    border-bottom: 2px solid transparent;
-    transition: color 0.25s ease, border-color 0.25s ease;
-}
-
-.ig-step-tab:hover,
-.ig-step-tab.active {
-    color: #06b6d4;
-    border-bottom-color: #06b6d4;
-}
-
-.ig-step-tab-num {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.08);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.65rem;
-    font-weight: 700;
-    transition: background 0.25s ease;
-}
-
-.ig-step-tab.active .ig-step-tab-num {
-    background: #0891b2;
-    color: #fff;
-}
-
-/* ============================================================
-   3. UNBOXING SECTION
+   2. UNBOXING SECTION
    What's in the box — light background
    ============================================================ */
 .ig-unboxing {
@@ -846,73 +780,7 @@
 }
 
 /* ============================================================
-   7. FIRST RUN INDICATOR GUIDE
-   Light section with visual AQI indicators
-   ============================================================ */
-.ig-firstrun {
-    background: #ffffff;
-    padding: 80px 24px;
-}
-
-.ig-indicator-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-}
-
-@media (min-width: 640px) {
-    .ig-indicator-grid {
-        grid-template-columns: repeat(4, 1fr);
-    }
-}
-
-.ig-indicator-card {
-    border-radius: 16px;
-    padding: 20px 16px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    text-align: center;
-}
-
-.ig-indicator-ring {
-    width: 52px;
-    height: 52px;
-    border-radius: 50%;
-    border: 3px solid currentColor;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.ig-indicator-ring svg {
-    width: 22px;
-    height: 22px;
-}
-
-.ig-indicator-label {
-    font-family: 'Outfit', sans-serif;
-    font-size: 0.8rem;
-    font-weight: 600;
-    line-height: 1.3;
-}
-
-.ig-indicator-desc {
-    font-family: 'Outfit', sans-serif;
-    font-size: 0.72rem;
-    line-height: 1.5;
-    color: #6b7280;
-}
-
-/* Colour variants */
-.ig-indicator-card--blue   { background: #eff6ff; color: #2563eb; }
-.ig-indicator-card--green  { background: #f0fdf4; color: #16a34a; }
-.ig-indicator-card--amber  { background: #fffbeb; color: #d97706; }
-.ig-indicator-card--red    { background: #fef2f2; color: #dc2626; }
-
-/* ============================================================
-   8. TIPS SECTION
+   7. TIPS SECTION
    FAQ-style, light grey background
    ============================================================ */
 .ig-tips {
