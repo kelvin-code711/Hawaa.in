@@ -1381,3 +1381,407 @@
         pointer-events: auto;
     }
 }
+
+/* ============================================================
+   GOOGLE HOME INTEGRATION SECTION  (Step 06)
+   Light background — alternates with dark control guide above
+   ============================================================ */
+.ig-google-home {
+    background: #f9fafb;
+    padding: 80px 24px;
+    overflow: hidden;
+}
+
+@media (min-width: 768px) {
+    .ig-google-home {
+        padding: 100px 40px;
+    }
+}
+
+/* ── QR + info: side-by-side on tablet+ ────────────────────── */
+.ig-gh-qr-block {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 40px;
+    align-items: center;
+    margin-bottom: 64px;
+}
+
+@media (min-width: 768px) {
+    .ig-gh-qr-block {
+        grid-template-columns: auto 1fr;
+        gap: 56px;
+    }
+}
+
+/* QR visual column */
+.ig-gh-qr-visual {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+}
+
+/* White card frame around QR */
+.ig-gh-qr-frame {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    padding: 12px;
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow:
+        0 0 0 1px rgba(0, 0, 0, 0.06),
+        0 8px 32px rgba(0, 0, 0, 0.07);
+    flex-shrink: 0;
+}
+
+.ig-gh-qr-svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+    border-radius: 6px;
+}
+
+/* Hawaa brand mark sits centred on the QR's clear zone */
+.ig-gh-qr-logo {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    background: #111827;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid #ffffff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+}
+
+.ig-gh-qr-logo-h {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #06b6d4;
+    line-height: 1;
+}
+
+/* Caption below QR */
+.ig-gh-qr-hint {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: #9ca3af;
+    letter-spacing: 0.03em;
+}
+
+/* ── Info column ────────────────────────────────────────────── */
+.ig-gh-works-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.07);
+    border-radius: 9999px;
+    padding: 6px 14px 6px 10px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #374151;
+    letter-spacing: 0.04em;
+    margin-bottom: 16px;
+}
+
+.ig-gh-info-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: #111827;
+    margin: 0 0 12px;
+}
+
+.ig-gh-info-desc {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: #4b5563;
+    margin: 0 0 20px;
+    max-width: 58ch;
+}
+
+.ig-gh-info-desc strong {
+    color: #111827;
+    font-weight: 600;
+}
+
+.ig-gh-feature-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.ig-gh-feature-list li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.85rem;
+    color: #4b5563;
+}
+
+.ig-gh-feature-list li svg {
+    color: #0891b2;
+    flex-shrink: 0;
+}
+
+/* ── Section sub-labels ─────────────────────────────────────── */
+.ig-gh-label {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #9ca3af;
+    margin: 0 0 24px;
+}
+
+/* ── Stacked step cards ─────────────────────────────────────── */
+.ig-gh-steps-wrap {
+    margin-bottom: 64px;
+}
+
+.ig-gh-steps-track {
+    position: relative;
+    max-width: 640px;
+}
+
+/* On mobile: plain vertical stack */
+.ig-gh-step-panel {
+    padding-bottom: 12px;
+}
+
+/* On tablet+: panels get scroll height → enable sticky stacking */
+@media (min-width: 768px) {
+    .ig-gh-step-panel {
+        height: 260px;
+        padding-bottom: 0;
+    }
+}
+
+.ig-gh-step-card {
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.07);
+    border-radius: 20px;
+    padding: 28px;
+    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.05);
+    transition: box-shadow 0.3s ease;
+}
+
+/* Sticky stacking: each card pins at a progressively lower top offset
+   so it visually overlaps / builds depth as you scroll */
+@media (min-width: 768px) {
+    .ig-gh-step-panel:nth-child(1) .ig-gh-step-card {
+        position: sticky;
+        top: 104px;
+        z-index: 1;
+    }
+    .ig-gh-step-panel:nth-child(2) .ig-gh-step-card {
+        position: sticky;
+        top: 120px;
+        z-index: 2;
+        background: #fdfdfe;
+    }
+    .ig-gh-step-panel:nth-child(3) .ig-gh-step-card {
+        position: sticky;
+        top: 136px;
+        z-index: 3;
+        background: #fafbfc;
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+    }
+}
+
+.ig-gh-step-header {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin-bottom: 16px;
+}
+
+.ig-gh-step-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.8rem;
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.06);
+    line-height: 1;
+    flex: 1;
+}
+
+.ig-gh-step-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.ig-gh-step-icon svg {
+    width: 22px;
+    height: 22px;
+}
+
+/* Active state — highlighted by ScrollTrigger when card is frontmost */
+.ig-gh-step-card.active {
+    border-color: rgba(8, 145, 178, 0.2);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.07),
+                0 0 0 1px rgba(8, 145, 178, 0.12);
+}
+
+.ig-gh-step-icon--cyan  { background: rgba(8, 145, 178, 0.10); color: #0891b2; }
+.ig-gh-step-icon--blue  { background: rgba(59, 130, 246, 0.10); color: #3b82f6; }
+.ig-gh-step-icon--green { background: rgba(34, 197, 94, 0.10); color: #22c55e; }
+
+.ig-gh-step-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #111827;
+    margin: 0 0 10px;
+}
+
+.ig-gh-step-desc {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.88rem;
+    line-height: 1.7;
+    color: #4b5563;
+    margin: 0 0 18px;
+    max-width: 62ch;
+}
+
+.ig-gh-step-desc strong { color: #111827; font-weight: 600; }
+.ig-gh-step-desc em     { color: #0891b2; font-style: normal; font-weight: 500; }
+
+.ig-gh-step-tag {
+    display: inline-flex;
+    align-items: center;
+    background: #f1f5f9;
+    border-radius: 9999px;
+    padding: 4px 12px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: #374151;
+    letter-spacing: 0.04em;
+}
+
+/* ── Voice commands CSS Grid matrix ─────────────────────────── */
+.ig-gh-voice-wrap {
+    /* label margin already handled by .ig-gh-label */
+}
+
+.ig-gh-voice-grid {
+    border-radius: 16px;
+    border: 1px solid rgba(0, 0, 0, 0.07);
+    overflow: hidden;
+    background: #ffffff;
+    /* 2-col CSS Grid: command | result */
+    display: grid;
+    grid-template-columns: 1fr;
+}
+
+@media (min-width: 600px) {
+    .ig-gh-voice-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+/* Header row: display:contents so children become direct grid items */
+.ig-gh-voice-head {
+    display: contents;
+}
+
+.ig-gh-voice-head span {
+    background: #f9fafb;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    padding: 13px 20px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #9ca3af;
+}
+
+/* Data rows */
+.ig-gh-voice-row {
+    display: contents;
+}
+
+.ig-gh-voice-row span {
+    display: flex;
+    align-items: center;
+    padding: 14px 20px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.875rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.ig-gh-voice-row:last-child span {
+    border-bottom: none;
+}
+
+.ig-gh-voice-cmd {
+    font-weight: 500;
+    color: #111827;
+    background: #fafafa;
+}
+
+.ig-gh-voice-res {
+    color: #6b7280;
+}
+
+/* Mobile: collapse to single column, hide result, show as list */
+@media (max-width: 599px) {
+    .ig-gh-voice-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .ig-gh-voice-head {
+        display: none;
+    }
+
+    .ig-gh-voice-row {
+        display: flex;
+        flex-direction: column;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .ig-gh-voice-row:last-child {
+        border-bottom: none;
+    }
+
+    .ig-gh-voice-row span {
+        border-bottom: none;
+        padding: 10px 16px;
+    }
+
+    .ig-gh-voice-cmd {
+        font-size: 0.85rem;
+        padding-bottom: 4px;
+    }
+
+    .ig-gh-voice-res {
+        font-size: 0.78rem;
+        color: #9ca3af;
+        padding-top: 0;
+    }
+}
