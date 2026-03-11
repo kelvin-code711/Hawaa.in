@@ -656,6 +656,106 @@
         </div><!-- /.gh-container -->
     </section>
 
+    <!-- ========================================
+         SECTION 5: FILTER STORYTELLING
+         Scroll-driven 3-in-1 filter explainer
+    ======================================== -->
+    <section class="fst-section" id="filter-layers" aria-label="3-in-1 Filter Technology Explained">
+        <div class="fst-sticky" id="fst-sticky">
+
+            <!-- Ambient background glow -->
+            <div class="fst-bg-glow" aria-hidden="true"></div>
+
+            <!-- Inner layout: filter visual + text panel -->
+            <div class="fst-inner">
+
+                <!-- ── Filter Visual ── -->
+                <div class="fst-visual-col" aria-hidden="true">
+                    <div class="fst-filter" id="fst-filter" data-frame="1">
+
+                        <!-- Layer 1: Pre-filter (outermost — nylon mesh) -->
+                        <div class="fst-layer fst-layer--pf">
+                            <div class="fst-cap fst-cap--t"></div>
+                            <div class="fst-body"></div>
+                            <div class="fst-cap fst-cap--b"></div>
+                        </div>
+
+                        <!-- Layer 2: Pleated HEPA (main filtration body) -->
+                        <div class="fst-layer fst-layer--hp">
+                            <div class="fst-cap fst-cap--t"></div>
+                            <div class="fst-body"></div>
+                            <div class="fst-cap fst-cap--b"></div>
+                        </div>
+
+                        <!-- Layer 3: Activated Carbon (innermost) -->
+                        <div class="fst-layer fst-layer--ac">
+                            <div class="fst-cap fst-cap--t"></div>
+                            <div class="fst-body"></div>
+                            <div class="fst-cap fst-cap--b"></div>
+                        </div>
+
+                    </div><!-- /.fst-filter -->
+                </div><!-- /.fst-visual-col -->
+
+                <!-- ── Text Panel ── -->
+                <div class="fst-text-col">
+
+                    <!-- Frame 1: Introduction -->
+                    <div class="fst-frame fst-frame--on" id="fst-f1" aria-hidden="false">
+                        <p class="fst-eyebrow">Hawaa Edge Filter</p>
+                        <h2 class="fst-headline">Three layers.<br><em class="fst-em">One cleaner breath.</em></h2>
+                        <p class="fst-sub">A precision-engineered 3-in-1 cylindrical filter designed to capture what you cannot see.</p>
+                    </div>
+
+                    <!-- Frame 2: Pre-filter -->
+                    <div class="fst-frame" id="fst-f2" aria-hidden="true">
+                        <p class="fst-layer-tag">Layer 1</p>
+                        <h3 class="fst-layer-name">Pre-filter</h3>
+                        <p class="fst-sub">Captures hair, lint, and larger dust particles before they reach the core.</p>
+                    </div>
+
+                    <!-- Frame 3: HEPA -->
+                    <div class="fst-frame" id="fst-f3" aria-hidden="true">
+                        <p class="fst-layer-tag">Layer 2</p>
+                        <h3 class="fst-layer-name">Pleated HEPA</h3>
+                        <p class="fst-sub">Traps fine airborne particles with high-efficiency filtration.</p>
+                    </div>
+
+                    <!-- Frame 4: Carbon -->
+                    <div class="fst-frame" id="fst-f4" aria-hidden="true">
+                        <p class="fst-layer-tag">Layer 3</p>
+                        <h3 class="fst-layer-name">Activated Carbon</h3>
+                        <p class="fst-sub">Helps reduce odors, smoke, and unwanted gases.</p>
+                    </div>
+
+                    <!-- Frame 5: Summary -->
+                    <div class="fst-frame" id="fst-f5" aria-hidden="true">
+                        <p class="fst-closing-pills">Pre-filter. HEPA. Carbon.</p>
+                        <h3 class="fst-closing-head">Built to work as one<br><em class="fst-em">complete protection system.</em></h3>
+                    </div>
+
+                </div><!-- /.fst-text-col -->
+
+            </div><!-- /.fst-inner -->
+
+            <!-- Scroll progress dots -->
+            <div class="fst-progress" aria-hidden="true">
+                <span class="fst-pdot fst-pdot--on"></span>
+                <span class="fst-pdot"></span>
+                <span class="fst-pdot"></span>
+                <span class="fst-pdot"></span>
+                <span class="fst-pdot"></span>
+            </div>
+
+            <!-- Scroll hint (fades out after first frame) -->
+            <div class="fst-hint" id="fst-hint" aria-hidden="true">
+                <span class="fst-hint-line"></span>
+                <span class="fst-hint-text">scroll</span>
+            </div>
+
+        </div><!-- /.fst-sticky -->
+    </section>
+
     <!-- Footer -->
     <footer class="footer" id="contact">
         <div class="footer-container">
@@ -891,6 +991,59 @@
                 target.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
         });
+
+        // ── Filter Storytelling: scroll-driven layer animation ───────────
+        (function () {
+            var section = document.querySelector('.fst-section');
+            var filter  = document.getElementById('fst-filter');
+            if (!section || !filter) return;
+
+            var frameIds = ['fst-f1', 'fst-f2', 'fst-f3', 'fst-f4', 'fst-f5'];
+            var frames   = frameIds.map(function (id) { return document.getElementById(id); });
+            var dots     = Array.prototype.slice.call(document.querySelectorAll('.fst-pdot'));
+            var hint     = document.getElementById('fst-hint');
+            var cur      = -1;
+            var raf      = false;
+
+            function getProgress() {
+                var rect       = section.getBoundingClientRect();
+                var scrollable = section.offsetHeight - window.innerHeight;
+                return scrollable > 0 ? Math.max(0, Math.min(1, -rect.top / scrollable)) : 0;
+            }
+
+            function applyFrame(idx) {
+                if (idx === cur) return;
+                cur = idx;
+
+                filter.dataset.frame = String(idx + 1);
+
+                frames.forEach(function (f, i) {
+                    var active = i === idx;
+                    f.classList.toggle('fst-frame--on', active);
+                    f.setAttribute('aria-hidden', active ? 'false' : 'true');
+                });
+
+                dots.forEach(function (d, i) {
+                    d.classList.toggle('fst-pdot--on', i === idx);
+                });
+
+                if (hint) {
+                    hint.classList.toggle('fst-hint--gone', idx > 0);
+                }
+            }
+
+            function tick() {
+                applyFrame(Math.min(4, Math.floor(getProgress() * 5)));
+                raf = false;
+            }
+
+            window.addEventListener('scroll', function () {
+                if (!raf) { raf = true; requestAnimationFrame(tick); }
+            }, { passive: true });
+
+            // Set initial state
+            applyFrame(0);
+        }());
 
         // Bedroom placement: linked callouts — hover/focus a card to highlight its marker
         (function () {
