@@ -730,3 +730,319 @@
         min-height: 68px;
     }
 }
+
+
+/* ========================================
+   SECTION 4: GOOGLE HOME ONBOARDING
+   Scoped with .gh- prefix — mobile-first
+======================================== */
+
+.gh-section {
+    background: #ffffff;
+    padding: 64px 20px 72px;
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.gh-container {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+/* ── Grid layout (mobile: single column) ── */
+.gh-body {
+    display: grid;
+    grid-template-areas:
+        "header"
+        "visual"
+        "steps"
+        "btns";
+    gap: 32px;
+}
+
+.gh-header   { grid-area: header; }
+.gh-visual   { grid-area: visual; }
+.gh-steps    { grid-area: steps; }
+.gh-app-btns { grid-area: btns; }
+
+/* ── Section header ── */
+.gh-eyebrow {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #9ca3af;
+    margin: 0 0 14px;
+}
+
+.gh-headline {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: #111827;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    margin: 0 0 14px;
+}
+
+.gh-headline .italic {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-weight: 400;
+}
+
+.gh-desc {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 400;
+    color: #6b7280;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* ── Flow visual ── */
+.gh-flow-wrap {
+    background: #f7f8fa;
+    border-radius: 20px;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    padding: 28px 20px 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.gh-flow-svg {
+    width: 140px;
+    height: auto;
+    display: block;
+}
+
+/* ── Accordion steps ── */
+.gh-steps {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.gh-step {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.gh-step-trigger {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 17px 2px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    -webkit-tap-highlight-color: transparent;
+    outline: none;
+}
+
+.gh-step-trigger:focus-visible {
+    outline: 2px solid #0891b2;
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+.gh-step-num {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: #d1d5db;
+    flex-shrink: 0;
+    min-width: 22px;
+    transition: color 0.2s ease;
+}
+
+.gh-step.is-open .gh-step-num {
+    color: #0891b2;
+}
+
+.gh-step-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.92rem;
+    font-weight: 500;
+    color: #374151;
+    flex: 1;
+    line-height: 1.35;
+    transition: color 0.2s ease;
+}
+
+.gh-step.is-open .gh-step-title {
+    color: #111827;
+    font-weight: 600;
+}
+
+.gh-chevron {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    color: #d1d5db;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), color 0.2s ease;
+}
+
+.gh-chevron svg {
+    width: 16px;
+    height: 16px;
+}
+
+.gh-step.is-open .gh-chevron {
+    transform: rotate(180deg);
+    color: #0891b2;
+}
+
+/* Expand/collapse panel */
+.gh-step-panel {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.32s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.25s ease;
+}
+
+.gh-step.is-open .gh-step-panel {
+    max-height: 150px;
+    opacity: 1;
+}
+
+.gh-step-desc {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 400;
+    color: #6b7280;
+    line-height: 1.65;
+    margin: 0;
+    padding: 2px 20px 18px 36px;
+}
+
+/* Network name inline highlight */
+.gh-network-name {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+    background: rgba(8, 145, 178, 0.08);
+    color: #0891b2;
+    padding: 1px 7px;
+    border-radius: 5px;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+}
+
+/* ── App download buttons ── */
+.gh-app-btns {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.gh-app-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: #111827;
+    color: #ffffff;
+    border-radius: 12px;
+    padding: 11px 20px;
+    text-decoration: none;
+    transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
+    flex-shrink: 0;
+}
+
+.gh-app-btn:hover {
+    background: #1f2937;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(17, 24, 39, 0.18);
+}
+
+.gh-app-btn:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+.gh-store-icon {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+}
+
+.gh-store-text {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+
+.gh-store-sub {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.62rem;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.65);
+    letter-spacing: 0.01em;
+    line-height: 1;
+}
+
+.gh-store-name {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #ffffff;
+    line-height: 1.2;
+}
+
+/* ── Tablet (640px+) ── */
+@media (min-width: 640px) {
+    .gh-section {
+        padding: 72px 32px 80px;
+    }
+
+    .gh-headline {
+        font-size: 2rem;
+    }
+
+    .gh-flow-svg {
+        width: 160px;
+    }
+}
+
+/* ── Desktop (1024px+) ── */
+@media (min-width: 1024px) {
+    .gh-section {
+        padding: 88px 48px 96px;
+    }
+
+    .gh-headline {
+        font-size: 2.25rem;
+    }
+
+    .gh-body {
+        grid-template-columns: 1fr minmax(0, 380px);
+        grid-template-areas:
+            "header visual"
+            "steps  visual"
+            "btns   visual";
+        column-gap: 72px;
+        row-gap: 36px;
+        align-items: start;
+    }
+
+    .gh-visual {
+        position: sticky;
+        top: 96px;
+    }
+
+    .gh-flow-wrap {
+        padding: 36px 28px 32px;
+    }
+
+    .gh-flow-svg {
+        width: 180px;
+    }
+}
