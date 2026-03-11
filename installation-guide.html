@@ -182,6 +182,185 @@
         <!-- Step content will be added in a future update -->
     </section>
 
+    <!-- ========================================
+         SECTION: BEDROOM PLACEMENT
+    ======================================== -->
+    <section class="bp-section" id="bedroom-placement" aria-label="Bedroom Placement Guide">
+        <div class="bp-container">
+
+            <!-- Section header -->
+            <div class="bp-header">
+                <p class="bp-eyebrow">Placement Guide</p>
+                <h2 class="bp-headline">Where to place it in your <span class="italic">bedroom</span></h2>
+                <p class="bp-desc">Position your Hawaa Edge correctly to get the most out of every breath.</p>
+            </div>
+
+            <!-- Main content -->
+            <div class="bp-content">
+
+                <!-- SVG Diagram -->
+                <div class="bp-diagram-wrap" aria-hidden="true">
+                    <svg class="bp-diagram" viewBox="0 0 440 422" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Top-down bedroom floor plan showing correct air purifier placement">
+                        <defs>
+                            <marker id="bp-arrowhead" markerWidth="4" markerHeight="4" refX="3.5" refY="2" orient="auto" markerUnits="strokeWidth">
+                                <path d="M 0 0 L 4 2 L 0 4 z" fill="#0891b2" opacity="0.55"/>
+                            </marker>
+                        </defs>
+
+                        <!-- Floor -->
+                        <rect x="24" y="24" width="392" height="368" fill="#f7f8fa"/>
+
+                        <!-- ── WALLS ── -->
+                        <!-- Top wall: left of window -->
+                        <line x1="30" y1="30" x2="122" y2="30" stroke="#bdc3ca" stroke-width="12" stroke-linecap="square"/>
+                        <!-- Top wall: right of window -->
+                        <line x1="292" y1="30" x2="410" y2="30" stroke="#bdc3ca" stroke-width="12" stroke-linecap="square"/>
+                        <!-- Window gap (double thin lines) -->
+                        <line x1="122" y1="25.5" x2="292" y2="25.5" stroke="#d1d5db" stroke-width="1.5"/>
+                        <line x1="122" y1="34.5" x2="292" y2="34.5" stroke="#d1d5db" stroke-width="1.5"/>
+                        <!-- Window end caps -->
+                        <line x1="122" y1="25.5" x2="122" y2="34.5" stroke="#d1d5db" stroke-width="1.5"/>
+                        <line x1="292" y1="25.5" x2="292" y2="34.5" stroke="#d1d5db" stroke-width="1.5"/>
+                        <!-- Left wall (full) -->
+                        <line x1="30" y1="30" x2="30" y2="392" stroke="#bdc3ca" stroke-width="12" stroke-linecap="square"/>
+                        <!-- Right wall (full) -->
+                        <line x1="410" y1="30" x2="410" y2="392" stroke="#bdc3ca" stroke-width="12" stroke-linecap="square"/>
+                        <!-- Bottom wall: left of door -->
+                        <line x1="30" y1="392" x2="150" y2="392" stroke="#bdc3ca" stroke-width="12" stroke-linecap="square"/>
+                        <!-- Bottom wall: right of door -->
+                        <line x1="264" y1="392" x2="410" y2="392" stroke="#bdc3ca" stroke-width="12" stroke-linecap="square"/>
+
+                        <!-- Door swing arc (opens inward) — pivot at (150,392), width 114 -->
+                        <line x1="150" y1="386" x2="150" y2="278" stroke="#c4c9cf" stroke-width="1.5" stroke-linecap="round"/>
+                        <path d="M 150 278 A 114 114 0 0 1 264 392" stroke="#c4c9cf" stroke-width="1.5" fill="none"/>
+
+                        <!-- Window label -->
+                        <text x="207" y="13" font-family="Outfit, sans-serif" font-size="9" font-weight="500" fill="#adb5bd" text-anchor="middle" letter-spacing="0.14em">WINDOW</text>
+                        <line x1="128" y1="10" x2="168" y2="10" stroke="#c4c9cf" stroke-width="1"/>
+                        <line x1="246" y1="10" x2="286" y2="10" stroke="#c4c9cf" stroke-width="1"/>
+
+                        <!-- ── BED (upper-left, against walls) ── -->
+                        <!-- Bed frame -->
+                        <rect x="38" y="38" width="168" height="200" fill="#e3e7ec" stroke="#bdc4cc" stroke-width="1.5" rx="3"/>
+                        <!-- Mattress -->
+                        <rect x="44" y="82" width="156" height="152" fill="#eceff2" stroke="#c8cdd4" stroke-width="1" rx="2"/>
+                        <!-- Left pillow -->
+                        <rect x="50" y="48" width="64" height="28" fill="#f3f5f7" stroke="#c8cdd4" stroke-width="1" rx="5"/>
+                        <!-- Right pillow -->
+                        <rect x="122" y="48" width="64" height="28" fill="#f3f5f7" stroke="#c8cdd4" stroke-width="1" rx="5"/>
+
+                        <!-- ── SIDE TABLE (top-right corner) ── -->
+                        <rect x="334" y="38" width="62" height="62" fill="#e3e7ec" stroke="#bdc4cc" stroke-width="1.5" rx="3"/>
+                        <!-- Lamp -->
+                        <circle cx="365" cy="69" r="16" fill="#eceff2" stroke="#c8cdd4" stroke-width="1"/>
+                        <circle cx="365" cy="69" r="5" fill="#c8cdd4"/>
+
+                        <!-- ── CLEARANCE ZONE ── -->
+                        <circle cx="314" cy="308" r="62" fill="rgba(8,145,178,0.07)" stroke="#0891b2" stroke-width="1.5" stroke-dasharray="5 4"/>
+
+                        <!-- Airflow arrows (4 short arcs, clockwise, at r=46) -->
+                        <!-- top → right -->
+                        <path d="M 290 267 A 46 46 0 0 1 338 267" stroke="#0891b2" stroke-width="1.1" fill="none" opacity="0.5" marker-end="url(#bp-arrowhead)"/>
+                        <!-- right → bottom -->
+                        <path d="M 354 284 A 46 46 0 0 1 354 332" stroke="#0891b2" stroke-width="1.1" fill="none" opacity="0.5" marker-end="url(#bp-arrowhead)"/>
+                        <!-- bottom → left -->
+                        <path d="M 338 349 A 46 46 0 0 1 290 349" stroke="#0891b2" stroke-width="1.1" fill="none" opacity="0.5" marker-end="url(#bp-arrowhead)"/>
+                        <!-- left → top -->
+                        <path d="M 274 332 A 46 46 0 0 1 274 284" stroke="#0891b2" stroke-width="1.1" fill="none" opacity="0.5" marker-end="url(#bp-arrowhead)"/>
+
+                        <!-- ── AIR PURIFIER ── -->
+                        <!-- Glow ring -->
+                        <circle cx="314" cy="308" r="22" fill="rgba(8,145,178,0.14)"/>
+                        <!-- Body -->
+                        <circle cx="314" cy="308" r="17" fill="#1e293b"/>
+                        <!-- Accent top ring -->
+                        <circle cx="314" cy="308" r="10" fill="#0891b2"/>
+                        <!-- Center dot -->
+                        <circle cx="314" cy="308" r="3" fill="#ffffff"/>
+
+                        <!-- ── CLEARANCE MEASUREMENTS ── -->
+                        <!-- Right: purifier to right wall -->
+                        <line x1="331" y1="308" x2="400" y2="308" stroke="#b0b8c2" stroke-width="1" stroke-dasharray="3 2.5"/>
+                        <line x1="331" y1="304" x2="331" y2="312" stroke="#b0b8c2" stroke-width="1"/>
+                        <line x1="400" y1="304" x2="400" y2="312" stroke="#b0b8c2" stroke-width="1"/>
+                        <text x="366" y="302" font-family="Outfit, sans-serif" font-size="8.5" fill="#9ca3af" text-anchor="middle">30 cm</text>
+                        <!-- Bottom: purifier to bottom wall -->
+                        <line x1="314" y1="325" x2="314" y2="382" stroke="#b0b8c2" stroke-width="1" stroke-dasharray="3 2.5"/>
+                        <line x1="310" y1="325" x2="318" y2="325" stroke="#b0b8c2" stroke-width="1"/>
+                        <line x1="310" y1="382" x2="318" y2="382" stroke="#b0b8c2" stroke-width="1"/>
+                        <text x="348" y="360" font-family="Outfit, sans-serif" font-size="8.5" fill="#9ca3af" text-anchor="middle">30 cm</text>
+
+                        <!-- Clearance label -->
+                        <text x="314" y="414" font-family="Outfit, sans-serif" font-size="9" fill="#9ca3af" text-anchor="middle">Minimum clearance 20–30 cm</text>
+
+                        <!-- ── NUMBERED MARKERS ── -->
+                        <!-- 1 — Wall clearance (near purifier, toward right wall) -->
+                        <g class="bp-marker" data-marker="1" style="cursor:default">
+                            <circle cx="388" cy="338" r="12" fill="#111827"/>
+                            <text x="388" y="342.5" font-family="Outfit, sans-serif" font-size="10" font-weight="600" fill="#ffffff" text-anchor="middle">1</text>
+                        </g>
+
+                        <!-- 2 — Avoid blocked corners (upper-left, inside corner behind bed) -->
+                        <g class="bp-marker" data-marker="2" style="cursor:default">
+                            <circle cx="60" cy="60" r="12" fill="#111827"/>
+                            <text x="60" y="64.5" font-family="Outfit, sans-serif" font-size="10" font-weight="600" fill="#ffffff" text-anchor="middle">2</text>
+                        </g>
+
+                        <!-- 3 — Near breathing zone (near head of bed / side of room) -->
+                        <g class="bp-marker" data-marker="3" style="cursor:default">
+                            <circle cx="310" cy="62" r="12" fill="#111827"/>
+                            <text x="310" y="66.5" font-family="Outfit, sans-serif" font-size="10" font-weight="600" fill="#ffffff" text-anchor="middle">3</text>
+                        </g>
+
+                        <!-- 4 — Room airflow (open center-floor area) -->
+                        <g class="bp-marker" data-marker="4" style="cursor:default">
+                            <circle cx="198" cy="308" r="12" fill="#111827"/>
+                            <text x="198" y="312.5" font-family="Outfit, sans-serif" font-size="10" font-weight="600" fill="#ffffff" text-anchor="middle">4</text>
+                        </g>
+                    </svg>
+                </div>
+
+                <!-- Rule cards -->
+                <div class="bp-cards">
+
+                    <div class="bp-card" data-card="1" tabindex="0">
+                        <span class="bp-card-num">01</span>
+                        <div class="bp-card-body">
+                            <p class="bp-card-title">Leave space from the wall</p>
+                            <p class="bp-card-desc">Keep 20–30 cm clearance so airflow is not restricted.</p>
+                        </div>
+                    </div>
+
+                    <div class="bp-card" data-card="2" tabindex="0">
+                        <span class="bp-card-num">02</span>
+                        <div class="bp-card-body">
+                            <p class="bp-card-title">Avoid blocked corners</p>
+                            <p class="bp-card-desc">Do not place behind furniture, curtains, or tight spaces.</p>
+                        </div>
+                    </div>
+
+                    <div class="bp-card" data-card="3" tabindex="0">
+                        <span class="bp-card-num">03</span>
+                        <div class="bp-card-body">
+                            <p class="bp-card-title">Place near breathing zone</p>
+                            <p class="bp-card-desc">Side placement near the bed improves nighttime purification.</p>
+                        </div>
+                    </div>
+
+                    <div class="bp-card" data-card="4" tabindex="0">
+                        <span class="bp-card-num">04</span>
+                        <div class="bp-card-body">
+                            <p class="bp-card-title">Allow room circulation</p>
+                            <p class="bp-card-desc">Position the purifier where air can circulate across the room.</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div><!-- /.bp-content -->
+
+        </div><!-- /.bp-container -->
+    </section>
+
     <!-- Footer -->
     <footer class="footer" id="contact">
         <div class="footer-container">
@@ -317,6 +496,33 @@
                 target.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
         });
+
+        // Bedroom placement: linked callouts — hover/focus a card to highlight its marker
+        (function () {
+            var cards = document.querySelectorAll('.bp-card[data-card]');
+            var markers = document.querySelectorAll('.bp-marker[data-marker]');
+
+            function activate(num) {
+                cards.forEach(function (c) {
+                    c.classList.toggle('is-active', c.dataset.card === num);
+                });
+                markers.forEach(function (m) {
+                    m.classList.toggle('is-active', m.dataset.marker === num);
+                });
+            }
+
+            function deactivate() {
+                cards.forEach(function (c) { c.classList.remove('is-active'); });
+                markers.forEach(function (m) { m.classList.remove('is-active'); });
+            }
+
+            cards.forEach(function (card) {
+                card.addEventListener('mouseenter', function () { activate(card.dataset.card); });
+                card.addEventListener('mouseleave', deactivate);
+                card.addEventListener('focusin', function () { activate(card.dataset.card); });
+                card.addEventListener('focusout', deactivate);
+            });
+        }());
     </script>
 </body>
 </html>
