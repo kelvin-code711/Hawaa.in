@@ -16,7 +16,7 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/installation-guide.css">
@@ -221,168 +221,204 @@
                             xmlns="http://www.w3.org/2000/svg"
                             role="img"
                             aria-label="Top-down room view showing Hawaa Edge placement with 3.5-foot clearance ring"
+                            style="overflow:hidden"
                         >
-                            <!-- Room floor -->
-                            <rect x="30" y="30" width="460" height="460" rx="12" fill="#1e293b" stroke="rgba(255,255,255,0.08)" stroke-width="1.5"/>
+                            <!-- ── Room floor ─────────────────────────── -->
+                            <rect x="22" y="22" width="476" height="476" rx="0" fill="#1a2333"/>
 
-                            <!-- Floor tiles subtle grid -->
-                            <line x1="30" y1="143" x2="490" y2="143" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
-                            <line x1="30" y1="260" x2="490" y2="260" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
-                            <line x1="30" y1="377" x2="490" y2="377" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
-                            <line x1="143" y1="30" x2="143" y2="490" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
-                            <line x1="260" y1="30" x2="260" y2="490" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
-                            <line x1="377" y1="30" x2="377" y2="490" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+                            <!-- Floor tile grid — subtle warm tone -->
+                            <line x1="22" y1="140" x2="498" y2="140" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
+                            <line x1="22" y1="258" x2="498" y2="258" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
+                            <line x1="22" y1="376" x2="498" y2="376" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
+                            <line x1="140" y1="22" x2="140" y2="498" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
+                            <line x1="258" y1="22" x2="258" y2="498" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
+                            <line x1="376" y1="22" x2="376" y2="498" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
 
-                            <!-- Walls (thick border suggestion) -->
-                            <rect x="30" y="30" width="460" height="8" rx="0" fill="rgba(255,255,255,0.06)"/>
-                            <rect x="30" y="482" width="460" height="8" rx="0" fill="rgba(255,255,255,0.06)"/>
-                            <rect x="30" y="30" width="8" height="460" rx="0" fill="rgba(255,255,255,0.06)"/>
-                            <rect x="482" y="30" width="8" height="460" rx="0" fill="rgba(255,255,255,0.06)"/>
+                            <!-- ── Walls ───────────────────────────────── -->
+                            <!-- Top wall -->
+                            <rect x="22" y="22" width="476" height="14" fill="#0f1823"/>
+                            <!-- Bottom wall -->
+                            <rect x="22" y="484" width="476" height="14" fill="#0f1823"/>
+                            <!-- Left wall -->
+                            <rect x="22" y="22" width="14" height="476" fill="#0f1823"/>
+                            <!-- Right wall -->
+                            <rect x="484" y="22" width="14" height="476" fill="#0f1823"/>
 
-                            <!-- Furniture suggestion: sofa top-right -->
-                            <rect x="350" y="50" width="120" height="60" rx="8" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
-                            <rect x="360" y="58" width="20" height="44" rx="4" fill="rgba(255,255,255,0.06)"/>
-                            <rect x="400" y="58" width="58" height="44" rx="4" fill="rgba(255,255,255,0.06)"/>
+                            <!-- ── Door — bottom wall, left-centre ────── -->
+                            <!-- Door gap in bottom wall -->
+                            <rect x="140" y="484" width="72" height="14" fill="#1a2333"/>
+                            <!-- Door swing arc (quarter-circle) -->
+                            <path d="M140 484 A72 72 0 0 0 212 412" stroke="rgba(255,255,255,0.12)" stroke-width="1" stroke-dasharray="4 3" fill="none"/>
 
-                            <!-- Furniture suggestion: table bottom-left -->
-                            <rect x="50" y="380" width="90" height="90" rx="8" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+                            <!-- ── Sofa — top wall, spanning left to right-centre ── -->
+                            <!-- Sofa base -->
+                            <rect x="48" y="36" width="260" height="62" rx="6" fill="#253044" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+                            <!-- Sofa back cushion strip -->
+                            <rect x="52" y="36" width="252" height="18" rx="4" fill="rgba(255,255,255,0.06)"/>
+                            <!-- Sofa seat cushion left -->
+                            <rect x="54" y="58" width="76" height="36" rx="4" fill="rgba(255,255,255,0.05)"/>
+                            <!-- Sofa seat cushion mid -->
+                            <rect x="138" y="58" width="76" height="36" rx="4" fill="rgba(255,255,255,0.05)"/>
+                            <!-- Sofa seat cushion right -->
+                            <rect x="222" y="58" width="76" height="36" rx="4" fill="rgba(255,255,255,0.05)"/>
+                            <!-- Left arm -->
+                            <rect x="48" y="54" width="14" height="44" rx="3" fill="rgba(255,255,255,0.06)"/>
+                            <!-- Right arm -->
+                            <rect x="294" y="54" width="14" height="44" rx="3" fill="rgba(255,255,255,0.06)"/>
 
-                            <!-- Furniture suggestion: plant bottom-right -->
-                            <circle cx="430" cy="440" r="28" fill="rgba(34,197,94,0.08)" stroke="rgba(34,197,94,0.15)" stroke-width="1"/>
+                            <!-- ── Coffee table — in front of sofa ────── -->
+                            <rect x="100" y="122" width="160" height="90" rx="6" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+                            <!-- Table surface detail -->
+                            <rect x="108" y="130" width="144" height="74" rx="4" fill="rgba(255,255,255,0.02)"/>
 
-                            <!-- Door opening top wall -->
-                            <rect x="180" y="30" width="80" height="8" fill="#1e293b"/>
+                            <!-- ── TV unit — right wall ─────────────────── -->
+                            <rect x="430" y="60" width="54" height="170" rx="6" fill="#253044" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+                            <!-- TV screen suggestion -->
+                            <rect x="438" y="72" width="38" height="60" rx="3" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+                            <!-- Console shelf -->
+                            <rect x="434" y="158" width="46" height="12" rx="2" fill="rgba(255,255,255,0.05)"/>
+                            <!-- Small items on shelf -->
+                            <rect x="438" y="152" width="10" height="8" rx="1" fill="rgba(255,255,255,0.06)"/>
+                            <rect x="452" y="150" width="8" height="10" rx="1" fill="rgba(255,255,255,0.04)"/>
 
-                            <!-- 3.5 ft wall clearance ring (animated by JS) -->
+                            <!-- ── Bookshelf — right wall, lower ─────── -->
+                            <rect x="432" y="290" width="52" height="100" rx="4" fill="#1e2d42" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+                            <!-- Shelf dividers -->
+                            <line x1="432" y1="322" x2="484" y2="322" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+                            <line x1="432" y1="354" x2="484" y2="354" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+                            <!-- Book spines -->
+                            <rect x="436" y="296" width="7" height="22" rx="1" fill="rgba(6,182,212,0.15)"/>
+                            <rect x="446" y="298" width="5" height="20" rx="1" fill="rgba(255,255,255,0.06)"/>
+                            <rect x="454" y="294" width="6" height="24" rx="1" fill="rgba(255,255,255,0.04)"/>
+
+                            <!-- ── Plant — bottom-right corner ─────────── -->
+                            <circle cx="462" cy="462" r="24" fill="rgba(34,197,94,0.1)" stroke="rgba(34,197,94,0.18)" stroke-width="1.5"/>
+                            <circle cx="462" cy="462" r="14" fill="rgba(34,197,94,0.08)"/>
+                            <!-- Pot -->
+                            <path d="M453 472 L471 472 L467 488 L457 488 Z" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+
+                            <!-- ── Rug — centre of room ─────────────────── -->
+                            <rect x="80" y="240" width="310" height="200" rx="8" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.05)" stroke-width="1" stroke-dasharray="6 4"/>
+
+                            <!-- ── 3.5 ft clearance ring (animated by JS) ── -->
+                            <!-- Purifier is at (190, 330) — left side, mid-lower -->
                             <circle
                                 id="ig-clearance-ring"
-                                cx="260"
-                                cy="260"
+                                cx="190"
+                                cy="330"
                                 r="108"
                                 stroke="#06b6d4"
                                 stroke-width="1.5"
                                 stroke-dasharray="6 4"
-                                fill="rgba(6,182,212,0.05)"
+                                fill="rgba(6,182,212,0.04)"
                             />
 
-                            <!-- Second outer pulse ring -->
+                            <!-- Outer glow ring (pulse) -->
                             <circle
                                 id="ig-clearance-ring-2"
-                                cx="260"
-                                cy="260"
+                                cx="190"
+                                cy="330"
                                 r="108"
-                                stroke="rgba(6,182,212,0.3)"
-                                stroke-width="8"
+                                stroke="rgba(6,182,212,0.25)"
+                                stroke-width="10"
                                 fill="none"
                             />
 
-                            <!-- Clearance label top -->
+                            <!-- Clearance label -->
                             <g id="ig-clearance-label" opacity="0">
-                                <line x1="260" y1="152" x2="260" y2="210" stroke="#06b6d4" stroke-width="1" stroke-dasharray="3 3"/>
-                                <text x="265" y="173" font-family="Outfit,sans-serif" font-size="10" fill="#06b6d4" opacity="0.9">3.5 ft</text>
+                                <line x1="190" y1="222" x2="190" y2="276" stroke="#06b6d4" stroke-width="1" stroke-dasharray="3 3"/>
+                                <text x="196" y="242" font-family="Outfit,sans-serif" font-size="10" fill="#06b6d4" opacity="0.9">3.5 ft</text>
                             </g>
 
-                            <!-- Device shadow -->
-                            <ellipse cx="260" cy="268" rx="32" ry="12" fill="rgba(0,0,0,0.4)"/>
+                            <!-- ── Device shadow ───────────────────────── -->
+                            <ellipse cx="190" cy="338" rx="28" ry="10" fill="rgba(0,0,0,0.45)"/>
 
-                            <!-- Device body (Hawaa Edge top-down) -->
-                            <rect x="236" y="228" width="48" height="72" rx="8" fill="rgba(30,41,59,0.9)" stroke="rgba(8,145,178,0.6)" stroke-width="1.5"/>
-                            <!-- Device LED ring -->
-                            <circle cx="260" cy="252" r="14" fill="none" stroke="rgba(8,145,178,0.8)" stroke-width="2"/>
-                            <circle cx="260" cy="252" r="8" fill="rgba(8,145,178,0.2)"/>
-                            <!-- Device vent lines -->
-                            <line x1="246" y1="272" x2="274" y2="272" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
-                            <line x1="248" y1="278" x2="272" y2="278" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
-                            <line x1="250" y1="284" x2="270" y2="284" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+                            <!-- ── Hawaa Edge — top-down view ──────────── -->
+                            <!-- Device body -->
+                            <rect x="168" y="302" width="44" height="64" rx="8" fill="#1e3048" stroke="rgba(8,145,178,0.7)" stroke-width="1.5"/>
+                            <!-- LED ring top -->
+                            <circle cx="190" cy="322" r="12" fill="none" stroke="rgba(8,145,178,0.9)" stroke-width="2"/>
+                            <circle cx="190" cy="322" r="7" fill="rgba(8,145,178,0.18)"/>
+                            <!-- Vent grille lines -->
+                            <line x1="172" y1="342" x2="208" y2="342" stroke="rgba(255,255,255,0.13)" stroke-width="1"/>
+                            <line x1="174" y1="350" x2="206" y2="350" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+                            <line x1="176" y1="358" x2="204" y2="358" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
 
-                            <!-- Corner clearance markers -->
-                            <circle cx="260" cy="152" r="4" fill="#06b6d4" opacity="0" id="ig-marker-top"/>
-                            <circle cx="368" cy="260" r="4" fill="#06b6d4" opacity="0" id="ig-marker-right"/>
-                            <circle cx="260" cy="368" r="4" fill="#06b6d4" opacity="0" id="ig-marker-bottom"/>
-                            <circle cx="152" cy="260" r="4" fill="#06b6d4" opacity="0" id="ig-marker-left"/>
+                            <!-- ── Cardinal clearance markers ─────────── -->
+                            <circle cx="190" cy="222" r="4" fill="#06b6d4" opacity="0" id="ig-marker-top"/>
+                            <circle cx="298" cy="330" r="4" fill="#06b6d4" opacity="0" id="ig-marker-right"/>
+                            <circle cx="190" cy="438" r="4" fill="#06b6d4" opacity="0" id="ig-marker-bottom"/>
+                            <circle cx="82"  cy="330" r="4" fill="#06b6d4" opacity="0" id="ig-marker-left"/>
 
                         </svg>
                     </div>
 
-                    <!-- Rules list -->
-                    <div class="ig-placement-rules">
+                    <!-- Rules carousel -->
+                    <div class="ig-placement-rules-wrap ig-reveal">
+                        <div class="ig-placement-rules" id="ig-rules-track" role="list">
 
-                        <div class="ig-rule-card ig-reveal ig-reveal-delay-1">
-                            <div class="ig-rule-icon ig-rule-icon--cyan">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                                    <circle cx="12" cy="12" r="10"/>
-                                    <path d="M12 8v4l3 3"/>
-                                </svg>
+                            <div class="ig-rule-card" role="listitem">
+                                <div class="ig-rule-icon ig-rule-icon--cyan">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <path d="M12 8v4l3 3"/>
+                                    </svg>
+                                </div>
+                                <div class="ig-rule-text">
+                                    <h4>Keep 3.5 ft from walls</h4>
+                                    <p>Maintain at least 3.5 feet (≈1.07 m) of clearance on all sides for unrestricted 360° airflow intake and distribution.</p>
+                                </div>
                             </div>
-                            <div class="ig-rule-text">
-                                <h4>Keep 3.5 ft from walls</h4>
-                                <p>Maintain at least 3.5 feet (≈1.07 m) of
-                                   clearance on all sides for unrestricted
-                                   360° airflow intake and distribution.</p>
+
+                            <div class="ig-rule-card" role="listitem">
+                                <div class="ig-rule-icon ig-rule-icon--green">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                                        <rect x="2" y="14" width="20" height="8" rx="2"/>
+                                        <path d="M6 14V4M10 14V8M14 14V6M18 14V10"/>
+                                    </svg>
+                                </div>
+                                <div class="ig-rule-text">
+                                    <h4>Level, stable surface</h4>
+                                    <p>Set on a flat floor or low table. Avoid carpeted surfaces deeper than 2 cm, as they can restrict the bottom intake vents.</p>
+                                </div>
                             </div>
+
+                            <div class="ig-rule-card" role="listitem">
+                                <div class="ig-rule-icon ig-rule-icon--amber">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                                        <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
+                                        <line x1="12" y1="9" x2="12" y2="13"/>
+                                        <line x1="12" y1="17" x2="12.01" y2="17"/>
+                                    </svg>
+                                </div>
+                                <div class="ig-rule-text">
+                                    <h4>Avoid direct sunlight &amp; heat</h4>
+                                    <p>Keep away from windows with direct sun, radiators, or cooking areas — heat skews the onboard air-quality sensor.</p>
+                                </div>
+                            </div>
+
+                            <div class="ig-rule-card" role="listitem">
+                                <div class="ig-rule-icon ig-rule-icon--red">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/>
+                                    </svg>
+                                </div>
+                                <div class="ig-rule-text">
+                                    <h4>Do not block air inlets</h4>
+                                    <p>Never place curtains, furniture, or clothing within 20 cm of any side panel. Blocked inlets reduce efficiency by up to 40%.</p>
+                                </div>
+                            </div>
+
                         </div>
 
-                        <div class="ig-rule-card ig-reveal ig-reveal-delay-2">
-                            <div class="ig-rule-icon ig-rule-icon--green">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                                    <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
-                                    <polyline points="9 22 9 12 15 12 15 22"/>
-                                </svg>
-                            </div>
-                            <div class="ig-rule-text">
-                                <h4>Place in the centre of the room</h4>
-                                <p>The geometric centre of your room gives
-                                   the unit equal reach in every direction,
-                                   maximising Clean Air Delivery Rate.</p>
-                            </div>
+                        <!-- Carousel dots (visible on mobile) -->
+                        <div class="ig-carousel-dots" id="ig-carousel-dots" aria-hidden="true">
+                            <span class="ig-dot ig-dot--active" data-index="0"></span>
+                            <span class="ig-dot" data-index="1"></span>
+                            <span class="ig-dot" data-index="2"></span>
+                            <span class="ig-dot" data-index="3"></span>
                         </div>
-
-                        <div class="ig-rule-card ig-reveal ig-reveal-delay-3">
-                            <div class="ig-rule-icon ig-rule-icon--green">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                                    <rect x="2" y="14" width="20" height="8" rx="2"/>
-                                    <path d="M6 14V4M10 14V8M14 14V6M18 14V10"/>
-                                </svg>
-                            </div>
-                            <div class="ig-rule-text">
-                                <h4>Level, stable surface</h4>
-                                <p>Set on a flat floor or low table. Avoid
-                                   carpeted surfaces deeper than 2 cm, as
-                                   they can restrict the bottom intake vents.</p>
-                            </div>
-                        </div>
-
-                        <div class="ig-rule-card ig-reveal ig-reveal-delay-4">
-                            <div class="ig-rule-icon ig-rule-icon--amber">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                                    <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
-                                    <line x1="12" y1="9" x2="12" y2="13"/>
-                                    <line x1="12" y1="17" x2="12.01" y2="17"/>
-                                </svg>
-                            </div>
-                            <div class="ig-rule-text">
-                                <h4>Avoid direct sunlight & heat</h4>
-                                <p>Keep the unit away from windows with
-                                   direct sun, radiators, or cooking areas —
-                                   heat skews the onboard air-quality sensor.</p>
-                            </div>
-                        </div>
-
-                        <div class="ig-rule-card ig-reveal ig-reveal-delay-5">
-                            <div class="ig-rule-icon ig-rule-icon--red">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                                    <circle cx="12" cy="12" r="10"/>
-                                    <line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/>
-                                </svg>
-                            </div>
-                            <div class="ig-rule-text">
-                                <h4>Do not block air inlets</h4>
-                                <p>Never place curtains, furniture, or clothing
-                                   within 20 cm of any side panel. Blocked
-                                   inlets reduce efficiency by up to 40%.</p>
-                            </div>
-                        </div>
-
                     </div>
                 </div>
             </div>
