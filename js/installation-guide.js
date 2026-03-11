@@ -42,6 +42,14 @@
 
         if (!heroCopy || !heroVisual) return;
 
+        /* Respect user's motion preference */
+        var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        if (prefersReduced) {
+            /* CSS already reveals elements at full opacity — no GSAP needed */
+            return;
+        }
+
         /* Master timeline so animations play sequentially then together */
         var tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
 
@@ -67,14 +75,14 @@
             }, 1.3);
         }
 
-        /* Subtle continuous float for the product image */
+        /* Subtle continuous float for the product image — restrained, premium */
         gsap.to(heroVisual, {
-            y: -12,
-            duration: 3.5,
+            y: -10,
+            duration: 4,
             ease: 'sine.inOut',
             yoyo: true,
             repeat: -1,
-            delay: 1.4,
+            delay: 1.5,
         });
     }
 

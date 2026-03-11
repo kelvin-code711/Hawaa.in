@@ -22,7 +22,7 @@
 .ig-hero {
     position: relative;
     min-height: 100svh;
-    background: #111827;
+    background: linear-gradient(160deg, #0f1623 0%, #111827 45%, #0c1420 100%);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -39,27 +39,27 @@
 }
 
 .ig-hero-orb--cyan {
-    width: 640px;
-    height: 640px;
-    background: radial-gradient(circle, rgba(8, 145, 178, 0.22) 0%, transparent 70%);
-    top: -160px;
-    right: -160px;
+    width: 720px;
+    height: 720px;
+    background: radial-gradient(circle, rgba(8, 145, 178, 0.18) 0%, transparent 68%);
+    top: -200px;
+    right: -200px;
 }
 
 .ig-hero-orb--blue {
-    width: 480px;
-    height: 480px;
-    background: radial-gradient(circle, rgba(37, 99, 235, 0.16) 0%, transparent 70%);
-    bottom: -120px;
-    left: -120px;
+    width: 520px;
+    height: 520px;
+    background: radial-gradient(circle, rgba(37, 99, 235, 0.12) 0%, transparent 68%);
+    bottom: -140px;
+    left: -140px;
 }
 
 .ig-hero-orb--mid {
-    width: 320px;
-    height: 320px;
-    background: radial-gradient(circle, rgba(14, 165, 233, 0.12) 0%, transparent 70%);
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(14, 165, 233, 0.09) 0%, transparent 70%);
     top: 50%;
-    left: 30%;
+    left: 35%;
     transform: translateY(-50%);
 }
 
@@ -146,65 +146,58 @@
     font-size: 1rem;
     font-weight: 400;
     line-height: 1.7;
-    color: rgba(255, 255, 255, 0.6);
-    max-width: 52ch;
-    margin: 0 0 36px;
+    color: rgba(255, 255, 255, 0.55);
+    max-width: 48ch;
+    margin: 0 0 28px;
 }
 
-/* CTA buttons */
-.ig-hero-ctas {
+/* ── Premium onboarding metadata ───────────────────────────── */
+.ig-hero-meta {
     display: flex;
+    align-items: center;
     flex-wrap: wrap;
-    gap: 12px;
-    align-items: center;
+    row-gap: 10px;
 }
 
-.ig-btn-primary {
+.ig-hero-meta-item {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    padding: 14px 28px;
-    background: linear-gradient(135deg, #0ea5e9 0%, #0891b2 100%);
-    border: 1px solid rgba(56, 189, 248, 0.5);
-    border-radius: 9999px;
+    gap: 7px;
     font-family: 'Outfit', sans-serif;
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: #ffffff;
-    text-decoration: none;
-    box-shadow: 0 2px 12px rgba(14, 165, 233, 0.45),
-                inset 0 1px 0 rgba(255, 255, 255, 0.2);
-    transition: box-shadow 0.3s ease, transform 0.2s ease;
-    cursor: pointer;
+    font-size: 0.73rem;
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    color: rgba(255, 255, 255, 0.38);
+    white-space: nowrap;
+    line-height: 1;
 }
 
-.ig-btn-primary:hover {
-    box-shadow: 0 4px 24px rgba(14, 165, 233, 0.6),
-                inset 0 1px 0 rgba(255, 255, 255, 0.2);
-    transform: translateY(-1px);
-}
-
-.ig-btn-ghost {
+.ig-hero-meta-icon {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    padding: 14px 28px;
-    background: rgba(255, 255, 255, 0.06);
-    backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 9999px;
-    font-family: 'Outfit', sans-serif;
-    font-size: 0.9rem;
-    font-weight: 500;
-    color: rgba(255, 255, 255, 0.8);
-    text-decoration: none;
-    transition: background 0.3s ease, border-color 0.3s ease;
-    cursor: pointer;
+    flex-shrink: 0;
+    color: rgba(6, 182, 212, 0.55);
 }
 
-.ig-btn-ghost:hover {
+.ig-hero-meta-divider {
+    display: inline-block;
+    width: 1px;
+    height: 11px;
     background: rgba(255, 255, 255, 0.1);
-    border-color: rgba(255, 255, 255, 0.3);
+    margin: 0 18px;
+    flex-shrink: 0;
+}
+
+/* On very narrow screens, stack items vertically */
+@media (max-width: 360px) {
+    .ig-hero-meta {
+        flex-direction: column;
+        align-items: flex-start;
+        row-gap: 10px;
+    }
+    .ig-hero-meta-divider {
+        display: none;
+    }
 }
 
 /* Hero product image */
@@ -223,21 +216,36 @@
 
 .ig-hero-img-glow {
     position: absolute;
-    inset: -40px;
-    background: radial-gradient(ellipse at 50% 80%, rgba(8, 145, 178, 0.35) 0%, transparent 65%);
+    inset: -64px;
+    background:
+        radial-gradient(ellipse at 50% 78%, rgba(8, 145, 178, 0.28) 0%, rgba(14, 165, 233, 0.06) 44%, transparent 68%);
     border-radius: 50%;
-    filter: blur(40px);
+    filter: blur(52px);
     pointer-events: none;
 }
 
 .ig-hero-img {
     position: relative;
     z-index: 1;
-    max-width: 360px;
+    max-width: 340px;
     width: 100%;
     height: auto;
     object-fit: contain;
-    filter: drop-shadow(0 40px 80px rgba(0, 0, 0, 0.6));
+    filter:
+        drop-shadow(0 48px 80px rgba(0, 0, 0, 0.72))
+        drop-shadow(0 0 48px rgba(8, 145, 178, 0.1));
+}
+
+@media (min-width: 768px) {
+    .ig-hero-img {
+        max-width: 400px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .ig-hero-img {
+        max-width: 460px;
+    }
 }
 
 /* Scroll cue */
@@ -256,11 +264,12 @@
 
 .ig-hero-scroll-label {
     font-family: 'Outfit', sans-serif;
-    font-size: 0.65rem;
-    font-weight: 500;
-    letter-spacing: 0.15em;
+    font-size: 0.6rem;
+    font-weight: 400;
+    letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.35);
+    color: rgba(255, 255, 255, 0.28);
+    white-space: nowrap;
 }
 
 .ig-hero-scroll-line {
@@ -275,6 +284,29 @@
     50% { transform: scaleY(1); transform-origin: top; }
     51% { transform-origin: bottom; }
     100% { transform: scaleY(0); transform-origin: bottom; }
+}
+
+/* Reduced-motion: reveal immediately, disable looping animations */
+@media (prefers-reduced-motion: reduce) {
+    .ig-hero-copy,
+    .ig-hero-visual {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+    }
+    .ig-hero-scroll {
+        opacity: 1 !important;
+        transition: none !important;
+    }
+    .ig-hero-eyebrow-dot {
+        animation: none !important;
+    }
+    .ig-hero-scroll-line {
+        animation: none !important;
+        transform: scaleY(1);
+        transform-origin: top;
+        opacity: 0.28;
+    }
 }
 
 /* ============================================================
