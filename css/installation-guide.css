@@ -1,0 +1,237 @@
+/* ========================================
+   INSTALLATION GUIDE PAGE STYLES
+   Scoped with .ig- prefix — mobile-first
+======================================== */
+
+/* ---- Header Override (always scrolled on white bg) ---- */
+.header-always-scrolled {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08);
+}
+
+.header-always-scrolled .logo {
+    color: #111827;
+}
+
+.header-always-scrolled .hamburger-line {
+    background: #111827;
+}
+
+.header-always-scrolled .header-profile-btn {
+    color: #111827;
+}
+
+.header-always-scrolled .header-cart-btn {
+    color: #111827;
+}
+
+/* ========================================
+   HERO SECTION
+======================================== */
+.ig-hero {
+    min-height: 100vh;
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 96px 20px 48px;
+    box-sizing: border-box;
+}
+
+.ig-hero-inner {
+    width: 100%;
+    max-width: 520px;
+    margin: 0 auto;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Eyebrow label */
+.ig-hero-eyebrow {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #9ca3af;
+    margin: 0 0 18px;
+}
+
+/* Headline */
+.ig-hero-headline {
+    font-family: 'Outfit', sans-serif;
+    font-size: 2.4rem;
+    font-weight: 600;
+    color: #111827;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    margin: 0 0 16px;
+}
+
+/* Description */
+.ig-hero-desc {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1rem;
+    font-weight: 400;
+    color: #6b7280;
+    line-height: 1.6;
+    margin: 0 0 36px;
+}
+
+/* Product image */
+.ig-hero-image-wrap {
+    margin-bottom: 36px;
+}
+
+.ig-hero-image {
+    width: 180px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    opacity: 0;
+    transform: translateY(24px);
+    animation: ig-image-appear 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.15s forwards;
+}
+
+@keyframes ig-image-appear {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 3-step indicator */
+.ig-hero-steps {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    margin-bottom: 36px;
+    flex-wrap: nowrap;
+}
+
+.ig-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    flex-shrink: 0;
+}
+
+.ig-step-num {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #111827;
+    line-height: 1;
+}
+
+.ig-step-label {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 400;
+    color: #9ca3af;
+    white-space: nowrap;
+    letter-spacing: 0.01em;
+}
+
+.ig-step-divider {
+    width: 28px;
+    height: 1px;
+    background: #e5e7eb;
+    flex-shrink: 0;
+    margin: 0 8px;
+    margin-bottom: 12px; /* align with number visually */
+}
+
+/* CTA area */
+.ig-hero-cta {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Primary button — dark solid, pill shape */
+.ig-hero-btn {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #ffffff;
+    background: #111827;
+    border: none;
+    border-radius: 9999px;
+    padding: 14px 32px;
+    cursor: pointer;
+    letter-spacing: 0.01em;
+    transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.ig-hero-btn:hover {
+    background: #1f2937;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(17, 24, 39, 0.18);
+}
+
+.ig-hero-btn:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+/* Helper text */
+.ig-hero-helper {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 400;
+    color: #9ca3af;
+    margin: 0;
+}
+
+/* ========================================
+   RESPONSIVE — TABLET & UP
+======================================== */
+@media (min-width: 640px) {
+    .ig-hero {
+        padding: 112px 32px 56px;
+    }
+
+    .ig-hero-headline {
+        font-size: 3rem;
+    }
+
+    .ig-hero-image {
+        width: 220px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .ig-hero {
+        padding: 120px 48px 60px;
+    }
+
+    .ig-hero-inner {
+        max-width: 580px;
+    }
+
+    .ig-hero-headline {
+        font-size: 3.75rem;
+    }
+
+    .ig-hero-image {
+        width: 260px;
+    }
+
+    .ig-step-label {
+        font-size: 0.78rem;
+    }
+
+    .ig-step-divider {
+        width: 36px;
+    }
+}
