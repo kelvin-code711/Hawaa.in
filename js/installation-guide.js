@@ -22,6 +22,7 @@
 
         initHeroAnimations();
         initPlacementAnimation();
+        initRulesCarousel();
         initControlGuide();
         initGoogleHomeCards();
         initFilterMaintenance();
@@ -163,10 +164,66 @@
         /* Continuous idle rotation of the dashed ring for visual interest */
         gsap.to(ring, {
             rotation: 360,
-            transformOrigin: '260px 260px',
+            transformOrigin: '190px 330px',
             duration: 40,
             ease: 'none',
             repeat: -1,
+        });
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       2b. PLACEMENT RULES CAROUSEL
+           Scroll-snap carousel with dot navigation on mobile.
+       ══════════════════════════════════════════════════════════ */
+    function initRulesCarousel() {
+        var track = document.getElementById('ig-rules-track');
+        var dotsWrap = document.getElementById('ig-carousel-dots');
+
+        if (!track || !dotsWrap) return;
+
+        /* Only active below 1024px */
+        function isCarouselActive() {
+            return window.innerWidth < 1024;
+        }
+
+        var dots = dotsWrap.querySelectorAll('.ig-dot');
+        var cards = track.querySelectorAll('.ig-rule-card');
+        var currentIndex = 0;
+
+        function activateDot(index) {
+            dots.forEach(function (d, i) {
+                d.classList.toggle('ig-dot--active', i === index);
+            });
+            currentIndex = index;
+        }
+
+        /* Update dot from scroll position */
+        function onScroll() {
+            if (!isCarouselActive()) return;
+            var scrollLeft = track.scrollLeft;
+            var cardWidth = track.offsetWidth;
+            var index = Math.round(scrollLeft / cardWidth);
+            index = Math.max(0, Math.min(index, cards.length - 1));
+            activateDot(index);
+        }
+
+        track.addEventListener('scroll', onScroll, { passive: true });
+
+        /* Dot click → scroll to card */
+        dots.forEach(function (dot, i) {
+            dot.addEventListener('click', function () {
+                if (!isCarouselActive()) return;
+                track.scrollTo({ left: i * track.offsetWidth, behavior: 'smooth' });
+                activateDot(i);
+            });
+        });
+
+        /* On resize, reset scroll if entering desktop */
+        window.addEventListener('resize', function () {
+            if (!isCarouselActive()) {
+                track.scrollLeft = 0;
+                activateDot(0);
+            }
         });
     }
 
