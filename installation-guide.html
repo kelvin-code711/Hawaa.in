@@ -361,6 +361,155 @@
         </div><!-- /.bp-container -->
     </section>
 
+    <!-- ========================================
+         SECTION 3: TOUCH CONTROLS VIDEO
+    ======================================== -->
+    <section class="tc-section" id="touch-controls" aria-label="Touch Controls Guide">
+        <div class="tc-container">
+
+            <div class="tc-body">
+
+                <!-- Left col: heading + description -->
+                <div class="tc-text">
+                    <p class="tc-eyebrow">Touch Controls</p>
+                    <h2 class="tc-headline">Everything you need,<br>at a <span class="italic">touch</span></h2>
+                    <p class="tc-desc">A quick look at the essential controls you'll use every day.</p>
+                </div>
+
+                <!-- Right col: video + chip track -->
+                <div class="tc-video-col">
+
+                    <!-- Video container -->
+                    <div class="tc-video-wrap">
+                        <video
+                            class="tc-video"
+                            id="tc-video"
+                            src="public/videos/touch-controls.mp4"
+                            muted
+                            autoplay
+                            loop
+                            playsinline
+                            preload="metadata"
+                            aria-label="Demonstration of air purifier touch controls"
+                        ></video>
+
+                        <!-- Placeholder shown when video is unavailable -->
+                        <div class="tc-video-placeholder" id="tc-placeholder" aria-hidden="true">
+                            <div class="tc-placeholder-inner">
+                                <svg class="tc-placeholder-icon" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                    <circle cx="28" cy="28" r="20" fill="#1e293b"/>
+                                    <circle cx="28" cy="28" r="12" fill="#0891b2" opacity="0.85"/>
+                                    <circle cx="28" cy="28" r="4" fill="#ffffff"/>
+                                    <circle cx="28" cy="28" r="26" stroke="#e5e7eb" stroke-width="1" fill="none"/>
+                                </svg>
+                                <p class="tc-placeholder-label">Touch controls demo</p>
+                            </div>
+                        </div>
+                    </div><!-- /.tc-video-wrap -->
+
+                    <!-- Control chip track — one chip visible at a time -->
+                    <div class="tc-chip-area" id="tc-chip-area" aria-live="polite" aria-atomic="true">
+
+                        <!-- Step progress dots -->
+                        <div class="tc-dots" id="tc-dots" aria-hidden="true">
+                            <span class="tc-dot" data-dot="0"></span>
+                            <span class="tc-dot" data-dot="1"></span>
+                            <span class="tc-dot" data-dot="2"></span>
+                            <span class="tc-dot" data-dot="3"></span>
+                            <span class="tc-dot" data-dot="4"></span>
+                            <span class="tc-dot" data-dot="5"></span>
+                        </div>
+
+                        <!-- Chips -->
+                        <div class="tc-chip-track">
+
+                            <div class="tc-chip" data-index="0" data-start="0">
+                                <span class="tc-chip-icon" aria-hidden="true">
+                                    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                                        <circle cx="10" cy="10" r="7"/>
+                                        <line x1="10" y1="3" x2="10" y2="6"/>
+                                    </svg>
+                                </span>
+                                <div class="tc-chip-text">
+                                    <span class="tc-chip-label">Power</span>
+                                    <span class="tc-chip-sub">Turn the purifier on or off</span>
+                                </div>
+                            </div>
+
+                            <div class="tc-chip" data-index="1" data-start="3">
+                                <span class="tc-chip-icon" aria-hidden="true">
+                                    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M4 10h12M4 6h8M4 14h6"/>
+                                    </svg>
+                                </span>
+                                <div class="tc-chip-text">
+                                    <span class="tc-chip-label">Fan Speed</span>
+                                    <span class="tc-chip-sub">Low, medium, and high airflow</span>
+                                </div>
+                            </div>
+
+                            <div class="tc-chip" data-index="2" data-start="6">
+                                <span class="tc-chip-icon" aria-hidden="true">
+                                    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M10 3C6.13 3 3 6.13 3 10s3.13 7 7 7 7-3.13 7-7"/>
+                                        <path d="M13 3c0 1.66-1.34 3-3 3"/>
+                                    </svg>
+                                </span>
+                                <div class="tc-chip-text">
+                                    <span class="tc-chip-label">Sleep Mode</span>
+                                    <span class="tc-chip-sub">Runs quietly at low fan speed</span>
+                                </div>
+                            </div>
+
+                            <div class="tc-chip" data-index="3" data-start="9">
+                                <span class="tc-chip-icon" aria-hidden="true">
+                                    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                                        <circle cx="10" cy="10" r="7"/>
+                                        <polyline points="10,6 10,10 13,12"/>
+                                    </svg>
+                                </span>
+                                <div class="tc-chip-text">
+                                    <span class="tc-chip-label">Timer</span>
+                                    <span class="tc-chip-sub">Set 2h, 4h, or 8h runtime</span>
+                                </div>
+                            </div>
+
+                            <div class="tc-chip" data-index="4" data-start="12">
+                                <span class="tc-chip-icon" aria-hidden="true">
+                                    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M5 12.5C5 9.46 7.46 7 10.5 7S16 9.46 16 12.5"/>
+                                        <path d="M2 15c0-4.42 3.58-8 8-8s8 3.58 8 8"/>
+                                        <circle cx="10" cy="16" r="1" fill="currentColor"/>
+                                    </svg>
+                                </span>
+                                <div class="tc-chip-text">
+                                    <span class="tc-chip-label">Wi-Fi Pairing</span>
+                                    <span class="tc-chip-sub">Connect the purifier to the app</span>
+                                </div>
+                            </div>
+
+                            <div class="tc-chip" data-index="5" data-start="15">
+                                <span class="tc-chip-icon" aria-hidden="true">
+                                    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M10 2v4M10 14v4M4.22 4.22l2.83 2.83M12.95 12.95l2.83 2.83M2 10h4M14 10h4M4.22 15.78l2.83-2.83M12.95 7.05l2.83-2.83"/>
+                                    </svg>
+                                </span>
+                                <div class="tc-chip-text">
+                                    <span class="tc-chip-label">Filter Reminder</span>
+                                    <span class="tc-chip-sub">A gentle reminder every 4–5 months</span>
+                                </div>
+                            </div>
+
+                        </div><!-- /.tc-chip-track -->
+                    </div><!-- /.tc-chip-area -->
+
+                </div><!-- /.tc-video-col -->
+
+            </div><!-- /.tc-body -->
+
+        </div><!-- /.tc-container -->
+    </section>
+
     <!-- Footer -->
     <footer class="footer" id="contact">
         <div class="footer-container">
@@ -488,6 +637,76 @@
     </footer>
 
     <script src="js/nav.js"></script>
+    <script>
+        // ── Touch Controls: Progressive chip reveal ──────────────────────
+        (function () {
+            var video      = document.getElementById('tc-video');
+            var placeholder = document.getElementById('tc-placeholder');
+            var chips      = Array.prototype.slice.call(document.querySelectorAll('.tc-chip'));
+            var dots       = Array.prototype.slice.call(document.querySelectorAll('.tc-dot'));
+            var intervals  = chips.map(function (c) { return parseFloat(c.dataset.start); });
+            var cycleDuration = 18; // seconds for one full chip cycle
+            var currentIndex  = -1;
+            var fallbackTimer = null;
+
+            // Show a specific chip by index
+            function showChip(index) {
+                if (index === currentIndex) return;
+                currentIndex = index;
+
+                chips.forEach(function (chip, i) {
+                    chip.classList.toggle('is-active', i === index);
+                });
+                dots.forEach(function (dot, i) {
+                    dot.classList.toggle('is-active', i === index);
+                });
+            }
+
+            // Determine chip from video timestamp (wraps on loop)
+            function getActiveIndex(time) {
+                var t = time % cycleDuration;
+                var active = 0;
+                for (var i = 0; i < intervals.length; i++) {
+                    if (t >= intervals[i]) { active = i; }
+                }
+                return active;
+            }
+
+            // Hook into video timeupdate
+            function onTimeUpdate() {
+                showChip(getActiveIndex(video.currentTime));
+            }
+
+            // Fallback: auto-cycle when video is unavailable
+            function startFallbackCycle() {
+                var step = 0;
+                showChip(0);
+                fallbackTimer = setInterval(function () {
+                    step = (step + 1) % chips.length;
+                    showChip(step);
+                }, 2400);
+            }
+
+            if (video) {
+                // Show placeholder only if video fails to load
+                video.addEventListener('canplay', function () {
+                    if (placeholder) placeholder.style.display = 'none';
+                    if (fallbackTimer) { clearInterval(fallbackTimer); fallbackTimer = null; }
+                    video.addEventListener('timeupdate', onTimeUpdate);
+                });
+
+                video.addEventListener('error', startFallbackCycle);
+
+                // If video stalls or won't play after a short delay, use fallback
+                setTimeout(function () {
+                    if (video.readyState < 2) { startFallbackCycle(); }
+                }, 1200);
+            }
+
+            // Start first chip immediately
+            showChip(0);
+        }());
+    </script>
     <script>
         // Smooth scroll: Start Setup button → #setup-steps
         document.getElementById('ig-start-btn').addEventListener('click', function () {
