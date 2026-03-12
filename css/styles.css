@@ -94,6 +94,19 @@ a {
     font-weight: 400;
 }
 
+.logo-img {
+    height: 28px;
+    width: auto;
+    display: block;
+    filter: brightness(0) invert(1);
+    transition: filter 0.3s ease;
+}
+
+.header.scrolled .logo-img,
+.header-always-scrolled .logo-img {
+    filter: none;
+}
+
 /* Header Actions (profile + hamburger) */
 .header-actions {
     display: flex;
