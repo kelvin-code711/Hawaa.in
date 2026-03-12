@@ -1049,12 +1049,12 @@
 
 
 /* ========================================
-   SECTION 5: FILTER STORYTELLING
+   SECTION 5: FILTER STORYTELLING — REWORKED
    Prefix: fst- | Mobile-first
-   Scroll-driven sticky cylindrical filter
+   Inline SVG cylinder + GSAP ScrollTrigger
 ======================================== */
 
-/* ── Outer scroll container (5 frames × 100vh) ── */
+/* ── Outer scroll container (4 extra viewports = 500vh total) ── */
 .fst-section {
     position: relative;
     height: 500vh;
@@ -1078,9 +1078,9 @@
     inset: 0;
     pointer-events: none;
     background: radial-gradient(
-        ellipse 72% 48% at 50% 50%,
-        rgba(8, 145, 178, 0.06) 0%,
-        transparent 72%
+        ellipse 70% 50% at 50% 50%,
+        rgba(8, 145, 178, 0.07) 0%,
+        transparent 68%
     );
 }
 
@@ -1091,9 +1091,9 @@
     width: 100%;
     max-width: 1100px;
     margin: 0 auto;
-    padding: 72px 24px 32px;
+    padding: 80px 24px 40px;
     display: flex;
-    flex-direction: column;
+    flex-direction: column-reverse; /* SVG on top, text below on mobile */
     align-items: center;
     gap: 36px;
     box-sizing: border-box;
@@ -1103,351 +1103,61 @@
     .fst-inner {
         flex-direction: row;
         align-items: center;
-        gap: 80px;
+        gap: 72px;
         padding: 0 60px;
     }
 }
 
-/* ── Filter visual column ── */
+/* ── SVG visual column ── */
 .fst-visual-col {
+    flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-shrink: 0;
+}
+
+/* ── Inline SVG sizing ── */
+.fst-svg {
+    width: 190px;
+    height: auto;
+    overflow: visible;
+    display: block;
+}
+
+@media (min-width: 640px) {
+    .fst-svg { width: 230px; }
+}
+
+@media (min-width: 1024px) {
+    .fst-svg { width: 290px; }
 }
 
 /* ── Text column ── */
 .fst-text-col {
     position: relative;
     width: 100%;
-    max-width: 340px;
-    min-height: 150px;
+    max-width: 360px;
+    min-height: 160px;
+    text-align: center;
 }
 
 @media (min-width: 1024px) {
-    .fst-visual-col {
-        flex: 0 0 auto;
-    }
+    .fst-visual-col { flex: 0 0 auto; }
 
     .fst-text-col {
         flex: 1;
-        max-width: 400px;
-        min-height: 200px;
+        max-width: 420px;
+        min-height: 220px;
+        text-align: left;
     }
-}
-
-/* ========================================
-   CYLINDRICAL FILTER VISUAL
-======================================== */
-
-/* ── Filter container ── */
-.fst-filter {
-    position: relative;
-    width: 170px;
-    height: 250px;
-    overflow: visible;
-}
-
-@media (min-width: 768px) {
-    .fst-filter {
-        width: 220px;
-        height: 320px;
-    }
-}
-
-/* ── Ambient shadow beneath filter ── */
-.fst-filter::after {
-    content: '';
-    position: absolute;
-    bottom: -14px;
-    left: 12%;
-    right: 12%;
-    height: 18px;
-    border-radius: 50%;
-    background: radial-gradient(ellipse, rgba(0, 0, 0, 0.22) 0%, transparent 72%);
-    pointer-events: none;
-    z-index: 0;
-}
-
-/* ── Soft top light on filter ── */
-.fst-filter::before {
-    content: '';
-    position: absolute;
-    top: -8px;
-    left: 20%;
-    right: 20%;
-    height: 12px;
-    border-radius: 50%;
-    background: radial-gradient(ellipse, rgba(200, 220, 245, 0.08) 0%, transparent 70%);
-    pointer-events: none;
-    z-index: 10;
-}
-
-/* ── Layers: absolutely positioned, all centered ── */
-.fst-layer {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    height: 100%;
-    transform: translateX(-50%);
-    transition:
-        transform 0.95s cubic-bezier(0.22, 1, 0.36, 1),
-        opacity   0.75s ease,
-        filter    0.75s ease;
-    will-change: transform, opacity, filter;
-}
-
-/* Layer widths — concentric cylindrical shells (outer → inner)
-   Pre-filter: ~4% of radius (thin sleeve)
-   HEPA: ~63% of wall thickness (dominant mass)
-   Carbon: ~22% of wall thickness (inner cylinder)
-*/
-.fst-layer--pf { width: 170px; z-index: 3; }
-.fst-layer--hp { width: 158px; z-index: 2; }
-.fst-layer--ac { width: 84px;  z-index: 1; }
-
-@media (min-width: 768px) {
-    .fst-layer--pf { width: 220px; }
-    .fst-layer--hp { width: 204px; }
-    .fst-layer--ac { width: 108px; }
-}
-
-/* ── Ellipse caps (top & bottom) ── */
-.fst-cap {
-    position: absolute;
-    left: 0;
-    right: 0;
-    height: 26px;
-    border-radius: 50%;
-    z-index: 2;
-}
-
-.fst-cap--t { top: 0; }
-.fst-cap--b { bottom: 0; }
-
-@media (min-width: 768px) {
-    .fst-cap { height: 34px; }
-}
-
-/* ── Cylindrical body (between caps) ── */
-.fst-body {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 13px;
-    bottom: 13px;
-    z-index: 1;
-}
-
-@media (min-width: 768px) {
-    .fst-body { top: 17px; bottom: 17px; }
-}
-
-/* ── Central air channel ── */
-.fst-center-channel {
-    position: absolute;
-    top: 10%;
-    bottom: 10%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 40px;
-    border-radius: 50% / 6%;
-    background: radial-gradient(
-        ellipse at 50% 50%,
-        rgba(10, 18, 32, 0.6) 0%,
-        rgba(7, 14, 26, 0.85) 100%
-    );
-    border: 1px solid rgba(40, 60, 90, 0.12);
-    z-index: 0;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.75s ease;
-}
-
-@media (min-width: 768px) {
-    .fst-center-channel {
-        width: 52px;
-    }
-}
-
-/* ========================================
-   LAYER TEXTURES
-======================================== */
-
-/* ── Pre-filter: thin nylon mesh sleeve — subtle crosshatch on translucent shell ── */
-.fst-layer--pf .fst-body {
-    background-image:
-        repeating-linear-gradient(
-            0deg,
-            transparent 0px, transparent 4px,
-            rgba(255, 255, 255, 0.04) 4px, rgba(255, 255, 255, 0.04) 5px
-        ),
-        repeating-linear-gradient(
-            90deg,
-            transparent 0px, transparent 4px,
-            rgba(255, 255, 255, 0.04) 4px, rgba(255, 255, 255, 0.04) 5px
-        ),
-        linear-gradient(
-            90deg,
-            rgba(160, 190, 220, 0.06) 0%,
-            rgba(200, 222, 242, 0.16) 28%,
-            rgba(215, 232, 248, 0.20) 50%,
-            rgba(200, 222, 242, 0.16) 72%,
-            rgba(160, 190, 220, 0.06) 100%
-        );
-    border-left:  1px solid rgba(200, 220, 240, 0.12);
-    border-right: 1px solid rgba(200, 220, 240, 0.08);
-}
-
-/* Pre-filter caps: very subtle, thin — mesh sleeve edges */
-.fst-layer--pf .fst-cap {
-    background: rgba(195, 218, 240, 0.10);
-    border: 1px solid rgba(200, 220, 240, 0.08);
-    height: 20px;
-}
-
-@media (min-width: 768px) {
-    .fst-layer--pf .fst-cap { height: 26px; }
-}
-
-/* ── HEPA: white pleated body with vertical accordion pattern ── */
-.fst-layer--hp .fst-body {
-    background-image: repeating-linear-gradient(
-        90deg,
-        rgba(240, 246, 255, 0.96) 0px,
-        rgba(240, 246, 255, 0.96) 3px,
-        rgba(222, 234, 248, 0.88) 3px,
-        rgba(222, 234, 248, 0.88) 4px,
-        rgba(236, 244, 254, 0.94) 4px,
-        rgba(236, 244, 254, 0.94) 7px,
-        rgba(198, 214, 234, 0.62) 7px,
-        rgba(198, 214, 234, 0.62) 8px
-    );
-    border-left:  1px solid rgba(255, 255, 255, 0.72);
-    border-right: 1px solid rgba(200, 218, 238, 0.40);
-    box-shadow:
-        inset 3px 0 12px rgba(0, 0, 0, 0.06),
-        inset -3px 0 12px rgba(0, 0, 0, 0.04);
-}
-
-/* HEPA structural endcaps: white ring caps with slight overhang */
-.fst-layer--hp .fst-cap {
-    left: -6px;
-    right: -6px;
-}
-
-.fst-layer--hp .fst-cap--t {
-    background: linear-gradient(180deg, #e2ecf6 0%, #d2deee 100%);
-    border: 1px solid rgba(180, 205, 230, 0.50);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
-}
-
-.fst-layer--hp .fst-cap--b {
-    background: linear-gradient(0deg, #dae6f3 0%, #c9d7eb 100%);
-    border: 1px solid rgba(180, 205, 230, 0.38);
-    box-shadow: 0 -1px 4px rgba(0, 0, 0, 0.06);
-}
-
-@media (min-width: 768px) {
-    .fst-layer--hp .fst-cap {
-        left: -8px;
-        right: -8px;
-    }
-}
-
-/* ── Carbon: dark matte graphite/charcoal cylinder ── */
-.fst-layer--ac .fst-body {
-    background-image:
-        repeating-linear-gradient(
-            90deg,
-            transparent 0px, transparent 3px,
-            rgba(0, 0, 0, 0.07) 3px, rgba(0, 0, 0, 0.07) 4px
-        ),
-        linear-gradient(
-            90deg,
-            #1c2430 0%,
-            #2c3848 28%,
-            #323f50 50%,
-            #2c3848 72%,
-            #1c2430 100%
-        );
-    border-left:  1px solid rgba(80, 110, 150, 0.14);
-    border-right: 1px solid rgba(60, 90, 125, 0.10);
-    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.25);
-}
-
-/* Carbon caps: subtle dark rings for cylindrical closure */
-.fst-layer--ac .fst-cap {
-    height: 20px;
-}
-
-.fst-layer--ac .fst-cap--t {
-    background: linear-gradient(180deg, #283242 0%, #1e2836 100%);
-    border: 1px solid rgba(70, 100, 140, 0.14);
-}
-
-.fst-layer--ac .fst-cap--b {
-    background: linear-gradient(0deg, #222c3a 0%, #181f2c 100%);
-    border: 1px solid rgba(70, 100, 140, 0.10);
-}
-
-@media (min-width: 768px) {
-    .fst-layer--ac .fst-cap { height: 26px; }
-}
-
-/* ========================================
-   FRAME STATES
-   data-frame on #fst-filter drives layer
-   transforms, opacities, and emphasis.
-   Separation: ~20px mobile, ~40-50px desktop max.
-======================================== */
-
-/* ── Frame 1: Fully assembled — all layers aligned, all visible ── */
-#fst-filter[data-frame="1"] .fst-layer--pf { transform: translateX(-50%); opacity: 1; }
-#fst-filter[data-frame="1"] .fst-layer--hp { transform: translateX(-50%); opacity: 1; }
-#fst-filter[data-frame="1"] .fst-layer--ac { transform: translateX(-50%); opacity: 1; }
-#fst-filter[data-frame="1"] .fst-center-channel { opacity: 0; }
-
-/* ── Frame 2: Pre-filter separates outward (left) — highlight pre-filter ── */
-#fst-filter[data-frame="2"] .fst-layer--pf { transform: translateX(calc(-50% - 18px)); opacity: 1; }
-#fst-filter[data-frame="2"] .fst-layer--hp { transform: translateX(-50%); opacity: 1; }
-#fst-filter[data-frame="2"] .fst-layer--ac { transform: translateX(-50%); opacity: 0.35; }
-#fst-filter[data-frame="2"] .fst-center-channel { opacity: 0.25; }
-
-/* ── Frame 3: HEPA focal — scale + brightness emphasis, others soften ── */
-#fst-filter[data-frame="3"] .fst-layer--pf { transform: translateX(calc(-50% - 20px)); opacity: 0.28; }
-#fst-filter[data-frame="3"] .fst-layer--hp { transform: translateX(-50%) scale(1.04); opacity: 1; filter: brightness(1.1); }
-#fst-filter[data-frame="3"] .fst-layer--ac { transform: translateX(-50%); opacity: 0.28; }
-#fst-filter[data-frame="3"] .fst-center-channel { opacity: 0.2; }
-
-/* ── Frame 4: Carbon highlighted — HEPA semi-transparent to reveal carbon ── */
-#fst-filter[data-frame="4"] .fst-layer--pf { transform: translateX(calc(-50% - 20px)); opacity: 0.15; }
-#fst-filter[data-frame="4"] .fst-layer--hp { transform: translateX(calc(-50% - 12px)); opacity: 0.30; }
-#fst-filter[data-frame="4"] .fst-layer--ac { transform: translateX(-50%); opacity: 1; }
-#fst-filter[data-frame="4"] .fst-center-channel { opacity: 0.6; }
-
-/* ── Frame 5: Clean exploded alignment — all layers visible ── */
-#fst-filter[data-frame="5"] .fst-layer--pf { transform: translateX(calc(-50% - 18px)); opacity: 0.88; }
-#fst-filter[data-frame="5"] .fst-layer--hp { transform: translateX(-50%); opacity: 1; }
-#fst-filter[data-frame="5"] .fst-layer--ac { transform: translateX(calc(-50% + 18px)); opacity: 0.90; }
-#fst-filter[data-frame="5"] .fst-center-channel { opacity: 0.45; }
-
-/* ── Desktop: wider but still restrained layer separation (40–50px max) ── */
-@media (min-width: 1024px) {
-    #fst-filter[data-frame="2"] .fst-layer--pf { transform: translateX(calc(-50% - 40px)); }
-
-    #fst-filter[data-frame="3"] .fst-layer--pf { transform: translateX(calc(-50% - 46px)); }
-    #fst-filter[data-frame="3"] .fst-layer--hp { transform: translateX(-50%) scale(1.05); }
-
-    #fst-filter[data-frame="4"] .fst-layer--pf { transform: translateX(calc(-50% - 50px)); }
-    #fst-filter[data-frame="4"] .fst-layer--hp { transform: translateX(calc(-50% - 24px)); }
-
-    #fst-filter[data-frame="5"] .fst-layer--pf { transform: translateX(calc(-50% - 42px)); }
-    #fst-filter[data-frame="5"] .fst-layer--ac { transform: translateX(calc(-50% + 42px)); }
 }
 
 /* ========================================
    TEXT FRAMES
+   GSAP controls opacity + y via inline style.
+   CSS sets initial hidden state; frame 1
+   uses opacity:1 as default so content is
+   visible before GSAP initialises.
 ======================================== */
 
 .fst-frame {
@@ -1456,20 +1166,17 @@
     left: 0;
     width: 100%;
     opacity: 0;
-    transform: translateY(10px);
-    transition:
-        opacity   0.50s ease,
-        transform 0.50s cubic-bezier(0.22, 1, 0.36, 1);
     pointer-events: none;
+    will-change: opacity, transform;
 }
 
-.fst-frame--on {
+/* Frame 1 visible by default (GSAP overrides on init) */
+#fst-f1 {
     opacity: 1;
-    transform: translateY(0);
     pointer-events: auto;
 }
 
-/* Eyebrow label */
+/* ── Eyebrow label ── */
 .fst-eyebrow {
     font-family: 'Outfit', sans-serif;
     font-size: 0.62rem;
@@ -1480,7 +1187,7 @@
     margin: 0 0 14px;
 }
 
-/* Main headline (frame 1) */
+/* ── Main headline (frame 1) ── */
 .fst-headline {
     font-family: 'Outfit', sans-serif;
     font-size: 1.75rem;
@@ -1491,7 +1198,7 @@
     margin: 0 0 16px;
 }
 
-/* Playfair italic accent (used across frames) */
+/* ── Playfair italic accent ── */
 .fst-em {
     font-family: 'Playfair Display', serif;
     font-style: italic;
@@ -1499,7 +1206,7 @@
     color: rgba(255, 255, 255, 0.86);
 }
 
-/* Supporting body text */
+/* ── Supporting body text ── */
 .fst-sub {
     font-family: 'Outfit', sans-serif;
     font-size: 0.9rem;
@@ -1509,7 +1216,7 @@
     margin: 0;
 }
 
-/* Layer number tag (frames 2–4) */
+/* ── Layer tag (frames 2–4) ── */
 .fst-layer-tag {
     font-family: 'Outfit', sans-serif;
     font-size: 0.62rem;
@@ -1520,7 +1227,7 @@
     margin: 0 0 10px;
 }
 
-/* Layer name heading (frames 2–4) */
+/* ── Layer name heading (frames 2–4) ── */
 .fst-layer-name {
     font-family: 'Outfit', sans-serif;
     font-size: 1.85rem;
@@ -1531,7 +1238,7 @@
     margin: 0 0 14px;
 }
 
-/* Frame 5 — closing copy */
+/* ── Frame 5 closing copy ── */
 .fst-closing-pills {
     font-family: 'Outfit', sans-serif;
     font-size: 0.68rem;
@@ -1561,56 +1268,6 @@
 }
 
 /* ========================================
-   SCROLL PROGRESS DOTS
-======================================== */
-
-.fst-progress {
-    position: absolute;
-    bottom: 28px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    flex-direction: row;
-    gap: 8px;
-    align-items: center;
-    z-index: 10;
-}
-
-@media (min-width: 1024px) {
-    .fst-progress {
-        left: 36px;
-        bottom: auto;
-        top: 50%;
-        transform: translateY(-50%);
-        flex-direction: column;
-        gap: 10px;
-    }
-}
-
-.fst-pdot {
-    width: 5px;
-    height: 5px;
-    border-radius: 9999px;
-    background: rgba(255, 255, 255, 0.22);
-    transition:
-        background 0.3s ease,
-        width      0.3s ease,
-        height     0.3s ease;
-}
-
-.fst-pdot--on {
-    background: #0891b2;
-    width: 18px;
-}
-
-@media (min-width: 1024px) {
-    .fst-pdot--on {
-        width: 5px;
-        height: 18px;
-    }
-}
-
-/* ========================================
    SCROLL HINT
 ======================================== */
 
@@ -1621,14 +1278,9 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    opacity: 1;
-    transition: opacity 0.45s ease;
     pointer-events: none;
     z-index: 10;
-}
-
-.fst-hint--gone {
-    opacity: 0;
+    /* GSAP controls opacity */
 }
 
 .fst-hint-line {
@@ -1647,19 +1299,14 @@
     color: rgba(255, 255, 255, 0.28);
 }
 
-/* ── Reduced motion: disable transform animations ── */
+/* ========================================
+   REDUCED MOTION
+======================================== */
+
 @media (prefers-reduced-motion: reduce) {
-    .fst-layer {
-        transition: opacity 0.4s ease;
-        filter: none !important;
-    }
-
-    .fst-frame {
-        transition: opacity 0.4s ease;
-        transform: none !important;
-    }
-
-    .fst-center-channel {
-        transition: opacity 0.4s ease;
+    .fst-frame,
+    .fst-svg g {
+        transition: none !important;
+        animation: none !important;
     }
 }

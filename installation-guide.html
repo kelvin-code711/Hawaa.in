@@ -658,7 +658,8 @@
 
     <!-- ========================================
          SECTION 5: FILTER STORYTELLING
-         Scroll-driven 3-in-1 filter explainer
+         Reworked: inline SVG cylinder + GSAP ScrollTrigger
+         Prefix: fst-
     ======================================== -->
     <section class="fst-section" id="filter-layers" aria-label="3-in-1 Filter Technology Explained">
         <div class="fst-sticky" id="fst-sticky">
@@ -666,45 +667,14 @@
             <!-- Ambient background glow -->
             <div class="fst-bg-glow" aria-hidden="true"></div>
 
-            <!-- Inner layout: filter visual + text panel -->
+            <!-- Inner layout -->
             <div class="fst-inner">
 
-                <!-- ── Filter Visual ── -->
-                <div class="fst-visual-col" aria-hidden="true">
-                    <div class="fst-filter" id="fst-filter" data-frame="1">
-
-                        <!-- Layer 1: Pre-filter (outermost — nylon mesh) -->
-                        <div class="fst-layer fst-layer--pf">
-                            <div class="fst-cap fst-cap--t"></div>
-                            <div class="fst-body"></div>
-                            <div class="fst-cap fst-cap--b"></div>
-                        </div>
-
-                        <!-- Layer 2: Pleated HEPA (main filtration body) -->
-                        <div class="fst-layer fst-layer--hp">
-                            <div class="fst-cap fst-cap--t"></div>
-                            <div class="fst-body"></div>
-                            <div class="fst-cap fst-cap--b"></div>
-                        </div>
-
-                        <!-- Layer 3: Activated Carbon (innermost) -->
-                        <div class="fst-layer fst-layer--ac">
-                            <div class="fst-cap fst-cap--t"></div>
-                            <div class="fst-body"></div>
-                            <div class="fst-cap fst-cap--b"></div>
-                        </div>
-
-                        <!-- Central air channel (visible when layers separate) -->
-                        <div class="fst-center-channel"></div>
-
-                    </div><!-- /.fst-filter -->
-                </div><!-- /.fst-visual-col -->
-
-                <!-- ── Text Panel ── -->
+                <!-- ── Text column (desktop: left; mobile: below visual) ── -->
                 <div class="fst-text-col">
 
                     <!-- Frame 1: Introduction -->
-                    <div class="fst-frame fst-frame--on" id="fst-f1" aria-hidden="false">
+                    <div class="fst-frame" id="fst-f1" aria-hidden="false">
                         <p class="fst-eyebrow">Hawaa Edge Filter</p>
                         <h2 class="fst-headline">Three layers.<br><em class="fst-em">One cleaner breath.</em></h2>
                         <p class="fst-sub">A precision-engineered 3-in-1 cylindrical filter designed to capture what you cannot see.</p>
@@ -712,21 +682,21 @@
 
                     <!-- Frame 2: Pre-filter -->
                     <div class="fst-frame" id="fst-f2" aria-hidden="true">
-                        <p class="fst-layer-tag">Layer 1</p>
+                        <p class="fst-layer-tag">Layer 1 &mdash; Nylon Mesh</p>
                         <h3 class="fst-layer-name">Pre-filter</h3>
                         <p class="fst-sub">Captures hair, lint, and larger dust particles before they reach the core.</p>
                     </div>
 
-                    <!-- Frame 3: HEPA -->
+                    <!-- Frame 3: Pleated HEPA -->
                     <div class="fst-frame" id="fst-f3" aria-hidden="true">
-                        <p class="fst-layer-tag">Layer 2</p>
+                        <p class="fst-layer-tag">Layer 2 &mdash; True HEPA</p>
                         <h3 class="fst-layer-name">Pleated HEPA</h3>
-                        <p class="fst-sub">Traps fine airborne particles with high-efficiency filtration.</p>
+                        <p class="fst-sub">Traps fine airborne particles through high-efficiency filtration.</p>
                     </div>
 
-                    <!-- Frame 4: Carbon -->
+                    <!-- Frame 4: Activated Carbon -->
                     <div class="fst-frame" id="fst-f4" aria-hidden="true">
-                        <p class="fst-layer-tag">Layer 3</p>
+                        <p class="fst-layer-tag">Layer 3 &mdash; Activated Carbon</p>
                         <h3 class="fst-layer-name">Activated Carbon</h3>
                         <p class="fst-sub">Helps reduce odors, smoke, and unwanted gases.</p>
                     </div>
@@ -739,18 +709,216 @@
 
                 </div><!-- /.fst-text-col -->
 
+                <!-- ── SVG Filter Illustration ── -->
+                <div class="fst-visual-col" aria-hidden="true">
+                    <!--
+                        Cylindrical cartridge filter — cutaway side view
+                        viewBox: 0 0 300 420
+                        Three concentric cylindrical shells, drawn back-to-front:
+                          1. Pre-filter  (outermost — widest)
+                          2. HEPA        (middle    — dominant mass, white pleated)
+                          3. Carbon      (inner     — dark charcoal)
+                        Each <g> has id for GSAP targeting.
+                    -->
+                    <svg class="fst-svg" viewBox="0 0 300 420" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <!-- ── Gradients ── -->
+
+                            <!-- Pre-filter: translucent blue-white -->
+                            <linearGradient id="fst-grad-pf" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%"   stop-color="#a0c8f0" stop-opacity="0.03"/>
+                                <stop offset="30%"  stop-color="#cce6fa" stop-opacity="0.14"/>
+                                <stop offset="50%"  stop-color="#d8eeff" stop-opacity="0.19"/>
+                                <stop offset="70%"  stop-color="#cce6fa" stop-opacity="0.14"/>
+                                <stop offset="100%" stop-color="#a0c8f0" stop-opacity="0.03"/>
+                            </linearGradient>
+
+                            <!-- HEPA body: bright white, cylindrical shading -->
+                            <linearGradient id="fst-grad-hp" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%"   stop-color="#a8c4de" stop-opacity="0.88"/>
+                                <stop offset="10%"  stop-color="#dae8f6" stop-opacity="0.96"/>
+                                <stop offset="50%"  stop-color="#f4f9ff" stop-opacity="1.00"/>
+                                <stop offset="90%"  stop-color="#dae8f6" stop-opacity="0.96"/>
+                                <stop offset="100%" stop-color="#a8c4de" stop-opacity="0.88"/>
+                            </linearGradient>
+
+                            <!-- HEPA top cap -->
+                            <linearGradient id="fst-grad-hp-cap-t" x1="0%" y1="0%" x2="0%" y2="100%">
+                                <stop offset="0%"   stop-color="#e6f0f9"/>
+                                <stop offset="100%" stop-color="#c6d8ee"/>
+                            </linearGradient>
+
+                            <!-- HEPA bottom cap -->
+                            <linearGradient id="fst-grad-hp-cap-b" x1="0%" y1="0%" x2="0%" y2="100%">
+                                <stop offset="0%"   stop-color="#c8d6ea"/>
+                                <stop offset="100%" stop-color="#b4c6dc"/>
+                            </linearGradient>
+
+                            <!-- Carbon body: dark charcoal, cylindrical shading -->
+                            <linearGradient id="fst-grad-ac" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%"   stop-color="#16202c"/>
+                                <stop offset="26%"  stop-color="#233040"/>
+                                <stop offset="50%"  stop-color="#2a3a4c"/>
+                                <stop offset="74%"  stop-color="#233040"/>
+                                <stop offset="100%" stop-color="#16202c"/>
+                            </linearGradient>
+
+                            <!-- Carbon top cap -->
+                            <linearGradient id="fst-grad-ac-cap-t" x1="0%" y1="0%" x2="0%" y2="100%">
+                                <stop offset="0%"   stop-color="#243446"/>
+                                <stop offset="100%" stop-color="#1a2a3a"/>
+                            </linearGradient>
+
+                            <!-- ── Patterns ── -->
+
+                            <!-- Pre-filter: diagonal crosshatch mesh -->
+                            <pattern id="fst-pat-mesh" x="0" y="0" width="8" height="8" patternUnits="userSpaceOnUse">
+                                <line x1="0" y1="8" x2="8" y2="0" stroke="rgba(170,210,245,0.13)" stroke-width="0.6"/>
+                                <line x1="-1" y1="1" x2="1" y2="-1" stroke="rgba(170,210,245,0.13)" stroke-width="0.6"/>
+                                <line x1="7" y1="9" x2="9" y2="7" stroke="rgba(170,210,245,0.08)" stroke-width="0.6"/>
+                            </pattern>
+
+                            <!-- HEPA: tight vertical pleat ridges -->
+                            <pattern id="fst-pat-pleat" x="0" y="0" width="8" height="420" patternUnits="userSpaceOnUse">
+                                <rect x="0" y="0" width="3" height="420" fill="rgba(244,250,255,0.95)"/>
+                                <rect x="3" y="0" width="1" height="420" fill="rgba(178,208,236,0.68)"/>
+                                <rect x="4" y="0" width="3" height="420" fill="rgba(238,247,255,0.90)"/>
+                                <rect x="7" y="0" width="1" height="420" fill="rgba(162,196,226,0.42)"/>
+                            </pattern>
+
+                            <!-- Carbon: faint horizontal texture lines -->
+                            <pattern id="fst-pat-carbon" x="0" y="0" width="4" height="4" patternUnits="userSpaceOnUse">
+                                <line x1="0" y1="3.5" x2="4" y2="3.5" stroke="rgba(0,0,0,0.07)" stroke-width="0.5"/>
+                            </pattern>
+
+                            <!-- ── Glow filters ── -->
+
+                            <!-- Soft cyan glow (active HEPA) -->
+                            <filter id="fst-f-glow" x="-22%" y="-8%" width="144%" height="116%">
+                                <feDropShadow dx="0" dy="0" stdDeviation="11" flood-color="#0891b2" flood-opacity="0.32"/>
+                            </filter>
+
+                            <!-- Subtle glow (active pre-filter / carbon) -->
+                            <filter id="fst-f-glow-sm" x="-14%" y="-5%" width="128%" height="110%">
+                                <feDropShadow dx="0" dy="0" stdDeviation="7" flood-color="#0891b2" flood-opacity="0.20"/>
+                            </filter>
+
+                            <!-- ── Clip paths (keep textures inside body bounds) ── -->
+                            <clipPath id="fst-clip-pf">
+                                <rect x="2" y="82" width="296" height="276"/>
+                            </clipPath>
+                            <clipPath id="fst-clip-hp">
+                                <rect x="18" y="82" width="264" height="276"/>
+                            </clipPath>
+                            <clipPath id="fst-clip-ac">
+                                <rect x="76" y="82" width="148" height="276"/>
+                            </clipPath>
+                        </defs>
+
+                        <!-- ══════════════════════════════════════════════
+                             GROUND SHADOW — subtle ellipse below cylinder
+                        ══════════════════════════════════════════════ -->
+                        <ellipse cx="150" cy="390" rx="110" ry="8"
+                            fill="rgba(0,0,0,0.18)"/>
+
+                        <!-- ══════════════════════════════════════════════
+                             PRE-FILTER — outermost translucent nylon mesh
+                             Largest shell: rx=148, body y=82–358
+                        ══════════════════════════════════════════════ -->
+                        <g id="fst-svg-prefilter">
+                            <!-- Bottom cap (drawn first — sits behind body) -->
+                            <ellipse cx="150" cy="358" rx="148" ry="18"
+                                fill="rgba(192,218,242,0.08)"
+                                stroke="rgba(198,224,250,0.12)" stroke-width="0.8"/>
+                            <!-- Body gradient -->
+                            <rect x="2" y="82" width="296" height="276"
+                                fill="url(#fst-grad-pf)"/>
+                            <!-- Mesh texture overlay -->
+                            <rect x="2" y="82" width="296" height="276"
+                                fill="url(#fst-pat-mesh)"
+                                clip-path="url(#fst-clip-pf)"/>
+                            <!-- Left edge highlight -->
+                            <line x1="2"   y1="82" x2="2"   y2="358"
+                                stroke="rgba(200,230,255,0.22)" stroke-width="0.9"/>
+                            <!-- Right edge shadow -->
+                            <line x1="298" y1="82" x2="298" y2="358"
+                                stroke="rgba(200,230,255,0.10)" stroke-width="0.9"/>
+                            <!-- Top cap (drawn last — sits on top of body) -->
+                            <ellipse cx="150" cy="82" rx="148" ry="18"
+                                fill="rgba(208,232,254,0.12)"
+                                stroke="rgba(215,238,255,0.18)" stroke-width="0.8"/>
+                        </g>
+
+                        <!-- ══════════════════════════════════════════════
+                             HEPA — dominant white pleated filtration body
+                             Middle shell: rx=132, body y=82–358
+                        ══════════════════════════════════════════════ -->
+                        <g id="fst-svg-hepa">
+                            <!-- Bottom structural cap (slightly wider for endcap look) -->
+                            <ellipse cx="150" cy="358" rx="140" ry="16"
+                                fill="url(#fst-grad-hp-cap-b)"
+                                stroke="rgba(172,205,232,0.42)" stroke-width="1"/>
+                            <!-- Pleated body — base gradient -->
+                            <rect x="18" y="82" width="264" height="276"
+                                fill="url(#fst-grad-hp)"/>
+                            <!-- Pleat pattern overlay -->
+                            <rect x="18" y="82" width="264" height="276"
+                                fill="url(#fst-pat-pleat)" opacity="0.94"
+                                clip-path="url(#fst-clip-hp)"/>
+                            <!-- Left highlight edge -->
+                            <line x1="18"  y1="82" x2="18"  y2="358"
+                                stroke="rgba(255,255,255,0.78)" stroke-width="1.2"/>
+                            <!-- Right shadow edge -->
+                            <line x1="282" y1="82" x2="282" y2="358"
+                                stroke="rgba(172,205,232,0.42)" stroke-width="1"/>
+                            <!-- Top structural cap -->
+                            <ellipse cx="150" cy="82" rx="140" ry="16"
+                                fill="url(#fst-grad-hp-cap-t)"
+                                stroke="rgba(172,205,232,0.52)" stroke-width="1"/>
+                            <!-- Top cap inner ring (depth perception) -->
+                            <ellipse cx="150" cy="82" rx="120" ry="13"
+                                fill="none"
+                                stroke="rgba(148,186,218,0.22)" stroke-width="0.8"/>
+                        </g>
+
+                        <!-- ══════════════════════════════════════════════
+                             CARBON — inner activated carbon cylinder
+                             Inner shell: rx=74, body y=82–358
+                        ══════════════════════════════════════════════ -->
+                        <g id="fst-svg-carbon">
+                            <!-- Bottom cap -->
+                            <ellipse cx="150" cy="358" rx="74" ry="10"
+                                fill="#1c2838"
+                                stroke="rgba(62,96,134,0.12)" stroke-width="0.5"/>
+                            <!-- Dark body -->
+                            <rect x="76" y="82" width="148" height="276"
+                                fill="url(#fst-grad-ac)"/>
+                            <!-- Carbon texture overlay -->
+                            <rect x="76" y="82" width="148" height="276"
+                                fill="url(#fst-pat-carbon)"
+                                clip-path="url(#fst-clip-ac)"/>
+                            <!-- Left edge -->
+                            <line x1="76"  y1="82" x2="76"  y2="358"
+                                stroke="rgba(72,108,148,0.18)" stroke-width="0.8"/>
+                            <!-- Right edge -->
+                            <line x1="224" y1="82" x2="224" y2="358"
+                                stroke="rgba(54,88,124,0.10)" stroke-width="0.8"/>
+                            <!-- Top cap -->
+                            <ellipse cx="150" cy="82" rx="74" ry="10"
+                                fill="url(#fst-grad-ac-cap-t)"
+                                stroke="rgba(62,96,134,0.14)" stroke-width="0.5"/>
+                            <!-- Top cap inner ring -->
+                            <ellipse cx="150" cy="82" rx="52" ry="7"
+                                fill="none"
+                                stroke="rgba(46,78,112,0.12)" stroke-width="0.5"/>
+                        </g>
+
+                    </svg>
+                </div><!-- /.fst-visual-col -->
+
             </div><!-- /.fst-inner -->
 
-            <!-- Scroll progress dots -->
-            <div class="fst-progress" aria-hidden="true">
-                <span class="fst-pdot fst-pdot--on"></span>
-                <span class="fst-pdot"></span>
-                <span class="fst-pdot"></span>
-                <span class="fst-pdot"></span>
-                <span class="fst-pdot"></span>
-            </div>
-
-            <!-- Scroll hint (fades out after first frame) -->
+            <!-- Scroll hint — fades out on first scroll interaction -->
             <div class="fst-hint" id="fst-hint" aria-hidden="true">
                 <span class="fst-hint-line"></span>
                 <span class="fst-hint-text">scroll</span>
@@ -885,6 +1053,9 @@
         </div>
     </footer>
 
+    <!-- GSAP + ScrollTrigger — filter storytelling section -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="js/nav.js"></script>
     <script>
         // ── Google Home Accordion ──────────────────────────────────────
@@ -995,57 +1166,159 @@
             }
         });
 
-        // ── Filter Storytelling: scroll-driven layer animation ───────────
+        // ── Filter Storytelling: GSAP + ScrollTrigger animation ─────────
         (function () {
-            var section = document.querySelector('.fst-section');
-            var filter  = document.getElementById('fst-filter');
-            if (!section || !filter) return;
+            'use strict';
 
-            var frameIds = ['fst-f1', 'fst-f2', 'fst-f3', 'fst-f4', 'fst-f5'];
-            var frames   = frameIds.map(function (id) { return document.getElementById(id); });
-            var dots     = Array.prototype.slice.call(document.querySelectorAll('.fst-pdot'));
-            var hint     = document.getElementById('fst-hint');
-            var cur      = -1;
-            var raf      = false;
+            var section   = document.getElementById('filter-layers');
+            if (!section) return;
 
-            function getProgress() {
-                var rect       = section.getBoundingClientRect();
-                var scrollable = section.offsetHeight - window.innerHeight;
-                return scrollable > 0 ? Math.max(0, Math.min(1, -rect.top / scrollable)) : 0;
-            }
+            var prefGroup = document.getElementById('fst-svg-prefilter');
+            var hepaGroup = document.getElementById('fst-svg-hepa');
+            var carbGroup = document.getElementById('fst-svg-carbon');
+            var hint      = document.getElementById('fst-hint');
+            var frames    = [
+                document.getElementById('fst-f1'),
+                document.getElementById('fst-f2'),
+                document.getElementById('fst-f3'),
+                document.getElementById('fst-f4'),
+                document.getElementById('fst-f5')
+            ];
 
-            function applyFrame(idx) {
-                if (idx === cur) return;
-                cur = idx;
+            if (!prefGroup || !hepaGroup || !carbGroup) return;
 
-                filter.dataset.frame = String(idx + 1);
+            // ── Reduced motion: stay on frame 1, no animation ──────────────
+            var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            if (prefersReduced) return;
 
-                frames.forEach(function (f, i) {
-                    var active = i === idx;
-                    f.classList.toggle('fst-frame--on', active);
-                    f.setAttribute('aria-hidden', active ? 'false' : 'true');
-                });
-
-                dots.forEach(function (d, i) {
-                    d.classList.toggle('fst-pdot--on', i === idx);
-                });
-
-                if (hint) {
-                    hint.classList.toggle('fst-hint--gone', idx > 0);
+            // ── GSAP not available: vanilla fallback ────────────────────────
+            if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
+                var cur = -1;
+                var raf = false;
+                function getProgress() {
+                    var rect = section.getBoundingClientRect();
+                    var scrollable = section.offsetHeight - window.innerHeight;
+                    return scrollable > 0 ? Math.max(0, Math.min(1, -rect.top / scrollable)) : 0;
                 }
+                function applyFrame(idx) {
+                    if (idx === cur) return;
+                    cur = idx;
+                    frames.forEach(function (f, i) {
+                        if (!f) return;
+                        f.style.opacity = i === idx ? '1' : '0';
+                        f.setAttribute('aria-hidden', i === idx ? 'false' : 'true');
+                    });
+                    if (hint) hint.style.opacity = idx > 0 ? '0' : '1';
+                }
+                window.addEventListener('scroll', function () {
+                    if (!raf) { raf = true; requestAnimationFrame(function () {
+                        applyFrame(Math.min(4, Math.floor(getProgress() * 5)));
+                        raf = false;
+                    }); }
+                }, { passive: true });
+                applyFrame(0);
+                return;
             }
 
-            function tick() {
-                applyFrame(Math.min(4, Math.floor(getProgress() * 5)));
-                raf = false;
-            }
+            // ── GSAP + ScrollTrigger ─────────────────────────────────────────
+            gsap.registerPlugin(ScrollTrigger);
 
-            window.addEventListener('scroll', function () {
-                if (!raf) { raf = true; requestAnimationFrame(tick); }
-            }, { passive: true });
+            // Centre of the SVG cylinder (cx=150, midY≈220 in viewBox 0 0 300 420)
+            // Used as transform-origin for scale tweens
+            gsap.set([prefGroup, hepaGroup, carbGroup], {
+                transformOrigin: '150px 220px'
+            });
 
-            // Set initial state
-            applyFrame(0);
+            // Initial text frame states (GSAP owns opacity + y from here on)
+            frames.forEach(function (f, i) {
+                if (!f) return;
+                gsap.set(f, { opacity: i === 0 ? 1 : 0, y: i === 0 ? 0 : 22 });
+                f.setAttribute('aria-hidden', i === 0 ? 'false' : 'true');
+            });
+
+            // ── Main scrollable timeline ──────────────────────────────────────
+            // Section is 500vh; CSS sticky pins the visual panel.
+            // The timeline runs start:'top top' → end:'bottom bottom' (4 × 100vh).
+            // Each frame-to-frame transition occupies 1 unit (0→1, 1→2, 2→3, 3→4).
+            var tl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: section,
+                    start: 'top top',
+                    end: 'bottom bottom',
+                    scrub: 1.2
+                },
+                defaults: { ease: 'power2.inOut' }
+            });
+
+            // ── Stage 1 → 2 : pre-filter separates left ──────────────────────
+            tl
+                // Scroll hint fades immediately
+                .to(hint, { opacity: 0, duration: 0.14, ease: 'none' }, 0)
+                // Swap text panels
+                .to(frames[0], { opacity: 0, y: -14, duration: 0.30, ease: 'power1.in' }, 0.08)
+                .to(frames[1], { opacity: 1, y:   0, duration: 0.36, ease: 'power2.out' }, 0.38)
+                // Pre-filter slides left — subtle, not dramatic
+                .to(prefGroup, { x: -52, duration: 1.00 }, 0)
+                // Carbon dims to background
+                .to(carbGroup, { opacity: 0.22, duration: 0.50 }, 0.20)
+
+            // ── Stage 2 → 3 : HEPA highlighted ───────────────────────────────
+                .to(frames[1], { opacity: 0, y: -14, duration: 0.30, ease: 'power1.in' }, 1.08)
+                .to(frames[2], { opacity: 1, y:   0, duration: 0.36, ease: 'power2.out' }, 1.38)
+                // Pre-filter further dims, stays left
+                .to(prefGroup, { opacity: 0.15, duration: 0.50 }, 1)
+                // HEPA scale-emphasis + cyan glow via drop-shadow filter
+                .to(hepaGroup, {
+                    scale: 1.04,
+                    filter: 'drop-shadow(0 0 12px rgba(8,145,178,0.28)) brightness(1.07)',
+                    duration: 0.70
+                }, 1)
+                // Carbon further dims
+                .to(carbGroup, { opacity: 0.14, duration: 0.50 }, 1)
+
+            // ── Stage 3 → 4 : carbon highlighted ─────────────────────────────
+                .to(frames[2], { opacity: 0, y: -14, duration: 0.30, ease: 'power1.in' }, 2.08)
+                .to(frames[3], { opacity: 1, y:   0, duration: 0.36, ease: 'power2.out' }, 2.38)
+                // Pre-filter retreats further
+                .to(prefGroup, { opacity: 0.08, x: -60, duration: 0.55 }, 2)
+                // HEPA returns to normal, shifts slightly left, dims
+                .to(hepaGroup, {
+                    scale: 1,
+                    x: -26,
+                    opacity: 0.24,
+                    filter: 'none',
+                    duration: 0.70
+                }, 2)
+                // Carbon comes forward with cyan glow
+                .to(carbGroup, {
+                    opacity: 1,
+                    scale: 1.04,
+                    filter: 'drop-shadow(0 0 10px rgba(8,145,178,0.22))',
+                    duration: 0.70
+                }, 2)
+
+            // ── Stage 4 → 5 : full exploded, balanced ────────────────────────
+                .to(frames[3], { opacity: 0, y: -14, duration: 0.30, ease: 'power1.in' }, 3.08)
+                .to(frames[4], { opacity: 1, y:   0, duration: 0.36, ease: 'power2.out' }, 3.38)
+                // All layers return to full opacity, distribute evenly
+                .to(prefGroup, { opacity: 0.90, x: -56, scale: 1, filter: 'none', duration: 0.85 }, 3)
+                .to(hepaGroup, { opacity: 1.00, x:   0, scale: 1, filter: 'none', duration: 0.85 }, 3)
+                .to(carbGroup, { opacity: 0.92, x:  56, scale: 1, filter: 'none', duration: 0.85 }, 3);
+
+            // Update aria-hidden attributes as frames change
+            ScrollTrigger.create({
+                trigger: section,
+                start: 'top top',
+                end: 'bottom bottom',
+                onUpdate: function (self) {
+                    var idx = Math.min(4, Math.floor(self.progress * 5));
+                    frames.forEach(function (f, i) {
+                        if (!f) return;
+                        f.setAttribute('aria-hidden', i === idx ? 'false' : 'true');
+                    });
+                }
+            });
+
         }());
 
         // Bedroom placement: linked callouts — hover/focus a card to highlight its marker
