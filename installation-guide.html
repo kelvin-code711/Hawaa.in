@@ -657,6 +657,151 @@
     </section>
 
 
+    <!-- ========================================
+         FILTER CARE SECTION
+    ======================================== -->
+    <section class="fc-section" id="filter-care" aria-label="Filter Care Guide">
+        <div class="fc-container">
+
+            <!-- Section header -->
+            <header class="fc-header">
+                <p class="fc-eyebrow">Filter Care</p>
+                <h2 class="fc-headline">Keep your filtration<br>performing at its <span class="italic">best</span></h2>
+                <p class="fc-subtext">A few simple care rules help your purifier maintain optimal performance.</p>
+            </header>
+
+            <!-- Body: illustration + cards -->
+            <div class="fc-body">
+
+                <!-- Minimal cylindrical filter illustration -->
+                <div class="fc-illustration" aria-hidden="true">
+                    <svg class="fc-filter-svg" viewBox="0 0 220 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Outer pre-filter ring -->
+                        <circle cx="110" cy="110" r="100" fill="#f3f4f6" stroke="#e5e7eb" stroke-width="1.5"/>
+                        <!-- HEPA pleated layer background -->
+                        <circle cx="110" cy="110" r="76" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+                        <!-- Subtle pleating marks on HEPA layer -->
+                        <circle cx="110" cy="110" r="76" fill="none" stroke="#f3f4f6" stroke-width="6" stroke-dasharray="4 4"/>
+                        <circle cx="110" cy="110" r="68" fill="none" stroke="#eff0f1" stroke-width="4" stroke-dasharray="3 5"/>
+                        <!-- HEPA inner boundary -->
+                        <circle cx="110" cy="110" r="56" fill="#f9fafb" stroke="#d1d5db" stroke-width="1.5"/>
+                        <!-- Carbon core -->
+                        <circle cx="110" cy="110" r="42" fill="#1e293b" stroke="#374151" stroke-width="1.5"/>
+                        <!-- Airflow channel -->
+                        <circle cx="110" cy="110" r="18" fill="#0f172a" stroke="none"/>
+                        <!-- Center highlight -->
+                        <circle cx="110" cy="110" r="5" fill="rgba(255,255,255,0.12)"/>
+                        <!-- Leader lines -->
+                        <line x1="110" y1="8"  x2="110" y2="26" stroke="#d1d5db" stroke-width="1" stroke-dasharray="2 2"/>
+                        <line x1="188" y1="60" x2="168" y2="76" stroke="#d1d5db" stroke-width="1" stroke-dasharray="2 2"/>
+                        <line x1="190" y1="138" x2="152" y2="124" stroke="#d1d5db" stroke-width="1" stroke-dasharray="2 2"/>
+                    </svg>
+
+                    <!-- Layer legend -->
+                    <ul class="fc-layer-legend">
+                        <li class="fc-layer-item">
+                            <span class="fc-layer-dot" style="background:#d1d5db;"></span>
+                            <span>Pre-filter</span>
+                        </li>
+                        <li class="fc-layer-item">
+                            <span class="fc-layer-dot" style="background:#9ca3af;"></span>
+                            <span>HEPA Layer</span>
+                        </li>
+                        <li class="fc-layer-item">
+                            <span class="fc-layer-dot" style="background:#1e293b;"></span>
+                            <span>Carbon Core</span>
+                        </li>
+                    </ul>
+                </div><!-- /.fc-illustration -->
+
+                <!-- Care cards grid -->
+                <div class="fc-cards">
+
+                    <!-- Card 1: Vacuum the outer pre-filter -->
+                    <article class="fc-card">
+                        <div class="fc-card-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M9.59 4.59A2 2 0 1111 8H2m10.59 11.41A2 2 0 1010 16H2m15.73-8.27A2.5 2.5 0 1119.5 12H2"/>
+                            </svg>
+                        </div>
+                        <div class="fc-card-body">
+                            <div class="fc-card-top">
+                                <h3 class="fc-card-title">Vacuum the outer pre-filter</h3>
+                                <span class="fc-badge fc-badge--allowed">Allowed</span>
+                            </div>
+                            <p class="fc-card-desc">Use a soft brush or vacuum gently to remove visible dust buildup.</p>
+                        </div>
+                    </article>
+
+                    <!-- Card 2: Do not wash the filter -->
+                    <article class="fc-card">
+                        <div class="fc-card-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 2.69l5.66 5.66a8 8 0 11-11.31 0z"/>
+                                <line x1="4" y1="4" x2="20" y2="20"/>
+                            </svg>
+                        </div>
+                        <div class="fc-card-body">
+                            <div class="fc-card-top">
+                                <h3 class="fc-card-title">Do not wash the filter</h3>
+                                <span class="fc-badge fc-badge--no-wash">Do not wash</span>
+                            </div>
+                            <p class="fc-card-desc">The filter is not washable. Water can damage the HEPA and carbon layers.</p>
+                        </div>
+                    </article>
+
+                    <!-- Card 3: Replace when reminded -->
+                    <article class="fc-card">
+                        <div class="fc-card-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="23 4 23 10 17 10"/>
+                                <path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/>
+                            </svg>
+                        </div>
+                        <div class="fc-card-body">
+                            <div class="fc-card-top">
+                                <h3 class="fc-card-title">Replace when reminded</h3>
+                                <span class="fc-badge fc-badge--replace">Replace</span>
+                            </div>
+                            <p class="fc-card-desc">Hawaa will notify you when it's time to replace the filter, typically after several months of regular use.</p>
+                        </div>
+                    </article>
+
+                    <!-- Card 4: Switch off before handling -->
+                    <article class="fc-card">
+                        <div class="fc-card-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M18.36 6.64a9 9 0 11-12.73 0"/>
+                                <line x1="12" y1="2" x2="12" y2="12"/>
+                            </svg>
+                        </div>
+                        <div class="fc-card-body">
+                            <div class="fc-card-top">
+                                <h3 class="fc-card-title">Switch off before handling</h3>
+                                <span class="fc-badge fc-badge--important">Important</span>
+                            </div>
+                            <p class="fc-card-desc">Always turn the purifier off before removing, cleaning, or replacing the filter.</p>
+                        </div>
+                    </article>
+
+                </div><!-- /.fc-cards -->
+
+            </div><!-- /.fc-body -->
+
+            <!-- Info note panel -->
+            <div class="fc-note" role="note">
+                <svg class="fc-note-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="12" cy="12" r="10"/>
+                    <line x1="12" y1="8" x2="12" y2="12"/>
+                    <line x1="12" y1="16" x2="12.01" y2="16"/>
+                </svg>
+                <p class="fc-note-text">Before cleaning or replacing the filter, always turn the purifier off and remove the filter carefully.</p>
+            </div>
+
+        </div><!-- /.fc-container -->
+    </section>
+
+
     <!-- Footer -->
     <footer class="footer" id="contact">
         <div class="footer-container">
