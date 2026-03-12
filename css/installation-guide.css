@@ -1046,3 +1046,360 @@
         width: 180px;
     }
 }
+
+
+/* ========================================
+   FILTER CARE SECTION
+   Prefix: fc-  |  Mobile-first
+======================================== */
+
+.fc-section {
+    background: #f9fafb;
+    padding: 60px 16px 72px;
+}
+
+.fc-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* ---- Section Header ---- */
+
+.fc-header {
+    text-align: center;
+    margin-bottom: 48px;
+}
+
+.fc-eyebrow {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #9ca3af;
+    margin: 0 0 14px;
+}
+
+.fc-headline {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: #111827;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    margin: 0 0 14px;
+}
+
+.fc-headline .italic {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-weight: 400;
+}
+
+.fc-subtext {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 400;
+    color: #6b7280;
+    line-height: 1.6;
+    margin: 0 auto;
+    max-width: 480px;
+}
+
+/* ---- Body: illustration + cards ---- */
+
+.fc-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+    margin-bottom: 32px;
+}
+
+/* ---- Filter Illustration ---- */
+
+.fc-illustration {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+}
+
+.fc-filter-svg {
+    width: 156px;
+    height: 156px;
+    flex-shrink: 0;
+}
+
+.fc-layer-legend {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.fc-layer-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: #6b7280;
+    letter-spacing: 0.02em;
+}
+
+.fc-layer-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+/* ---- Cards Grid ---- */
+
+.fc-cards {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    width: 100%;
+}
+
+/* ---- Single Care Card ---- */
+
+.fc-card {
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: 20px;
+    padding: 20px 20px;
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    cursor: default;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0.04);
+}
+
+.fc-card:hover {
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.09);
+    transform: translateY(-2px);
+}
+
+.fc-card:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+}
+
+/* Icon container */
+.fc-card-icon {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    background: #f3f4f6;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #374151;
+}
+
+.fc-card-icon svg {
+    width: 19px;
+    height: 19px;
+}
+
+/* Card text area */
+.fc-card-body {
+    flex: 1;
+    min-width: 0;
+}
+
+.fc-card-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 6px;
+}
+
+.fc-card-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: #111827;
+    line-height: 1.35;
+    margin: 0;
+}
+
+.fc-card-desc {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.84rem;
+    font-weight: 400;
+    color: #6b7280;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* ---- Status Badges ---- */
+
+.fc-badge {
+    flex-shrink: 0;
+    display: inline-block;
+    padding: 3px 9px;
+    border-radius: 9999px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    line-height: 1.6;
+}
+
+.fc-badge--allowed {
+    background: rgba(22, 163, 74, 0.08);
+    color: #166534;
+    border: 1px solid rgba(22, 163, 74, 0.2);
+}
+
+.fc-badge--no-wash {
+    background: rgba(239, 68, 68, 0.07);
+    color: #991b1b;
+    border: 1px solid rgba(239, 68, 68, 0.18);
+}
+
+.fc-badge--replace {
+    background: rgba(8, 145, 178, 0.08);
+    color: #0891b2;
+    border: 1px solid rgba(8, 145, 178, 0.2);
+}
+
+.fc-badge--important {
+    background: rgba(245, 158, 11, 0.08);
+    color: #92400e;
+    border: 1px solid rgba(245, 158, 11, 0.2);
+}
+
+/* ---- Info Note Panel ---- */
+
+.fc-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background: rgba(8, 145, 178, 0.04);
+    border: 1px solid rgba(8, 145, 178, 0.12);
+    border-radius: 14px;
+    padding: 16px 20px;
+}
+
+.fc-note-icon {
+    width: 17px;
+    height: 17px;
+    flex-shrink: 0;
+    color: #0891b2;
+    margin-top: 2px;
+}
+
+.fc-note-text {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 400;
+    color: #374151;
+    line-height: 1.65;
+    margin: 0;
+}
+
+/* ---- Tablet (640px+) ---- */
+
+@media (min-width: 640px) {
+    .fc-section {
+        padding: 72px 24px 80px;
+    }
+
+    .fc-header {
+        margin-bottom: 56px;
+    }
+
+    .fc-headline {
+        font-size: 2rem;
+    }
+
+    .fc-filter-svg {
+        width: 176px;
+        height: 176px;
+    }
+
+    .fc-cards {
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+    }
+
+    .fc-card-title {
+        font-size: 0.95rem;
+    }
+}
+
+/* ---- Desktop (1024px+) ---- */
+
+@media (min-width: 1024px) {
+    .fc-section {
+        padding: 88px 48px 96px;
+    }
+
+    .fc-header {
+        margin-bottom: 64px;
+    }
+
+    .fc-headline {
+        font-size: 2.25rem;
+    }
+
+    .fc-body {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 64px;
+    }
+
+    .fc-illustration {
+        flex-shrink: 0;
+        position: sticky;
+        top: 96px;
+    }
+
+    .fc-filter-svg {
+        width: 196px;
+        height: 196px;
+    }
+
+    .fc-cards {
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        flex: 1;
+    }
+
+    .fc-card {
+        padding: 24px 22px;
+    }
+
+    .fc-card-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 14px;
+    }
+
+    .fc-card-icon svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    .fc-card-title {
+        font-size: 0.98rem;
+    }
+
+    .fc-card-desc {
+        font-size: 0.875rem;
+    }
+}
