@@ -759,15 +759,16 @@
     overflow: hidden;
 }
 
-/* Viewport layout */
+/* Viewport layout — max-width + padding matches .header-container
+   so content left-edge aligns with the logo */
 .gh-viewport {
     width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
-    padding: 96px 20px 32px;
+    padding: 96px 16px 32px;
     box-sizing: border-box;
-    max-width: 1100px;
+    max-width: 1280px;
     margin: 0 auto;
 }
 
@@ -809,56 +810,8 @@
     font-weight: 400;
     color: #6b7280;
     line-height: 1.6;
-    margin: 0 0 20px;
+    margin: 0;
     max-width: 420px;
-}
-
-/* ── Connection flow chain ── */
-.gh-flow {
-    display: flex;
-    align-items: center;
-    gap: 0;
-}
-
-.gh-flow-node {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-}
-
-.gh-flow-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 12px;
-    background: rgba(8, 145, 178, 0.06);
-    border: 1px solid rgba(8, 145, 178, 0.12);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #0891b2;
-}
-
-.gh-flow-icon svg {
-    width: 18px;
-    height: 18px;
-}
-
-.gh-flow-label {
-    font-family: 'Outfit', sans-serif;
-    font-size: 0.68rem;
-    font-weight: 500;
-    color: #9ca3af;
-    letter-spacing: 0.02em;
-}
-
-.gh-flow-line {
-    width: 28px;
-    height: 1px;
-    background: #e5e7eb;
-    flex-shrink: 0;
-    margin: 0 8px;
-    margin-bottom: 20px;
 }
 
 /* ── LAYER 2: Story ── */
@@ -1116,7 +1069,7 @@
 /* ── Tablet (640px+) ── */
 @media (min-width: 640px) {
     .gh-viewport {
-        padding: 96px 32px 40px;
+        padding: 96px 24px 40px;
     }
 
     .gh-headline {
@@ -1131,15 +1084,6 @@
 
     .gh-track {
         gap: 18px;
-    }
-
-    .gh-flow-icon {
-        width: 44px;
-        height: 44px;
-    }
-
-    .gh-flow-line {
-        width: 36px;
     }
 }
 
@@ -1160,23 +1104,6 @@
 
     .gh-headline {
         font-size: 2.25rem;
-    }
-
-    .gh-flow {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0;
-    }
-
-    .gh-flow-node {
-        flex-direction: row;
-        gap: 12px;
-    }
-
-    .gh-flow-line {
-        width: 1px;
-        height: 20px;
-        margin: 6px 0 6px 19px;
     }
 
     .gh-story {
