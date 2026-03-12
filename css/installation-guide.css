@@ -733,38 +733,50 @@
 
 
 /* ========================================
-   SECTION 4: GOOGLE HOME ONBOARDING
+   SECTION 4: SMART CONTROL — SCROLL-DRIVEN
    Scoped with .gh- prefix — mobile-first
 ======================================== */
 
 .gh-section {
     background: #ffffff;
-    padding: 64px 20px 72px;
     border-top: 1px solid rgba(0, 0, 0, 0.06);
+    padding: 0;
+    overflow: visible;
 }
 
-.gh-container {
+/* Outer scroll container — its height creates the scroll runway.
+   4 cards × 100vh = enough scroll distance for the full storytelling. */
+.gh-scroll-outer {
+    position: relative;
+    height: 400vh;
+}
+
+/* Sticky wrapper — stays pinned while user scrolls through the outer */
+.gh-sticky {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* Viewport layout */
+.gh-viewport {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 96px 20px 32px;
+    box-sizing: border-box;
     max-width: 1100px;
     margin: 0 auto;
 }
 
-/* ── Grid layout (mobile: single column) ── */
-.gh-body {
-    display: grid;
-    grid-template-areas:
-        "header"
-        "visual"
-        "steps"
-        "btns";
-    gap: 32px;
+/* ── LAYER 1: Intro ── */
+.gh-intro {
+    flex-shrink: 0;
+    margin-bottom: 28px;
 }
 
-.gh-header   { grid-area: header; }
-.gh-visual   { grid-area: visual; }
-.gh-steps    { grid-area: steps; }
-.gh-app-btns { grid-area: btns; }
-
-/* ── Section header ── */
 .gh-eyebrow {
     font-family: 'Outfit', sans-serif;
     font-size: 0.65rem;
@@ -782,7 +794,7 @@
     color: #111827;
     line-height: 1.2;
     letter-spacing: -0.02em;
-    margin: 0 0 14px;
+    margin: 0 0 10px;
 }
 
 .gh-headline .italic {
@@ -797,130 +809,202 @@
     font-weight: 400;
     color: #6b7280;
     line-height: 1.6;
-    margin: 0;
+    margin: 0 0 20px;
+    max-width: 420px;
 }
 
-/* ── Flow visual ── */
-.gh-flow-wrap {
-    background: #f7f8fa;
-    border-radius: 20px;
-    border: 1px solid rgba(0, 0, 0, 0.06);
-    padding: 28px 20px 24px;
+/* ── Connection flow chain ── */
+.gh-flow {
     display: flex;
+    align-items: center;
+    gap: 0;
+}
+
+.gh-flow-node {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
+.gh-flow-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: rgba(8, 145, 178, 0.06);
+    border: 1px solid rgba(8, 145, 178, 0.12);
+    display: flex;
+    align-items: center;
     justify-content: center;
-    align-items: center;
+    color: #0891b2;
 }
 
-.gh-flow-svg {
-    width: 140px;
-    height: auto;
-    display: block;
+.gh-flow-icon svg {
+    width: 18px;
+    height: 18px;
 }
 
-/* ── Accordion steps ── */
-.gh-steps {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    border-top: 1px solid rgba(0, 0, 0, 0.06);
+.gh-flow-label {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.68rem;
+    font-weight: 500;
+    color: #9ca3af;
+    letter-spacing: 0.02em;
 }
 
-.gh-step {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+.gh-flow-line {
+    width: 28px;
+    height: 1px;
+    background: #e5e7eb;
+    flex-shrink: 0;
+    margin: 0 8px;
+    margin-bottom: 20px;
 }
 
-.gh-step-trigger {
-    width: 100%;
+/* ── LAYER 2: Story ── */
+.gh-story {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+}
+
+/* ── Progress indicator ── */
+.gh-progress {
     display: flex;
     align-items: center;
-    gap: 14px;
-    padding: 17px 2px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    text-align: left;
-    -webkit-tap-highlight-color: transparent;
-    outline: none;
+    gap: 4px;
+    margin-bottom: 16px;
+    flex-shrink: 0;
 }
 
-.gh-step-trigger:focus-visible {
+.gh-progress-current {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #0891b2;
+    min-width: 16px;
+}
+
+.gh-progress-sep {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 400;
+    color: #d1d5db;
+}
+
+.gh-progress-total {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 400;
+    color: #d1d5db;
+    margin-right: 14px;
+}
+
+.gh-progress-bar {
+    flex: 1;
+    max-width: 160px;
+    height: 2px;
+    background: #f3f4f6;
+    border-radius: 9999px;
+    overflow: hidden;
+}
+
+.gh-progress-fill {
+    height: 100%;
+    width: 0%;
+    background: #0891b2;
+    border-radius: 9999px;
+    transition: width 0.15s ease-out;
+    will-change: width;
+}
+
+/* ── Horizontal card track ── */
+.gh-track-wrap {
+    flex: 1;
+    overflow: hidden;
+    min-height: 0;
+}
+
+.gh-track {
+    display: flex;
+    gap: 14px;
+    will-change: transform;
+    transition: transform 0.18s ease-out;
+}
+
+/* ── Individual card ── */
+.gh-card {
+    flex: 0 0 78vw;
+    max-width: 320px;
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.07);
+    border-radius: 20px;
+    padding: 24px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    opacity: 0.45;
+    transform: scale(0.96);
+    transition: opacity 0.3s ease, transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    cursor: default;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.gh-card:focus-visible {
     outline: 2px solid #0891b2;
     outline-offset: 2px;
-    border-radius: 4px;
 }
 
-.gh-step-num {
+.gh-card.is-active {
+    opacity: 1;
+    transform: scale(1);
+    border-color: rgba(8, 145, 178, 0.2);
+    box-shadow: 0 8px 30px rgba(8, 145, 178, 0.08);
+}
+
+.gh-card-num {
     font-family: 'Outfit', sans-serif;
     font-size: 0.68rem;
     font-weight: 700;
     letter-spacing: 0.05em;
-    color: #d1d5db;
-    flex-shrink: 0;
-    min-width: 22px;
-    transition: color 0.2s ease;
-}
-
-.gh-step.is-open .gh-step-num {
     color: #0891b2;
 }
 
-.gh-step-title {
+.gh-card-title {
     font-family: 'Outfit', sans-serif;
-    font-size: 0.92rem;
-    font-weight: 500;
-    color: #374151;
-    flex: 1;
-    line-height: 1.35;
-    transition: color 0.2s ease;
-}
-
-.gh-step.is-open .gh-step-title {
-    color: #111827;
+    font-size: 1rem;
     font-weight: 600;
+    color: #111827;
+    line-height: 1.3;
+    margin: 0;
 }
 
-.gh-chevron {
-    flex-shrink: 0;
-    width: 18px;
-    height: 18px;
-    color: #d1d5db;
+.gh-card-desc {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.84rem;
+    font-weight: 400;
+    color: #6b7280;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.gh-card-icon {
+    margin-top: auto;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: rgba(8, 145, 178, 0.06);
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), color 0.2s ease;
-}
-
-.gh-chevron svg {
-    width: 16px;
-    height: 16px;
-}
-
-.gh-step.is-open .gh-chevron {
-    transform: rotate(180deg);
     color: #0891b2;
 }
 
-/* Expand/collapse panel */
-.gh-step-panel {
-    max-height: 0;
-    overflow: hidden;
-    opacity: 0;
-    transition: max-height 0.32s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.25s ease;
-}
-
-.gh-step.is-open .gh-step-panel {
-    max-height: 150px;
-    opacity: 1;
-}
-
-.gh-step-desc {
-    font-family: 'Outfit', sans-serif;
-    font-size: 0.875rem;
-    font-weight: 400;
-    color: #6b7280;
-    line-height: 1.65;
-    margin: 0;
-    padding: 2px 20px 18px 36px;
+.gh-card-icon svg {
+    width: 18px;
+    height: 18px;
 }
 
 /* Network name inline highlight */
@@ -941,6 +1025,8 @@
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
+    margin-top: 16px;
+    flex-shrink: 0;
 }
 
 .gh-app-btn {
@@ -997,53 +1083,123 @@
     line-height: 1.2;
 }
 
+/* ── Reduced motion: disable scroll-driven transforms ── */
+@media (prefers-reduced-motion: reduce) {
+    .gh-track {
+        transition: none;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .gh-card {
+        opacity: 1;
+        transform: none;
+        transition: none;
+        flex: 1 1 100%;
+        max-width: none;
+    }
+
+    .gh-scroll-outer {
+        height: auto;
+    }
+
+    .gh-sticky {
+        position: relative;
+        height: auto;
+    }
+
+    .gh-progress-fill {
+        transition: none;
+    }
+}
+
 /* ── Tablet (640px+) ── */
 @media (min-width: 640px) {
-    .gh-section {
-        padding: 72px 32px 80px;
+    .gh-viewport {
+        padding: 96px 32px 40px;
     }
 
     .gh-headline {
         font-size: 2rem;
     }
 
-    .gh-flow-svg {
-        width: 160px;
+    .gh-card {
+        flex: 0 0 56vw;
+        max-width: 360px;
+        padding: 28px 26px;
+    }
+
+    .gh-track {
+        gap: 18px;
+    }
+
+    .gh-flow-icon {
+        width: 44px;
+        height: 44px;
+    }
+
+    .gh-flow-line {
+        width: 36px;
     }
 }
 
 /* ── Desktop (1024px+) ── */
 @media (min-width: 1024px) {
-    .gh-section {
-        padding: 88px 48px 96px;
+    .gh-viewport {
+        flex-direction: row;
+        align-items: flex-start;
+        padding: 120px 48px 48px;
+        gap: 64px;
+    }
+
+    .gh-intro {
+        flex: 0 0 320px;
+        margin-bottom: 0;
+        padding-top: 24px;
     }
 
     .gh-headline {
         font-size: 2.25rem;
     }
 
-    .gh-body {
-        grid-template-columns: 1fr minmax(0, 380px);
-        grid-template-areas:
-            "header visual"
-            "steps  visual"
-            "btns   visual";
-        column-gap: 72px;
-        row-gap: 36px;
-        align-items: start;
+    .gh-flow {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0;
     }
 
-    .gh-visual {
-        position: sticky;
-        top: 96px;
+    .gh-flow-node {
+        flex-direction: row;
+        gap: 12px;
     }
 
-    .gh-flow-wrap {
-        padding: 36px 28px 32px;
+    .gh-flow-line {
+        width: 1px;
+        height: 20px;
+        margin: 6px 0 6px 19px;
     }
 
-    .gh-flow-svg {
-        width: 180px;
+    .gh-story {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .gh-card {
+        flex: 0 0 300px;
+        max-width: 340px;
+        padding: 28px 26px;
+    }
+
+    .gh-card-title {
+        font-size: 1.05rem;
+    }
+
+    .gh-track {
+        gap: 20px;
+    }
+
+    .gh-progress-bar {
+        max-width: 200px;
     }
 }
 
