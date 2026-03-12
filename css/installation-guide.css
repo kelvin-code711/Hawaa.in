@@ -1126,35 +1126,8 @@
 }
 
 .fc-filter-svg {
-    width: 156px;
-    height: 156px;
-    flex-shrink: 0;
-}
-
-.fc-layer-legend {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-
-.fc-layer-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-family: 'Outfit', sans-serif;
-    font-size: 0.72rem;
-    font-weight: 500;
-    color: #6b7280;
-    letter-spacing: 0.02em;
-}
-
-.fc-layer-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
+    width: 240px;
+    height: auto;
     flex-shrink: 0;
 }
 
@@ -1328,8 +1301,7 @@
     }
 
     .fc-filter-svg {
-        width: 176px;
-        height: 176px;
+        width: 260px;
     }
 
     .fc-cards {
@@ -1370,8 +1342,7 @@
     }
 
     .fc-filter-svg {
-        width: 196px;
-        height: 196px;
+        width: 280px;
     }
 
     .fc-cards {
