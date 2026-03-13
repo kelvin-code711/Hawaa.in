@@ -26,7 +26,10 @@
     <header class="header scrolled" id="header">
         <div class="header-container">
             <a href="index.html" class="logo">
-                <img src="public/images/web_header_desktop_light.svg" class="logo-img" alt="Hawaa" draggable="false">
+                <picture>
+                <source media="(min-width: 768px)" srcset="public/images/web_header_desktop_light.svg">
+                <img src="public/images/web_header_mobile_light.svg" class="logo-img" alt="Hawaa" draggable="false">
+            </picture>
             </a>
             <div class="header-actions">
                 <button class="header-profile-btn" id="profile-btn" aria-label="Account">
