@@ -6,34 +6,19 @@
 /* ---- HERO ---- */
 .cmp-hero {
     position: relative;
-    min-height: 80vh;
+    height: 100vh;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    background: #0f172a;
-}
-
-.cmp-hero-bg {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(160deg, #0f172a 0%, #111827 50%, #1e293b 100%);
-}
-
-.cmp-hero-bg::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(ellipse at 50% 60%, rgba(8, 145, 178, 0.08) 0%, transparent 60%);
+    background: #ffffff;
 }
 
 .cmp-hero-content {
-    position: relative;
-    z-index: 2;
     text-align: center;
-    padding: 120px 16px 80px;
-    max-width: 800px;
-    margin: 0 auto;
+    padding: 0 16px;
+    margin-bottom: 48px;
 }
 
 .cmp-hero-label {
@@ -42,7 +27,7 @@
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0.25em;
-    color: rgba(255, 255, 255, 0.4);
+    color: rgba(0, 0, 0, 0.35);
     margin-bottom: 20px;
 }
 
@@ -50,9 +35,9 @@
     font-family: 'Outfit', sans-serif;
     font-size: 2.25rem;
     font-weight: 300;
-    color: white;
+    color: #111827;
     line-height: 1.2;
-    margin-bottom: 48px;
+    margin: 0;
 }
 
 .cmp-hero-title .italic {
@@ -61,14 +46,26 @@
     font-weight: 400;
 }
 
-/* ---- BRAND CHIPS GRID ---- */
-.cmp-hero-brands {
+/* ---- MARQUEE AUTO-SCROLL ---- */
+.cmp-hero-marquee {
+    width: 100%;
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+    mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+}
+
+.cmp-marquee-track {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px 16px;
-    max-width: 600px;
-    margin: 0 auto;
+    gap: 32px;
+    width: max-content;
+    animation: cmp-marquee 25s linear infinite;
+    pointer-events: none;
+    user-select: none;
+}
+
+@keyframes cmp-marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
 }
 
 .cmp-brand-item {
@@ -76,6 +73,7 @@
     flex-direction: column;
     align-items: center;
     gap: 8px;
+    flex-shrink: 0;
 }
 
 .cmp-brand-chip {
@@ -89,50 +87,45 @@
     font-weight: 600;
     letter-spacing: 0.03em;
     color: white;
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
-    cursor: default;
-}
-
-.cmp-brand-chip:hover {
-    transform: translateY(-2px);
+    white-space: nowrap;
 }
 
 /* Brand-specific colors */
 .cmp-brand--honeywell {
     background: #D6001C;
-    box-shadow: 0 4px 20px rgba(214, 0, 28, 0.25);
+    box-shadow: 0 4px 20px rgba(214, 0, 28, 0.2);
 }
 
 .cmp-brand--philips {
     background: #0B5ED7;
-    box-shadow: 0 4px 20px rgba(11, 94, 215, 0.25);
+    box-shadow: 0 4px 20px rgba(11, 94, 215, 0.2);
 }
 
 .cmp-brand--xiaomi {
     background: #FF6900;
-    box-shadow: 0 4px 20px rgba(255, 105, 0, 0.25);
+    box-shadow: 0 4px 20px rgba(255, 105, 0, 0.2);
 }
 
 .cmp-brand--dyson {
     background: #6B2D8B;
-    box-shadow: 0 4px 20px rgba(107, 45, 139, 0.25);
+    box-shadow: 0 4px 20px rgba(107, 45, 139, 0.2);
 }
 
 .cmp-brand--qubo {
     background: #00A878;
-    box-shadow: 0 4px 20px rgba(0, 168, 120, 0.25);
+    box-shadow: 0 4px 20px rgba(0, 168, 120, 0.2);
 }
 
 .cmp-brand--winix {
     background: #1B3A5C;
-    box-shadow: 0 4px 20px rgba(27, 58, 92, 0.25);
+    box-shadow: 0 4px 20px rgba(27, 58, 92, 0.2);
 }
 
 .cmp-brand-model {
     font-family: 'Outfit', sans-serif;
     font-size: 0.7rem;
     font-weight: 400;
-    color: rgba(255, 255, 255, 0.45);
+    color: rgba(0, 0, 0, 0.4);
     letter-spacing: 0.02em;
 }
 
@@ -143,7 +136,7 @@
     left: 50%;
     transform: translateX(-50%);
     z-index: 2;
-    color: rgba(255, 255, 255, 0.3);
+    color: rgba(0, 0, 0, 0.25);
     animation: cmp-bounce 2s ease-in-out infinite;
 }
 
@@ -158,11 +151,11 @@
     }
 
     .cmp-hero-content {
-        padding: 160px 24px 100px;
+        margin-bottom: 56px;
     }
 
-    .cmp-hero-brands {
-        gap: 24px 20px;
+    .cmp-marquee-track {
+        gap: 40px;
     }
 
     .cmp-brand-chip {
