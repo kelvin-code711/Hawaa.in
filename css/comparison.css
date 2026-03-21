@@ -3,6 +3,31 @@
    Matches Hawaa Design System
 ======================================== */
 
+/* ---- HEADER OVERRIDE FOR WHITE BG ---- */
+.header-always-scrolled {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08);
+}
+
+.header-always-scrolled .logo {
+    color: #111827;
+}
+
+.header-always-scrolled .hamburger-line {
+    background: #111827;
+}
+
+.header-always-scrolled .header-profile-btn {
+    color: #111827;
+}
+
+.header-always-scrolled .header-cart-btn {
+    color: #111827;
+}
+
 /* ---- HERO ---- */
 .cmp-hero {
     position: relative;
@@ -18,7 +43,6 @@
 .cmp-hero-content {
     text-align: center;
     padding: 0 16px;
-    margin-bottom: 48px;
 }
 
 .cmp-hero-label {
@@ -48,6 +72,10 @@
 
 /* ---- MARQUEE AUTO-SCROLL ---- */
 .cmp-hero-marquee {
+    position: absolute;
+    bottom: 64px;
+    left: 0;
+    right: 0;
     width: 100%;
     overflow: hidden;
     -webkit-mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
