@@ -6,26 +6,25 @@
 /* ---- HERO ---- */
 .cmp-hero {
     position: relative;
-    min-height: 90vh;
+    min-height: 80vh;
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    background: #1a1a1a;
+    background: #0f172a;
 }
 
 .cmp-hero-bg {
     position: absolute;
     inset: 0;
-    background: linear-gradient(135deg, #1e293b 0%, #0f172a 60%, #111827 100%);
+    background: linear-gradient(160deg, #0f172a 0%, #111827 50%, #1e293b 100%);
 }
 
 .cmp-hero-bg::after {
     content: '';
     position: absolute;
     inset: 0;
-    background: radial-gradient(ellipse at 30% 80%, rgba(8, 145, 178, 0.15) 0%, transparent 60%),
-                radial-gradient(ellipse at 70% 20%, rgba(14, 165, 233, 0.1) 0%, transparent 50%);
+    background: radial-gradient(ellipse at 50% 60%, rgba(8, 145, 178, 0.08) 0%, transparent 60%);
 }
 
 .cmp-hero-content {
@@ -33,28 +32,27 @@
     z-index: 2;
     text-align: center;
     padding: 120px 16px 80px;
-    max-width: 720px;
+    max-width: 800px;
     margin: 0 auto;
 }
 
 .cmp-hero-label {
     display: inline-block;
-    font-size: 0.7rem;
+    font-size: 0.65rem;
     font-weight: 500;
     text-transform: uppercase;
-    letter-spacing: 0.2em;
-    color: rgba(255, 255, 255, 0.5);
-    margin-bottom: 16px;
+    letter-spacing: 0.25em;
+    color: rgba(255, 255, 255, 0.4);
+    margin-bottom: 20px;
 }
 
 .cmp-hero-title {
     font-family: 'Outfit', sans-serif;
-    font-size: 2.5rem;
+    font-size: 2.25rem;
     font-weight: 300;
     color: white;
-    line-height: 1.15;
-    margin-bottom: 16px;
-    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+    line-height: 1.2;
+    margin-bottom: 48px;
 }
 
 .cmp-hero-title .italic {
@@ -63,65 +61,79 @@
     font-weight: 400;
 }
 
-.cmp-hero-sub {
-    font-size: 0.95rem;
-    color: rgba(255, 255, 255, 0.6);
-    margin-bottom: 32px;
-    line-height: 1.5;
-}
-
-.cmp-hero-ctas {
+/* ---- BRAND CHIPS GRID ---- */
+.cmp-hero-brands {
     display: flex;
-    gap: 12px;
-    justify-content: center;
     flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px 16px;
+    max-width: 600px;
+    margin: 0 auto;
 }
 
-.cmp-cta-primary {
+.cmp-brand-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.cmp-brand-chip {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 14px 28px;
-    background: rgba(255, 255, 255, 0.25);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.4);
+    padding: 10px 24px;
     border-radius: 9999px;
-    color: white;
     font-family: 'Outfit', sans-serif;
-    font-size: 0.9rem;
-    font-weight: 500;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    cursor: pointer;
-}
-
-.cmp-cta-primary:hover {
-    background: rgba(255, 255, 255, 0.35);
-    transform: scale(1.02);
-}
-
-.cmp-cta-secondary {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 14px 28px;
-    background: rgba(0, 0, 0, 0.4);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 9999px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
     color: white;
-    font-family: 'Outfit', sans-serif;
-    font-size: 0.9rem;
-    font-weight: 500;
-    text-decoration: none;
-    transition: all 0.3s ease;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    cursor: default;
 }
 
-.cmp-cta-secondary:hover {
-    background: rgba(0, 0, 0, 0.5);
-    border-color: rgba(255, 255, 255, 0.3);
+.cmp-brand-chip:hover {
+    transform: translateY(-2px);
+}
+
+/* Brand-specific colors */
+.cmp-brand--honeywell {
+    background: #D6001C;
+    box-shadow: 0 4px 20px rgba(214, 0, 28, 0.25);
+}
+
+.cmp-brand--philips {
+    background: #0B5ED7;
+    box-shadow: 0 4px 20px rgba(11, 94, 215, 0.25);
+}
+
+.cmp-brand--xiaomi {
+    background: #FF6900;
+    box-shadow: 0 4px 20px rgba(255, 105, 0, 0.25);
+}
+
+.cmp-brand--dyson {
+    background: #6B2D8B;
+    box-shadow: 0 4px 20px rgba(107, 45, 139, 0.25);
+}
+
+.cmp-brand--qubo {
+    background: #00A878;
+    box-shadow: 0 4px 20px rgba(0, 168, 120, 0.25);
+}
+
+.cmp-brand--winix {
+    background: #1B3A5C;
+    box-shadow: 0 4px 20px rgba(27, 58, 92, 0.25);
+}
+
+.cmp-brand-model {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.45);
+    letter-spacing: 0.02em;
 }
 
 /* Scroll hint at bottom of hero */
@@ -131,7 +143,7 @@
     left: 50%;
     transform: translateX(-50%);
     z-index: 2;
-    color: rgba(255, 255, 255, 0.35);
+    color: rgba(255, 255, 255, 0.3);
     animation: cmp-bounce 2s ease-in-out infinite;
 }
 
@@ -142,15 +154,24 @@
 
 @media (min-width: 768px) {
     .cmp-hero-title {
-        font-size: 4rem;
-    }
-
-    .cmp-hero-sub {
-        font-size: 1.05rem;
+        font-size: 3.5rem;
     }
 
     .cmp-hero-content {
         padding: 160px 24px 100px;
+    }
+
+    .cmp-hero-brands {
+        gap: 24px 20px;
+    }
+
+    .cmp-brand-chip {
+        padding: 12px 28px;
+        font-size: 0.9rem;
+    }
+
+    .cmp-brand-model {
+        font-size: 0.75rem;
     }
 }
 
