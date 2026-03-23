@@ -309,7 +309,7 @@
 
 /* ========================================
    HAWAA vs HONEYWELL — COMPARISON CARD
-   Mobile-first 3-column layout
+   Mobile-first 3-column table layout
 ======================================== */
 .cmp-vs {
     padding: 60px 0 0;
@@ -344,11 +344,19 @@
     max-width: 720px;
     margin: 0 auto;
     padding: 0 16px;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.06);
+    border: 1px solid #e5e7eb;
+    overflow: hidden;
 }
 
 @media (min-width: 768px) {
     .cmp-vs-card {
+        max-width: 780px;
         padding: 0 24px;
+        border-radius: 20px;
+        box-shadow: 0 8px 40px rgba(0, 0, 0, 0.08);
     }
 }
 
@@ -362,7 +370,19 @@
     z-index: 10;
     background: #ffffff;
     border-bottom: 2px solid #e5e7eb;
-    padding: 12px 0;
+    padding: 14px 0;
+    margin: 0 -16px;
+    padding-left: 16px;
+    padding-right: 16px;
+}
+
+@media (min-width: 768px) {
+    .cmp-vs-headers {
+        top: 64px;
+        margin: 0 -24px;
+        padding-left: 24px;
+        padding-right: 24px;
+    }
 }
 
 .cmp-vs-header-metric {
@@ -372,19 +392,19 @@
 .cmp-vs-header-hawaa,
 .cmp-vs-header-rival {
     font-family: 'Outfit', sans-serif;
-    font-size: 0.7rem;
+    font-size: 0.68rem;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.1em;
     text-align: center;
-    padding: 8px 4px;
+    padding: 10px 4px;
     border-radius: 8px;
 }
 
 .cmp-vs-header-hawaa {
-    background: linear-gradient(135deg, #0ea5e9 0%, #0891b2 100%);
+    background: #0f172a;
     color: #ffffff;
-    box-shadow: 0 2px 8px rgba(14, 165, 233, 0.3);
+    box-shadow: 0 2px 12px rgba(15, 23, 42, 0.25);
 }
 
 .cmp-vs-header-rival {
@@ -396,7 +416,8 @@
     .cmp-vs-header-hawaa,
     .cmp-vs-header-rival {
         font-size: 0.75rem;
-        padding: 10px 8px;
+        padding: 12px 8px;
+        border-radius: 10px;
     }
 }
 
@@ -430,8 +451,7 @@
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     gap: 0;
-    align-items: center;
-    padding: 10px 0;
+    align-items: stretch;
     border-bottom: 1px solid #f3f4f6;
 }
 
@@ -441,7 +461,9 @@
     font-weight: 500;
     color: #374151;
     line-height: 1.35;
-    padding-right: 8px;
+    padding: 10px 8px 10px 0;
+    display: flex;
+    align-items: center;
 }
 
 .cmp-vs-metric-sub {
@@ -451,40 +473,93 @@
     color: #9ca3af;
 }
 
+/* Value cells */
 .cmp-vs-val {
     font-family: 'Outfit', sans-serif;
     font-size: 0.78rem;
     font-weight: 500;
     text-align: center;
     line-height: 1.35;
-    padding: 0 2px;
+    padding: 10px 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
+/* Hawaa column — dark blue background */
+.cmp-vs-val--hawaa {
+    background: #0f172a;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* Rival column */
+.cmp-vs-val--rival {
+    color: #6b7280;
+}
+
+/* Win state */
 .cmp-vs-val--win {
-    color: #111827;
     font-weight: 600;
     position: relative;
 }
 
+.cmp-vs-val--hawaa.cmp-vs-val--win {
+    color: #ffffff;
+}
+
+.cmp-vs-val--rival.cmp-vs-val--win {
+    color: #111827;
+    font-weight: 600;
+}
+
+/* Win dot */
 .cmp-vs-val--win::before {
     content: '';
     display: inline-block;
     width: 5px;
     height: 5px;
     border-radius: 50%;
-    background: #0891b2;
     margin-right: 4px;
     vertical-align: middle;
+    flex-shrink: 0;
 }
 
+.cmp-vs-val--hawaa.cmp-vs-val--win::before {
+    background: #22d3ee;
+}
+
+.cmp-vs-val--rival.cmp-vs-val--win::before {
+    background: #0891b2;
+}
+
+/* Lose state */
 .cmp-vs-val--lose {
-    color: #9ca3af;
     font-weight: 400;
 }
 
+.cmp-vs-val--hawaa.cmp-vs-val--lose {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.cmp-vs-val--rival.cmp-vs-val--lose {
+    color: #9ca3af;
+}
+
+.cmp-vs-val--lose::before {
+    display: none;
+}
+
+/* Neutral state */
 .cmp-vs-val--neutral {
-    color: #6b7280;
     font-weight: 400;
+}
+
+.cmp-vs-val--hawaa.cmp-vs-val--neutral {
+    color: rgba(255, 255, 255, 0.55);
+}
+
+.cmp-vs-val--rival.cmp-vs-val--neutral {
+    color: #6b7280;
 }
 
 /* Total row styling */
@@ -511,7 +586,7 @@
 .cmp-vs-row--save {
     display: block;
     padding: 14px 16px;
-    margin-top: 4px;
+    margin: 4px 0 16px;
     background: linear-gradient(135deg, rgba(14, 165, 233, 0.08) 0%, rgba(8, 145, 178, 0.08) 100%);
     border: 1px solid rgba(14, 165, 233, 0.2);
     border-radius: 10px;
@@ -531,242 +606,85 @@
     color: #0e7490;
 }
 
-/* ---- INFOGRAPHICS ---- */
-
-/* Shared */
-.cmp-vs-infographic {
-    padding: 16px 0;
-    border-bottom: 1px solid #f3f4f6;
-}
-
-/* CADR Cylinders */
-.cmp-vs-cylinder-pair {
-    display: flex;
-    justify-content: center;
-    gap: 32px;
-    padding: 8px 0;
-}
-
-.cmp-vs-cylinder {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-}
-
-.cmp-vs-cylinder-track {
-    width: 40px;
-    height: 120px;
-    background: #f3f4f6;
-    border-radius: 6px;
-    position: relative;
-    overflow: hidden;
-    display: flex;
-    align-items: flex-end;
-}
-
-.cmp-vs-cylinder-fill {
-    width: 100%;
-    height: 0%;
-    border-radius: 6px 6px 0 0;
-    transition: height 1.2s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-[data-brand="hawaa"] .cmp-vs-cylinder-fill {
-    background: linear-gradient(to top, #0891b2, #0ea5e9);
-}
-
-[data-brand="rival"] .cmp-vs-cylinder-fill {
-    background: #d1d5db;
-}
-
-.cmp-vs-cylinder-pct {
-    font-family: 'Outfit', sans-serif;
-    font-size: 0.8rem;
-    font-weight: 700;
-}
-
-[data-brand="hawaa"] .cmp-vs-cylinder-pct {
-    color: #0891b2;
-}
-
-[data-brand="rival"] .cmp-vs-cylinder-pct {
-    color: #9ca3af;
-}
-
-.cmp-vs-cylinder-val {
-    font-family: 'Outfit', sans-serif;
-    font-size: 0.65rem;
-    font-weight: 400;
-    color: #6b7280;
-}
-
-@media (min-width: 640px) {
-    .cmp-vs-cylinder-track {
-        width: 52px;
-        height: 140px;
-    }
-
-    .cmp-vs-cylinder-pair {
-        gap: 48px;
-    }
-}
-
-/* Cost Bars */
-.cmp-vs-bar-pair {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    padding: 8px 0;
-}
-
-.cmp-vs-bar {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-}
-
-.cmp-vs-bar-label {
-    font-family: 'Outfit', sans-serif;
-    font-size: 0.65rem;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-}
-
-[data-brand="hawaa"] .cmp-vs-bar-label {
-    color: #0891b2;
-}
-
-[data-brand="rival"] .cmp-vs-bar-label {
-    color: #9ca3af;
-}
-
-.cmp-vs-bar-track {
-    display: flex;
-    height: 28px;
-    border-radius: 6px;
-    overflow: hidden;
-    background: #f9fafb;
-}
-
-.cmp-vs-bar-seg {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
-    min-width: 0;
-    overflow: hidden;
-}
-
-.cmp-vs-bar-seg span {
-    font-family: 'Outfit', sans-serif;
-    font-size: 0.6rem;
-    font-weight: 600;
-    color: #ffffff;
-    white-space: nowrap;
-    padding: 0 4px;
-}
-
-/* Hawaa bar segments */
-[data-brand="hawaa"] .cmp-vs-bar-seg--device {
-    background: #0891b2;
-}
-
-[data-brand="hawaa"] .cmp-vs-bar-seg--filter {
-    background: #22d3ee;
-}
-
-/* Rival bar segments */
-[data-brand="rival"] .cmp-vs-bar-seg--device {
-    background: #9ca3af;
-}
-
-[data-brand="rival"] .cmp-vs-bar-seg--filter {
-    background: #d1d5db;
-}
-
-[data-brand="rival"] .cmp-vs-bar-seg--filter span {
-    color: #6b7280;
-}
-
-.cmp-vs-bar-total {
-    font-family: 'Outfit', sans-serif;
-    font-size: 0.7rem;
-    font-weight: 600;
-    text-align: right;
-}
-
-[data-brand="hawaa"] .cmp-vs-bar-total {
-    color: #0891b2;
-}
-
-[data-brand="rival"] .cmp-vs-bar-total {
-    color: #9ca3af;
-}
-
-.cmp-vs-bar-legend {
-    display: flex;
-    gap: 16px;
-    justify-content: center;
-    padding-top: 8px;
-}
-
-.cmp-vs-legend-item {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    font-family: 'Outfit', sans-serif;
-    font-size: 0.65rem;
-    color: #9ca3af;
-}
-
-.cmp-vs-legend-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 2px;
-}
-
-.cmp-vs-legend-dot--device {
-    background: #0891b2;
-}
-
-.cmp-vs-legend-dot--filter {
-    background: #22d3ee;
-}
-
-/* ---- VERDICT STRIP ---- */
+/* ---- VERDICT ---- */
 .cmp-vs-verdict {
     margin-top: 40px;
     background: #0f172a;
     padding: 40px 16px;
-    text-align: center;
 }
 
 .cmp-vs-verdict-inner {
-    max-width: 600px;
+    max-width: 640px;
     margin: 0 auto;
 }
 
-.cmp-vs-verdict-headline {
+.cmp-vs-verdict-label {
+    display: block;
     font-family: 'Outfit', sans-serif;
-    font-size: 1.35rem;
-    font-weight: 700;
-    color: #ffffff;
-    line-height: 1.3;
-    margin-bottom: 12px;
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: rgba(255, 255, 255, 0.35);
+    margin-bottom: 16px;
 }
 
-.cmp-vs-verdict-sub {
+.cmp-vs-verdict-body {
     font-family: 'Outfit', sans-serif;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     font-weight: 400;
     color: rgba(255, 255, 255, 0.55);
-    line-height: 1.5;
+    line-height: 1.7;
+    margin-bottom: 32px;
+}
+
+/* Hawaa verdict card */
+.cmp-vs-verdict-hawaa {
+    background: linear-gradient(135deg, #164e63 0%, #0c4a6e 100%);
+    border: 1px solid rgba(34, 211, 238, 0.15);
+    border-radius: 14px;
+    padding: 28px 20px;
+}
+
+.cmp-vs-verdict-brand {
+    display: block;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: #22d3ee;
+    margin-bottom: 4px;
+}
+
+.cmp-vs-verdict-tagline {
+    display: block;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.4);
+    margin-bottom: 20px;
+}
+
+.cmp-vs-verdict-pitch {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.75);
+    line-height: 1.7;
+    margin-bottom: 16px;
+}
+
+.cmp-vs-verdict-closer {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #ffffff;
+    line-height: 1.6;
     margin-bottom: 28px;
 }
 
-.cmp-vs-verdict .cmp-cta-buy {
+.cmp-vs-verdict-hawaa .cmp-cta-buy {
     font-size: 0.9rem;
 }
 
@@ -775,8 +693,20 @@
         padding: 50px 24px;
     }
 
-    .cmp-vs-verdict-headline {
-        font-size: 1.6rem;
+    .cmp-vs-verdict-body {
+        font-size: 0.95rem;
+    }
+
+    .cmp-vs-verdict-hawaa {
+        padding: 32px 28px;
+    }
+
+    .cmp-vs-verdict-pitch {
+        font-size: 0.95rem;
+    }
+
+    .cmp-vs-verdict-closer {
+        font-size: 1rem;
     }
 }
 
@@ -785,12 +715,9 @@
         padding: 60px 24px;
     }
 
-    .cmp-vs-verdict-headline {
-        font-size: 1.8rem;
-    }
-
-    .cmp-vs-verdict-sub {
-        font-size: 0.95rem;
+    .cmp-vs-verdict-hawaa {
+        padding: 36px 32px;
+        border-radius: 16px;
     }
 }
 
@@ -815,23 +742,8 @@
 }
 
 @media (min-width: 768px) {
-    .cmp-vs-card {
-        max-width: 780px;
-    }
-
-    .cmp-vs-headers {
-        top: 64px;
-    }
-
-    .cmp-vs-header-hawaa,
-    .cmp-vs-header-rival {
-        font-size: 0.8rem;
-        padding: 12px 12px;
-        border-radius: 10px;
-    }
-
     .cmp-vs-row {
-        padding: 12px 0;
+        /* no extra padding needed, already in card */
     }
 
     .cmp-vs-metric {
