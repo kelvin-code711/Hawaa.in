@@ -485,39 +485,27 @@
     color: #6b7280;
 }
 
-/* Win state — no dots, just bold + color */
-.cmp-vs-val--win {
-    font-weight: 600;
-}
-
+/* Hawaa column — same font-weight for all states, differentiate by color only */
 .cmp-vs-val--hawaa.cmp-vs-val--win {
     color: #ffffff;
-}
-
-.cmp-vs-val--rival.cmp-vs-val--win {
-    color: #111827;
-}
-
-/* Lose state */
-.cmp-vs-val--lose {
-    font-weight: 400;
 }
 
 .cmp-vs-val--hawaa.cmp-vs-val--lose {
     color: rgba(255, 255, 255, 0.35);
 }
 
-.cmp-vs-val--rival.cmp-vs-val--lose {
-    color: #9ca3af;
-}
-
-/* Neutral state */
-.cmp-vs-val--neutral {
-    font-weight: 400;
-}
-
 .cmp-vs-val--hawaa.cmp-vs-val--neutral {
     color: rgba(255, 255, 255, 0.45);
+}
+
+/* Rival column — bold for win, dim for lose */
+.cmp-vs-val--rival.cmp-vs-val--win {
+    font-weight: 600;
+    color: #111827;
+}
+
+.cmp-vs-val--rival.cmp-vs-val--lose {
+    color: #9ca3af;
 }
 
 .cmp-vs-val--rival.cmp-vs-val--neutral {
@@ -530,12 +518,7 @@
     color: #111827;
 }
 
-.cmp-vs-row--total .cmp-vs-val--win {
-    font-weight: 700;
-    font-size: 0.85rem;
-}
-
-.cmp-vs-row--total .cmp-vs-val--lose {
+.cmp-vs-row--total .cmp-vs-val--rival {
     font-weight: 500;
     font-size: 0.85rem;
 }
@@ -730,11 +713,7 @@
     font-weight: 600;
     color: #111827;
     line-height: 1.6;
-    margin-bottom: 24px;
-}
-
-.cmp-vs-verdict-popup-body .cmp-cta-buy {
-    font-size: 0.85rem;
+    margin-bottom: 0;
 }
 
 /* ---- VS SECTION RESPONSIVE ---- */

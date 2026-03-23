@@ -47,8 +47,7 @@
             '<h3 class="cmp-vs-popup-title">' + d.title + '</h3>' +
             '<p class="cmp-vs-popup-context">' + d.context + '</p>' +
             '<p class="cmp-vs-popup-pitch">' + d.pitch + '</p>' +
-            '<p class="cmp-vs-popup-closer">' + d.closer + '</p>' +
-            '<a href="buy.html" class="cmp-cta-buy">Buy Hawaa Edge \u2014 \u20B96,000</a>';
+            '<p class="cmp-vs-popup-closer">' + d.closer + '</p>';
         overlay.classList.add('active');
         document.body.style.overflow = 'hidden';
     }
