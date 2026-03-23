@@ -430,15 +430,6 @@
     padding: 20px 0 8px;
 }
 
-.cmp-vs-row--footnote .cmp-vs-group-footnote {
-    font-family: 'Outfit', sans-serif;
-    font-size: 0.65rem;
-    font-weight: 400;
-    color: #9ca3af;
-    padding: 0 0 8px;
-    font-style: italic;
-}
-
 /* Spacer cell — keeps dark bg continuous, no content */
 .cmp-vs-val--spacer {
     padding: 0;
@@ -584,52 +575,40 @@
     color: #0e7490;
 }
 
-/* ---- VERDICT BAR (inline, compact) ---- */
+/* ---- VERDICT BAR (stacked, button below) ---- */
 .cmp-vs-verdict-bar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    padding: 14px 0;
+    padding: 16px 0 20px;
     margin-top: 4px;
 }
 
 .cmp-vs-verdict-line {
     font-family: 'Outfit', sans-serif;
     font-size: 0.82rem;
-    font-weight: 600;
-    color: #111827;
-    line-height: 1.35;
+    font-weight: 500;
+    color: #374151;
+    line-height: 1.5;
+    margin: 0 0 14px;
 }
 
 .cmp-vs-verdict-btn {
     display: inline-flex;
     align-items: center;
-    gap: 5px;
+    justify-content: center;
+    padding: 10px 22px;
     background: none;
-    border: none;
+    border: 1.5px solid #d1d5db;
+    border-radius: 9999px;
     font-family: 'Outfit', sans-serif;
-    font-size: 0.75rem;
+    font-size: 0.78rem;
     font-weight: 500;
-    color: #0891b2;
+    color: #374151;
     cursor: pointer;
-    white-space: nowrap;
-    padding: 0;
-    transition: color 0.2s ease;
+    transition: all 0.2s ease;
 }
 
 .cmp-vs-verdict-btn:hover {
-    color: #0e7490;
-}
-
-.cmp-vs-verdict-btn svg {
-    width: 14px;
-    height: 14px;
-    transition: transform 0.2s ease;
-}
-
-.cmp-vs-verdict-btn:hover svg {
-    transform: translateX(2px);
+    border-color: #0891b2;
+    color: #0891b2;
 }
 
 /* ---- VERDICT POPUP OVERLAY ---- */
@@ -639,14 +618,14 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.6);
+    background: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     display: none;
-    align-items: flex-end;
+    align-items: center;
     justify-content: center;
     z-index: 1000;
-    padding: 0;
+    padding: 20px;
     opacity: 0;
     transition: opacity 0.3s ease;
 }
@@ -656,33 +635,26 @@
     opacity: 1;
 }
 
-@media (min-width: 768px) {
-    .cmp-vs-verdict-overlay {
-        align-items: center;
-        padding: 20px;
-    }
-}
-
 .cmp-vs-verdict-popup {
-    background: #0f172a;
+    background: #ffffff;
     width: 100%;
-    max-width: 560px;
+    max-width: 520px;
     max-height: 85vh;
     overflow-y: auto;
-    padding: 32px 20px;
+    padding: 32px 24px;
     position: relative;
-    border-radius: 20px 20px 0 0;
-    transform: translateY(20px);
+    border-radius: 20px;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.2);
+    transform: scale(0.95);
     transition: transform 0.3s ease;
 }
 
 .cmp-vs-verdict-overlay.active .cmp-vs-verdict-popup {
-    transform: translateY(0);
+    transform: scale(1);
 }
 
-@media (min-width: 768px) {
+@media (min-width: 640px) {
     .cmp-vs-verdict-popup {
-        border-radius: 20px;
         padding: 36px 32px;
     }
 }
@@ -693,7 +665,7 @@
     right: 16px;
     width: 36px;
     height: 36px;
-    background: rgba(255, 255, 255, 0.1);
+    background: #f3f4f6;
     border: none;
     border-radius: 50%;
     cursor: pointer;
@@ -705,23 +677,32 @@
 }
 
 .cmp-vs-verdict-close:hover {
-    background: rgba(255, 255, 255, 0.2);
+    background: #e5e7eb;
 }
 
 .cmp-vs-verdict-close svg {
     width: 18px;
     height: 18px;
-    color: rgba(255, 255, 255, 0.6);
+    color: #6b7280;
 }
 
-/* Popup content */
+/* Popup content — white background */
 .cmp-vs-verdict-popup-body .cmp-vs-popup-label {
     font-family: 'Outfit', sans-serif;
     font-size: 0.6rem;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.2em;
-    color: rgba(255, 255, 255, 0.3);
+    color: #9ca3af;
+    margin-bottom: 12px;
+}
+
+.cmp-vs-verdict-popup-body .cmp-vs-popup-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #111827;
+    line-height: 1.3;
     margin-bottom: 16px;
 }
 
@@ -729,63 +710,31 @@
     font-family: 'Outfit', sans-serif;
     font-size: 0.88rem;
     font-weight: 400;
-    color: rgba(255, 255, 255, 0.55);
+    color: #6b7280;
     line-height: 1.7;
-    margin-bottom: 24px;
+    margin-bottom: 20px;
 }
 
-.cmp-vs-verdict-popup-body .cmp-vs-popup-hawaa {
-    background: linear-gradient(135deg, #164e63 0%, #0c4a6e 100%);
-    border: 1px solid rgba(34, 211, 238, 0.15);
-    border-radius: 12px;
-    padding: 24px 18px;
-    margin-bottom: 0;
-}
-
-.cmp-vs-popup-hawaa .cmp-vs-popup-brand {
-    font-family: 'Outfit', sans-serif;
-    font-size: 0.6rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.2em;
-    color: #22d3ee;
-    margin-bottom: 2px;
-}
-
-.cmp-vs-popup-hawaa .cmp-vs-popup-tagline {
-    font-family: 'Outfit', sans-serif;
-    font-size: 0.7rem;
-    font-weight: 400;
-    color: rgba(255, 255, 255, 0.35);
-    margin-bottom: 18px;
-}
-
-.cmp-vs-popup-hawaa .cmp-vs-popup-pitch {
+.cmp-vs-verdict-popup-body .cmp-vs-popup-pitch {
     font-family: 'Outfit', sans-serif;
     font-size: 0.88rem;
     font-weight: 400;
-    color: rgba(255, 255, 255, 0.75);
+    color: #6b7280;
     line-height: 1.7;
-    margin-bottom: 14px;
+    margin-bottom: 20px;
 }
 
-.cmp-vs-popup-hawaa .cmp-vs-popup-closer {
+.cmp-vs-verdict-popup-body .cmp-vs-popup-closer {
     font-family: 'Outfit', sans-serif;
     font-size: 0.92rem;
-    font-weight: 500;
-    color: #ffffff;
+    font-weight: 600;
+    color: #111827;
     line-height: 1.6;
     margin-bottom: 24px;
 }
 
-.cmp-vs-popup-hawaa .cmp-cta-buy {
+.cmp-vs-verdict-popup-body .cmp-cta-buy {
     font-size: 0.85rem;
-}
-
-@media (min-width: 640px) {
-    .cmp-vs-popup-hawaa {
-        padding: 28px 24px;
-    }
 }
 
 /* ---- VS SECTION RESPONSIVE ---- */
