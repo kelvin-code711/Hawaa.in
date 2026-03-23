@@ -116,68 +116,76 @@
 
     <!-- ==================== HERO ==================== -->
     <section class="cmp-hero">
-        <div class="cmp-hero-content">
-            <span class="cmp-hero-label">COMPARISON</span>
-            <h1 class="cmp-hero-title">See how <span class="italic">Hawaa</span> compares</h1>
+        <canvas class="cmp-hero-particles" id="cmp-hero-particles"></canvas>
+
+        <!-- Centre manifesto -->
+        <div class="cmp-hero-manifesto" id="cmp-hero-manifesto">
+            <h1 class="cmp-hero-manifesto-text">
+                <span class="cmp-hero-line">the air inside your home</span>
+                <span class="cmp-hero-line">is 5× more polluted</span>
+                <span class="cmp-hero-line">than the air outside</span>
+            </h1>
         </div>
 
-        <div class="cmp-hero-marquee">
-            <div class="cmp-marquee-track">
-                <!-- Set 1 -->
-                <div class="cmp-brand-item">
-                    <span class="cmp-brand-chip cmp-brand--honeywell">Honeywell</span>
-                    <span class="cmp-brand-model">Air Touch V1</span>
-                </div>
-                <div class="cmp-brand-item">
-                    <span class="cmp-brand-chip cmp-brand--philips">Philips</span>
-                    <span class="cmp-brand-model">AC1215</span>
-                </div>
-                <div class="cmp-brand-item">
-                    <span class="cmp-brand-chip cmp-brand--xiaomi">Xiaomi</span>
-                    <span class="cmp-brand-model">Air Purifier 4</span>
-                </div>
-                <div class="cmp-brand-item">
-                    <span class="cmp-brand-chip cmp-brand--dyson">Dyson</span>
-                    <span class="cmp-brand-model">HushJet</span>
-                </div>
-                <div class="cmp-brand-item">
-                    <span class="cmp-brand-chip cmp-brand--qubo">Qubo</span>
-                    <span class="cmp-brand-model">Q200</span>
-                </div>
-                <div class="cmp-brand-item">
-                    <span class="cmp-brand-chip cmp-brand--winix">Winix</span>
-                    <span class="cmp-brand-model">5500-2</span>
-                </div>
-                <!-- Set 2 (duplicate for seamless loop) -->
-                <div class="cmp-brand-item">
-                    <span class="cmp-brand-chip cmp-brand--honeywell">Honeywell</span>
-                    <span class="cmp-brand-model">Air Touch V1</span>
-                </div>
-                <div class="cmp-brand-item">
-                    <span class="cmp-brand-chip cmp-brand--philips">Philips</span>
-                    <span class="cmp-brand-model">AC1215</span>
-                </div>
-                <div class="cmp-brand-item">
-                    <span class="cmp-brand-chip cmp-brand--xiaomi">Xiaomi</span>
-                    <span class="cmp-brand-model">Air Purifier 4</span>
-                </div>
-                <div class="cmp-brand-item">
-                    <span class="cmp-brand-chip cmp-brand--dyson">Dyson</span>
-                    <span class="cmp-brand-model">HushJet</span>
-                </div>
-                <div class="cmp-brand-item">
-                    <span class="cmp-brand-chip cmp-brand--qubo">Qubo</span>
-                    <span class="cmp-brand-model">Q200</span>
-                </div>
-                <div class="cmp-brand-item">
-                    <span class="cmp-brand-chip cmp-brand--winix">Winix</span>
-                    <span class="cmp-brand-model">5500-2</span>
-                </div>
+        <!-- Bottom headline -->
+        <div class="cmp-hero-headline">
+            <p class="cmp-hero-headline-1">Every purifier, compared.</p>
+            <p class="cmp-hero-headline-2">Here's where Hawaa stands.</p>
+        </div>
+
+        <!-- Cyan rule -->
+        <div class="cmp-hero-rule"></div>
+
+        <!-- Scroll indicator -->
+        <div class="cmp-hero-scroll-indicator">
+            <div class="cmp-hero-scroll-track">
+                <div class="cmp-hero-scroll-segment"></div>
             </div>
+            <span class="cmp-hero-scroll-label">SCROLL</span>
         </div>
 
-        <div class="cmp-hero-scroll-hint">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="20" height="20"><path d="M6 9l6 6 6-6"/></svg>
+        <!-- Card carousel -->
+        <div class="cmp-hero-carousel" id="cmp-hero-carousel">
+            <a href="#comparison-honeywell-v1" class="cmp-hero-card">
+                <span class="cmp-hero-card-arrow">↗</span>
+                <span class="cmp-hero-card-brand">HONEYWELL</span>
+                <span class="cmp-hero-card-model">Air Touch V1</span>
+            </a>
+            <a href="#comparison-honeywell-v2" class="cmp-hero-card">
+                <span class="cmp-hero-card-arrow">↗</span>
+                <span class="cmp-hero-card-brand">HONEYWELL</span>
+                <span class="cmp-hero-card-model">Air Touch V2</span>
+            </a>
+            <a href="#comparison-philips" class="cmp-hero-card">
+                <span class="cmp-hero-card-arrow">↗</span>
+                <span class="cmp-hero-card-brand">PHILIPS</span>
+                <span class="cmp-hero-card-model">AC0920</span>
+            </a>
+            <a href="#comparison-levoit-300" class="cmp-hero-card">
+                <span class="cmp-hero-card-arrow">↗</span>
+                <span class="cmp-hero-card-brand">LEVOIT</span>
+                <span class="cmp-hero-card-model">Core 300</span>
+            </a>
+            <a href="#comparison-qubo" class="cmp-hero-card">
+                <span class="cmp-hero-card-arrow">↗</span>
+                <span class="cmp-hero-card-brand">QUBO</span>
+                <span class="cmp-hero-card-model">Q200</span>
+            </a>
+            <a href="#comparison-levoit-mini" class="cmp-hero-card">
+                <span class="cmp-hero-card-arrow">↗</span>
+                <span class="cmp-hero-card-brand">LEVOIT</span>
+                <span class="cmp-hero-card-model">Core Mini</span>
+            </a>
+            <a href="#comparison-winix" class="cmp-hero-card">
+                <span class="cmp-hero-card-arrow">↗</span>
+                <span class="cmp-hero-card-brand">WINIX</span>
+                <span class="cmp-hero-card-model">A231</span>
+            </a>
+            <a href="#comparison-dyson" class="cmp-hero-card">
+                <span class="cmp-hero-card-arrow">↗</span>
+                <span class="cmp-hero-card-brand">DYSON</span>
+                <span class="cmp-hero-card-model">HushJet</span>
+            </a>
         </div>
     </section>
 
@@ -600,6 +608,7 @@
     </footer>
 
     <script src="js/nav.js"></script>
+    <script src="js/comparison-hero.js"></script>
     <script src="js/comparison.js"></script>
 </body>
 </html>
