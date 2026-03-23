@@ -308,6 +308,542 @@
 }
 
 /* ========================================
+   HAWAA vs HONEYWELL — COMPARISON CARD
+   Mobile-first 3-column layout
+======================================== */
+.cmp-vs {
+    padding: 60px 0 0;
+    background: #ffffff;
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.cmp-vs.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+@media (min-width: 768px) {
+    .cmp-vs {
+        padding: 80px 0 0;
+    }
+}
+
+.cmp-vs-subtext {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.9rem;
+    color: #6b7280;
+    line-height: 1.5;
+    margin-top: -20px;
+    margin-bottom: 36px;
+}
+
+/* Comparison Card Container */
+.cmp-vs-card {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 16px;
+}
+
+@media (min-width: 768px) {
+    .cmp-vs-card {
+        padding: 0 24px;
+    }
+}
+
+/* Sticky Column Headers */
+.cmp-vs-headers {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0;
+    position: sticky;
+    top: 56px;
+    z-index: 10;
+    background: #ffffff;
+    border-bottom: 2px solid #e5e7eb;
+    padding: 12px 0;
+}
+
+.cmp-vs-header-metric {
+    /* empty label column */
+}
+
+.cmp-vs-header-hawaa,
+.cmp-vs-header-rival {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    text-align: center;
+    padding: 8px 4px;
+    border-radius: 8px;
+}
+
+.cmp-vs-header-hawaa {
+    background: linear-gradient(135deg, #0ea5e9 0%, #0891b2 100%);
+    color: #ffffff;
+    box-shadow: 0 2px 8px rgba(14, 165, 233, 0.3);
+}
+
+.cmp-vs-header-rival {
+    background: #f3f4f6;
+    color: #6b7280;
+}
+
+@media (min-width: 640px) {
+    .cmp-vs-header-hawaa,
+    .cmp-vs-header-rival {
+        font-size: 0.75rem;
+        padding: 10px 8px;
+    }
+}
+
+/* Group labels */
+.cmp-vs-group {
+    padding: 8px 0 0;
+}
+
+.cmp-vs-group-label {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: #0891b2;
+    padding: 16px 0 8px;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.cmp-vs-group-footnote {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 400;
+    color: #9ca3af;
+    padding: 4px 0 8px;
+    font-style: italic;
+}
+
+/* Metric Rows — 3-column grid */
+.cmp-vs-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.cmp-vs-metric {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: #374151;
+    line-height: 1.35;
+    padding-right: 8px;
+}
+
+.cmp-vs-metric-sub {
+    display: block;
+    font-size: 0.65rem;
+    font-weight: 400;
+    color: #9ca3af;
+}
+
+.cmp-vs-val {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 500;
+    text-align: center;
+    line-height: 1.35;
+    padding: 0 2px;
+}
+
+.cmp-vs-val--win {
+    color: #111827;
+    font-weight: 600;
+    position: relative;
+}
+
+.cmp-vs-val--win::before {
+    content: '';
+    display: inline-block;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #0891b2;
+    margin-right: 4px;
+    vertical-align: middle;
+}
+
+.cmp-vs-val--lose {
+    color: #9ca3af;
+    font-weight: 400;
+}
+
+.cmp-vs-val--neutral {
+    color: #6b7280;
+    font-weight: 400;
+}
+
+/* Total row styling */
+.cmp-vs-row--total {
+    border-bottom: none;
+}
+
+.cmp-vs-row--total .cmp-vs-metric {
+    font-weight: 700;
+    color: #111827;
+}
+
+.cmp-vs-row--total .cmp-vs-val--win {
+    font-weight: 700;
+    font-size: 0.85rem;
+}
+
+.cmp-vs-row--total .cmp-vs-val--lose {
+    font-weight: 500;
+    font-size: 0.85rem;
+}
+
+/* "You save" row — full-width accent */
+.cmp-vs-row--save {
+    display: block;
+    padding: 14px 16px;
+    margin-top: 4px;
+    background: linear-gradient(135deg, rgba(14, 165, 233, 0.08) 0%, rgba(8, 145, 178, 0.08) 100%);
+    border: 1px solid rgba(14, 165, 233, 0.2);
+    border-radius: 10px;
+    text-align: center;
+    border-bottom: none;
+}
+
+.cmp-vs-save-text {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.85rem;
+    color: #0891b2;
+    font-weight: 500;
+}
+
+.cmp-vs-save-text strong {
+    font-weight: 700;
+    color: #0e7490;
+}
+
+/* ---- INFOGRAPHICS ---- */
+
+/* Shared */
+.cmp-vs-infographic {
+    padding: 16px 0;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+/* CADR Cylinders */
+.cmp-vs-cylinder-pair {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    padding: 8px 0;
+}
+
+.cmp-vs-cylinder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
+.cmp-vs-cylinder-track {
+    width: 40px;
+    height: 120px;
+    background: #f3f4f6;
+    border-radius: 6px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-end;
+}
+
+.cmp-vs-cylinder-fill {
+    width: 100%;
+    height: 0%;
+    border-radius: 6px 6px 0 0;
+    transition: height 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[data-brand="hawaa"] .cmp-vs-cylinder-fill {
+    background: linear-gradient(to top, #0891b2, #0ea5e9);
+}
+
+[data-brand="rival"] .cmp-vs-cylinder-fill {
+    background: #d1d5db;
+}
+
+.cmp-vs-cylinder-pct {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+[data-brand="hawaa"] .cmp-vs-cylinder-pct {
+    color: #0891b2;
+}
+
+[data-brand="rival"] .cmp-vs-cylinder-pct {
+    color: #9ca3af;
+}
+
+.cmp-vs-cylinder-val {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 400;
+    color: #6b7280;
+}
+
+@media (min-width: 640px) {
+    .cmp-vs-cylinder-track {
+        width: 52px;
+        height: 140px;
+    }
+
+    .cmp-vs-cylinder-pair {
+        gap: 48px;
+    }
+}
+
+/* Cost Bars */
+.cmp-vs-bar-pair {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 8px 0;
+}
+
+.cmp-vs-bar {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.cmp-vs-bar-label {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+[data-brand="hawaa"] .cmp-vs-bar-label {
+    color: #0891b2;
+}
+
+[data-brand="rival"] .cmp-vs-bar-label {
+    color: #9ca3af;
+}
+
+.cmp-vs-bar-track {
+    display: flex;
+    height: 28px;
+    border-radius: 6px;
+    overflow: hidden;
+    background: #f9fafb;
+}
+
+.cmp-vs-bar-seg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+    min-width: 0;
+    overflow: hidden;
+}
+
+.cmp-vs-bar-seg span {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.6rem;
+    font-weight: 600;
+    color: #ffffff;
+    white-space: nowrap;
+    padding: 0 4px;
+}
+
+/* Hawaa bar segments */
+[data-brand="hawaa"] .cmp-vs-bar-seg--device {
+    background: #0891b2;
+}
+
+[data-brand="hawaa"] .cmp-vs-bar-seg--filter {
+    background: #22d3ee;
+}
+
+/* Rival bar segments */
+[data-brand="rival"] .cmp-vs-bar-seg--device {
+    background: #9ca3af;
+}
+
+[data-brand="rival"] .cmp-vs-bar-seg--filter {
+    background: #d1d5db;
+}
+
+[data-brand="rival"] .cmp-vs-bar-seg--filter span {
+    color: #6b7280;
+}
+
+.cmp-vs-bar-total {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-align: right;
+}
+
+[data-brand="hawaa"] .cmp-vs-bar-total {
+    color: #0891b2;
+}
+
+[data-brand="rival"] .cmp-vs-bar-total {
+    color: #9ca3af;
+}
+
+.cmp-vs-bar-legend {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    padding-top: 8px;
+}
+
+.cmp-vs-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.65rem;
+    color: #9ca3af;
+}
+
+.cmp-vs-legend-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+}
+
+.cmp-vs-legend-dot--device {
+    background: #0891b2;
+}
+
+.cmp-vs-legend-dot--filter {
+    background: #22d3ee;
+}
+
+/* ---- VERDICT STRIP ---- */
+.cmp-vs-verdict {
+    margin-top: 40px;
+    background: #0f172a;
+    padding: 40px 16px;
+    text-align: center;
+}
+
+.cmp-vs-verdict-inner {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.cmp-vs-verdict-headline {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.3;
+    margin-bottom: 12px;
+}
+
+.cmp-vs-verdict-sub {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.55);
+    line-height: 1.5;
+    margin-bottom: 28px;
+}
+
+.cmp-vs-verdict .cmp-cta-buy {
+    font-size: 0.9rem;
+}
+
+@media (min-width: 640px) {
+    .cmp-vs-verdict {
+        padding: 50px 24px;
+    }
+
+    .cmp-vs-verdict-headline {
+        font-size: 1.6rem;
+    }
+}
+
+@media (min-width: 768px) {
+    .cmp-vs-verdict {
+        padding: 60px 24px;
+    }
+
+    .cmp-vs-verdict-headline {
+        font-size: 1.8rem;
+    }
+
+    .cmp-vs-verdict-sub {
+        font-size: 0.95rem;
+    }
+}
+
+/* ---- VS SECTION RESPONSIVE ---- */
+@media (min-width: 640px) {
+    .cmp-vs-metric {
+        font-size: 0.85rem;
+    }
+
+    .cmp-vs-val {
+        font-size: 0.85rem;
+    }
+
+    .cmp-vs-row--total .cmp-vs-val--win,
+    .cmp-vs-row--total .cmp-vs-val--lose {
+        font-size: 0.9rem;
+    }
+
+    .cmp-vs-save-text {
+        font-size: 0.9rem;
+    }
+}
+
+@media (min-width: 768px) {
+    .cmp-vs-card {
+        max-width: 780px;
+    }
+
+    .cmp-vs-headers {
+        top: 64px;
+    }
+
+    .cmp-vs-header-hawaa,
+    .cmp-vs-header-rival {
+        font-size: 0.8rem;
+        padding: 12px 12px;
+        border-radius: 10px;
+    }
+
+    .cmp-vs-row {
+        padding: 12px 0;
+    }
+
+    .cmp-vs-metric {
+        font-size: 0.9rem;
+    }
+
+    .cmp-vs-val {
+        font-size: 0.9rem;
+    }
+}
+
+/* ========================================
    LAB REPORTS SECTION — CAROUSEL CARDS
    With expandable details overlay
 ======================================== */
