@@ -124,11 +124,11 @@
         }, 200);
     });
 
-    // Manifesto reveal animation
-    var manifesto = document.getElementById('cmp-hero-manifesto');
-    if (manifesto) {
+    // Headline blur reveal animation
+    var headline = document.getElementById('cmp-hero-headline');
+    if (headline) {
         setTimeout(function () {
-            manifesto.classList.add('is-revealed');
+            headline.classList.add('is-revealed');
         }, 1400);
     }
 })();
