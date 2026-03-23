@@ -197,7 +197,7 @@
             <p class="cmp-vs-subtext">Every number. No marketing spin.</p>
         </div>
 
-        <div class="cmp-vs-card">
+        <div class="cmp-vs-table">
             <!-- Sticky column headers -->
             <div class="cmp-vs-headers">
                 <div class="cmp-vs-header-metric"></div>
@@ -208,7 +208,6 @@
             <!-- GROUP 1: PRICE -->
             <div class="cmp-vs-group">
                 <div class="cmp-vs-group-label">PRICE</div>
-
                 <div class="cmp-vs-row">
                     <div class="cmp-vs-metric">Device Price</div>
                     <div class="cmp-vs-val cmp-vs-val--hawaa cmp-vs-val--lose">&#8377;6,000</div>
@@ -224,7 +223,6 @@
             <!-- GROUP 2: PERFORMANCE -->
             <div class="cmp-vs-group">
                 <div class="cmp-vs-group-label">PERFORMANCE</div>
-
                 <div class="cmp-vs-row">
                     <div class="cmp-vs-metric">CADR</div>
                     <div class="cmp-vs-val cmp-vs-val--hawaa cmp-vs-val--win">250 m&#179;/hr</div>
@@ -260,7 +258,6 @@
             <!-- GROUP 3: SMART CONTROL -->
             <div class="cmp-vs-group">
                 <div class="cmp-vs-group-label">SMART CONTROL</div>
-
                 <div class="cmp-vs-row">
                     <div class="cmp-vs-metric">Smart Control</div>
                     <div class="cmp-vs-val cmp-vs-val--hawaa cmp-vs-val--win">Google Home + Alexa</div>
@@ -287,7 +284,6 @@
             <div class="cmp-vs-group">
                 <div class="cmp-vs-group-label">5-YEAR OWNERSHIP COST</div>
                 <div class="cmp-vs-group-footnote">Based on 8 filter replacements, avg 10&ndash;12 hrs/day usage</div>
-
                 <div class="cmp-vs-row">
                     <div class="cmp-vs-metric">Device</div>
                     <div class="cmp-vs-val cmp-vs-val--hawaa cmp-vs-val--lose">&#8377;6,000</div>
@@ -303,30 +299,34 @@
                     <div class="cmp-vs-val cmp-vs-val--hawaa cmp-vs-val--win">&#8377;13,992</div>
                     <div class="cmp-vs-val cmp-vs-val--rival cmp-vs-val--lose">&#8377;18,430</div>
                 </div>
-
-                <!-- You save row -->
                 <div class="cmp-vs-row cmp-vs-row--save">
                     <div class="cmp-vs-save-text">You save <strong>&#8377;5,230</strong> over 5 years with Hawaa Edge</div>
                 </div>
             </div>
-        </div>
 
-        <!-- Verdict -->
-        <div class="cmp-vs-verdict">
-            <div class="cmp-vs-verdict-inner">
-                <span class="cmp-vs-verdict-label">VERDICT</span>
-                <p class="cmp-vs-verdict-body">The Honeywell V1 is a real product that works. For a compact room under 200 sq ft, it is adequate. But its 152 m&#179;/hr CADR was designed for 235 sq ft &mdash; which means most Indian bedrooms are already outside its effective range from day one.</p>
-
-                <div class="cmp-vs-verdict-hawaa">
-                    <span class="cmp-vs-verdict-brand">HAWAA</span>
-                    <span class="cmp-vs-verdict-tagline">Hawaa.in &mdash; Breathe Better</span>
-                    <p class="cmp-vs-verdict-pitch">In peak pollution months, when Delhi or Mumbai AQI crosses 300, that 8-minute difference in clean air delivery is not a stat on a page. It is how long your family breathes unfiltered air while the machine catches up.</p>
-                    <p class="cmp-vs-verdict-closer">The Edge costs &#8377;1,170 more today. It wins on performance, wins on five-year cost, wins on smart control. The V1's only advantage is the sticker price &mdash; and it loses even that by year one.</p>
-                    <a href="buy.html" class="cmp-cta-buy">Buy Hawaa Edge &mdash; &#8377;6,000</a>
-                </div>
+            <!-- Verdict bar -->
+            <div class="cmp-vs-verdict-bar">
+                <span class="cmp-vs-verdict-line">&#8377;1,170 more today. Cheaper by year one.</span>
+                <button class="cmp-vs-verdict-btn" id="cmp-vs-verdict-open">Read full verdict
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+                </button>
             </div>
         </div>
     </section>
+
+    <!-- Verdict Overlay (shared across comparisons) -->
+    <div class="cmp-vs-verdict-overlay" id="cmp-vs-verdict-overlay">
+        <div class="cmp-vs-verdict-popup">
+            <button class="cmp-vs-verdict-close" id="cmp-vs-verdict-close" aria-label="Close">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+            </button>
+            <div class="cmp-vs-verdict-popup-body" id="cmp-vs-verdict-body">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+    </div>
 
     <!-- ==================== LAB REPORTS ==================== -->
     <section class="cmp-lab-reports" id="lab-reports">
