@@ -415,12 +415,12 @@
     }
 }
 
-/* Group labels */
-.cmp-vs-group {
-    padding: 0;
+/* Group label rows — 3-column grid so Hawaa bg continues */
+.cmp-vs-row--label {
+    align-items: end;
 }
 
-.cmp-vs-group-label {
+.cmp-vs-row--label .cmp-vs-group-label {
     font-family: 'Outfit', sans-serif;
     font-size: 0.65rem;
     font-weight: 600;
@@ -430,13 +430,18 @@
     padding: 20px 0 8px;
 }
 
-.cmp-vs-group-footnote {
+.cmp-vs-row--footnote .cmp-vs-group-footnote {
     font-family: 'Outfit', sans-serif;
     font-size: 0.65rem;
     font-weight: 400;
     color: #9ca3af;
     padding: 0 0 8px;
     font-style: italic;
+}
+
+/* Spacer cell — keeps dark bg continuous, no content */
+.cmp-vs-val--spacer {
+    padding: 0;
 }
 
 /* Metric Rows — 3-column grid, no dividers */
