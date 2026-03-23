@@ -5,6 +5,24 @@
 (function () {
     'use strict';
 
+    // ---- HEADER SCROLL TRANSITION ----
+    var header = document.getElementById('header');
+    var heroEl = document.querySelector('.cmp-hero');
+
+    function handleHeaderScroll() {
+        if (!header || !heroEl) return;
+        var heroBottom = heroEl.offsetHeight;
+        if (window.scrollY > heroBottom - 80) {
+            header.classList.add('scrolled');
+        } else {
+            header.classList.remove('scrolled');
+        }
+    }
+
+    window.addEventListener('scroll', handleHeaderScroll, { passive: true });
+    handleHeaderScroll();
+
+    // ---- PARTICLE CANVAS ----
     var canvas = document.getElementById('cmp-hero-particles');
     if (!canvas) return;
 
@@ -13,7 +31,6 @@
     var particles = [];
     var PARTICLE_COUNT = 80;
     var glows = [];
-    var raf;
 
     function resize() {
         var rect = canvas.parentElement.getBoundingClientRect();
@@ -91,7 +108,7 @@
         }
 
         time++;
-        raf = requestAnimationFrame(draw);
+        requestAnimationFrame(draw);
     }
 
     resize();
