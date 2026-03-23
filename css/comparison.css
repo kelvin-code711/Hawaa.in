@@ -308,8 +308,8 @@
 }
 
 /* ========================================
-   HAWAA vs HONEYWELL — COMPARISON CARD
-   Mobile-first 3-column table layout
+   HAWAA vs HONEYWELL — COMPARISON TABLE
+   Mobile-first 3-column flat layout
 ======================================== */
 .cmp-vs {
     padding: 60px 0 0;
@@ -339,24 +339,17 @@
     margin-bottom: 36px;
 }
 
-/* Comparison Card Container */
-.cmp-vs-card {
+/* Table Container */
+.cmp-vs-table {
     max-width: 720px;
     margin: 0 auto;
     padding: 0 16px;
-    background: #ffffff;
-    border-radius: 16px;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.06);
-    border: 1px solid #e5e7eb;
-    overflow: hidden;
 }
 
 @media (min-width: 768px) {
-    .cmp-vs-card {
+    .cmp-vs-table {
         max-width: 780px;
         padding: 0 24px;
-        border-radius: 20px;
-        box-shadow: 0 8px 40px rgba(0, 0, 0, 0.08);
     }
 }
 
@@ -370,18 +363,12 @@
     z-index: 10;
     background: #ffffff;
     border-bottom: 2px solid #e5e7eb;
-    padding: 14px 0;
-    margin: 0 -16px;
-    padding-left: 16px;
-    padding-right: 16px;
+    padding: 12px 0;
 }
 
 @media (min-width: 768px) {
     .cmp-vs-headers {
         top: 64px;
-        margin: 0 -24px;
-        padding-left: 24px;
-        padding-right: 24px;
     }
 }
 
@@ -423,7 +410,7 @@
 
 /* Group labels */
 .cmp-vs-group {
-    padding: 8px 0 0;
+    padding: 0;
 }
 
 .cmp-vs-group-label {
@@ -582,11 +569,11 @@
     font-size: 0.85rem;
 }
 
-/* "You save" row — full-width accent */
+/* "You save" row */
 .cmp-vs-row--save {
     display: block;
-    padding: 14px 16px;
-    margin: 4px 0 16px;
+    padding: 12px 16px;
+    margin-top: 4px;
     background: linear-gradient(135deg, rgba(14, 165, 233, 0.08) 0%, rgba(8, 145, 178, 0.08) 100%);
     border: 1px solid rgba(14, 165, 233, 0.2);
     border-radius: 10px;
@@ -606,118 +593,208 @@
     color: #0e7490;
 }
 
-/* ---- VERDICT ---- */
-.cmp-vs-verdict {
-    margin-top: 40px;
-    background: #0f172a;
-    padding: 40px 16px;
+/* ---- VERDICT BAR (inline, compact) ---- */
+.cmp-vs-verdict-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 0;
+    border-top: 2px solid #e5e7eb;
+    margin-top: 8px;
 }
 
-.cmp-vs-verdict-inner {
-    max-width: 640px;
-    margin: 0 auto;
-}
-
-.cmp-vs-verdict-label {
-    display: block;
+.cmp-vs-verdict-line {
     font-family: 'Outfit', sans-serif;
-    font-size: 0.65rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #111827;
+    line-height: 1.35;
+}
+
+.cmp-vs-verdict-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: none;
+    border: none;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #0891b2;
+    cursor: pointer;
+    white-space: nowrap;
+    padding: 0;
+    transition: color 0.2s ease;
+}
+
+.cmp-vs-verdict-btn:hover {
+    color: #0e7490;
+}
+
+.cmp-vs-verdict-btn svg {
+    width: 14px;
+    height: 14px;
+    transition: transform 0.2s ease;
+}
+
+.cmp-vs-verdict-btn:hover svg {
+    transform: translateX(2px);
+}
+
+/* ---- VERDICT POPUP OVERLAY ---- */
+.cmp-vs-verdict-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: none;
+    align-items: flex-end;
+    justify-content: center;
+    z-index: 1000;
+    padding: 0;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.cmp-vs-verdict-overlay.active {
+    display: flex;
+    opacity: 1;
+}
+
+@media (min-width: 768px) {
+    .cmp-vs-verdict-overlay {
+        align-items: center;
+        padding: 20px;
+    }
+}
+
+.cmp-vs-verdict-popup {
+    background: #0f172a;
+    width: 100%;
+    max-width: 560px;
+    max-height: 85vh;
+    overflow-y: auto;
+    padding: 32px 20px;
+    position: relative;
+    border-radius: 20px 20px 0 0;
+    transform: translateY(20px);
+    transition: transform 0.3s ease;
+}
+
+.cmp-vs-verdict-overlay.active .cmp-vs-verdict-popup {
+    transform: translateY(0);
+}
+
+@media (min-width: 768px) {
+    .cmp-vs-verdict-popup {
+        border-radius: 20px;
+        padding: 36px 32px;
+    }
+}
+
+.cmp-vs-verdict-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 36px;
+    height: 36px;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s ease;
+    z-index: 5;
+}
+
+.cmp-vs-verdict-close:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.cmp-vs-verdict-close svg {
+    width: 18px;
+    height: 18px;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+/* Popup content */
+.cmp-vs-verdict-popup-body .cmp-vs-popup-label {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.6rem;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.2em;
-    color: rgba(255, 255, 255, 0.35);
+    color: rgba(255, 255, 255, 0.3);
     margin-bottom: 16px;
 }
 
-.cmp-vs-verdict-body {
+.cmp-vs-verdict-popup-body .cmp-vs-popup-context {
     font-family: 'Outfit', sans-serif;
-    font-size: 0.9rem;
+    font-size: 0.88rem;
     font-weight: 400;
     color: rgba(255, 255, 255, 0.55);
     line-height: 1.7;
-    margin-bottom: 32px;
+    margin-bottom: 24px;
 }
 
-/* Hawaa verdict card */
-.cmp-vs-verdict-hawaa {
+.cmp-vs-verdict-popup-body .cmp-vs-popup-hawaa {
     background: linear-gradient(135deg, #164e63 0%, #0c4a6e 100%);
     border: 1px solid rgba(34, 211, 238, 0.15);
-    border-radius: 14px;
-    padding: 28px 20px;
+    border-radius: 12px;
+    padding: 24px 18px;
+    margin-bottom: 0;
 }
 
-.cmp-vs-verdict-brand {
-    display: block;
+.cmp-vs-popup-hawaa .cmp-vs-popup-brand {
     font-family: 'Outfit', sans-serif;
     font-size: 0.6rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.2em;
     color: #22d3ee;
-    margin-bottom: 4px;
+    margin-bottom: 2px;
 }
 
-.cmp-vs-verdict-tagline {
-    display: block;
+.cmp-vs-popup-hawaa .cmp-vs-popup-tagline {
     font-family: 'Outfit', sans-serif;
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     font-weight: 400;
-    color: rgba(255, 255, 255, 0.4);
-    margin-bottom: 20px;
+    color: rgba(255, 255, 255, 0.35);
+    margin-bottom: 18px;
 }
 
-.cmp-vs-verdict-pitch {
+.cmp-vs-popup-hawaa .cmp-vs-popup-pitch {
     font-family: 'Outfit', sans-serif;
-    font-size: 0.9rem;
+    font-size: 0.88rem;
     font-weight: 400;
     color: rgba(255, 255, 255, 0.75);
     line-height: 1.7;
-    margin-bottom: 16px;
+    margin-bottom: 14px;
 }
 
-.cmp-vs-verdict-closer {
+.cmp-vs-popup-hawaa .cmp-vs-popup-closer {
     font-family: 'Outfit', sans-serif;
-    font-size: 0.95rem;
+    font-size: 0.92rem;
     font-weight: 500;
     color: #ffffff;
     line-height: 1.6;
-    margin-bottom: 28px;
+    margin-bottom: 24px;
 }
 
-.cmp-vs-verdict-hawaa .cmp-cta-buy {
-    font-size: 0.9rem;
+.cmp-vs-popup-hawaa .cmp-cta-buy {
+    font-size: 0.85rem;
 }
 
 @media (min-width: 640px) {
-    .cmp-vs-verdict {
-        padding: 50px 24px;
-    }
-
-    .cmp-vs-verdict-body {
-        font-size: 0.95rem;
-    }
-
-    .cmp-vs-verdict-hawaa {
-        padding: 32px 28px;
-    }
-
-    .cmp-vs-verdict-pitch {
-        font-size: 0.95rem;
-    }
-
-    .cmp-vs-verdict-closer {
-        font-size: 1rem;
-    }
-}
-
-@media (min-width: 768px) {
-    .cmp-vs-verdict {
-        padding: 60px 24px;
-    }
-
-    .cmp-vs-verdict-hawaa {
-        padding: 36px 32px;
-        border-radius: 16px;
+    .cmp-vs-popup-hawaa {
+        padding: 28px 24px;
     }
 }
 
@@ -739,13 +816,13 @@
     .cmp-vs-save-text {
         font-size: 0.9rem;
     }
+
+    .cmp-vs-verdict-line {
+        font-size: 0.88rem;
+    }
 }
 
 @media (min-width: 768px) {
-    .cmp-vs-row {
-        /* no extra padding needed, already in card */
-    }
-
     .cmp-vs-metric {
         font-size: 0.9rem;
     }
