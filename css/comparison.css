@@ -538,7 +538,7 @@
 /* "You save" row */
 .cmp-vs-row--save {
     display: block;
-    padding: 12px 16px;
+    padding: 12px 0;
     margin-top: 12px;
     background: linear-gradient(135deg, rgba(14, 165, 233, 0.08) 0%, rgba(8, 145, 178, 0.08) 100%);
     border: 1px solid rgba(14, 165, 233, 0.2);
