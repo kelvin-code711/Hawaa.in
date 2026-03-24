@@ -45,6 +45,12 @@
             context: 'The Core 300 earned its global reputation honestly. But it was engineered for Western room sizes. Its 220 sq ft coverage leaves a standard Indian bedroom \u2014 typically 250 to 300 sq ft \u2014 outside its rated zone from day one.',
             pitch: 'The Edge costs \u20B93,000 less, covers 80 sq ft more, uses a BLDC motor, and its filters cost \u20B92,001 less every single replacement. Over five years, you save \u20B919,008.',
             closer: 'The Levoit\u2019s only advantage is 4 dB lower sleep-mode noise. Everything else \u2014 CADR, coverage, price, filter cost, smart control \u2014 goes to the Edge. And \u20B919,008 buys a lot of silence.'
+        },
+        'levoit-mini': {
+            title: 'Hawaa Edge vs Levoit Core Mini',
+            context: 'The Core Mini costs \u20B91,000 less. That is where its advantages end. Its 100 m\u00B3/hr CADR is built for personal spaces \u2014 a desk, a compact nursery, a reading corner. Placed in a standard Indian bedroom, it is not underpowered like a slightly smaller engine is underpowered \u2014 it is simply a different product doing a different job.',
+            pitch: 'For \u20B91,000 more, the Edge delivers 2.5\u00D7 the CADR, smart home integration, and a lower five-year cost. The Mini\u2019s filters cost double, and you still end up paying \u20B97,000 more over five years.',
+            closer: 'The Core Mini is a fine personal-space purifier. But if you need to clean an actual room, the Edge is the only real option here \u2014 and it costs less to own.'
         }
     };
 
