@@ -33,6 +33,12 @@
             context: 'Same CADR. Lower price. BLDC motor. Built-in smart control. The V2\u2019s only edge is a larger coverage claim built on a looser standard \u2014 it uses 2 ACH; the Edge is rated at 2.5 ACH, the more conservative and accurate measure.',
             pitch: 'It costs \u20B91,299 more upfront, runs louder, and its filters cost nearly 2.5\u00D7 more every replacement. Over five years, you pay \u20B913,139 extra for the same airflow.',
             closer: 'The Edge matches the V2 on CADR, beats it on price, motor, noise, and smart features \u2014 and saves you \u20B913,139 over five years. There is no scenario where the V2 is a better deal.'
+        },
+        philips: {
+            title: 'Hawaa Edge vs Philips AC0920',
+            context: 'Identical CADR. Identical coverage. Same filter grade. The specs aren\u2019t similar \u2014 they are the same. The Philips costs \u20B93,995 more upfront, runs louder, and locks smart features behind a proprietary app.',
+            pitch: 'The Edge works directly through Google Home and Alexa the moment you plug it in. No extra app to download, no account to create, no ecosystem to buy into. The Philips requires the Air+ App for any smart functionality.',
+            closer: 'Over five years, you save \u20B911,363 with the Edge \u2014 for air that is equally clean. Same CADR, same coverage, same H13 HEPA filtration. The only difference is how much you pay for it.'
         }
     };
 
