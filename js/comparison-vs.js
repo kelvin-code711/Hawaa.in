@@ -63,6 +63,12 @@
             context: 'The A231 is a well-reviewed product with a deserved reputation in Western markets. Its CADR nearly matches the Edge, and PlasmaWave is a genuine differentiator for odour and VOC control.',
             pitch: 'But in India it lacks official distribution \u2014 service support, filter sourcing, and warranty resolution depend on where you bought it. Coverage is 222 sq ft, smaller than the Edge\u2019s 300 sq ft.',
             closer: 'Same CADR. Larger coverage. Native smart home integration. \u20B928,000 cheaper over five years. The A231 is a strong product let down by its India availability and a price tag that is impossible to justify against the Edge.'
+        },
+        dyson: {
+            title: 'Hawaa Edge vs Dyson HushJet',
+            context: 'We\u2019ll say it plainly: the HushJet is an outstanding product. The 5-year filter, the 24 dB sleep mode, the precision engineering \u2014 Dyson has earned every rupee of its premium. If budget is not a constraint, it is a serious answer.',
+            pitch: 'Both machines deliver 250 m\u00B3/hr CADR. Both cover the same room. The air that comes out is equally clean. The question is what the \u20B923,900 difference means to you.',
+            closer: 'That gap is two years of electricity bills, a family vacation, or four Hawaa Edge units running in four rooms simultaneously. Same clean air. \u20B915,908 less over five years.'
         }
     };
 

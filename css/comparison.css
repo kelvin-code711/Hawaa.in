@@ -558,6 +558,20 @@
     color: #0e7490;
 }
 
+/* ---- FOOTNOTE ROW ---- */
+.cmp-vs-row--footnote {
+    display: block;
+    padding: 10px 0 0;
+}
+
+.cmp-vs-footnote {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.45);
+    line-height: 1.5;
+    font-style: italic;
+}
+
 /* ---- VERDICT BAR (stacked, button below) ---- */
 .cmp-vs-verdict-bar {
     padding: 16px 0 20px;
