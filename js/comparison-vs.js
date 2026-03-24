@@ -39,6 +39,12 @@
             context: 'Identical CADR. Identical coverage. Same filter grade. The specs aren\u2019t similar \u2014 they are the same. The Philips costs \u20B93,995 more upfront, runs louder, and locks smart features behind a proprietary app.',
             pitch: 'The Edge works directly through Google Home and Alexa the moment you plug it in. No extra app to download, no account to create, no ecosystem to buy into. The Philips requires the Air+ App for any smart functionality.',
             closer: 'Over five years, you save \u20B911,363 with the Edge \u2014 for air that is equally clean. Same CADR, same coverage, same H13 HEPA filtration. The only difference is how much you pay for it.'
+        },
+        levoit: {
+            title: 'Hawaa Edge vs Levoit Core 300',
+            context: 'The Core 300 earned its global reputation honestly. But it was engineered for Western room sizes. Its 220 sq ft coverage leaves a standard Indian bedroom \u2014 typically 250 to 300 sq ft \u2014 outside its rated zone from day one.',
+            pitch: 'The Edge costs \u20B93,000 less, covers 80 sq ft more, uses a BLDC motor, and its filters cost \u20B92,001 less every single replacement. Over five years, you save \u20B919,008.',
+            closer: 'The Levoit\u2019s only advantage is 4 dB lower sleep-mode noise. Everything else \u2014 CADR, coverage, price, filter cost, smart control \u2014 goes to the Edge. And \u20B919,008 buys a lot of silence.'
         }
     };
 
