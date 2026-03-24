@@ -51,6 +51,12 @@
             context: 'The Core Mini costs \u20B91,000 less. That is where its advantages end. Its 100 m\u00B3/hr CADR is built for personal spaces \u2014 a desk, a compact nursery, a reading corner. Placed in a standard Indian bedroom, it is not underpowered like a slightly smaller engine is underpowered \u2014 it is simply a different product doing a different job.',
             pitch: 'For \u20B91,000 more, the Edge delivers 2.5\u00D7 the CADR, smart home integration, and a lower five-year cost. The Mini\u2019s filters cost double, and you still end up paying \u20B97,000 more over five years.',
             closer: 'The Core Mini is a fine personal-space purifier. But if you need to clean an actual room, the Edge is the only real option here \u2014 and it costs less to own.'
+        },
+        qubo: {
+            title: 'Hawaa Edge vs Qubo Q200',
+            context: 'The Q200 costs 2.2\u00D7 more to deliver 40% less cleaning power. Both have BLDC motors. Both support voice control. The Edge does it without asking you to install another app.',
+            pitch: 'If clean air per rupee is the measure, the Edge wins by too wide a margin to ignore. You get 67% more CADR, 100 sq ft more coverage, and Google Home integration out of the box \u2014 all for less than half the price.',
+            closer: 'Over five years, you save \u20B911,718 with the Edge. The Q200 is not a bad product \u2014 it is just hard to justify when the Edge exists at this price.'
         }
     };
 
