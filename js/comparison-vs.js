@@ -57,6 +57,12 @@
             context: 'The Q200 costs 2.2\u00D7 more to deliver 40% less cleaning power. Both have BLDC motors. Both support voice control. The Edge does it without asking you to install another app.',
             pitch: 'If clean air per rupee is the measure, the Edge wins by too wide a margin to ignore. You get 67% more CADR, 100 sq ft more coverage, and Google Home integration out of the box \u2014 all for less than half the price.',
             closer: 'Over five years, you save \u20B911,718 with the Edge. The Q200 is not a bad product \u2014 it is just hard to justify when the Edge exists at this price.'
+        },
+        winix: {
+            title: 'Hawaa Edge vs Winix A231',
+            context: 'The A231 is a well-reviewed product with a deserved reputation in Western markets. Its CADR nearly matches the Edge, and PlasmaWave is a genuine differentiator for odour and VOC control.',
+            pitch: 'But in India it lacks official distribution \u2014 service support, filter sourcing, and warranty resolution depend on where you bought it. Coverage is 222 sq ft, smaller than the Edge\u2019s 300 sq ft.',
+            closer: 'Same CADR. Larger coverage. Native smart home integration. \u20B928,000 cheaper over five years. The A231 is a strong product let down by its India availability and a price tag that is impossible to justify against the Edge.'
         }
     };
 
