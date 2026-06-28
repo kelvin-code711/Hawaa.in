@@ -341,68 +341,94 @@
 }
 
 /* ========================================
-   COMPARISON CARD — Mila-style side-by-side
-   Single switchable card (Hawaa Edge vs one rival)
+   COMPARISON — Mila-style two-column layout
+   Left: fixed Hawaa Edge panel (light gray).
+   Right: rival product cards, scroll horizontally.
+   All columns share fixed row heights so every
+   label/value pair aligns across columns.
 ======================================== */
-.cmp-card-wrapper {
-    max-width: 760px;
+.cmp-compare-wrapper {
+    max-width: 860px;
     margin: 0 auto;
     padding: 0 16px;
 }
 
 @media (min-width: 768px) {
-    .cmp-card-wrapper {
+    .cmp-compare-wrapper {
         padding: 0 24px;
     }
 }
 
-.cmp-card {
-    background: #ffffff;
-    border: 1px solid rgba(0, 0, 0, 0.06);
+.cmp-compare {
+    display: flex;
+    gap: 10px;
+    align-items: stretch;
+}
+
+/* ---- Columns (shared by Hawaa + rivals) ---- */
+.cmp-col {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    padding: 18px 12px 22px;
+    box-sizing: border-box;
+}
+
+.cmp-col--hawaa {
+    flex: 0 0 47%;
+    max-width: 47%;
+    background: #f4f4f5;
     border-radius: 24px;
-    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.06);
-    padding: 20px 16px 24px;
-    outline: none;
+}
+
+.cmp-scroll {
+    flex: 1 1 0;
+    min-width: 0;
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.cmp-scroll::-webkit-scrollbar {
+    display: none;
+}
+
+.cmp-col--rival {
+    flex: 0 0 100%;
+    scroll-snap-align: start;
+    background: #ffffff;
 }
 
 @media (min-width: 768px) {
-    .cmp-card {
-        padding: 28px 32px 32px;
+    .cmp-col {
+        padding: 22px 16px 26px;
+    }
+
+    .cmp-col--hawaa {
+        flex: 0 0 300px;
+        max-width: 300px;
+    }
+
+    .cmp-col--rival {
+        flex: 0 0 300px;
     }
 }
 
-/* ---- Product headers ---- */
-.cmp-card-products {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    position: relative;
-}
-
-.cmp-card-products::after {
-    content: '';
-    position: absolute;
-    top: 40px;
-    bottom: 8px;
-    left: 50%;
-    width: 1px;
-    background: #e5e7eb;
-}
-
-.cmp-card-product {
+/* ---- Badge slot (keeps figures aligned) ---- */
+.cmp-col-badge-slot {
+    height: 30px;
     display: flex;
-    flex-direction: column;
     align-items: center;
-    text-align: center;
-    padding: 34px 4px 0;
-    position: relative;
+    justify-content: center;
+    margin-bottom: 10px;
 }
 
-.cmp-card-pick {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
+.cmp-col-badge {
     font-family: 'Outfit', sans-serif;
     font-size: 0.58rem;
     font-weight: 600;
@@ -410,242 +436,181 @@
     letter-spacing: 0.12em;
     color: #ffffff;
     background: #0f172a;
-    padding: 5px 12px;
+    padding: 5px 13px;
     border-radius: 9999px;
     white-space: nowrap;
 }
 
-.cmp-card-figure {
-    width: 100%;
-    height: 130px;
+/* ---- Product image / silhouette ---- */
+.cmp-col-figure {
+    height: 140px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 12px;
+    margin-bottom: 14px;
 }
 
-.cmp-card-figure img {
+.cmp-col-figure img {
     max-width: 100%;
     max-height: 100%;
     object-fit: contain;
 }
 
-.cmp-card-figure--rival {
+.cmp-col-figure--rival {
     color: #cbd5e1;
 }
 
-.cmp-card-figure--rival svg {
+.cmp-col-figure--rival svg {
     width: auto;
-    height: 116px;
+    height: 124px;
 }
 
-.cmp-card-brand {
+@media (min-width: 768px) {
+    .cmp-col-figure {
+        height: 156px;
+    }
+
+    .cmp-col-figure--rival svg {
+        height: 138px;
+    }
+}
+
+/* ---- Product name ---- */
+.cmp-col-head {
+    min-height: 58px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-bottom: 6px;
+}
+
+.cmp-col-brand {
     font-family: 'Outfit', sans-serif;
-    font-size: 1.05rem;
-    font-weight: 600;
+    font-size: 1.15rem;
+    font-weight: 700;
     color: #111827;
     line-height: 1.2;
 }
 
-.cmp-card-model {
+.cmp-col-model {
     font-family: 'Outfit', sans-serif;
-    font-size: 0.8rem;
+    font-size: 0.82rem;
     font-weight: 400;
     color: #6b7280;
     margin-top: 2px;
 }
 
 @media (min-width: 768px) {
-    .cmp-card-figure {
-        height: 150px;
-    }
-
-    .cmp-card-figure--rival svg {
-        height: 134px;
-    }
-
-    .cmp-card-brand {
-        font-size: 1.2rem;
-    }
-
-    .cmp-card-model {
-        font-size: 0.85rem;
+    .cmp-col-brand {
+        font-size: 1.3rem;
     }
 }
 
-/* ---- Spec list ---- */
-.cmp-card-specs {
-    margin-top: 18px;
-}
-
-.cmp-card-group-label {
+/* ---- Group heading (repeated per column, aligned) ---- */
+.cmp-grouphead {
+    height: 38px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
     font-family: 'Outfit', sans-serif;
-    font-size: 0.62rem;
+    font-size: 0.6rem;
     font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.15em;
+    letter-spacing: 0.14em;
     color: #0891b2;
-    text-align: center;
-    padding: 16px 0 8px;
+    padding-bottom: 8px;
     margin-bottom: 4px;
-    border-bottom: 1px solid #f3f4f6;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
 }
 
-.cmp-card-group-label:first-child {
-    padding-top: 4px;
-}
-
-.cmp-card-spec {
-    display: grid;
-    grid-template-columns: 1fr 1.1fr 1fr;
+/* ---- Metric cell: label above, value below (centered) ---- */
+.cmp-cell {
+    height: 66px;
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 8px;
-    padding: 8px 0;
+    justify-content: center;
+    gap: 4px;
+    padding: 6px 4px;
 }
 
-.cmp-card-spec-label {
+.cmp-cell-label {
     font-family: 'Outfit', sans-serif;
-    font-size: 0.72rem;
+    font-size: 0.74rem;
     font-weight: 500;
     color: #6b7280;
-    text-align: center;
-    line-height: 1.3;
+    line-height: 1.25;
 }
 
-.cmp-card-spec-sub {
+.cmp-cell-sub {
     display: block;
-    font-size: 0.62rem;
+    font-size: 0.6rem;
     font-weight: 400;
     color: #9ca3af;
 }
 
-.cmp-card-spec-val {
+.cmp-cell-val {
     font-family: 'Outfit', sans-serif;
-    font-size: 0.82rem;
-    font-weight: 500;
-    line-height: 1.3;
+    font-size: 0.9rem;
+    font-weight: 700;
+    line-height: 1.25;
+    color: #111827;
 }
 
-.cmp-card-spec-val--hawaa {
-    text-align: left;
+/* value states */
+.cmp-cell-val--hawaa {
+    color: #0f172a;
 }
 
-.cmp-card-spec-val--rival {
-    text-align: right;
-}
-
-/* win / neutral / lose colouring */
-.cmp-card-spec-val--hawaa.cmp-card-spec-val--win {
+.cmp-cell-val--win {
     color: #0891b2;
-    font-weight: 700;
 }
 
-.cmp-card-spec-val--hawaa.cmp-card-spec-val--neutral {
-    color: #111827;
-}
-
-.cmp-card-spec-val--hawaa.cmp-card-spec-val--lose {
-    color: #9ca3af;
-}
-
-.cmp-card-spec-val--rival.cmp-card-spec-val--win {
-    color: #111827;
-    font-weight: 700;
-}
-
-.cmp-card-spec-val--rival.cmp-card-spec-val--neutral {
+.cmp-cell-val--neutral {
     color: #374151;
 }
 
-.cmp-card-spec-val--rival.cmp-card-spec-val--lose {
+.cmp-cell-val--lose {
     color: #9ca3af;
+    font-weight: 600;
 }
 
-/* Total row */
-.cmp-card-spec--total {
-    margin-top: 4px;
-    padding-top: 12px;
-    border-top: 1px solid #e5e7eb;
+/* total row emphasis */
+.cmp-cell--total {
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+    margin-top: 2px;
 }
 
-.cmp-card-spec--total .cmp-card-spec-label {
-    color: #111827;
-    font-weight: 700;
-}
-
-.cmp-card-spec--total .cmp-card-spec-val {
-    font-size: 0.92rem;
+.cmp-cell--total .cmp-cell-val {
+    font-size: 1rem;
 }
 
 @media (min-width: 768px) {
-    .cmp-card-spec-label {
-        font-size: 0.8rem;
+    .cmp-cell-label {
+        font-size: 0.78rem;
     }
 
-    .cmp-card-spec-val {
-        font-size: 0.92rem;
+    .cmp-cell-val {
+        font-size: 0.95rem;
     }
 
-    .cmp-card-spec--total .cmp-card-spec-val {
-        font-size: 1rem;
-    }
-}
-
-/* ---- Savings highlight ---- */
-.cmp-card-save {
-    margin-top: 18px;
-    padding: 14px 16px;
-    text-align: center;
-    background: linear-gradient(135deg, rgba(14, 165, 233, 0.08) 0%, rgba(8, 145, 178, 0.08) 100%);
-    border: 1px solid rgba(14, 165, 233, 0.2);
-    border-radius: 12px;
-    font-family: 'Outfit', sans-serif;
-    font-size: 0.88rem;
-    font-weight: 500;
-    color: #0891b2;
-}
-
-.cmp-card-save strong {
-    font-weight: 700;
-    color: #0e7490;
-}
-
-/* ---- Footnote ---- */
-.cmp-card-footnote {
-    margin: 14px 0 0;
-    font-family: 'Outfit', sans-serif;
-    font-size: 0.7rem;
-    font-style: italic;
-    color: #9ca3af;
-    line-height: 1.5;
-}
-
-/* ---- Verdict (inside card) ---- */
-.cmp-card-verdict {
-    margin-top: 18px;
-    padding-top: 18px;
-    border-top: 1px solid #f3f4f6;
-    text-align: center;
-}
-
-@media (min-width: 640px) {
-    .cmp-card-verdict .cmp-vs-verdict-line {
-        font-size: 0.88rem;
+    .cmp-cell--total .cmp-cell-val {
+        font-size: 1.05rem;
     }
 }
 
-/* ---- Competitor switcher ---- */
-.cmp-card-switcher {
+/* ---- Switcher (Mila-style arrows) ---- */
+.cmp-switcher {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 20px;
-    margin-top: 22px;
+    margin-top: 24px;
 }
 
-.cmp-card-arrow {
-    width: 44px;
-    height: 44px;
+.cmp-arrow {
+    width: 46px;
+    height: 46px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -657,26 +622,70 @@
     transition: all 0.2s ease;
 }
 
-.cmp-card-arrow:hover {
+.cmp-arrow:hover {
     background: #0f172a;
     border-color: #0f172a;
     color: #ffffff;
     transform: scale(1.05);
 }
 
-.cmp-card-arrow svg {
+.cmp-arrow svg {
     width: 20px;
     height: 20px;
 }
 
-.cmp-card-index {
+.cmp-index {
     font-family: 'Outfit', sans-serif;
-    font-size: 0.8rem;
+    font-size: 0.82rem;
     font-weight: 600;
     color: #6b7280;
-    min-width: 48px;
+    min-width: 50px;
     text-align: center;
     letter-spacing: 0.05em;
+}
+
+/* ---- Summary: savings + verdict ---- */
+.cmp-summary {
+    max-width: 600px;
+    margin: 26px auto 0;
+    text-align: center;
+}
+
+.cmp-save {
+    padding: 14px 18px;
+    background: linear-gradient(135deg, rgba(14, 165, 233, 0.08) 0%, rgba(8, 145, 178, 0.08) 100%);
+    border: 1px solid rgba(14, 165, 233, 0.2);
+    border-radius: 12px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #0891b2;
+}
+
+.cmp-save strong {
+    font-weight: 700;
+    color: #0e7490;
+}
+
+.cmp-footnote {
+    margin: 14px 0 0;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.7rem;
+    font-style: italic;
+    color: #9ca3af;
+    line-height: 1.5;
+}
+
+.cmp-verdict {
+    margin-top: 18px;
+    padding-top: 18px;
+    border-top: 1px solid #f3f4f6;
+}
+
+@media (min-width: 640px) {
+    .cmp-verdict .cmp-vs-verdict-line {
+        font-size: 0.88rem;
+    }
 }
 
 /* ---- VERDICT BAR (stacked, button below) ---- */
