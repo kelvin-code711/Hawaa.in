@@ -1,0 +1,116 @@
+/* ============================================================
+   landing.css — Premium "almond + navy" theme
+   SCOPED to the landing page only (body.page-landing).
+   Loaded AFTER styles.css so these rules win the cascade.
+   Other pages are intentionally untouched.
+   ============================================================ */
+
+.page-landing {
+    /* Brand palette (from approved direction) */
+    --bg:           #F7F2EA;   /* warm canvas (replaces pure white) */
+    --bg-tonal:     #EFE6DA;   /* subtle tonal section */
+    --surface:      #FFFFFF;   /* cards still white — pop on warm bg */
+    --navy:         #0D234A;   /* primary text / buttons / anchor sections */
+    --navy-hover:   #081A38;
+    --body-ink:     #2B3342;   /* body text (warm charcoal-navy) */
+    --hairline:     #CFC3B5;   /* warm border */
+}
+
+/* ---- 1. Warm canvas ----------------------------------------- */
+body.page-landing                { background: var(--bg); color: var(--body-ink); }
+
+.page-landing .trust-badges,
+.page-landing .aqi-section,
+.page-landing .feature-section,
+.page-landing .certification-section,
+.page-landing .blogs-section,
+.page-landing .newsletter-section { background: var(--bg); }
+
+.page-landing .faq-section,
+.page-landing .testimonials-section { background: var(--bg-tonal); }
+
+/* ---- 2. Navy "anchor" sections (the only dark blocks) -------- */
+.page-landing .reviews-section,
+.page-landing .footer {
+    background: linear-gradient(180deg, var(--navy) 0%, var(--navy-hover) 100%);
+}
+
+/* ---- 3. Kill the cyan filter strip -> navy ------------------- */
+.page-landing .filter-section        { background: var(--navy); }
+.page-landing .filter-section::before { background: rgba(255, 255, 255, 0.06); }
+.page-landing .filter-cta            { background: var(--surface); color: var(--navy); }
+.page-landing .filter-cta:hover      { box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25); }
+
+/* ---- 4. Sticky buy button: cyan -> clean white pill --------- */
+.page-landing .sticky-buy-btn {
+    background: var(--surface);
+    color: var(--navy);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
+}
+.page-landing .sticky-buy-btn:hover {
+    background: #ffffff;
+    border-color: #ffffff;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    transform: scale(1.02);
+}
+
+/* ---- 5. AQI "Check Air Impact" button -> navy --------------- */
+.page-landing .aqi-btn-glass        { background: var(--navy); }
+.page-landing .aqi-btn-glass:hover  { background: var(--navy-hover); }
+.page-landing .aqi-input:focus {
+    border-color: var(--navy);
+    box-shadow: 0 0 0 3px rgba(13, 35, 74, 0.12);
+}
+
+/* ---- 6. Headings -> brand navy ------------------------------ */
+.page-landing .trust-title,
+.page-landing .aqi-hook,
+.page-landing .feature-title,
+.page-landing .certification-title,
+.page-landing .certification-card-title,
+.page-landing .testimonials-title,
+.page-landing .blogs-title,
+.page-landing .faq-title { color: var(--navy); }
+
+/* ---- 7. Button system: one solid navy primary -------------- */
+/* Certification + "Read all blogs": were near-invisible ghosts */
+.page-landing .certification-btn {
+    background: var(--navy);
+    color: #ffffff;
+}
+.page-landing .certification-btn svg      { color: #ffffff; }
+.page-landing .certification-btn:hover    { background: var(--navy-hover); }
+
+.page-landing .blogs-read-all-btn {
+    background: var(--navy);
+    color: #ffffff;
+}
+.page-landing .blogs-read-all-btn:hover   { background: var(--navy-hover); color: #ffffff; }
+
+/* "Read all reviews" lives on the dark reviews section */
+.page-landing .reviews-cta {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.55);
+}
+.page-landing .reviews-cta:hover          { background: #ffffff; color: var(--navy); }
+
+/* Newsletter button: blue -> navy */
+.page-landing .newsletter-btn             { background: var(--navy); }
+.page-landing .newsletter-btn:hover       { background: var(--navy-hover); }
+.page-landing .newsletter-input:focus {
+    border-color: var(--navy);
+    box-shadow: 0 0 0 3px rgba(13, 35, 74, 0.12);
+}
+
+/* ---- 8. Warm hairlines on light surfaces ------------------- */
+.page-landing .aqi-input,
+.page-landing .faq-item   { border-color: var(--hairline); }
+
+/* ---- 9. Accessibility: visible keyboard focus -------------- */
+.page-landing a:focus-visible,
+.page-landing button:focus-visible,
+.page-landing input:focus-visible {
+    outline: 2px solid var(--navy);
+    outline-offset: 2px;
+}
