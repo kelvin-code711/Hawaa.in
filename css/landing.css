@@ -6,14 +6,15 @@
    ============================================================ */
 
 .page-landing {
-    /* Brand palette (from approved direction) */
-    --bg:           #F7F2EA;   /* warm canvas (replaces pure white) */
-    --bg-tonal:     #EFE6DA;   /* subtle tonal section */
-    --surface:      #FFFFFF;   /* cards still white — pop on warm bg */
+    /* Neutral palette — tied to the brand navy, NOT to the product colour
+       (future products may not be almond, so the site stays product-agnostic) */
+    --bg:           #F4F5F7;   /* soft neutral canvas (faintly cool grey) */
+    --bg-tonal:     #ECEEF1;   /* subtle tonal section */
+    --surface:      #FFFFFF;   /* cards */
     --navy:         #0D234A;   /* primary text / buttons / anchor sections */
     --navy-hover:   #081A38;
-    --body-ink:     #2B3342;   /* body text (warm charcoal-navy) */
-    --hairline:     #CFC3B5;   /* warm border */
+    --body-ink:     #2B3342;   /* body text */
+    --hairline:     #E3E5E9;   /* neutral hairline border */
 }
 
 /* ---- 1. Warm canvas ----------------------------------------- */
@@ -28,6 +29,10 @@ body.page-landing                { background: var(--bg); color: var(--body-ink)
 
 .page-landing .faq-section,
 .page-landing .testimonials-section { background: var(--bg-tonal); }
+
+/* AQI tool blends into the page — removes the white "panel on a colour" block */
+.page-landing .aqi-section  { background: var(--bg); }
+.page-landing .aqi-checker  { background: transparent; }
 
 /* ---- 2. Navy "anchor" sections (the only dark blocks) -------- */
 .page-landing .reviews-section,
