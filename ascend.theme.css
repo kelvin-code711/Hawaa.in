@@ -84,6 +84,7 @@
 .btn-icon{padding:12px;border-radius:var(--r-btn);border:1px solid var(--line);
   background:rgba(255,255,255,.5);color:var(--ink)}
 .btn-sm{padding:9px 15px;font-size:13px}
+.btn-block{width:100%;justify-content:center}  /* opt-in full-width; .btn stays inline by default */
 
 /* ---- CARDS -------------------------------------------------------------- */
 /* glass card — for the GRADIENT page (content shows through) */
