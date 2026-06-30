@@ -38,7 +38,7 @@
   --scrim:rgba(36,27,18,.55);
 
   /* feedback */
-  --ok:#4F7A52; --warn:#B07A2E; --error:#A24A3C; --star:#E2A93B;
+  --ok:#4F7A52; --warn:#B07A2E; --error:#A24A3C; --star:#E2A93B; --star-empty:#E3DBCB;
 
   /* type — set your real brand faces here */
   --font-display:"Fraunces",Georgia,serif;
