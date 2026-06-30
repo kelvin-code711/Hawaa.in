@@ -124,27 +124,26 @@
     <div class="sticky-buy-bar" id="sticky-buy-bar">
         <div class="sticky-buy-bar-content">
             <span class="sticky-product-name">Hawaa <span class="sticky-edge">EDGE</span></span>
-            <a href="buy.html" class="btn btn-primary btn-sm">Buy Now</a>
+            <a href="buy.html" class="sticky-buy-btn">Buy Now</a>
         </div>
     </div>
 
     <!-- Hero Section -->
     <section class="hero">
-        <!-- Background Video -->
-        <video
-            class="hero-video"
-            id="hero-video"
-            autoplay
-            muted
-            playsinline
-            loop
-            poster="public/images/hero-poster.webp"
-        >
-            <source src="public/videos/hero-video.webm" type="video/webm">
-        </video>
-
-        <div class="hero-resting-image" id="hero-resting"></div>
         <div class="hero-overlay"></div>
+
+        <!-- Centered product with a soft radial spotlight behind it, a drop shadow,
+             and a faint mirrored reflection beneath. Uses the existing transparent
+             product image (public/images/product.webp — a WebP with an alpha channel).
+             To swap in a different cutout, replace the two src refs below with your
+             transparent PNG/WebP. -->
+        <div class="hero-product">
+            <div class="hero-spotlight" aria-hidden="true"></div>
+            <img class="hero-product-img" src="public/images/product.webp"
+                 alt="Hawaa Edge air purifier" draggable="false">
+            <img class="hero-product-reflection" src="public/images/product.webp"
+                 alt="" aria-hidden="true" draggable="false">
+        </div>
 
         <div class="hero-title-container">
             <h1 class="hero-title">
@@ -154,10 +153,10 @@
 
         <div class="hero-bottom">
             <div class="cta-container">
-                <a href="buy.html" class="btn btn-primary btn-block">
+                <a href="buy.html" class="cta-btn cta-primary">
                     <span>Order Now</span>
                 </a>
-                <a href="edge.html" class="btn btn-outline on-dark btn-block">
+                <a href="edge.html" class="cta-btn cta-secondary">
                     <span>Explore Edge</span>
                 </a>
             </div>
@@ -276,7 +275,7 @@
             </div>
 
             <!-- Glassmorphism Button -->
-            <button class="btn btn-primary btn-block" id="check-aqi-btn">
+            <button class="aqi-btn-glass" id="check-aqi-btn">
                 Check Air Impact
             </button>
         </div>
@@ -405,7 +404,7 @@
                 </div>
                 <p class="filter-desc">Premium filtration at India's most affordable price point</p>
             </div>
-            <a href="buy.html" class="btn btn-secondary">Order Filter</a>
+            <a href="buy.html" class="filter-cta">Order Filter</a>
         </div>
     </section>
 
@@ -434,7 +433,7 @@
                         </button>
                     </div>
 
-                    <a href="comparison.html#lab-reports" class="btn btn-outline">
+                    <a href="comparison.html#lab-reports" class="certification-btn">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                         </svg>
@@ -458,7 +457,7 @@
                         </button>
                     </div>
 
-                    <a href="comparison.html" class="btn btn-outline">
+                    <a href="comparison.html" class="certification-btn">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
                         </svg>
@@ -745,7 +744,7 @@
                     <span class="dot" data-slide="2"></span>
                     <span class="dot" data-slide="3"></span>
                 </div>
-                <a href="reviews.html" class="btn btn-outline on-dark">Read all reviews</a>
+                <a href="reviews.html" class="reviews-cta">Read all reviews</a>
             </div>
         </div>
     </section>
@@ -824,7 +823,7 @@
                     <span class="dot" data-slide="2"></span>
                     <span class="dot" data-slide="3"></span>
                 </div>
-                <a href="blogs.html" class="btn btn-text">Read All Blogs</a>
+                <a href="blogs.html" class="blogs-read-all-btn">Read All Blogs</a>
             </div>
         </div>
     </section>
@@ -903,7 +902,7 @@
                 <p class="newsletter-desc">Air quality tips, product updates, and exclusive offers — delivered monthly.</p>
                 <form class="newsletter-form" id="newsletter-form">
                     <input type="email" class="newsletter-input" placeholder="Enter your email" required>
-                    <button type="submit" class="btn btn-primary btn-block">Subscribe</button>
+                    <button type="submit" class="newsletter-btn">Subscribe</button>
                 </form>
                 <p class="newsletter-disclaimer">No spam. Unsubscribe anytime.</p>
             </div>
@@ -1057,7 +1056,7 @@
                     <p class="testimonial-quote" id="testimonial-quote"></p>
                 </div>
                 <div class="feature-expanded-actions">
-                    <a href="buy.html" class="btn btn-primary">Learn More</a>
+                    <a href="buy.html" class="feature-learn-more">Learn More</a>
                     <div class="feature-expanded-nav">
                         <button class="feature-expanded-arrow" id="expanded-prev">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">

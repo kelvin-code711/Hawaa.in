@@ -745,39 +745,49 @@ a {
 }
 
 /* Background Video */
-.hero-video {
+/* Centered Product (spotlight + drop shadow + mirrored reflection) */
+.hero-product {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: opacity 1s ease;
-    z-index: 1;
+    top: 52%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 3;
+    width: min(78vw, 420px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    pointer-events: none;
 }
 
-.hero-video.hidden {
-    opacity: 0;
-}
-
-/* Resting Image */
-.hero-resting-image {
+.hero-spotlight {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: url('../public/images/hero-resting.webp');
-    background-size: cover;
-    background-position: center;
-    background-color: var(--ink-bg);
-    opacity: 0;
-    transition: opacity 1s ease;
-    z-index: 0;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 150%;
+    aspect-ratio: 1 / 1;
+    background: radial-gradient(circle, rgba(255, 240, 214, 0.22), transparent 60%);
+    z-index: -1;
+    pointer-events: none;
 }
 
-.hero-resting-image.visible {
-    opacity: 1;
+.hero-product-img {
+    width: 100%;
+    height: auto;
+    display: block;
+    filter: drop-shadow(0 28px 38px rgba(0, 0, 0, 0.45));
+}
+
+.hero-product-reflection {
+    width: 100%;
+    height: auto;
+    display: block;
+    margin-top: -4%;
+    transform: scaleY(-1);
+    opacity: 0.4;
+    -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, transparent 55%);
+            mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, transparent 55%);
+    pointer-events: none;
 }
 
 /* Gradient Overlay */
@@ -800,9 +810,9 @@ a {
 /* Hero Title Container */
 .hero-title-container {
     position: absolute;
-    top: 50%;
+    top: 15%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translateX(-50%);
     z-index: 10;
     text-align: center;
     width: 100%;

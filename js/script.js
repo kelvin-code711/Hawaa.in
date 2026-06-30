@@ -34,47 +34,6 @@ window.addEventListener('scroll', handleScroll);
 document.addEventListener('DOMContentLoaded', handleScroll);
 
 // ========================================
-// Hero Video - Autoplay and Fallback
-// ========================================
-const heroVideo = document.getElementById('hero-video');
-const heroResting = document.getElementById('hero-resting');
-
-if (heroVideo) {
-    const playVideo = () => {
-        heroVideo.play().then(() => {
-            heroVideo.classList.remove('hidden');
-        }).catch((error) => {
-            console.log('Video autoplay prevented:', error);
-            heroVideo.classList.add('hidden');
-            heroResting.classList.add('visible');
-        });
-    };
-
-    if (heroVideo.readyState >= 3) {
-        playVideo();
-    } else {
-        heroVideo.addEventListener('canplay', playVideo, { once: true });
-    }
-
-    heroVideo.addEventListener('ended', () => {
-        heroVideo.classList.add('hidden');
-        heroResting.classList.add('visible');
-    });
-
-    heroVideo.addEventListener('error', () => {
-        heroVideo.classList.add('hidden');
-        heroResting.classList.add('visible');
-    });
-
-    setTimeout(() => {
-        if (heroVideo.readyState === 0) {
-            heroVideo.classList.add('hidden');
-            heroResting.classList.add('visible');
-        }
-    }, 3000);
-}
-
-// ========================================
 // Smooth Scroll for Anchor Links
 // ========================================
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
