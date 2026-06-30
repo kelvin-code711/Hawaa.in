@@ -928,10 +928,8 @@ a {
 
 /* Primary CTA */
 .cta-primary {
-    background: rgba(255, 255, 255, 0.25);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.4);
+    background: var(--accent-strong);
+    border: 1px solid transparent;
 }
 
 .cta-primary span {
@@ -941,15 +939,12 @@ a {
 
 /* Secondary CTA */
 .cta-secondary {
-    background: rgba(0, 0, 0, 0.4);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: transparent;
+    border: 1px solid var(--hero-ink);
 }
 
 .cta-secondary span {
-    color: white;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    color: var(--hero-ink);
 }
 
 /* ========================================
@@ -1353,7 +1348,7 @@ a {
 .aqi-btn-glass {
     width: 100%;
     padding: 14px 24px;
-    background: rgba(17, 24, 39, 0.7);
+    background: rgba(44, 36, 25, 0.7);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     color: white;
@@ -1368,7 +1363,7 @@ a {
 }
 
 .aqi-btn-glass:hover {
-    background: rgba(17, 24, 39, 0.85);
+    background: rgba(44, 36, 25, 0.85);
     transform: scale(1.02);
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
 }
@@ -8676,105 +8671,74 @@ body.tos-page .header-profile-btn {
     --hairline:     #E3E5E9;   /* neutral hairline border */
 }
 
-/* ---- 1. Neutral canvas -------------------------------------- */
-body.page-landing                { background: var(--bg); color: var(--body-ink); }
-
+/* ---- 1. Transparent canvas: let the .page Ascend gradient show through ----- */
+/* (Removed `body.page-landing { background:var(--bg); color:var(--body-ink) }`
+   so the `.page` gradient + --ink apply.) Content sections go transparent so the
+   gradient is continuous down the whole page. */
 .page-landing .trust-badges,
 .page-landing .aqi-section,
 .page-landing .feature-section,
 .page-landing .certification-section,
 .page-landing .blogs-section,
-.page-landing .newsletter-section { background: var(--bg); }
-
+.page-landing .newsletter-section,
 .page-landing .faq-section,
-.page-landing .testimonials-section { background: var(--bg-tonal); }
+.page-landing .testimonials-section,
+.page-landing .aqi-checker { background: transparent; }
 
-/* AQI tool blends into the page — removes the white "panel on a colour" block */
-.page-landing .aqi-section  { background: var(--bg); }
-.page-landing .aqi-checker  { background: transparent; }
+/* ---- 2. Dark anchor sections now use the Ascend tokens ------- */
+/* (Removed navy-gradient override; base .reviews-section=--ink-bg, .footer=--foot-bg.) */
 
-/* ---- 2. Navy "anchor" sections (the only dark blocks) -------- */
-.page-landing .reviews-section,
-.page-landing .footer {
-    background: linear-gradient(180deg, var(--navy) 0%, var(--navy-hover) 100%);
-}
-
-/* ---- 3. Kill the cyan filter strip -> navy ------------------- */
-.page-landing .filter-section        { background: var(--navy); }
+/* ---- 3. Filter strip: base brass gradient shows; keep inner wash + hover ---- */
+/* (Removed navy bg + navy text override; base .filter-section=brass gradient,
+   .filter-cta=white bg + --accent-strong text.) */
 .page-landing .filter-section::before { background: rgba(255, 255, 255, 0.06); }
-.page-landing .filter-cta            { background: var(--surface); color: var(--navy); }
 .page-landing .filter-cta:hover      { box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25); }
 
-/* ---- 4. Sticky buy button: cyan -> clean white pill --------- */
-.page-landing .sticky-buy-btn {
-    background: var(--surface);
-    color: var(--navy);
-    border: 1px solid rgba(255, 255, 255, 0.6);
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
-}
-.page-landing .sticky-buy-btn:hover {
-    background: #ffffff;
-    border-color: #ffffff;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
-    transform: scale(1.02);
-}
+/* ---- 4. Sticky buy button: base Ascend brass gradient shows --- */
+/* (Removed navy/white-pill override.) */
 
-/* ---- 5. AQI "Check Air Impact" button -> navy --------------- */
-.page-landing .aqi-btn-glass        { background: var(--navy); }
-.page-landing .aqi-btn-glass:hover  { background: var(--navy-hover); }
-.page-landing .aqi-input:focus {
-    border-color: var(--navy);
-    box-shadow: 0 0 0 3px rgba(13, 35, 74, 0.12);
-}
+/* ---- 5. AQI "Check Air Impact" button: base warm-ink glass shows --- */
+/* (Removed navy override + navy focus ring; base .aqi-btn-glass is warm ink,
+   see the base rule warmed to rgba(44,36,25,…).) */
 
-/* ---- 6. Headings -> brand navy ------------------------------ */
-.page-landing .trust-title,
-.page-landing .aqi-hook,
-.page-landing .feature-title,
-.page-landing .certification-title,
-.page-landing .certification-card-title,
-.page-landing .testimonials-title,
-.page-landing .blogs-title,
-.page-landing .faq-title { color: var(--navy); }
+/* ---- 6. Headings use Ascend --ink (base rules), not navy ----- */
+/* (Removed navy heading override.) */
 
-/* ---- 7. Button system: one solid navy primary -------------- */
-/* Certification + "Read all blogs": were near-invisible ghosts */
-.page-landing .certification-btn {
-    background: var(--navy);
+/* ---- 7. "Ghost" tinted buttons -> solid Ascend brass primary --- */
+/* (Their faint base tint reads as near-invisible on the gradient, so give them
+   a solid brass treatment — colour only, original shape.) */
+.page-landing .certification-btn,
+.page-landing .blogs-read-all-btn {
+    background: var(--accent-strong);
     color: #ffffff;
 }
 .page-landing .certification-btn svg      { color: #ffffff; }
-.page-landing .certification-btn:hover    { background: var(--navy-hover); }
+.page-landing .certification-btn:hover,
+.page-landing .blogs-read-all-btn:hover   { background: #714f29; color: #ffffff; }
 
-.page-landing .blogs-read-all-btn {
-    background: var(--navy);
-    color: #ffffff;
-}
-.page-landing .blogs-read-all-btn:hover   { background: var(--navy-hover); color: #ffffff; }
+/* "Read all reviews" + newsletter button: base Ascend styles show */
+/* (Removed navy reviews-cta + newsletter overrides; base reviews-cta = white
+   glass on the dark reviews section, base newsletter-btn = --accent-strong.) */
 
-/* "Read all reviews" lives on the dark reviews section */
-.page-landing .reviews-cta {
-    background: rgba(255, 255, 255, 0.12);
-    border-color: rgba(255, 255, 255, 0.55);
-}
-.page-landing .reviews-cta:hover          { background: #ffffff; color: var(--navy); }
-
-/* Newsletter button: blue -> navy */
-.page-landing .newsletter-btn             { background: var(--navy); }
-.page-landing .newsletter-btn:hover       { background: var(--navy-hover); }
-.page-landing .newsletter-input:focus {
-    border-color: var(--navy);
-    box-shadow: 0 0 0 3px rgba(13, 35, 74, 0.12);
-}
-
-/* ---- 8. Neutral hairlines on light surfaces ---------------- */
+/* ---- 8. Warm Ascend hairlines on light surfaces ------------- */
 .page-landing .aqi-input,
-.page-landing .faq-item   { border-color: var(--hairline); }
+.page-landing .faq-item   { border-color: var(--line); }
 
-/* ---- 9. Accessibility: visible keyboard focus -------------- */
+/* ---- 9. Cards float on the gradient: glass, not solid blocks --- */
+.page-landing .certification-card,
+.page-landing .newsletter-content {
+    background: rgba(255, 255, 255, 0.6);
+    border-color: var(--line);
+}
+@supports not (backdrop-filter: blur(8px)) {
+    .page-landing .certification-card,
+    .page-landing .newsletter-content { background: rgba(255, 255, 255, 0.92); }
+}
+
+/* ---- 10. Accessibility: visible keyboard focus (brass) ------ */
 .page-landing a:focus-visible,
 .page-landing button:focus-visible,
 .page-landing input:focus-visible {
-    outline: 2px solid var(--navy);
+    outline: 2px solid var(--accent-strong);
     outline-offset: 2px;
 }

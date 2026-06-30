@@ -51,11 +51,20 @@
 }
 
 /* ---- SURFACE MODES ------------------------------------------------------ */
-.page{ /* landing only */
+.page{ /* landing only — DARK only behind the hero, then resolves to warm
+          off-white for the whole body. Stops are anchored in vh (not %) so the
+          dark band can't bleed onto light-text sections as the page grows. */
   color:var(--ink);
   background:linear-gradient(180deg,
-    #2C2218 0%, #3C2F22 7%, #6A5640 16%, #A8906E 25%,
-    #D8C5A4 34%, #EFE4D0 45%, #F7F1E4 60%, #FBF6EC 78%, #FCF8EF 100%);
+    #2C2218 0,
+    #2C2218 70vh,
+    #4A3B2A 86vh,
+    #8B7252 95vh,
+    #D8C5A4 101vh,
+    #ECDFC9 112vh,
+    #F6EFE1 150vh,
+    #FCF8EF 210vh);
+  background-color:#FCF8EF;
 }
 .surface{ /* every secondary page + popups */
   color:var(--ink);
