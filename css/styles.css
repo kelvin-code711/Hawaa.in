@@ -1331,7 +1331,7 @@ a {
 }
 
 .aqi-btn:hover {
-    background: var(--ink);
+    background: #714f29;
     transform: scale(1.02);
 }
 
@@ -1951,8 +1951,8 @@ a {
 }
 
 .feature-arrow:hover {
-    background: var(--ink);
-    border-color: var(--ink);
+    background: #714f29;
+    border-color: #714f29;
 }
 
 .feature-arrow:hover svg {
@@ -2211,7 +2211,7 @@ a {
 }
 
 .feature-learn-more:hover {
-    background: var(--ink);
+    background: #714f29;
     transform: translateY(-1px);
 }
 
