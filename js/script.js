@@ -784,88 +784,96 @@ function resetTestimonialsAutoSlide() {
 // REVIEWS SLIDER
 // ========================================
 
-const reviewsSlider = document.getElementById('reviews-slider');
-const reviewsDots = document.getElementById('reviews-dots');
-let reviewsAutoSlide;
-let reviewsIsVisible = false;
-
+// Horizontal scroll-snap carousel built on the Ascend .track / .tcard classes.
+// Native overflow-scroll handles touch swipe; JS syncs dots/active card, drives
+// the arrows, and runs an optional 6s autoplay that pauses on hover/focus and is
+// disabled under prefers-reduced-motion.
 function initReviewsSlider() {
-    if (!reviewsSlider) return;
+    const track = document.getElementById('reviews-track');
+    if (!track) return;
 
-    // Dots
-    if (reviewsDots) {
-        reviewsDots.querySelectorAll('.dot').forEach(dot => {
-            dot.addEventListener('click', () => {
-                const slide = parseInt(dot.dataset.slide);
-                scrollToReview(slide);
-            });
+    const section = track.closest('.reviews-section');
+    const cards = Array.from(track.querySelectorAll('.tcard'));
+    const dots = Array.from(document.querySelectorAll('#reviews-dots .dot'));
+    const prevBtn = document.getElementById('reviews-prev');
+    const nextBtn = document.getElementById('reviews-next');
+    if (!cards.length) return;
+
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // --- active card = the one whose centre is nearest the track's centre ---
+    const activeIndex = () => {
+        const mid = track.getBoundingClientRect().left + track.clientWidth / 2;
+        let best = 0, bestDist = Infinity;
+        cards.forEach((card, i) => {
+            const r = card.getBoundingClientRect();
+            const dist = Math.abs(r.left + r.width / 2 - mid);
+            if (dist < bestDist) { bestDist = dist; best = i; }
         });
-    }
+        return best;
+    };
 
-    // Update dots on scroll
-    reviewsSlider.addEventListener('scroll', updateReviewsDots);
+    const render = (i) => {
+        cards.forEach((card, n) => card.classList.toggle('active', n === i));
+        dots.forEach((dot, n) => {
+            const on = n === i;
+            dot.classList.toggle('on', on);
+            if (on) dot.setAttribute('aria-current', 'true');
+            else dot.removeAttribute('aria-current');
+        });
+    };
 
-    // Intersection Observer for auto-slide
-    const reviewsSection = document.querySelector('.reviews-section');
-    if (reviewsSection) {
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                reviewsIsVisible = entry.isIntersecting;
-                if (entry.isIntersecting) {
-                    startReviewsAutoSlide();
-                } else {
-                    stopReviewsAutoSlide();
-                }
-            });
-        }, { threshold: 0.3 });
-        observer.observe(reviewsSection);
-    }
-}
+    const goTo = (i) => {
+        const idx = (i + cards.length) % cards.length;
+        const trackRect = track.getBoundingClientRect();
+        const cardRect = cards[idx].getBoundingClientRect();
+        const delta = (cardRect.left + cardRect.width / 2) - (trackRect.left + trackRect.width / 2);
+        track.scrollBy({ left: delta, behavior: reduceMotion ? 'auto' : 'smooth' });
+    };
 
-function scrollToReview(index) {
-    const cards = reviewsSlider.querySelectorAll('.review-card');
-    if (cards.length === 0) return;
-    const cardWidth = cards[0].offsetWidth + getSliderGap();
-    reviewsSlider.scrollTo({ left: index * cardWidth, behavior: 'smooth' });
-    resetReviewsAutoSlide();
-}
+    // --- autoplay (6s), paused on hover/focus, off under reduced-motion / off-screen ---
+    let timer = null, paused = false, inView = true;
+    const stop = () => { if (timer) { clearInterval(timer); timer = null; } };
+    const start = () => {
+        stop();
+        if (reduceMotion || paused || !inView) return;
+        timer = setInterval(() => goTo(activeIndex() + 1), 6000);
+    };
+    const restart = () => { stop(); start(); };
 
-function updateReviewsDots() {
-    if (!reviewsDots) return;
-    const cards = reviewsSlider.querySelectorAll('.review-card');
-    if (cards.length === 0) return;
-    const cardWidth = cards[0].offsetWidth + getSliderGap();
-    const currentSlide = Math.round(reviewsSlider.scrollLeft / cardWidth);
-    reviewsDots.querySelectorAll('.dot').forEach((dot, i) => {
-        dot.classList.toggle('active', i === currentSlide);
-    });
-}
+    // --- keep dots/active in sync while scrolling (incl. native touch swipe) ---
+    let raf = null;
+    track.addEventListener('scroll', () => {
+        if (raf) return;
+        raf = requestAnimationFrame(() => { raf = null; render(activeIndex()); });
+    }, { passive: true });
 
-function startReviewsAutoSlide() {
-    if (reviewsAutoSlide) return; // Already running
-    reviewsAutoSlide = setInterval(() => {
-        if (!reviewsIsVisible) return;
-        const cards = reviewsSlider.querySelectorAll('.review-card');
-        const cardWidth = cards[0].offsetWidth + getSliderGap();
-        const maxScroll = reviewsSlider.scrollWidth - reviewsSlider.clientWidth;
-        if (reviewsSlider.scrollLeft >= maxScroll - 10) {
-            reviewsSlider.scrollTo({ left: 0, behavior: 'smooth' });
-        } else {
-            reviewsSlider.scrollBy({ left: cardWidth, behavior: 'smooth' });
+    if (prevBtn) prevBtn.addEventListener('click', () => { goTo(activeIndex() - 1); restart(); });
+    if (nextBtn) nextBtn.addEventListener('click', () => { goTo(activeIndex() + 1); restart(); });
+    dots.forEach((dot) => dot.addEventListener('click', () => {
+        goTo(parseInt(dot.dataset.index, 10) || 0);
+        restart();
+    }));
+
+    if (section) {
+        ['pointerenter', 'focusin'].forEach(evt =>
+            section.addEventListener(evt, () => { paused = true; stop(); }));
+        ['pointerleave', 'focusout'].forEach(evt =>
+            section.addEventListener(evt, () => { paused = false; start(); }));
+
+        if ('IntersectionObserver' in window) {
+            new IntersectionObserver((entries) => {
+                inView = entries[0].isIntersecting;
+                if (inView) start(); else stop();
+            }, { threshold: 0.3 }).observe(section);
         }
-    }, 4000);
-}
-
-function stopReviewsAutoSlide() {
-    clearInterval(reviewsAutoSlide);
-    reviewsAutoSlide = null;
-}
-
-function resetReviewsAutoSlide() {
-    stopReviewsAutoSlide();
-    if (reviewsIsVisible) {
-        startReviewsAutoSlide();
     }
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden) stop(); else start();
+    });
+
+    render(0);
+    start();
 }
 
 // ========================================
