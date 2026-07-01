@@ -2950,55 +2950,21 @@ a {
 }
 
 /* Reviews Slider */
-.reviews-slider-wrapper {
-    padding: 0 10px;
-    overflow: hidden;
+/* Reviews carousel — built on the Ascend .track / .tcard classes */
+.reviews-section .track-mask {
+    padding: 6px 0 14px;   /* vertical breathing room for card shadows */
 }
 
-.reviews-slider {
-    display: flex;
-    gap: 16px;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    scroll-behavior: smooth;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    padding: 10px 16px;
-    margin: 0 16px;
+#reviews-track {
+    padding-inline: clamp(16px, 6vw, 64px);        /* edge gutters so neighbours peek */
+    scroll-padding-inline: clamp(16px, 6vw, 64px);
 }
 
-@media (min-width: 640px) {
-    .reviews-slider {
-        gap: 20px;
-    }
-}
-
-.reviews-slider::-webkit-scrollbar {
-    display: none;
-}
-
-/* Review Card */
-.review-card {
-    flex: 0 0 280px;
-    min-width: 280px;
-    max-width: 280px;
-    scroll-snap-align: start;
-    background: white;
-    border: 1px solid rgba(0, 0, 0, 0.06);
-    border-radius: 20px;
-    padding: 20px;
+#reviews-track .tcard {
+    flex: 0 0 min(360px, 80vw);   /* one card + peeking neighbours on mobile */
+    scroll-snap-align: center;    /* active card centred, prev/next peek past edges */
     display: flex;
     flex-direction: column;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
-}
-
-@media (min-width: 640px) {
-    .review-card {
-        flex: 0 0 340px;
-        min-width: 340px;
-        max-width: 340px;
-        padding: 28px;
-    }
 }
 
 .review-stars {
@@ -3046,36 +3012,46 @@ a {
     color: var(--muted);
 }
 
-/* Reviews Controls */
+/* Reviews Controls — prev (outline) / dots / next (primary) */
 .reviews-controls {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 24px;
-    margin-top: 30px;
+    gap: 18px;
+    margin-top: 26px;
+}
+
+/* .arrow comes from ascend.theme.css; these are real <button>s */
+.reviews-controls .arrow {
+    padding: 0;
+    flex-shrink: 0;
 }
 
 .reviews-dots {
     display: flex;
+    align-items: center;
     gap: 8px;
 }
 
+/* .dot / .dot.on come from the theme; override for the dark section + button reset */
 .reviews-dots .dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.3);
+    border: 0;
+    padding: 0;
+    background: rgba(255, 255, 255, 0.35);
     cursor: pointer;
-    transition: all 0.2s ease;
 }
 
-.reviews-dots .dot.active {
-    background: white;
-    width: 20px;
-    border-radius: 4px;
+.reviews-dots .dot.on {
+    background: var(--accent-strong);
+}
+
+.reviews-cta-row {
+    text-align: center;
+    margin-top: 20px;
 }
 
 .reviews-cta {
+    display: inline-block;
     padding: 10px 20px;
     background: rgba(255, 255, 255, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.3);
