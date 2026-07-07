@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 nameInput.classList.add('error');
                 hasError = true;
             }
-            if (!emailVal) {
+            if (!emailVal || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)) {
                 emailInput.classList.add('error');
                 hasError = true;
             }
@@ -79,12 +79,29 @@ document.addEventListener('DOMContentLoaded', function() {
             submitBtn.disabled = true;
             submitBtn.textContent = 'Sending...';
 
-            setTimeout(function() {
-                form.style.display = 'none';
-                successEl.classList.remove('hidden');
+            function restoreButton() {
                 submitBtn.disabled = false;
                 submitBtn.textContent = 'Send Message';
-            }, 800);
+            }
+
+            if (!window.hawaaBackend) {
+                restoreButton();
+                alert('Something went wrong. Please try again in a moment.');
+                return;
+            }
+
+            window.hawaaBackend.submitSupportTicket({
+                name: nameVal,
+                email: emailVal,
+                message: messageVal
+            }).then(function() {
+                form.style.display = 'none';
+                successEl.classList.remove('hidden');
+                restoreButton();
+            }).catch(function() {
+                restoreButton();
+                alert('Something went wrong. Please try again in a moment.');
+            });
         });
     }
 
