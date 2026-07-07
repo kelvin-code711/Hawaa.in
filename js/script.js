@@ -1098,11 +1098,35 @@ const newsletterForm = document.getElementById('newsletter-form');
 if (newsletterForm) {
     newsletterForm.addEventListener('submit', function(e) {
         e.preventDefault();
-        const email = this.querySelector('.newsletter-input').value;
+        const form = this;
+        const input = form.querySelector('.newsletter-input');
+        const btn = form.querySelector('.newsletter-btn');
+        const email = input.value.trim();
+        if (!email) return;
 
-        // Show success feedback (you can replace this with actual form submission)
-        alert('Thank you for subscribing! We\'ll keep you updated.');
-        this.reset();
+        const originalLabel = btn.textContent;
+        btn.disabled = true;
+        btn.textContent = 'Subscribing...';
+
+        function showResult(label) {
+            btn.textContent = label;
+            setTimeout(function() {
+                btn.textContent = originalLabel;
+                btn.disabled = false;
+            }, 3000);
+        }
+
+        if (!window.hawaaBackend) {
+            showResult('Try again later');
+            return;
+        }
+
+        window.hawaaBackend.subscribeNewsletter(email).then(function() {
+            form.reset();
+            showResult('Subscribed ✓');
+        }).catch(function() {
+            showResult('Try again later');
+        });
     });
 }
 

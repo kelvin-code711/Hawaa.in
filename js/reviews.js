@@ -844,12 +844,31 @@
             dom.submitBtn.disabled = true;
             dom.submitBtn.textContent = 'Submitting...';
 
-            setTimeout(function () {
-                dom.modalForm.style.display = 'none';
-                dom.modalSuccess.classList.remove('hidden');
+            function restoreButton() {
                 dom.submitBtn.disabled = false;
                 dom.submitBtn.textContent = 'Submit Review';
-            }, 1200);
+            }
+
+            if (!window.hawaaBackend) {
+                restoreButton();
+                alert('Something went wrong. Please try again in a moment.');
+                return;
+            }
+
+            window.hawaaBackend.submitReview({
+                rating: rating,
+                title: title,
+                content: content,
+                name: name,
+                email: email
+            }).then(function () {
+                dom.modalForm.style.display = 'none';
+                dom.modalSuccess.classList.remove('hidden');
+                restoreButton();
+            }).catch(function () {
+                restoreButton();
+                alert('Something went wrong. Please try again in a moment.');
+            });
         });
     }
 

@@ -1,0 +1,77 @@
+rules_version = '2';
+
+// hawaa.in — Firestore security rules
+//
+// The site is public and unauthenticated, so clients may only CREATE
+// documents with a validated shape. Nothing on the client can read,
+// edit, or delete submissions; do that from the Firebase console
+// (or later, an authenticated admin dashboard).
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function validEmail(e) {
+      return e is string && e.size() >= 5 && e.size() <= 320 && e.matches('.+@.+\\..+');
+    }
+
+    function isServerTime(t) {
+      return t == request.time;
+    }
+
+    // Contact form on support.html
+    match /supportTickets/{ticketId} {
+      allow create: if
+        request.resource.data.keys().hasOnly(['name', 'email', 'message', 'page', 'createdAt']) &&
+        request.resource.data.name is string &&
+        request.resource.data.name.size() >= 1 &&
+        request.resource.data.name.size() <= 100 &&
+        validEmail(request.resource.data.email) &&
+        request.resource.data.message is string &&
+        request.resource.data.message.size() >= 1 &&
+        request.resource.data.message.size() <= 5000 &&
+        request.resource.data.page is string &&
+        request.resource.data.page.size() <= 200 &&
+        isServerTime(request.resource.data.createdAt);
+      allow read, update, delete: if false;
+    }
+
+    // Review submissions from reviews.html. New reviews must arrive as
+    // status "pending"; only approved reviews are readable, so the
+    // moderation queue (and reviewer emails on pending docs) stay private.
+    match /reviews/{reviewId} {
+      allow create: if
+        request.resource.data.keys().hasOnly(['rating', 'title', 'content', 'name', 'email', 'status', 'helpfulCount', 'createdAt']) &&
+        request.resource.data.rating is int &&
+        request.resource.data.rating >= 1 &&
+        request.resource.data.rating <= 5 &&
+        request.resource.data.title is string &&
+        request.resource.data.title.size() >= 1 &&
+        request.resource.data.title.size() <= 150 &&
+        request.resource.data.content is string &&
+        request.resource.data.content.size() >= 1 &&
+        request.resource.data.content.size() <= 5000 &&
+        request.resource.data.name is string &&
+        request.resource.data.name.size() >= 1 &&
+        request.resource.data.name.size() <= 100 &&
+        validEmail(request.resource.data.email) &&
+        request.resource.data.status == 'pending' &&
+        request.resource.data.helpfulCount == 0 &&
+        isServerTime(request.resource.data.createdAt);
+      allow read: if resource.data.status == 'approved';
+      allow update, delete: if false;
+    }
+
+    // Footer newsletter form on index.html (doc ID = encoded email)
+    match /newsletterSubscribers/{subscriberId} {
+      allow create: if
+        request.resource.data.keys().hasOnly(['email', 'createdAt']) &&
+        validEmail(request.resource.data.email) &&
+        isServerTime(request.resource.data.createdAt);
+      allow read, update, delete: if false;
+    }
+
+    // Everything else is denied.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
