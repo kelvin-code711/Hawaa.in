@@ -14,3 +14,9 @@ Thumbs.db
 # Environment
 .env
 .env.*
+
+# Windows artifact
+nul
+
+# Local (per-machine) Claude Code settings
+.claude/settings.local.json

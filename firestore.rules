@@ -1,0 +1,198 @@
+rules_version = '2';
+
+// ===============================================================
+// Assumed Data Model
+// ===============================================================
+//
+// Collection: web_users (website profile docs — deliberately separate
+// from the server-managed `users` and `device_owners` collections used
+// by the device backend, which remain client-inaccessible)
+// Document ID: {userId} — always equal to the Firebase Auth UID
+// Fields:
+//   - uid: string (required, must equal auth.uid, immutable)
+//   - createdAt: timestamp (required, server time on create, immutable)
+//   - lastLoginAt: timestamp (required, server time, refreshed on sign-in)
+//   - displayName: string (optional, 1-100 chars)
+//   - email: string (optional, valid email, <= 254 chars, immutable)
+//   - phone: string (optional, E.164 format e.g. +919876543210, immutable)
+//
+// Written by js/nav.js on sign-in:
+//   create: full document with server timestamps
+//   update: only lastLoginAt and (optionally) displayName
+//
+// Collection: reviews (public product reviews — explicitly world-readable;
+// contains no PII beyond the author-chosen display name and opaque uid)
+// Document ID: auto-generated (or seed-NN for imported reviews)
+// Fields:
+//   - uid: string (required, must equal auth.uid on create, immutable)
+//   - name: string (required, 1-50 chars, author-chosen public display name)
+//   - rating: int (required, 1-5, immutable)
+//   - title: string (required, 1-100 chars, immutable)
+//   - content: string (required, 1-2000 chars, immutable)
+//   - verified: bool (required, must be false on create — only privileged
+//     server/admin writes can mark a review as a verified purchase)
+//   - helpful: int (required, 0 on create; +1 only via vote batch)
+//   - createdAt: timestamp (required, server time, immutable)
+//
+// Collection: review_votes (tracks one "Helpful" vote per user per review)
+// Document ID: {uid}_{reviewId}
+// Fields:
+//   - uid: string (required, == auth.uid)
+//   - reviewId: string (required, 1-40 chars, must match the ID in the doc key)
+//   - createdAt: timestamp (required, server time)
+// Votes are permanent (no unvote), created atomically in a batch with the
+// helpful counter increment on the review.
+//
+// All other collections: no client access (default deny).
+//
+// ===============================================================
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ===============================================================
+    // Helper Functions
+    // ===============================================================
+
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function isValidEmail(email) {
+      return email is string &&
+        email.size() <= 254 &&
+        email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
+    }
+
+    function isValidPhone(phone) {
+      return phone is string && phone.matches("^\\+[0-9]{8,15}$");
+    }
+
+    function isValidDisplayName(name) {
+      return name is string && name.size() >= 1 && name.size() <= 100;
+    }
+
+    // ===============================================================
+    // Domain Validators
+    // ===============================================================
+
+    // Full-document validation on create. Timestamps must be server
+    // time (client uses serverTimestamp()), uid must match the path
+    // and the signed-in user, and no extraneous fields are allowed.
+    function isValidNewUser(data, userId) {
+      return data.keys().hasAll(['uid', 'createdAt', 'lastLoginAt']) &&
+        data.keys().hasOnly(['uid', 'createdAt', 'lastLoginAt', 'displayName', 'email', 'phone']) &&
+        data.uid == userId &&
+        data.createdAt is timestamp &&
+        data.createdAt == request.time &&
+        data.lastLoginAt is timestamp &&
+        data.lastLoginAt == request.time &&
+        (!('displayName' in data) || isValidDisplayName(data.displayName)) &&
+        (!('email' in data) || isValidEmail(data.email)) &&
+        (!('phone' in data) || isValidPhone(data.phone));
+    }
+
+    // Updates may only touch lastLoginAt and displayName; identity
+    // fields (uid, createdAt, email, phone) are immutable.
+    function isValidUserUpdate() {
+      return request.resource.data.diff(resource.data).affectedKeys()
+          .hasOnly(['lastLoginAt', 'displayName']) &&
+        request.resource.data.lastLoginAt is timestamp &&
+        request.resource.data.lastLoginAt == request.time &&
+        (!('displayName' in request.resource.data) ||
+          isValidDisplayName(request.resource.data.displayName));
+    }
+
+    // ===============================================================
+    // web_users — private website profile documents, owner-only access
+    // ===============================================================
+    match /web_users/{userId} {
+      allow read: if isOwner(userId);
+      allow create: if isOwner(userId) && isValidNewUser(request.resource.data, userId);
+      allow update: if isOwner(userId) && isValidUserUpdate();
+      allow delete: if false;
+    }
+
+    // ===============================================================
+    // Domain Validators — reviews
+    // ===============================================================
+
+    // Full-document validation on review create. verified is forced to
+    // false (only privileged writes may mark verified purchases) and the
+    // helpful counter starts at zero.
+    function isValidNewReview(data) {
+      return data.keys().hasAll(['uid', 'name', 'rating', 'title', 'content', 'verified', 'helpful', 'createdAt']) &&
+        data.keys().hasOnly(['uid', 'name', 'rating', 'title', 'content', 'verified', 'helpful', 'createdAt']) &&
+        data.uid == request.auth.uid &&
+        data.name is string && data.name.size() >= 1 && data.name.size() <= 50 &&
+        data.rating is int && data.rating >= 1 && data.rating <= 5 &&
+        data.title is string && data.title.size() >= 1 && data.title.size() <= 100 &&
+        data.content is string && data.content.size() >= 1 && data.content.size() <= 2000 &&
+        data.verified == false &&
+        data.helpful is int && data.helpful == 0 &&
+        data.createdAt is timestamp &&
+        data.createdAt == request.time;
+    }
+
+    // A "Helpful" vote: the ONLY change is helpful going up by exactly 1,
+    // and the caller's vote-tracking document must be created in the same
+    // batch (getAfter) while not existing beforehand — one vote per user
+    // per review, no counter looping. The getAfter check on the review
+    // itself constrains the POST-batch value, so stacking multiple
+    // increment writes in one batch cannot inflate the counter past +1.
+    function isValidHelpfulVote(reviewId) {
+      return request.resource.data.diff(resource.data).affectedKeys().hasOnly(['helpful']) &&
+        request.resource.data.helpful == resource.data.helpful + 1 &&
+        getAfter(/databases/$(database)/documents/reviews/$(reviewId)).data.helpful == resource.data.helpful + 1 &&
+        !exists(/databases/$(database)/documents/review_votes/$(request.auth.uid + '_' + reviewId)) &&
+        getAfter(/databases/$(database)/documents/review_votes/$(request.auth.uid + '_' + reviewId)).data.uid == request.auth.uid;
+    }
+
+    // Vote-tracking document validation: key must be {caller-uid}_{reviewId},
+    // the review must exist, and the schema is fixed.
+    function isValidNewVote(data, voteId) {
+      return data.keys().hasAll(['uid', 'reviewId', 'createdAt']) &&
+        data.keys().hasOnly(['uid', 'reviewId', 'createdAt']) &&
+        data.uid == request.auth.uid &&
+        data.reviewId is string && data.reviewId.size() >= 1 && data.reviewId.size() <= 40 &&
+        voteId == request.auth.uid + '_' + data.reviewId &&
+        exists(/databases/$(database)/documents/reviews/$(data.reviewId)) &&
+        data.createdAt is timestamp &&
+        data.createdAt == request.time;
+    }
+
+    // ===============================================================
+    // reviews — public product reviews
+    // ===============================================================
+    match /reviews/{reviewId} {
+      // Explicitly public: the reviews page is shown to anonymous visitors.
+      allow read: if true;
+      allow create: if isAuthenticated() && isValidNewReview(request.resource.data);
+      allow update: if isAuthenticated() && isValidHelpfulVote(reviewId);
+      allow delete: if false;
+    }
+
+    // ===============================================================
+    // review_votes — one Helpful vote per user per review
+    // ===============================================================
+    match /review_votes/{voteId} {
+      // Users may only read their own votes (used to mark voted reviews).
+      allow read: if isAuthenticated() && resource.data.uid == request.auth.uid;
+      allow create: if isAuthenticated() && isValidNewVote(request.resource.data, voteId);
+      allow update, delete: if false;
+    }
+
+    // ===============================================================
+    // Default deny: everything not matched above is inaccessible.
+    // This keeps the device backend's collections (users, device_owners)
+    // server-only, exactly as the project's previous rules did.
+    // ===============================================================
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

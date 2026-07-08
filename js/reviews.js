@@ -2,274 +2,14 @@
     'use strict';
 
     // ========================================
-    // REVIEW DATA
+    // REVIEW DATA (loaded from Firestore)
     // ========================================
-    var reviewsData = [
-        {
-            id: 1,
-            rating: 5,
-            title: 'Amazing air quality improvement',
-            content: 'As someone with asthma, clean air isn\'t a luxury \u2014 it\'s essential. This purifier runs so quietly I forget it\'s on, but my breathing has improved dramatically. The gesture control is a nice touch too.',
-            name: 'Meera L.',
-            date: '2026-01-15',
-            verified: true,
-            helpful: 12,
-            photos: []
-        },
-        {
-            id: 2,
-            rating: 5,
-            title: 'Sleek design that fits anywhere',
-            content: 'Finally, an air purifier that doesn\'t need a PhD to operate. The gesture control is intuitive, and the Google Home integration is seamless. Looks great in our living room too.',
-            name: 'Arjun K.',
-            date: '2026-01-10',
-            verified: true,
-            helpful: 9,
-            photos: []
-        },
-        {
-            id: 3,
-            rating: 5,
-            title: 'Worth every rupee',
-            content: 'The filter replacement at \u20B9899 is genuinely affordable compared to other brands charging \u20B92000+. Running costs matter and Hawaa gets that. Great product overall.',
-            name: 'Sunita R.',
-            date: '2026-01-05',
-            verified: true,
-            helpful: 7,
-            photos: []
-        },
-        {
-            id: 4,
-            rating: 4,
-            title: 'Perfect for the nursery',
-            content: 'Bought for my newborn\'s room. The sleep mode is whisper quiet at 24dB. Peace of mind knowing the air is clean without disturbing her sleep. Wish the night light was a bit dimmer though.',
-            name: 'Neha P.',
-            date: '2025-12-28',
-            verified: true,
-            helpful: 6,
-            photos: []
-        },
-        {
-            id: 5,
-            rating: 5,
-            title: 'Best air purifier under 6000',
-            content: 'I compared Hawaa Edge with Xiaomi and Coway before buying. The H13 HEPA filter, gesture control, and smart connectivity at this price point is unbeatable. Very happy with my purchase.',
-            name: 'Rahul M.',
-            date: '2025-12-22',
-            verified: true,
-            helpful: 15,
-            photos: []
-        },
-        {
-            id: 6,
-            rating: 5,
-            title: 'Noticeable difference in a week',
-            content: 'Living near a construction site, dust was a constant problem. Within a week of using Hawaa Edge, the air felt noticeably cleaner. My allergies have reduced significantly.',
-            name: 'Priya S.',
-            date: '2025-12-18',
-            verified: true,
-            helpful: 4,
-            photos: []
-        },
-        {
-            id: 7,
-            rating: 5,
-            title: 'Smart home integration is flawless',
-            content: 'Connected it to Google Home on day one. Voice commands work perfectly. I can check air quality and control the purifier from anywhere. The app is well designed too.',
-            name: 'Vikram T.',
-            date: '2025-12-15',
-            verified: true,
-            helpful: 3,
-            photos: []
-        },
-        {
-            id: 8,
-            rating: 5,
-            title: 'Impressed by the build quality',
-            content: 'For the price, the build quality is exceptional. The matte finish looks premium, and the touch-free gesture sensor works reliably. Feels like a product worth twice the price.',
-            name: 'Anjali D.',
-            date: '2025-12-10',
-            verified: true,
-            helpful: 5,
-            photos: []
-        },
-        {
-            id: 9,
-            rating: 4,
-            title: 'Great product, minor app issues',
-            content: 'The purifier itself is excellent \u2014 quiet, effective, and looks good. The app occasionally loses connection but a quick restart fixes it. Overall very satisfied.',
-            name: 'Karthik N.',
-            date: '2025-12-05',
-            verified: true,
-            helpful: 2,
-            photos: []
-        },
-        {
-            id: 10,
-            rating: 5,
-            title: 'My doctor recommended an air purifier',
-            content: 'After repeated sinus infections, my ENT suggested an air purifier. Chose Hawaa Edge for the H13 HEPA filter. Three months in and I haven\'t had a single episode. Life-changing.',
-            name: 'Deepa V.',
-            date: '2025-11-28',
-            verified: true,
-            helpful: 11,
-            photos: []
-        },
-        {
-            id: 11,
-            rating: 5,
-            title: 'Handles Delhi pollution like a champ',
-            content: 'Diwali season put this to the test. The AQI outside was 400+ but inside our bedroom it stayed under 50. The real-time air quality display gives great peace of mind.',
-            name: 'Amit G.',
-            date: '2025-11-20',
-            verified: true,
-            helpful: 18,
-            photos: []
-        },
-        {
-            id: 12,
-            rating: 3,
-            title: 'Good but room coverage could be better',
-            content: 'Works well for our bedroom (around 150 sq ft) but struggles a bit in the larger living room. The fan speed could be higher on turbo mode. Otherwise a solid product for small rooms.',
-            name: 'Sanjay B.',
-            date: '2025-11-15',
-            verified: true,
-            helpful: 4,
-            photos: []
-        },
-        {
-            id: 13,
-            rating: 5,
-            title: 'Gifted to my parents, they love it',
-            content: 'My parents are in their 70s and not tech savvy at all. The gesture control makes it so easy for them \u2014 just wave to change settings. They use it every day now.',
-            name: 'Riya K.',
-            date: '2025-11-10',
-            verified: true,
-            helpful: 8,
-            photos: []
-        },
-        {
-            id: 14,
-            rating: 5,
-            title: 'Filter change was super easy',
-            content: 'Just replaced the filter after 5 months. The process took literally 2 minutes. No tools needed. And at \u20B9899 for a genuine H13 HEPA filter, the running cost is very reasonable.',
-            name: 'Manish J.',
-            date: '2025-11-05',
-            verified: true,
-            helpful: 6,
-            photos: []
-        },
-        {
-            id: 15,
-            rating: 4,
-            title: 'Stylish and functional',
-            content: 'The almond beige colour matches our home decor perfectly. It doesn\'t look like a typical air purifier at all. Performance is great for our 200 sq ft bedroom. Deducting one star because I wish there were more colour options.',
-            name: 'Tanya W.',
-            date: '2025-10-30',
-            verified: true,
-            helpful: 3,
-            photos: []
-        },
-        {
-            id: 16,
-            rating: 5,
-            title: 'Reduced my kid\'s allergies',
-            content: 'My 5-year-old had constant sneezing and runny nose. Since we started using Hawaa Edge in his room, the allergy symptoms have reduced by about 80%. Worth every penny.',
-            name: 'Pooja H.',
-            date: '2025-10-25',
-            verified: true,
-            helpful: 10,
-            photos: []
-        },
-        {
-            id: 17,
-            rating: 5,
-            title: 'Customer support was excellent',
-            content: 'Had a minor issue with the Wi-Fi setup. Called support and they walked me through it in 5 minutes. Very responsive team. The product itself has been running perfectly since.',
-            name: 'Gaurav S.',
-            date: '2025-10-20',
-            verified: true,
-            helpful: 2,
-            photos: []
-        },
-        {
-            id: 18,
-            rating: 3,
-            title: 'Decent for the price',
-            content: 'It does what it promises but nothing extraordinary. The air quality sensor seems accurate and the noise level is acceptable. If you\'re on a budget, it\'s a good choice.',
-            name: 'Nikhil C.',
-            date: '2025-10-15',
-            verified: false,
-            helpful: 1,
-            photos: []
-        },
-        {
-            id: 19,
-            rating: 5,
-            title: 'Cooking odours disappear fast',
-            content: 'We keep it in the kitchen-adjacent dining area. After cooking, I turn it to turbo mode and within 15-20 minutes the smell is completely gone. Really impressed with the activated carbon layer.',
-            name: 'Lakshmi R.',
-            date: '2025-10-10',
-            verified: true,
-            helpful: 5,
-            photos: []
-        },
-        {
-            id: 20,
-            rating: 5,
-            title: 'Silent operation is the biggest win',
-            content: 'I\'m a light sleeper and previous purifiers kept me up at night. Hawaa Edge on sleep mode is genuinely inaudible. Finally an air purifier I can sleep next to.',
-            name: 'Aditya F.',
-            date: '2025-10-05',
-            verified: true,
-            helpful: 7,
-            photos: []
-        },
-        {
-            id: 21,
-            rating: 2,
-            title: 'Wi-Fi connectivity needs improvement',
-            content: 'The purifier works fine on manual but the Wi-Fi keeps disconnecting from our 5GHz network. Had to switch to 2.4GHz which is inconvenient. The hardware is good but software needs work.',
-            name: 'Rohan P.',
-            date: '2025-09-28',
-            verified: true,
-            helpful: 3,
-            photos: []
-        },
-        {
-            id: 22,
-            rating: 5,
-            title: 'Made in India and proud of it',
-            content: 'Love supporting Indian brands, especially when the product quality matches international standards. The H13 HEPA filter, BLDC motor, and overall design are world class. Keep it up Hawaa!',
-            name: 'Shreya M.',
-            date: '2025-09-20',
-            verified: true,
-            helpful: 14,
-            photos: []
-        },
-        {
-            id: 23,
-            rating: 5,
-            title: 'Pet owners, this is a must-have',
-            content: 'We have two golden retrievers and the fur situation was out of control. Hawaa Edge handles pet dander and fur particles effectively. Our home smells fresher and we sneeze less.',
-            name: 'Nitin A.',
-            date: '2025-09-15',
-            verified: true,
-            helpful: 9,
-            photos: []
-        },
-        {
-            id: 24,
-            rating: 5,
-            title: 'Elegant packaging and unboxing',
-            content: 'The unboxing experience itself sets the tone. Premium packaging, clear setup instructions, and the product looks even better in person. Hawaa clearly cares about the details.',
-            name: 'Kavya L.',
-            date: '2025-09-10',
-            verified: true,
-            helpful: 4,
-            photos: []
-        }
-    ];
+    var reviewsData = [];
+    var votedReviewIds = {};   // reviewId -> true, for the signed-in user
+    var fb = null;             // window.hawaaFirebase once ready
+    var currentUser = null;
+
+    var MAX_REVIEWS_FETCH = 500;
 
     // ========================================
     // STATE
@@ -279,9 +19,10 @@
         perPage: 10,
         sortBy: 'recent',
         filterRating: 'all',
-        helpfulClicked: {},
         modalOpen: false,
-        selectedRating: 0
+        selectedRating: 0,
+        loading: true,
+        loadError: false
     };
 
     // ========================================
@@ -320,6 +61,84 @@
         dom.lightboxOverlay = document.getElementById('rv-lightbox-overlay');
         dom.lightboxClose = document.getElementById('rv-lightbox-close');
         dom.lightboxImg = document.getElementById('rv-lightbox-img');
+        dom.nameInput = document.getElementById('rv-review-name');
+        dom.emailInput = document.getElementById('rv-review-email');
+        dom.titleInput = document.getElementById('rv-review-title');
+        dom.contentInput = document.getElementById('rv-review-content');
+    }
+
+    // Identity comes from the signed-in account, and photo upload needs
+    // Firebase Storage (not set up yet) — hide both fields.
+    function hideUnusedFormFields() {
+        if (dom.emailInput) {
+            var emailField = dom.emailInput.closest('.sp-field');
+            if (emailField) emailField.style.display = 'none';
+        }
+        if (dom.uploadArea) {
+            var uploadField = dom.uploadArea.closest('.sp-field');
+            if (uploadField) uploadField.style.display = 'none';
+        }
+    }
+
+    // ========================================
+    // FIRESTORE LOADING
+    // ========================================
+    function loadReviews() {
+        state.loading = true;
+        state.loadError = false;
+        renderReviews();
+
+        var q = fb.query(
+            fb.collection(fb.db, 'reviews'),
+            fb.orderBy('createdAt', 'desc'),
+            fb.limit(MAX_REVIEWS_FETCH)
+        );
+
+        return fb.getDocs(q).then(function (snap) {
+            reviewsData = [];
+            snap.forEach(function (docSnap) {
+                var d = docSnap.data();
+                reviewsData.push({
+                    id: docSnap.id,
+                    rating: d.rating,
+                    title: d.title || '',
+                    content: d.content || '',
+                    name: d.name || 'Anonymous',
+                    date: d.createdAt && d.createdAt.toDate ? d.createdAt.toDate() : new Date(),
+                    verified: !!d.verified,
+                    helpful: d.helpful || 0
+                });
+            });
+            state.loading = false;
+            renderSummary();
+            renderReviews();
+        }).catch(function (err) {
+            console.error('Failed to load reviews:', err);
+            state.loading = false;
+            state.loadError = true;
+            renderReviews();
+        });
+    }
+
+    // Load which reviews the signed-in user has already marked helpful.
+    function loadMyVotes() {
+        votedReviewIds = {};
+        if (!currentUser) {
+            renderReviews();
+            return;
+        }
+        var q = fb.query(
+            fb.collection(fb.db, 'review_votes'),
+            fb.where('uid', '==', currentUser.uid)
+        );
+        fb.getDocs(q).then(function (snap) {
+            snap.forEach(function (docSnap) {
+                votedReviewIds[docSnap.data().reviewId] = true;
+            });
+            renderReviews();
+        }).catch(function (err) {
+            console.warn('Could not load helpful votes:', err);
+        });
     }
 
     // ========================================
@@ -338,8 +157,7 @@
         return html;
     }
 
-    function formatDate(dateString) {
-        var d = new Date(dateString + 'T00:00:00');
+    function formatDate(d) {
         return MONTHS[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear();
     }
 
@@ -354,6 +172,14 @@
     // ========================================
     function renderSummary() {
         var total = reviewsData.length;
+        if (total === 0) {
+            dom.scoreNumber.textContent = '–';
+            dom.scoreStars.innerHTML = generateStarsHTML(0, 18);
+            dom.scoreCount.textContent = 'No reviews yet';
+            dom.distribution.innerHTML = '';
+            return;
+        }
+
         var sum = 0;
         var dist = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
 
@@ -367,7 +193,7 @@
 
         dom.scoreNumber.textContent = avg;
         dom.scoreStars.innerHTML = generateStarsHTML(roundedAvg, 18);
-        dom.scoreCount.textContent = 'Based on ' + total + ' reviews';
+        dom.scoreCount.textContent = 'Based on ' + total + ' review' + (total === 1 ? '' : 's');
 
         var distHTML = '';
         for (var star = 5; star >= 1; star--) {
@@ -400,16 +226,16 @@
 
         switch (state.sortBy) {
             case 'recent':
-                sorted.sort(function (a, b) { return b.date.localeCompare(a.date); });
+                sorted.sort(function (a, b) { return b.date - a.date; });
                 break;
             case 'highest':
-                sorted.sort(function (a, b) { return b.rating - a.rating || b.date.localeCompare(a.date); });
+                sorted.sort(function (a, b) { return b.rating - a.rating || b.date - a.date; });
                 break;
             case 'lowest':
-                sorted.sort(function (a, b) { return a.rating - b.rating || b.date.localeCompare(a.date); });
+                sorted.sort(function (a, b) { return a.rating - b.rating || b.date - a.date; });
                 break;
             case 'helpful':
-                sorted.sort(function (a, b) { return b.helpful - a.helpful || b.date.localeCompare(a.date); });
+                sorted.sort(function (a, b) { return b.helpful - a.helpful || b.date - a.date; });
                 break;
         }
 
@@ -425,6 +251,25 @@
     // RENDER REVIEWS
     // ========================================
     function renderReviews() {
+        if (state.loading) {
+            dom.reviewList.innerHTML =
+                '<div class="rv-empty">' +
+                '<p class="rv-empty-title">Loading reviews…</p>' +
+                '</div>';
+            dom.pagination.style.display = 'none';
+            return;
+        }
+
+        if (state.loadError) {
+            dom.reviewList.innerHTML =
+                '<div class="rv-empty">' +
+                '<p class="rv-empty-title">Could not load reviews</p>' +
+                '<p class="rv-empty-text">Please check your connection and refresh the page.</p>' +
+                '</div>';
+            dom.pagination.style.display = 'none';
+            return;
+        }
+
         var filtered = getFilteredSortedReviews();
         var total = filtered.length;
 
@@ -433,7 +278,7 @@
                 '<div class="rv-empty">' +
                 '<div class="rv-empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>' +
                 '<p class="rv-empty-title">No reviews found</p>' +
-                '<p class="rv-empty-text">Try adjusting your filters to see more reviews.</p>' +
+                '<p class="rv-empty-text">Try adjusting your filters, or be the first to write a review.</p>' +
                 '</div>';
             dom.pagination.style.display = 'none';
             return;
@@ -445,20 +290,12 @@
 
         for (var i = 0; i < page.length; i++) {
             var r = page[i];
-            var photosHTML = '';
-            if (r.photos && r.photos.length > 0) {
-                photosHTML = '<div class="rv-card-photos">';
-                for (var p = 0; p < r.photos.length; p++) {
-                    photosHTML += '<button class="rv-card-thumb" data-photo="' + escapeHTML(r.photos[p]) + '" aria-label="View photo"><img src="' + escapeHTML(r.photos[p]) + '" alt="Review photo" loading="lazy"></button>';
-                }
-                photosHTML += '</div>';
-            }
 
             var verifiedHTML = r.verified
                 ? '<span class="rv-card-verified"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Verified Purchase</span>'
                 : '';
 
-            var helpfulActive = state.helpfulClicked[r.id] ? ' active' : '';
+            var helpfulActive = votedReviewIds[r.id] ? ' active' : '';
 
             html += '<article class="rv-card">' +
                 '<div class="rv-card-header">' +
@@ -467,13 +304,12 @@
                 '</div>' +
                 '<h3 class="rv-card-title">' + escapeHTML(r.title) + '</h3>' +
                 '<p class="rv-card-body">' + escapeHTML(r.content) + '</p>' +
-                photosHTML +
                 '<div class="rv-card-footer">' +
                 '<div class="rv-card-author">' +
                 '<span class="rv-card-name">' + escapeHTML(r.name) + '</span>' +
                 verifiedHTML +
                 '</div>' +
-                '<button class="rv-card-helpful' + helpfulActive + '" data-id="' + r.id + '">' +
+                '<button class="rv-card-helpful' + helpfulActive + '" data-id="' + escapeHTML(r.id) + '">' +
                 '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3H14zM7 22H4a2 2 0 01-2-2v-7a2 2 0 012-2h3"/></svg>' +
                 'Helpful (<span class="rv-helpful-count">' + r.helpful + '</span>)' +
                 '</button>' +
@@ -569,25 +405,51 @@
         });
     }
 
+    // ---- Helpful votes (one per user per review, enforced by rules) ----
     function initHelpful() {
         dom.reviewList.addEventListener('click', function (e) {
             var helpfulBtn = e.target.closest('.rv-card-helpful');
             if (!helpfulBtn) return;
 
-            var id = parseInt(helpfulBtn.getAttribute('data-id'));
-            if (state.helpfulClicked[id]) return;
+            var id = helpfulBtn.getAttribute('data-id');
+            if (votedReviewIds[id]) return;
 
-            state.helpfulClicked[id] = true;
-
-            for (var i = 0; i < reviewsData.length; i++) {
-                if (reviewsData[i].id === id) {
-                    reviewsData[i].helpful++;
-                    helpfulBtn.classList.add('active');
-                    var countEl = helpfulBtn.querySelector('.rv-helpful-count');
-                    if (countEl) countEl.textContent = reviewsData[i].helpful;
-                    break;
-                }
+            if (!fb || !currentUser) {
+                // Must be signed in to vote — open the sign-in modal.
+                var profileBtn = document.getElementById('profile-btn');
+                if (profileBtn) profileBtn.click();
+                return;
             }
+
+            votedReviewIds[id] = true; // optimistic
+            helpfulBtn.disabled = true;
+
+            var batch = fb.writeBatch(fb.db);
+            batch.set(fb.doc(fb.db, 'review_votes', currentUser.uid + '_' + id), {
+                uid: currentUser.uid,
+                reviewId: id,
+                createdAt: fb.serverTimestamp()
+            });
+            batch.update(fb.doc(fb.db, 'reviews', id), {
+                helpful: fb.increment(1)
+            });
+
+            batch.commit().then(function () {
+                for (var i = 0; i < reviewsData.length; i++) {
+                    if (reviewsData[i].id === id) {
+                        reviewsData[i].helpful++;
+                        break;
+                    }
+                }
+                helpfulBtn.disabled = false;
+                helpfulBtn.classList.add('active');
+                var countEl = helpfulBtn.querySelector('.rv-helpful-count');
+                if (countEl) countEl.textContent = parseInt(countEl.textContent) + 1;
+            }).catch(function (err) {
+                console.warn('Helpful vote failed:', err);
+                delete votedReviewIds[id];
+                helpfulBtn.disabled = false;
+            });
         });
     }
 
@@ -622,6 +484,16 @@
     // MODAL
     // ========================================
     function openModal() {
+        // Writing a review requires an account.
+        if (!fb || !currentUser) {
+            var profileBtn = document.getElementById('profile-btn');
+            if (profileBtn) profileBtn.click();
+            return;
+        }
+        // Prefill display name from the account.
+        if (dom.nameInput && !dom.nameInput.value && currentUser.displayName) {
+            dom.nameInput.value = currentUser.displayName;
+        }
         dom.modalOverlay.classList.add('active');
         document.body.style.overflow = 'hidden';
         state.modalOpen = true;
@@ -699,94 +571,6 @@
     }
 
     // ========================================
-    // FILE UPLOAD
-    // ========================================
-    var uploadedFiles = [];
-    var MAX_FILES = 4;
-    var MAX_SIZE = 5 * 1024 * 1024;
-
-    function initUpload() {
-        dom.uploadArea.addEventListener('click', function () {
-            dom.uploadInput.click();
-        });
-
-        dom.uploadArea.addEventListener('dragover', function (e) {
-            e.preventDefault();
-            dom.uploadArea.classList.add('drag-over');
-        });
-
-        dom.uploadArea.addEventListener('dragleave', function () {
-            dom.uploadArea.classList.remove('drag-over');
-        });
-
-        dom.uploadArea.addEventListener('drop', function (e) {
-            e.preventDefault();
-            dom.uploadArea.classList.remove('drag-over');
-            handleFiles(e.dataTransfer.files);
-        });
-
-        dom.uploadInput.addEventListener('change', function () {
-            handleFiles(this.files);
-            this.value = '';
-        });
-    }
-
-    function handleFiles(fileList) {
-        var files = Array.prototype.slice.call(fileList);
-
-        for (var i = 0; i < files.length; i++) {
-            if (uploadedFiles.length >= MAX_FILES) break;
-            if (files[i].size > MAX_SIZE) continue;
-            if (!/^(image|video)\//.test(files[i].type)) continue;
-            uploadedFiles.push(files[i]);
-        }
-
-        renderPreviews();
-    }
-
-    function renderPreviews() {
-        dom.uploadPreviews.innerHTML = '';
-
-        for (var i = 0; i < uploadedFiles.length; i++) {
-            (function (file, index) {
-                var div = document.createElement('div');
-                div.className = 'rv-preview-item';
-
-                if (file.type.startsWith('video/')) {
-                    var videoPlaceholder = document.createElement('div');
-                    videoPlaceholder.className = 'rv-preview-video';
-                    videoPlaceholder.textContent = 'Video';
-                    div.appendChild(videoPlaceholder);
-                } else {
-                    var reader = new FileReader();
-                    reader.onload = function (e) {
-                        var img = document.createElement('img');
-                        img.src = e.target.result;
-                        img.alt = 'Upload preview';
-                        div.insertBefore(img, div.firstChild);
-                    };
-                    reader.readAsDataURL(file);
-                }
-
-                var removeBtn = document.createElement('button');
-                removeBtn.className = 'rv-preview-remove';
-                removeBtn.innerHTML = '&times;';
-                removeBtn.setAttribute('aria-label', 'Remove file');
-                removeBtn.addEventListener('click', function (e) {
-                    e.stopPropagation();
-                    uploadedFiles.splice(index, 1);
-                    renderPreviews();
-                });
-                div.appendChild(removeBtn);
-
-                dom.uploadPreviews.appendChild(div);
-            })(uploadedFiles[i], i);
-        }
-
-        dom.uploadArea.style.display = uploadedFiles.length >= MAX_FILES ? 'none' : '';
-    }
-
-    // ========================================
     // FORM VALIDATION & SUBMISSION
     // ========================================
     function clearFormErrors() {
@@ -811,10 +595,9 @@
             clearFormErrors();
 
             var rating = state.selectedRating;
-            var title = document.getElementById('rv-review-title').value.trim();
-            var content = document.getElementById('rv-review-content').value.trim();
-            var name = document.getElementById('rv-review-name').value.trim();
-            var email = document.getElementById('rv-review-email').value.trim();
+            var title = dom.titleInput.value.trim();
+            var content = dom.contentInput.value.trim();
+            var name = dom.nameInput.value.trim();
             var hasError = false;
 
             if (rating === 0) {
@@ -822,34 +605,53 @@
                 dom.starLabel.style.color = '#ef4444';
                 hasError = true;
             }
-            if (!title) {
-                document.getElementById('rv-review-title').classList.add('error');
+            if (!title || title.length > 100) {
+                dom.titleInput.classList.add('error');
                 hasError = true;
             }
-            if (!content) {
-                document.getElementById('rv-review-content').classList.add('error');
+            if (!content || content.length > 2000) {
+                dom.contentInput.classList.add('error');
                 hasError = true;
             }
-            if (!name) {
-                document.getElementById('rv-review-name').classList.add('error');
-                hasError = true;
-            }
-            if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-                document.getElementById('rv-review-email').classList.add('error');
+            if (!name || name.length > 50) {
+                dom.nameInput.classList.add('error');
                 hasError = true;
             }
 
             if (hasError) return;
 
+            if (!fb || !currentUser) {
+                var profileBtn = document.getElementById('profile-btn');
+                if (profileBtn) profileBtn.click();
+                return;
+            }
+
             dom.submitBtn.disabled = true;
             dom.submitBtn.textContent = 'Submitting...';
 
-            setTimeout(function () {
+            fb.addDoc(fb.collection(fb.db, 'reviews'), {
+                uid: currentUser.uid,
+                name: name,
+                rating: rating,
+                title: title,
+                content: content,
+                verified: false,
+                helpful: 0,
+                createdAt: fb.serverTimestamp()
+            }).then(function () {
                 dom.modalForm.style.display = 'none';
                 dom.modalSuccess.classList.remove('hidden');
                 dom.submitBtn.disabled = false;
                 dom.submitBtn.textContent = 'Submit Review';
-            }, 1200);
+                // Refresh the list so the new review appears.
+                loadReviews();
+            }).catch(function (err) {
+                console.error('Review submit failed:', err);
+                dom.submitBtn.disabled = false;
+                dom.submitBtn.textContent = 'Submit Review';
+                dom.starLabel.textContent = 'Could not submit your review. Please try again.';
+                dom.starLabel.style.color = '#ef4444';
+            });
         });
     }
 
@@ -859,15 +661,11 @@
         dom.starLabel.textContent = '';
         dom.starLabel.style.color = '';
 
-        document.getElementById('rv-review-title').value = '';
-        document.getElementById('rv-review-content').value = '';
-        document.getElementById('rv-review-name').value = '';
-        document.getElementById('rv-review-email').value = '';
+        dom.titleInput.value = '';
+        dom.contentInput.value = '';
+        dom.nameInput.value = '';
 
         clearFormErrors();
-
-        uploadedFiles = [];
-        renderPreviews();
 
         dom.modalForm.style.display = '';
         dom.modalSuccess.classList.add('hidden');
@@ -878,6 +676,7 @@
     // ========================================
     document.addEventListener('DOMContentLoaded', function () {
         cacheDom();
+        hideUnusedFormFields();
         renderSummary();
         renderReviews();
         initSortAndFilter();
@@ -886,8 +685,16 @@
         initPhotoLightbox();
         initModal();
         initStarSelector();
-        initUpload();
         initFormValidation();
+
+        window.hawaaFirebaseReady.then(function (api) {
+            fb = api;
+            loadReviews();
+            fb.onAuthStateChanged(fb.auth, function (user) {
+                currentUser = user;
+                loadMyVotes();
+            });
+        });
     });
 
 })();
