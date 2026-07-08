@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Your Hawaa account - manage your profile and reviews.">
+    <meta name="robots" content="noindex">
+
+    <title>My Account - Hawaa | The Clean Air Company</title>
+
+    <!-- Google Fonts - Outfit + Playfair Display -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" href="public/images/favicon.ico" type="image/x-icon">
+</head>
+<body class="account-page">
+    <!-- Header -->
+    <header class="header scrolled" id="header">
+        <div class="header-container">
+            <a href="index.html" class="logo">
+                <picture>
+                <source media="(min-width: 768px)" srcset="public/images/web_header_desktop_light.svg">
+                <img src="public/images/web_header_mobile_light.svg" class="logo-img" alt="Hawaa" draggable="false">
+            </picture>
+            </a>
+            <div class="header-actions">
+                <button class="header-profile-btn" id="profile-btn" aria-label="Account">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+                        <circle cx="12" cy="7" r="4"/>
+                    </svg>
+                </button>
+                <a href="buy.html" class="header-cart-btn" id="cart-btn" aria-label="Cart">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+                        <line x1="3" y1="6" x2="21" y2="6"/>
+                        <path d="M16 10a4 4 0 01-8 0"/>
+                    </svg>
+                    <span class="cart-badge" id="cart-badge"></span>
+                </a>
+                <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Expandable Menu -->
+    <div class="menu-overlay" id="menu-overlay"></div>
+    <div class="menu-panel" id="menu-panel">
+        <div class="menu-panel-inner">
+            <nav class="menu-nav">
+                <a href="edge.html" class="menu-nav-item">Hawaa Edge</a>
+                <a href="blogs.html" class="menu-nav-item">Blog</a>
+                <a href="about.html" class="menu-nav-item">About Us</a>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Sign In Modal -->
+    <div class="signin-overlay" id="signin-overlay">
+        <div class="signin-modal" id="signin-modal">
+            <div class="signin-drag-handle"></div>
+            <button class="signin-close" id="signin-close" aria-label="Close">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"/>
+                    <line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+            </button>
+
+            <!-- Phone Number Step -->
+            <div class="signin-step" id="signin-phone-step">
+                <h2 class="signin-title">Sign in</h2>
+                <p class="signin-subtitle">Enter your mobile number to continue</p>
+                <div class="phone-input-group" id="signin-phone-group">
+                    <span class="phone-prefix">+91</span>
+                    <span class="phone-prefix-divider"></span>
+                    <input type="tel" class="phone-input" id="signin-phone" maxlength="10" placeholder="Mobile number" inputmode="numeric" autocomplete="tel-national">
+                </div>
+                <p class="signin-error" id="signin-phone-error"></p>
+                <button class="signin-btn" id="signin-send-otp">Send OTP</button>
+            </div>
+
+            <!-- OTP Verification Step -->
+            <div class="signin-step hidden" id="signin-otp-step">
+                <h2 class="signin-title">Verify OTP</h2>
+                <p class="signin-subtitle">Enter the 6-digit code sent to <span class="signin-phone-display" id="signin-phone-display"></span></p>
+                <div class="otp-input-group">
+                    <input type="text" class="otp-input" maxlength="1" inputmode="numeric" autocomplete="one-time-code">
+                    <input type="text" class="otp-input" maxlength="1" inputmode="numeric">
+                    <input type="text" class="otp-input" maxlength="1" inputmode="numeric">
+                    <input type="text" class="otp-input" maxlength="1" inputmode="numeric">
+                    <input type="text" class="otp-input" maxlength="1" inputmode="numeric">
+                    <input type="text" class="otp-input" maxlength="1" inputmode="numeric">
+                </div>
+                <p class="signin-error" id="signin-otp-error"></p>
+                <button class="signin-btn" id="signin-verify">Verify</button>
+                <div class="signin-actions">
+                    <button class="signin-back" id="signin-back">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M19 12H5"/>
+                            <path d="M12 19l-7-7 7-7"/>
+                        </svg>
+                        Change number
+                    </button>
+                    <button class="signin-resend" id="signin-resend">Resend OTP</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================
+         SECTION: ACCOUNT
+    ======================================== -->
+    <main class="account-main">
+        <!-- Signed-out state -->
+        <section class="account-signedout hidden" id="account-signedout">
+            <div class="account-signedout-card">
+                <div class="account-signedout-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+                        <circle cx="12" cy="7" r="4"/>
+                    </svg>
+                </div>
+                <h1 class="account-signedout-title">Sign in to your account</h1>
+                <p class="account-signedout-text">Access your profile, manage your details and see your reviews.</p>
+                <button class="signin-btn account-signedout-btn" id="account-signin-btn">Sign in</button>
+            </div>
+        </section>
+
+        <!-- Signed-in state -->
+        <section class="account-content hidden" id="account-content">
+            <div class="account-card">
+                <div class="account-avatar" id="account-avatar">?</div>
+                <div class="account-identity">
+                    <div class="account-name-row" id="account-name-row">
+                        <h1 class="account-name" id="account-name">&nbsp;</h1>
+                        <button class="account-edit-btn" id="account-edit-btn" aria-label="Edit name">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M17 3a2.83 2.83 0 114 4L7.5 20.5 2 22l1.5-5.5L17 3z"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="account-name-edit hidden" id="account-name-edit">
+                        <input type="text" class="phone-input account-name-input" id="account-name-input" maxlength="100" placeholder="Your name">
+                        <button class="signin-btn account-name-save" id="account-name-save">Save</button>
+                        <button class="account-name-cancel" id="account-name-cancel">Cancel</button>
+                    </div>
+                    <p class="account-detail" id="account-email"></p>
+                    <p class="account-detail" id="account-phone"></p>
+                    <p class="account-since" id="account-since"></p>
+                    <p class="signin-error" id="account-error"></p>
+                </div>
+            </div>
+
+            <div class="account-section">
+                <h2 class="account-section-title">My Reviews</h2>
+                <div class="account-reviews" id="account-reviews">
+                    <p class="account-empty">Loading…</p>
+                </div>
+            </div>
+
+            <div class="account-actions">
+                <button class="account-signout-btn" id="account-signout-btn">Sign out</button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-bottom" style="border-top:none;">
+                <p class="footer-copyright">&copy; 2025 Hawaa. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script type="module" src="js/firebase.js"></script>
+    <script src="js/nav.js"></script>
+    <script src="js/account.js"></script>
+</body>
+</html>
