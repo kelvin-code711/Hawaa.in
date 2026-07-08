@@ -1124,7 +1124,8 @@ if (newsletterForm) {
         window.hawaaBackend.subscribeNewsletter(email).then(function() {
             form.reset();
             showResult('Subscribed ✓');
-        }).catch(function() {
+        }).catch(function(err) {
+            console.error('Newsletter signup failed:', err);
             showResult('Try again later');
         });
     });

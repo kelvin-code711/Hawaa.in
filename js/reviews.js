@@ -865,7 +865,8 @@
                 dom.modalForm.style.display = 'none';
                 dom.modalSuccess.classList.remove('hidden');
                 restoreButton();
-            }).catch(function () {
+            }).catch(function (err) {
+                console.error('Review submit failed:', err);
                 restoreButton();
                 alert('Something went wrong. Please try again in a moment.');
             });

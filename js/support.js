@@ -98,7 +98,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 form.style.display = 'none';
                 successEl.classList.remove('hidden');
                 restoreButton();
-            }).catch(function() {
+            }).catch(function(err) {
+                console.error('Support ticket submit failed:', err);
                 restoreButton();
                 alert('Something went wrong. Please try again in a moment.');
             });
