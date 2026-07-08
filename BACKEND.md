@@ -1,68 +1,87 @@
 # Hawaa.in Backend (Firebase)
 
-The site is static; the backend is Firebase (project `hawaa-in`). Phase 1 is
-live in the code: the three site forms write to Cloud Firestore directly from
-the browser, secured by `firestore.rules`.
+The site is static; the backend is Firebase project **`hawaa-air-27548`**
+("Hawaa-Air", Blaze plan, project number 994326211415). This project is
+**shared with the air-purifier device backend** — its `users` (phone-keyed)
+and `device_owners` collections are server-only and must never be exposed to
+web clients. All website collections are separate.
 
 ## What's wired up
 
 | Feature | Page | Firestore collection |
 | --- | --- | --- |
+| Sign in / sign up (phone OTP + email/password) | every page (header modal) | `web_users` profile doc per user |
+| Account page | `account.html` | reads `web_users`, own `reviews` |
+| Review submissions (sign-in required) | `reviews.html` | `reviews` (created as `status: "pending"`) |
+| Review display | `reviews.html` | `reviews` where `status == "approved"` |
+| "Helpful" votes (one per user per review) | `reviews.html` | `review_votes` + counter on the review |
 | Contact / support form | `support.html` | `supportTickets` |
-| Review submissions | `reviews.html` | `reviews` (created as `status: "pending"`) |
-| Newsletter signup | `index.html` footer | `newsletterSubscribers` (doc ID = email, so no duplicates) |
+| Newsletter signup | `index.html` footer | `newsletterSubscribers` (doc ID = email) |
 
-`js/firebase.js` initializes the Firebase SDK (loaded from Google's CDN — no
-build step) and exposes `window.hawaaBackend`, which the existing page scripts
-(`js/support.js`, `js/reviews.js`, `js/script.js`) call on form submit.
+`js/firebase.js` initializes the Firebase SDK (CDN, no build step) and exposes:
+
+- `window.hawaaFirebase` + `window.hawaaFirebaseReady` — Auth + Firestore
+  surface used by `js/nav.js` (sign-in modal), `js/reviews.js`, `js/account.js`.
+- `window.hawaaBackend` — form helpers used by `js/support.js` (support
+  tickets) and `js/script.js` (newsletter).
 
 The Firebase web config in `js/firebase.js` is a public client identifier —
-it is safe to commit. All protection comes from the Firestore rules.
+safe to commit. All protection comes from `firestore.rules`.
 
-## One-time setup (required before forms work)
+## Authentication
 
-1. In the [Firebase console](https://console.firebase.google.com/project/hawaa-in),
-   open **Build → Firestore Database** and click **Create database**.
-   Choose **Production mode** and the **asia-south1 (Mumbai)** region.
-2. Deploy the security rules — either:
-   - **Console (no install):** Firestore → **Rules** tab → paste the contents
-     of `firestore.rules` → **Publish**, or
-   - **CLI:**
-     ```bash
-     npm install -g firebase-tools
-     firebase login
-     firebase deploy --only firestore:rules
-     ```
+- **Providers:** Email/Password and Phone (SMS region allowlist: IN).
+- **Test phone number:** `+91 88661 19918` → OTP `123456` (no SMS sent).
+  Configured in Firebase console → Authentication → Sign-in method.
+- On sign-in, `js/nav.js` upserts `web_users/{uid}` (uid, displayName,
+  email/phone, createdAt, lastLoginAt) and redirects to `account.html`.
 
-Until the rules are published, all form submissions are rejected (production
-mode denies everything by default).
+## Reviews moderation
 
-## How the rules protect the data
+New reviews arrive as `status: "pending"` and are invisible to the public.
+To publish: Firebase console → Firestore → `reviews` → change `status` to
+`"approved"`. You can also set `verified: true` to show the "Verified
+Purchase" badge (clients can never set this themselves). Authors can see
+their own pending reviews on the account page.
 
-- Anonymous visitors can only **create** documents with a strictly validated
-  shape (field allowlist, string length caps, valid email format, rating 1–5,
-  server-set timestamps). They can never read, edit, or delete submissions —
-  so customer emails and support messages stay private.
-- New reviews must arrive as `status: "pending"`. Only documents you flip to
-  `status: "approved"` (in the console) are publicly readable — this is ready
-  for Phase 2, when the reviews page will load approved reviews live.
+The original 24 marketing reviews are seeded as `seed-01`…`seed-24`
+(already approved).
 
-## Moderating / viewing submissions
+## Security rules
 
-Open Firestore → **Data** in the console:
+`firestore.rules` is deployed to the project. Highlights:
 
-- `supportTickets` — read and respond to customer messages.
-- `reviews` — change `status` from `pending` to `approved` to publish
-  (takes effect once Phase 2 wires the reviews page to Firestore).
+- Anonymous visitors: create-only on `supportTickets` and
+  `newsletterSubscribers` with strict shape validation; read approved
+  `reviews`.
+- Signed-in users: create `pending` reviews (strict schema, `verified`
+  locked to false), one Helpful vote per review enforced atomically
+  (`getAfter` counter pattern), owner-only `web_users` profiles.
+- Everything else — including the device backend's `users` and
+  `device_owners` — is denied to clients.
+
+Deploy changes with `npx -y firebase-tools@latest deploy --only firestore:rules`
+(run `firebase login --reauth` first if credentials expired).
+
+## Viewing submissions
+
+Firebase console → Firestore → Data:
+
+- `supportTickets` — customer messages (client can never read these).
+- `reviews` — moderate `pending` → `approved`.
 - `newsletterSubscribers` — export emails for your mailing tool.
 
 ## Roadmap
 
-- **Phase 2 — Live reviews:** render approved Firestore reviews in the
-  existing carousel/list UI instead of the hardcoded array in `js/reviews.js`.
-- **Phase 3 — Orders & payment:** persist the cart, write orders to
-  Firestore, and add a Razorpay checkout via a Cloud Function (requires the
-  Blaze plan; everything in Phase 1–2 runs on the free Spark plan).
-- **Phase 4 — Hosting & email:** deploy via `firebase deploy --only hosting`
-  (`firebase.json` is already configured) and add the "Trigger Email"
-  extension for automatic notifications.
+- **Orders & payment:** persist the cart, write orders to Firestore, and add
+  a Razorpay checkout via a Cloud Function (Blaze plan is already active).
+- **Review photos:** needs Firebase Storage (upload UI exists but is hidden).
+- **Hosting & email:** deploy via `firebase deploy --only hosting`
+  (`firebase.json` is configured) and add the "Trigger Email" extension for
+  automatic notifications.
+
+## Historical note
+
+An earlier iteration (merged PRs #85/#86) pointed the forms at a separate
+`hawaa-in` Firebase project with anonymous email-based reviews. Everything
+now lives in `hawaa-air-27548`; the `hawaa-in` project is unused by the site.

@@ -1,30 +1,92 @@
 // ========================================
-// FIREBASE BACKEND (Firestore)
-// Loaded as an ES module on pages that submit data.
-// Exposes window.hawaaBackend for the classic page scripts.
+// FIREBASE (Hawaa Web) — auth + Firestore
+// Project: hawaa-air-27548
+// Loaded as <script type="module"> on every page.
+// Exposes:
+//   window.hawaaFirebase — auth + Firestore SDK surface (nav.js,
+//     reviews.js, account.js), plus window.hawaaFirebaseReady promise
+//   window.hawaaBackend  — form-submission helpers kept for the
+//     existing page scripts (support.js, script.js)
 // ========================================
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js';
+
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js';
+import {
+    getAuth,
+    onAuthStateChanged,
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    sendPasswordResetEmail,
+    signInWithPhoneNumber,
+    RecaptchaVerifier,
+    updateProfile,
+    signOut
+} from 'https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js';
 import {
     getFirestore,
-    collection,
-    addDoc,
     doc,
+    getDoc,
     setDoc,
-    serverTimestamp
-} from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
+    addDoc,
+    collection,
+    query,
+    where,
+    orderBy,
+    limit,
+    getDocs,
+    serverTimestamp,
+    writeBatch,
+    increment
+} from 'https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js';
 
 const firebaseConfig = {
-    apiKey: 'AIzaSyAhvY_P0mKNZZfcfJxmB7lEgVwgrTcZGrk',
-    authDomain: 'hawaa-in.firebaseapp.com',
-    projectId: 'hawaa-in',
-    storageBucket: 'hawaa-in.firebasestorage.app',
-    messagingSenderId: '928781353715',
-    appId: '1:928781353715:web:4e93f009bd3d6120126d86',
-    measurementId: 'G-XYT8T267RC'
+    apiKey: 'AIzaSyB9KznUPIvHKwLk7Vo9H05jBYiE8MgrPzk',
+    authDomain: 'hawaa-air-27548.firebaseapp.com',
+    projectId: 'hawaa-air-27548',
+    storageBucket: 'hawaa-air-27548.firebasestorage.app',
+    messagingSenderId: '994326211415',
+    appId: '1:994326211415:web:36288cebafe81e61dcec12'
 };
 
 const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+auth.languageCode = 'en';
 const db = getFirestore(app);
+
+// ---- Auth + Firestore surface for nav.js / reviews.js / account.js ----
+const api = {
+    app,
+    auth,
+    db,
+    onAuthStateChanged,
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    sendPasswordResetEmail,
+    signInWithPhoneNumber,
+    RecaptchaVerifier,
+    updateProfile,
+    signOut,
+    doc,
+    getDoc,
+    setDoc,
+    addDoc,
+    collection,
+    query,
+    where,
+    orderBy,
+    limit,
+    getDocs,
+    serverTimestamp,
+    writeBatch,
+    increment
+};
+
+window.hawaaFirebase = api;
+if (window.__hawaaFirebaseResolve) {
+    window.__hawaaFirebaseResolve(api);
+}
+document.dispatchEvent(new CustomEvent('hawaa-firebase-ready'));
+
+// ---- Form helpers for the existing page scripts ----
 
 // Firestore queues writes while offline instead of failing, so cap how
 // long a form waits before telling the user something went wrong.
@@ -50,20 +112,6 @@ window.hawaaBackend = {
             email: data.email,
             message: data.message,
             page: window.location.pathname,
-            createdAt: serverTimestamp()
-        }));
-    },
-
-    // reviews.html modal form -> reviews/{autoId}, held for moderation
-    submitReview: function (data) {
-        return withTimeout(addDoc(collection(db, 'reviews'), {
-            rating: data.rating,
-            title: data.title,
-            content: data.content,
-            name: data.name,
-            email: data.email,
-            status: 'pending',
-            helpfulCount: 0,
             createdAt: serverTimestamp()
         }));
     },

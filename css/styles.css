@@ -8718,3 +8718,312 @@ body.tos-page .header-profile-btn {
     outline: 2px solid var(--accent-strong);
     outline-offset: 2px;
 }
+
+/* Signed-in indicator (dot on the profile icon) */
+.header-profile-btn { position: relative; }
+
+.header-profile-btn.signed-in::after {
+    content: '';
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #059669;
+    border: 1.5px solid white;
+}
+
+/* Hidden helper for injected sign-in modal fields */
+.signin-modal .phone-input-group.hidden { display: none; }
+
+/* ========================================
+   ACCOUNT PAGE
+======================================== */
+body.account-page {
+    background: #f9fafb;
+}
+
+.account-main {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 120px 20px 80px;
+    min-height: 70vh;
+    font-family: 'Outfit', sans-serif;
+}
+
+/* Signed-out card */
+.account-signedout-card {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 20px;
+    padding: 48px 32px;
+    text-align: center;
+}
+
+.account-signedout-icon {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 20px;
+    border-radius: 50%;
+    background: #f3f4f6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6b7280;
+}
+
+.account-signedout-icon svg {
+    width: 30px;
+    height: 30px;
+}
+
+.account-signedout-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 8px;
+}
+
+.account-signedout-text {
+    font-size: 15px;
+    color: #6b7280;
+    margin-bottom: 24px;
+}
+
+.account-signedout-btn {
+    max-width: 240px;
+    margin: 0 auto;
+}
+
+/* Profile card */
+.account-card {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 20px;
+    padding: 32px;
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.account-avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: #111827;
+    color: white;
+    font-size: 26px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.account-identity {
+    flex: 1;
+    min-width: 0;
+}
+
+.account-name-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.account-name {
+    font-size: 22px;
+    font-weight: 600;
+    color: #111827;
+    overflow-wrap: anywhere;
+}
+
+.account-edit-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #9ca3af;
+    padding: 4px;
+    display: flex;
+    transition: color 0.2s ease;
+}
+
+.account-edit-btn:hover {
+    color: #0891b2;
+}
+
+.account-edit-btn svg {
+    width: 16px;
+    height: 16px;
+}
+
+.account-name-edit {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+}
+
+.account-name-edit.hidden,
+.account-name-row.hidden,
+.account-signedout.hidden,
+.account-content.hidden {
+    display: none;
+}
+
+.account-name-input {
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 10px 14px;
+    flex: 1;
+    min-width: 180px;
+}
+
+.account-name-save {
+    width: auto;
+    padding: 10px 20px;
+    margin: 0;
+}
+
+.account-name-cancel {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #6b7280;
+    font-family: 'Outfit', sans-serif;
+    font-size: 14px;
+}
+
+.account-detail {
+    font-size: 15px;
+    color: #4b5563;
+    margin-top: 6px;
+}
+
+.account-since {
+    font-size: 13px;
+    color: #9ca3af;
+    margin-top: 10px;
+}
+
+/* Sections */
+.account-section {
+    margin-top: 28px;
+}
+
+.account-section-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 12px;
+}
+
+.account-reviews {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.account-review-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 20px;
+    text-decoration: none;
+    border-bottom: 1px solid #f3f4f6;
+    transition: background 0.15s ease;
+}
+
+.account-review-row:last-child {
+    border-bottom: none;
+}
+
+.account-review-row:hover {
+    background: #f9fafb;
+}
+
+.account-review-stars {
+    display: flex;
+    gap: 1px;
+    flex-shrink: 0;
+}
+
+.account-review-title {
+    flex: 1;
+    font-size: 14px;
+    color: #111827;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.account-review-date {
+    font-size: 12px;
+    color: #9ca3af;
+    flex-shrink: 0;
+}
+
+.account-empty {
+    padding: 20px;
+    font-size: 14px;
+    color: #6b7280;
+}
+
+.account-empty a {
+    color: #0891b2;
+}
+
+/* Sign out */
+.account-actions {
+    margin-top: 28px;
+}
+
+.account-signout-btn {
+    width: 100%;
+    padding: 14px;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    color: #dc2626;
+    font-family: 'Outfit', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.account-signout-btn:hover {
+    background: #fef2f2;
+    border-color: #fecaca;
+}
+
+@media (max-width: 480px) {
+    .account-main {
+        padding: 100px 16px 60px;
+    }
+
+    .account-card {
+        padding: 24px 20px;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .account-name-row {
+        justify-content: center;
+    }
+}
+
+/* Pending-moderation chip on account "My Reviews" rows */
+.account-review-pending {
+    flex-shrink: 0;
+    font-size: 11px;
+    font-weight: 500;
+    color: #b45309;
+    background: #fef3c7;
+    border-radius: 999px;
+    padding: 2px 10px;
+}

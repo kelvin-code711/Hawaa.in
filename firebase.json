@@ -14,5 +14,10 @@
       "**/*.md"
     ],
     "cleanUrls": true
+  },
+  "auth": {
+    "providers": {
+      "emailPassword": true
+    }
   }
 }
