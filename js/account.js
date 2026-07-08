@@ -24,6 +24,7 @@
     var sinceEl = document.getElementById('account-since');
     var errorEl = document.getElementById('account-error');
     var reviewsEl = document.getElementById('account-reviews');
+    var ordersEl = document.getElementById('account-orders');
     var signoutBtn = document.getElementById('account-signout-btn');
 
     var MONTHS = ['January', 'February', 'March', 'April', 'May', 'June',
@@ -70,6 +71,53 @@
         }).catch(function () { /* non-blocking */ });
 
         loadMyReviews(user);
+        loadMyOrders(user);
+    }
+
+    function orderItemsLabel(d) {
+        var parts = [];
+        var purifiers = (d.qtyPurifierOnetime || 0) + (d.qtyPurifierSubscribe || 0);
+        if (purifiers > 0) parts.push(purifiers + '× Hawaa Edge');
+        if (d.qtyFilter > 0) parts.push(d.qtyFilter + '× Filter');
+        return parts.join(' + ') || 'Order';
+    }
+
+    function loadMyOrders(user) {
+        if (!ordersEl) return;
+        var q = fb.query(fb.collection(fb.db, 'orders'), fb.where('uid', '==', user.uid));
+        fb.getDocs(q).then(function (snap) {
+            var items = [];
+            snap.forEach(function (docSnap) {
+                var d = docSnap.data();
+                items.push({
+                    label: orderItemsLabel(d),
+                    total: d.total || 0,
+                    status: d.status || 'placed',
+                    date: d.createdAt && d.createdAt.toDate ? d.createdAt.toDate() : new Date()
+                });
+            });
+            items.sort(function (a, b) { return b.date - a.date; });
+
+            if (items.length === 0) {
+                ordersEl.innerHTML = '<p class="account-empty">No orders yet. <a href="buy.html">Shop the Hawaa Edge</a>.</p>';
+                return;
+            }
+
+            var html = '';
+            for (var i = 0; i < items.length; i++) {
+                var o = items[i];
+                html += '<div class="account-order-row">' +
+                    '<span class="account-order-items">' + escapeHTML(o.label) + '</span>' +
+                    '<span class="account-order-total">₹' + o.total.toLocaleString('en-IN') + '</span>' +
+                    '<span class="account-order-status ' + escapeHTML(o.status) + '">' + escapeHTML(o.status) + '</span>' +
+                    '<span class="account-order-date">' + o.date.toLocaleDateString('en-IN', { year: 'numeric', month: 'short', day: 'numeric' }) + '</span>' +
+                    '</div>';
+            }
+            ordersEl.innerHTML = html;
+        }).catch(function (err) {
+            console.warn('Could not load orders:', err);
+            ordersEl.innerHTML = '<p class="account-empty">Could not load your orders.</p>';
+        });
     }
 
     function renderSignedOut() {

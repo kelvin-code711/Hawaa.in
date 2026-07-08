@@ -209,6 +209,63 @@ service cloud.firestore {
     }
 
     // ===============================================================
+    // Domain Validators — orders (Cash on Delivery)
+    //
+    // Fixed catalog prices are enforced here so a tampered client can
+    // never change what an order costs:
+    //   purifier one-time ₹5999 | purifier subscription ₹5499 |
+    //   replacement filter ₹1499 | GST 18% (round half-up) | free delivery
+    // ===============================================================
+
+    function isValidOrderAddress(a) {
+      return a is map &&
+        a.keys().hasAll(['name', 'phone', 'line1', 'city', 'state', 'pincode']) &&
+        a.keys().hasOnly(['name', 'phone', 'line1', 'line2', 'city', 'state', 'pincode']) &&
+        a.name is string && a.name.size() >= 1 && a.name.size() <= 100 &&
+        a.phone is string && a.phone.matches('^\\+91[6-9][0-9]{9}$') &&
+        a.line1 is string && a.line1.size() >= 1 && a.line1.size() <= 200 &&
+        (!('line2' in a) || (a.line2 is string && a.line2.size() >= 1 && a.line2.size() <= 200)) &&
+        a.city is string && a.city.size() >= 1 && a.city.size() <= 100 &&
+        a.state is string && a.state.size() >= 1 && a.state.size() <= 100 &&
+        a.pincode is string && a.pincode.matches('^[1-9][0-9]{5}$');
+    }
+
+    function isValidQty(q) {
+      return q is int && q >= 0 && q <= 10;
+    }
+
+    function isValidNewOrder(data) {
+      return data.keys().hasAll(['uid', 'qtyPurifierOnetime', 'qtyPurifierSubscribe', 'qtyFilter', 'subtotal', 'gst', 'total', 'address', 'paymentMethod', 'status', 'createdAt']) &&
+        data.keys().hasOnly(['uid', 'qtyPurifierOnetime', 'qtyPurifierSubscribe', 'qtyFilter', 'filterInterval', 'subtotal', 'gst', 'total', 'address', 'paymentMethod', 'status', 'createdAt']) &&
+        data.uid == request.auth.uid &&
+        isValidQty(data.qtyPurifierOnetime) &&
+        isValidQty(data.qtyPurifierSubscribe) &&
+        isValidQty(data.qtyFilter) &&
+        (data.qtyPurifierOnetime + data.qtyPurifierSubscribe + data.qtyFilter) >= 1 &&
+        (!('filterInterval' in data) || (data.filterInterval is int && data.filterInterval in [5, 6])) &&
+        data.subtotal is int &&
+        data.subtotal == data.qtyPurifierOnetime * 5999 + data.qtyPurifierSubscribe * 5499 + data.qtyFilter * 1499 &&
+        data.gst is int &&
+        data.gst == (data.subtotal * 18 + 50) / 100 &&
+        data.total is int &&
+        data.total == data.subtotal + data.gst &&
+        isValidOrderAddress(data.address) &&
+        data.paymentMethod == 'cod' &&
+        data.status == 'placed' &&
+        isServerTime(data.createdAt);
+    }
+
+    // ===============================================================
+    // orders — sign-in required; owners read their own; status changes
+    // happen only from the console / privileged server code
+    // ===============================================================
+    match /orders/{orderId} {
+      allow read: if isAuthenticated() && resource.data.uid == request.auth.uid;
+      allow create: if isAuthenticated() && isValidNewOrder(request.resource.data);
+      allow update, delete: if false;
+    }
+
+    // ===============================================================
     // Default deny: everything not matched above is inaccessible.
     // This keeps the device backend's collections (users, device_owners)
     // server-only.

@@ -20,8 +20,20 @@
 
     var FILTER_PRICE = 1499;
 
-    // Cart state
+    // Cart state, persisted across visits
+    var CART_STORAGE_KEY = 'hawaa-cart';
     var cart = []; // Array of { id, name, variant, price, qty, img }
+
+    try {
+        var savedCart = JSON.parse(localStorage.getItem(CART_STORAGE_KEY) || '[]');
+        if (Array.isArray(savedCart)) cart = savedCart;
+    } catch (e) { /* corrupted storage — start empty */ }
+
+    function saveCart() {
+        try {
+            localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
+        } catch (e) { /* storage unavailable */ }
+    }
 
     // ========================================
     // DOM ELEMENTS
@@ -91,6 +103,14 @@
     // ========================================
     function formatPrice(amount) {
         return '\u20B9' + amount.toLocaleString('en-IN');
+    }
+
+    // 18% GST, round half-up in pure integer math \u2014 MUST stay identical
+    // to the arithmetic in firestore.rules, which re-validates order
+    // amounts server-side (float math like subtotal * 0.18 can disagree
+    // with the rules on exact .5 boundaries).
+    function gstOf(subtotal) {
+        return Math.floor((subtotal * 18 + 50) / 100);
     }
 
     // ========================================
@@ -328,6 +348,7 @@
     }
 
     function updateCartUI() {
+        saveCart();
         var count = getCartCount();
 
         // Update badge
@@ -420,7 +441,7 @@
 
     function updatePriceBreakdown() {
         var subtotal = getSubtotal();
-        var gst = Math.round(subtotal * 0.18);
+        var gst = gstOf(subtotal);
         var delivery = 0;
         var shipping = 0;
         var total = subtotal + gst + delivery + shipping;
@@ -475,6 +496,8 @@
             cartOverlay.classList.remove('active');
             document.body.style.overflow = '';
         }
+        // Reset to the items view for next open (defined in checkout section).
+        if (typeof showCartView === 'function') showCartView();
     }
 
     if (cartBtn) {
@@ -491,6 +514,186 @@
             if (e.target === cartOverlay) {
                 closeCart();
             }
+        });
+    }
+
+    // ========================================
+    // CHECKOUT (Cash on Delivery -> Firestore)
+    // ========================================
+    var checkoutBtn = document.getElementById('cart-checkout-btn');
+    var checkoutView = document.getElementById('checkout-view');
+    var checkoutBack = document.getElementById('checkout-back');
+    var checkoutForm = document.getElementById('checkout-form');
+    var checkoutError = document.getElementById('checkout-error');
+    var checkoutTotal = document.getElementById('checkout-total');
+    var placeBtn = document.getElementById('checkout-place-btn');
+    var successView = document.getElementById('order-success-view');
+    var successId = document.getElementById('order-success-id');
+    var successDone = document.getElementById('order-success-done');
+    var cartBody = document.getElementById('cart-body');
+
+    function showCartView() {
+        if (cartBody) cartBody.classList.remove('hidden');
+        if (cartFooter) cartFooter.classList.remove('hidden');
+        if (checkoutView) checkoutView.classList.add('hidden');
+        if (successView) successView.classList.add('hidden');
+    }
+
+    function showCheckoutView() {
+        if (cartBody) cartBody.classList.add('hidden');
+        if (cartFooter) cartFooter.classList.add('hidden');
+        if (successView) successView.classList.add('hidden');
+        if (checkoutView) checkoutView.classList.remove('hidden');
+
+        var subtotal = getSubtotal();
+        var total = subtotal + gstOf(subtotal);
+        if (checkoutTotal) checkoutTotal.textContent = formatPrice(total);
+        if (checkoutError) checkoutError.textContent = '';
+
+        // Prefill from the signed-in account where possible.
+        var fb = window.hawaaFirebase;
+        var user = fb && fb.auth.currentUser;
+        var nameInput = document.getElementById('co-name');
+        var phoneInput = document.getElementById('co-phone');
+        if (user && nameInput && !nameInput.value && user.displayName) nameInput.value = user.displayName;
+        if (user && phoneInput && !phoneInput.value && user.phoneNumber) {
+            phoneInput.value = user.phoneNumber.replace(/^\+91/, '');
+        }
+    }
+
+    function showSuccessView(orderId) {
+        if (cartBody) cartBody.classList.add('hidden');
+        if (cartFooter) cartFooter.classList.add('hidden');
+        if (checkoutView) checkoutView.classList.add('hidden');
+        if (successView) successView.classList.remove('hidden');
+        if (successId) successId.textContent = orderId;
+    }
+
+    if (checkoutBtn) {
+        checkoutBtn.addEventListener('click', function() {
+            if (cart.length === 0) return;
+            var fb = window.hawaaFirebase;
+            if (!fb || !fb.auth.currentUser) {
+                // Ordering needs an account — open the sign-in modal.
+                closeCart();
+                var profileBtn = document.getElementById('profile-btn');
+                if (profileBtn) profileBtn.click();
+                return;
+            }
+            showCheckoutView();
+        });
+    }
+
+    if (checkoutBack) {
+        checkoutBack.addEventListener('click', showCartView);
+    }
+
+    if (successDone) {
+        successDone.addEventListener('click', function() {
+            closeCart();
+            showCartView();
+        });
+    }
+
+    function checkoutFieldError(id) {
+        var el = document.getElementById(id);
+        if (el) el.classList.add('error');
+        return true;
+    }
+
+    function placeOrder() {
+        var fb = window.hawaaFirebase;
+        if (!fb || !fb.auth.currentUser) return;
+
+        ['co-name', 'co-phone', 'co-line1', 'co-line2', 'co-city', 'co-state', 'co-pincode'].forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) el.classList.remove('error');
+        });
+
+        var name = document.getElementById('co-name').value.trim();
+        var phone = document.getElementById('co-phone').value.replace(/\D/g, '');
+        var line1 = document.getElementById('co-line1').value.trim();
+        var line2 = document.getElementById('co-line2').value.trim();
+        var city = document.getElementById('co-city').value.trim();
+        var stateVal = document.getElementById('co-state').value.trim();
+        var pincode = document.getElementById('co-pincode').value.trim();
+
+        var hasError = false;
+        if (!name) hasError = checkoutFieldError('co-name');
+        if (!/^[6-9][0-9]{9}$/.test(phone)) hasError = checkoutFieldError('co-phone');
+        if (!line1) hasError = checkoutFieldError('co-line1');
+        if (!city) hasError = checkoutFieldError('co-city');
+        if (!stateVal) hasError = checkoutFieldError('co-state');
+        if (!/^[1-9][0-9]{5}$/.test(pincode)) hasError = checkoutFieldError('co-pincode');
+        if (hasError) {
+            if (checkoutError) checkoutError.textContent = 'Please fill the highlighted fields correctly.';
+            return;
+        }
+
+        // Quantities per SKU — the security rules recompute and verify
+        // every amount from these, so tampering can't change the price.
+        var qtyOnetime = 0, qtySubscribe = 0, qtyFilter = 0;
+        for (var i = 0; i < cart.length; i++) {
+            if (cart[i].id === 'purifier-onetime') qtyOnetime += cart[i].qty;
+            else if (cart[i].id === 'purifier-subscribe') qtySubscribe += cart[i].qty;
+            else if (cart[i].id === 'filter') qtyFilter += cart[i].qty;
+        }
+        if (qtyOnetime + qtySubscribe + qtyFilter === 0) return;
+
+        var subtotal = qtyOnetime * PRICES.onetime + qtySubscribe * PRICES.subscribe + qtyFilter * FILTER_PRICE;
+        var gst = gstOf(subtotal);
+        var total = subtotal + gst;
+
+        var address = {
+            name: name,
+            phone: '+91' + phone,
+            line1: line1,
+            city: city,
+            state: stateVal,
+            pincode: pincode
+        };
+        if (line2) address.line2 = line2;
+
+        var order = {
+            uid: fb.auth.currentUser.uid,
+            qtyPurifierOnetime: qtyOnetime,
+            qtyPurifierSubscribe: qtySubscribe,
+            qtyFilter: qtyFilter,
+            subtotal: subtotal,
+            gst: gst,
+            total: total,
+            address: address,
+            paymentMethod: 'cod',
+            status: 'placed',
+            createdAt: fb.serverTimestamp()
+        };
+        if (qtySubscribe > 0) order.filterInterval = filterInterval;
+
+        placeBtn.disabled = true;
+        placeBtn.textContent = 'Placing order...';
+
+        fb.addDoc(fb.collection(fb.db, 'orders'), order).then(function(ref) {
+            placeBtn.disabled = false;
+            placeBtn.textContent = 'Place Order';
+            cart = [];
+            updateCartUI();
+            showSuccessView(ref.id);
+        }).catch(function(err) {
+            console.error('Order failed:', err);
+            placeBtn.disabled = false;
+            placeBtn.textContent = 'Place Order';
+            if (checkoutError) {
+                checkoutError.textContent = err && err.code === 'permission-denied'
+                    ? 'Order could not be validated. Please refresh the page and try again.'
+                    : 'Could not place the order. Please check your connection and try again.';
+            }
+        });
+    }
+
+    if (checkoutForm) {
+        checkoutForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            placeOrder();
         });
     }
 

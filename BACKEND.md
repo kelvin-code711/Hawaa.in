@@ -17,6 +17,8 @@ web clients. All website collections are separate.
 | "Helpful" votes (one per user per review) | `reviews.html` | `review_votes` + counter on the review |
 | Contact / support form | `support.html` | `supportTickets` |
 | Newsletter signup | `index.html` footer | `newsletterSubscribers` (doc ID = email) |
+| Checkout — Cash on Delivery (sign-in required) | `buy.html` cart | `orders` (created as `status: "placed"`) |
+| Order history | `account.html` | own `orders` |
 
 `js/firebase.js` initializes the Firebase SDK (CDN, no build step) and exposes:
 
@@ -71,10 +73,25 @@ Firebase console → Firestore → Data:
 - `reviews` — moderate `pending` → `approved`.
 - `newsletterSubscribers` — export emails for your mailing tool.
 
+## Orders (Cash on Delivery)
+
+The cart (persisted in localStorage) checks out to an `orders` document.
+The security rules recompute every amount server-side from fixed catalog
+prices — purifier one-time ₹5999, subscription ₹5499, filter ₹1499,
+GST 18% (integer round-half-up, mirrored by `gstOf()` in `js/buy.js`) —
+so a tampered client can never change what an order costs. Orders are
+created as `status: "placed"`; manage them in the console (`confirmed`,
+`shipped`, `delivered`, `cancelled` — the account page colors each).
+Clients can never read others' orders (address PII), update, or delete.
+
+**When the catalog prices change, update BOTH `js/buy.js` (PRICES /
+FILTER_PRICE) and the `isValidNewOrder` arithmetic in `firestore.rules`,
+then redeploy the rules — otherwise checkout will be rejected.**
+
 ## Roadmap
 
-- **Orders & payment:** persist the cart, write orders to Firestore, and add
-  a Razorpay checkout via a Cloud Function (Blaze plan is already active).
+- **Online payment:** add Razorpay alongside COD via a Cloud Function
+  (order creation + signature verification; Blaze plan is already active).
 - **Review photos:** needs Firebase Storage (upload UI exists but is hidden).
 - **Hosting & email:** deploy via `firebase deploy --only hosting`
   (`firebase.json` is configured) and add the "Trigger Email" extension for

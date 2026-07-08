@@ -414,6 +414,48 @@
 
                 <button class="cart-checkout-btn" id="cart-checkout-btn">Checkout</button>
             </div>
+
+            <!-- Checkout: delivery address (shown in place of items) -->
+            <div class="checkout-view hidden" id="checkout-view">
+                <button type="button" class="checkout-back" id="checkout-back">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M19 12H5"/>
+                        <path d="M12 19l-7-7 7-7"/>
+                    </svg>
+                    Back to cart
+                </button>
+                <h3 class="checkout-title">Delivery address</h3>
+                <form class="checkout-form" id="checkout-form" novalidate>
+                    <input type="text" class="checkout-input" id="co-name" placeholder="Full name" maxlength="100" autocomplete="name">
+                    <input type="tel" class="checkout-input" id="co-phone" placeholder="Mobile number" maxlength="10" inputmode="numeric" autocomplete="tel-national">
+                    <input type="text" class="checkout-input" id="co-line1" placeholder="Address (house no, street)" maxlength="200" autocomplete="address-line1">
+                    <input type="text" class="checkout-input" id="co-line2" placeholder="Area, landmark (optional)" maxlength="200" autocomplete="address-line2">
+                    <div class="checkout-row">
+                        <input type="text" class="checkout-input" id="co-city" placeholder="City" maxlength="100" autocomplete="address-level2">
+                        <input type="text" class="checkout-input" id="co-pincode" placeholder="PIN code" maxlength="6" inputmode="numeric" autocomplete="postal-code">
+                    </div>
+                    <input type="text" class="checkout-input" id="co-state" placeholder="State" maxlength="100" autocomplete="address-level1">
+                    <p class="checkout-error" id="checkout-error"></p>
+                    <div class="checkout-total-row">
+                        <span>Total (Cash on Delivery)</span>
+                        <span id="checkout-total">&#8377;0</span>
+                    </div>
+                    <button type="submit" class="cart-checkout-btn" id="checkout-place-btn">Place Order</button>
+                </form>
+            </div>
+
+            <!-- Order success -->
+            <div class="checkout-view hidden" id="order-success-view">
+                <div class="checkout-success-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 6L9 17l-5-5"/>
+                    </svg>
+                </div>
+                <h3 class="checkout-title" style="text-align:center;">Order placed!</h3>
+                <p class="checkout-success-text">Order ID: <strong id="order-success-id"></strong></p>
+                <p class="checkout-success-text">Pay in cash when your Hawaa arrives. Track it anytime on your <a href="account.html">account page</a>.</p>
+                <button type="button" class="cart-checkout-btn" id="order-success-done">Done</button>
+            </div>
         </div>
     </div>
 
