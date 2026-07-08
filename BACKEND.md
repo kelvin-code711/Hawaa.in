@@ -10,6 +10,7 @@ the browser, secured by `firestore.rules`.
 | --- | --- | --- |
 | Contact / support form | `support.html` | `supportTickets` |
 | Review submissions | `reviews.html` | `reviews` (created as `status: "pending"`) |
+| Live review display | `reviews.html` | reads `reviews` where `status == "approved"` |
 | Newsletter signup | `index.html` footer | `newsletterSubscribers` (doc ID = email, so no duplicates) |
 
 `js/firebase.js` initializes the Firebase SDK (loaded from Google's CDN — no
@@ -52,14 +53,21 @@ mode denies everything by default).
 Open Firestore → **Data** in the console:
 
 - `supportTickets` — read and respond to customer messages.
-- `reviews` — change `status` from `pending` to `approved` to publish
-  (takes effect once Phase 2 wires the reviews page to Firestore).
+- `reviews` — change `status` from `pending` to `approved` to publish it on
+  the reviews page. Optionally add a boolean `verified: true` field to show
+  the "Verified Purchase" badge.
 - `newsletterSubscribers` — export emails for your mailing tool.
+
+## Live reviews (Phase 2)
+
+`reviews.html` merges approved Firestore reviews into the built-in sample
+reviews at the top of `js/reviews.js` (they appear together, sorted by the
+page's sort control). To retire the sample reviews once real ones
+accumulate, empty that `reviewsData` array. If Firestore is unreachable the
+page silently falls back to the built-in list.
 
 ## Roadmap
 
-- **Phase 2 — Live reviews:** render approved Firestore reviews in the
-  existing carousel/list UI instead of the hardcoded array in `js/reviews.js`.
 - **Phase 3 — Orders & payment:** persist the cart, write orders to
   Firestore, and add a Razorpay checkout via a Cloud Function (requires the
   Blaze plan; everything in Phase 1–2 runs on the free Spark plan).

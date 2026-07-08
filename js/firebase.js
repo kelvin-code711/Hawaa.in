@@ -10,7 +10,11 @@ import {
     addDoc,
     doc,
     setDoc,
-    serverTimestamp
+    serverTimestamp,
+    query,
+    where,
+    limit,
+    getDocs
 } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
 
 const firebaseConfig = {
@@ -66,6 +70,38 @@ window.hawaaBackend = {
             helpfulCount: 0,
             createdAt: serverTimestamp()
         }));
+    },
+
+    // reviews.html list -> approved reviews, mapped to the shape the
+    // page's renderer expects. Sorted client-side so no composite
+    // index is needed.
+    fetchApprovedReviews: function () {
+        var q = query(
+            collection(db, 'reviews'),
+            where('status', '==', 'approved'),
+            limit(200)
+        );
+        return withTimeout(getDocs(q)).then(function (snapshot) {
+            var reviews = [];
+            snapshot.forEach(function (docSnap) {
+                var data = docSnap.data();
+                var created = data.createdAt && data.createdAt.toDate
+                    ? data.createdAt.toDate()
+                    : new Date();
+                reviews.push({
+                    id: docSnap.id,
+                    rating: data.rating,
+                    title: data.title,
+                    content: data.content,
+                    name: data.name,
+                    date: created.toISOString().slice(0, 10),
+                    verified: data.verified === true,
+                    helpful: data.helpfulCount || 0,
+                    photos: []
+                });
+            });
+            return reviews;
+        });
     },
 
     // index.html footer form -> newsletterSubscribers/{email}

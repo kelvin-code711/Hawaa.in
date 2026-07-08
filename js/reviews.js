@@ -574,13 +574,13 @@
             var helpfulBtn = e.target.closest('.rv-card-helpful');
             if (!helpfulBtn) return;
 
-            var id = parseInt(helpfulBtn.getAttribute('data-id'));
+            var id = helpfulBtn.getAttribute('data-id');
             if (state.helpfulClicked[id]) return;
 
             state.helpfulClicked[id] = true;
 
             for (var i = 0; i < reviewsData.length; i++) {
-                if (reviewsData[i].id === id) {
+                if (String(reviewsData[i].id) === id) {
                     reviewsData[i].helpful++;
                     helpfulBtn.classList.add('active');
                     var countEl = helpfulBtn.querySelector('.rv-helpful-count');
@@ -894,6 +894,35 @@
     }
 
     // ========================================
+    // LIVE REVIEWS (Firestore)
+    // ========================================
+    // Merge approved reviews from Firestore into the built-in list.
+    // The Firebase module loads asynchronously, so poll briefly for
+    // it; if it never becomes available the page keeps working with
+    // the built-in reviews only.
+    function loadLiveReviews() {
+        var attempts = 0;
+
+        function tryFetch() {
+            if (window.hawaaBackend && window.hawaaBackend.fetchApprovedReviews) {
+                window.hawaaBackend.fetchApprovedReviews().then(function (live) {
+                    if (!live.length) return;
+                    reviewsData = live.concat(reviewsData);
+                    state.currentPage = 1;
+                    renderSummary();
+                    renderReviews();
+                }).catch(function (err) {
+                    console.error('Could not load live reviews:', err);
+                });
+            } else if (attempts++ < 10) {
+                setTimeout(tryFetch, 500);
+            }
+        }
+
+        tryFetch();
+    }
+
+    // ========================================
     // INIT
     // ========================================
     document.addEventListener('DOMContentLoaded', function () {
@@ -908,6 +937,7 @@
         initStarSelector();
         initUpload();
         initFormValidation();
+        loadLiveReviews();
     });
 
 })();
