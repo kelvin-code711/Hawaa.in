@@ -3,27 +3,6 @@
    Mobile-first, matches Hawaa design system
 ======================================== */
 
-/* Header overrides */
-body.support-page .header {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-}
-
-body.support-page .logo-h,
-body.support-page .logo-awaa {
-    color: #111827;
-}
-
-body.support-page .hamburger-line {
-    background: #111827;
-}
-
-body.support-page .header-profile-btn {
-    color: #111827;
-}
-
 /* ========================================
    MAIN CONTENT
 ======================================== */
@@ -419,7 +398,7 @@ body.support-page .header-profile-btn {
     border: 1px solid #e5e7eb;
     border-radius: 10px;
     font-family: 'Outfit', sans-serif;
-    font-size: 0.95rem;
+    font-size: 1rem;
     color: #111827;
     background: white;
     transition: all 0.2s ease;
