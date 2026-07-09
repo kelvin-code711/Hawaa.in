@@ -4236,7 +4236,7 @@ button.menu-nav-item {
 .buy-variant-card.active {
     border-color: var(--teal-deep);
     border-width: 2px;
-    background: var(--teal-tint);
+    background: var(--teal-tint-soft);
 }
 
 .buy-variant-name {
@@ -4322,7 +4322,7 @@ button.menu-nav-item {
 .buy-filter-plan-card.active {
     border-color: var(--teal-deep);
     border-width: 2px;
-    background: var(--teal-tint);
+    background: var(--teal-tint-soft);
 }
 
 .buy-filter-plan-name {

@@ -483,7 +483,7 @@
 .rv-card-helpful.active {
     border-color: var(--teal-deep);
     color: var(--ink);
-    background: var(--teal-tint);
+    background: var(--teal-tint-soft);
 }
 
 .rv-card-helpful svg {

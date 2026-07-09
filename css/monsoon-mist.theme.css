@@ -25,7 +25,8 @@
   --teal-deep-hover: #186B61;   /* hover on primary CTA */
   --teal-deep-press: #135A52;   /* active/pressed CTA */
   --teal-brand:      #3FB7AC;   /* RESERVED: device LED, logo arcs, live-status dots ONLY */
-  --teal-tint:       rgba(30, 124, 113, 0.10); /* accent-tinted backgrounds: selected cards, info banners */
+  --teal-tint:       rgba(30, 124, 113, 0.10); /* accent-tinted backgrounds: info banners */
+  --teal-tint-soft:  rgba(30, 124, 113, 0.05); /* lighter wash for selected cards / pickers */
 
   /* ---------- ON-COLOR TEXT ---------- */
   --on-teal:         #F2FAF8;   /* text/icons on teal-deep */
