@@ -377,7 +377,7 @@
 .cmp-col--hawaa {
     flex: 0 0 47%;
     max-width: 47%;
-    background: #f4f4f5;
+    background: var(--teal-tint);
     border-radius: 24px;
 }
 
@@ -434,8 +434,8 @@
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.12em;
-    color: #ffffff;
-    background: #0f172a;
+    color: var(--ink);
+    background: var(--mist-deep);
     padding: 5px 13px;
     border-radius: 9999px;
     white-space: nowrap;
@@ -563,7 +563,7 @@
 }
 
 .cmp-cell-val--win {
-    color: #0891b2;
+    color: var(--teal-deep);
 }
 
 .cmp-cell-val--neutral {

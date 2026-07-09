@@ -1023,6 +1023,9 @@ button.menu-nav-item {
     flex-direction: column;
     align-items: center;
     text-align: center;
+    background: var(--teal-tint);
+    border-radius: 14px;
+    padding: 16px 12px;
 }
 
 .badge-icon {
@@ -1038,7 +1041,7 @@ button.menu-nav-item {
 .badge-text {
     font-size: 0.65rem;
     font-weight: 500;
-    color: var(--ink);
+    color: var(--teal-deep);
 }
 
 @media (min-width: 640px) {
@@ -1084,7 +1087,7 @@ button.menu-nav-item {
 .rating-number {
     font-size: 1.25rem;
     font-weight: 700;
-    color: var(--ink);
+    color: var(--teal-deep);
 }
 
 @media (min-width: 640px) {
@@ -1152,7 +1155,7 @@ button.menu-nav-item {
 .warranty-yr {
     font-size: 0.8rem;
     font-weight: 500;
-    color: var(--ink);
+    color: var(--teal-deep);
 }
 
 @media (min-width: 640px) {
@@ -4236,7 +4239,7 @@ button.menu-nav-item {
 .buy-variant-card.active {
     border-color: var(--teal-deep);
     border-width: 2px;
-    background: var(--teal-tint);
+    background: var(--teal-tint-soft);
 }
 
 .buy-variant-name {
@@ -4322,7 +4325,7 @@ button.menu-nav-item {
 .buy-filter-plan-card.active {
     border-color: var(--teal-deep);
     border-width: 2px;
-    background: var(--teal-tint);
+    background: var(--teal-tint-soft);
 }
 
 .buy-filter-plan-name {
@@ -4536,14 +4539,14 @@ button.menu-nav-item {
 .buy-trust-item svg {
     width: 20px;
     height: 20px;
-    color: var(--ink-soft);
+    color: var(--teal-deep);
 }
 
 .buy-trust-item span {
     font-family: 'Outfit', sans-serif;
     font-size: 0.7rem;
     font-weight: 500;
-    color: var(--ink-soft);
+    color: var(--teal-deep);
 }
 
 /* ---- What's in the Box ---- */
