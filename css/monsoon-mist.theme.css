@@ -73,4 +73,6 @@
 .footer-band a:hover { color: var(--on-ink); }
 
 /* ---------- SELECTION ---------- */
-::selection { background: var(--teal-tint); color: var(--ink); }
+/* MIGRATION SHIM: rule disabled so text-selection color stays browser default.
+   Restore at swap time:
+   ::selection { background: var(--teal-tint); color: var(--ink); } */
