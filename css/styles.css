@@ -244,7 +244,7 @@ body.menu-open .logo-img {
 }
 
 .menu-nav-item:hover {
-    color: var(--accent-strong);
+    color: var(--teal-deep);
 }
 
 /* Account & Cart entries inside the menu panel */
@@ -264,7 +264,7 @@ button.menu-nav-item {
 }
 
 .menu-nav-item:hover svg {
-    color: var(--accent-strong);
+    color: var(--teal-deep);
 }
 
 .menu-nav-item.signed-in svg {
@@ -424,8 +424,8 @@ button.menu-nav-item {
 }
 
 .phone-input-group:focus-within {
-    border-color: var(--accent-strong);
-    box-shadow: 0 0 0 3px var(--accent-tint);
+    border-color: var(--teal-deep);
+    box-shadow: 0 0 0 3px var(--teal-tint);
 }
 
 .phone-input-group.error {
@@ -545,8 +545,8 @@ button.menu-nav-item {
 }
 
 .otp-input:focus {
-    border-color: var(--accent-strong);
-    box-shadow: 0 0 0 3px var(--accent-tint);
+    border-color: var(--teal-deep);
+    box-shadow: 0 0 0 3px var(--teal-tint);
 }
 
 .otp-input.error {
@@ -630,7 +630,7 @@ button.menu-nav-item {
     width: 18px;
     height: 18px;
     border: 2px solid rgba(255, 255, 255, 0.3);
-    border-top-color: white;
+    border-top-color: var(--on-ink);
     border-radius: 50%;
     animation: spin 0.6s linear infinite;
     vertical-align: middle;
@@ -701,7 +701,7 @@ button.menu-nav-item {
     background: var(--teal-deep);
     border: 1px solid var(--teal-deep);
     border-radius: 9999px;
-    color: white;
+    color: var(--on-teal);
     font-family: 'Outfit', sans-serif;
     font-size: 0.75rem;
     font-weight: 600;
@@ -942,11 +942,11 @@ button.menu-nav-item {
 /* Secondary CTA */
 .cta-secondary {
     background: transparent;
-    border: 1px solid var(--hero-ink);
+    border: 1.5px solid var(--on-ink);
 }
 
 .cta-secondary span {
-    color: var(--hero-ink);
+    color: var(--on-ink);
 }
 
 /* ========================================
@@ -1353,7 +1353,7 @@ button.menu-nav-item {
     background: rgba(18, 49, 44, 0.7);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    color: white;
+    color: var(--on-ink);
     font-family: 'Outfit', sans-serif;
     font-size: 0.95rem;
     font-weight: 500;
@@ -1947,7 +1947,7 @@ button.menu-nav-item {
 .feature-arrow {
     width: 44px;
     height: 44px;
-    background: white;
+    background: var(--paper);
     border: 1px solid var(--ink-line);
     border-radius: 50%;
     cursor: pointer;
@@ -1963,7 +1963,7 @@ button.menu-nav-item {
 }
 
 .feature-arrow:hover svg {
-    color: white;
+    color: var(--on-ink);
 }
 
 .feature-arrow svg {
@@ -2254,7 +2254,7 @@ button.menu-nav-item {
 }
 
 .feature-expanded-arrow:hover svg {
-    color: white;
+    color: var(--on-ink);
 }
 
 .feature-expanded-arrow svg {
@@ -2604,7 +2604,7 @@ button.menu-nav-item {
 }
 
 .cert-preview-eye-btn:hover svg {
-    color: white;
+    color: var(--on-ink);
 }
 
 .cert-preview-eye-btn svg {
@@ -2882,7 +2882,7 @@ button.menu-nav-item {
 }
 
 .testimonials-arrow:hover svg {
-    color: white;
+    color: var(--on-ink);
 }
 
 .testimonials-arrow svg {
@@ -3044,7 +3044,7 @@ button.menu-nav-item {
 }
 
 .reviews-dots .dot.on {
-    background: var(--accent-strong);
+    background: var(--on-ink);
 }
 
 .reviews-cta-row {
@@ -3058,7 +3058,7 @@ button.menu-nav-item {
     background: rgba(255, 255, 255, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 9999px;
-    color: white;
+    color: var(--on-ink);
     font-size: 0.85rem;
     font-weight: 500;
     transition: all 0.3s ease;
@@ -3251,7 +3251,7 @@ button.menu-nav-item {
     gap: 6px;
     font-size: 0.85rem;
     font-weight: 500;
-    color: white;
+    color: var(--on-ink);
     transition: gap 0.2s ease;
 }
 
@@ -3316,7 +3316,7 @@ button.menu-nav-item {
 }
 
 .blogs-arrow:hover svg {
-    color: white;
+    color: var(--on-ink);
 }
 
 .blogs-arrow svg {
@@ -3347,7 +3347,7 @@ button.menu-nav-item {
 
 .blogs-read-all-btn:hover {
     background: var(--ink);
-    color: white;
+    color: var(--on-ink);
 }
 
 /* ========================================
@@ -3447,7 +3447,7 @@ button.menu-nav-item {
 }
 
 .faq-question:hover {
-    color: var(--accent-strong);
+    color: var(--teal-deep);
 }
 
 .faq-icon {
@@ -3460,7 +3460,7 @@ button.menu-nav-item {
 
 .faq-item.active .faq-icon {
     transform: rotate(45deg);
-    color: var(--accent-strong);
+    color: var(--teal-deep);
 }
 
 .faq-answer {
@@ -3566,14 +3566,14 @@ button.menu-nav-item {
 }
 
 .newsletter-input:focus {
-    border-color: var(--accent-strong);
-    box-shadow: 0 0 0 3px var(--accent-tint);
+    border-color: var(--teal-deep);
+    box-shadow: 0 0 0 3px var(--teal-tint);
 }
 
 .newsletter-btn {
     padding: 14px 24px;
     background: var(--ink);
-    color: white;
+    color: var(--on-ink);
     font-family: 'Outfit', sans-serif;
     font-size: 0.9rem;
     font-weight: 500;
@@ -4418,7 +4418,7 @@ button.menu-nav-item {
 }
 
 .buy-colour-swatch:hover {
-    border-color: #d1d5db;
+    border-color: var(--ink-line);
 }
 
 .buy-colour-swatch.active {
@@ -4512,7 +4512,7 @@ button.menu-nav-item {
 
 .buy-accessory-add {
     padding: 8px 18px;
-    background: #ffffff;
+    background: var(--paper);
     border: 1.5px solid var(--ink-line);
     border-radius: 9999px;
     font-family: 'Outfit', sans-serif;
@@ -4524,8 +4524,8 @@ button.menu-nav-item {
 }
 
 .buy-accessory-add:hover {
-    border-color: #d1d5db;
-    background: #f9fafb;
+    border-color: var(--ink-line);
+    background: var(--mist-deep);
 }
 
 .buy-accessory-add.added {
@@ -4760,8 +4760,8 @@ button.menu-nav-item {
 }
 
 .buy-details-arrow:hover {
-    border-color: #d1d5db;
-    background: #f9fafb;
+    border-color: var(--ink-line);
+    background: var(--mist-deep);
 }
 
 .buy-details-dots {
@@ -4774,12 +4774,12 @@ button.menu-nav-item {
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: #d1d5db;
+    background: var(--ink-line);
     transition: all 0.3s ease;
 }
 
 .buy-details-dot.active {
-    background: #111827;
+    background: var(--ink);
 }
 
 /* ---- Sticky Bottom Bar (Always Visible) ---- */
@@ -4895,7 +4895,7 @@ button.menu-nav-item {
     display: none;
     min-width: 18px;
     height: 18px;
-    background: var(--accent-strong);
+    background: var(--teal-deep);
     color: var(--paper);
     font-family: 'Outfit', sans-serif;
     font-size: 0.65rem;
@@ -5749,7 +5749,7 @@ button.menu-nav-item {
 }
 
 .edge-specs-dot.active {
-    background: #111827;
+    background: var(--ink);
     transform: scale(1.4);
 }
 
@@ -6588,7 +6588,7 @@ body.faq-page .logo-awaa {
 
 .bl-cat {
     padding: 10px 22px;
-    background: #f5f5f5;
+    background: var(--mist-deep);
     color: var(--ink);
     border: 1px solid var(--ink-line);
     border-radius: 9999px;
@@ -6602,18 +6602,18 @@ body.faq-page .logo-awaa {
 }
 
 .bl-cat:hover {
-    background: #ebebeb;
-    border-color: #d1d5db;
+    background: var(--mist-deeper);
+    border-color: var(--ink-line);
 }
 
 .bl-cat.active {
-    background: white;
+    background: var(--paper);
     color: var(--ink);
     border-color: var(--ink);
 }
 
 .bl-cat.active:hover {
-    background: white;
+    background: var(--paper);
 }
 
 /* Blog Listing Section */
@@ -6771,7 +6771,7 @@ body.faq-page .logo-awaa {
 }
 
 .bl-card:hover .bl-card-cta {
-    color: #111827;
+    color: var(--ink);
 }
 
 /* Empty State */
@@ -6886,7 +6886,7 @@ body.faq-page .logo-awaa {
     width: 4px;
     height: 4px;
     border-radius: 50%;
-    background: #d1d5db;
+    background: var(--ink-line);
     flex-shrink: 0;
 }
 
@@ -7181,8 +7181,8 @@ body.faq-page .logo-awaa {
 }
 
 .ba-rel-card:hover .ba-rel-card-cta {
-    color: #111827;
-    border-bottom-color: #111827;
+    color: var(--ink);
+    border-bottom-color: var(--ink);
 }
 
 /* Related Arrows */
@@ -7208,7 +7208,7 @@ body.faq-page .logo-awaa {
 
 .ba-rel-arrow:hover {
     background: var(--ink);
-    border-color: #111827;
+    border-color: var(--ink);
 }
 
 .ba-rel-arrow svg {
@@ -7219,7 +7219,7 @@ body.faq-page .logo-awaa {
 }
 
 .ba-rel-arrow:hover svg {
-    color: white;
+    color: var(--on-ink);
 }
 
 /* Hide related arrows on desktop when all cards visible */
@@ -8271,7 +8271,7 @@ body.tos-page .logo-awaa {
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background: #d1d5db;
+    background: var(--ink-line);
     border: none;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -8281,7 +8281,7 @@ body.tos-page .logo-awaa {
 .edge-reviews-dot.active {
     width: 16px;
     border-radius: 3px;
-    background: #111827;
+    background: var(--ink);
 }
 
 /* Arrow buttons */
@@ -8292,7 +8292,7 @@ body.tos-page .logo-awaa {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: white;
+    background: var(--paper);
     border: 1px solid var(--ink-line);
     border-radius: 50%;
     cursor: pointer;
@@ -8302,7 +8302,7 @@ body.tos-page .logo-awaa {
 
 .edge-reviews-arrow:hover {
     background: var(--ink);
-    border-color: #111827;
+    border-color: var(--ink);
     color: var(--on-ink);
 }
 
@@ -8739,7 +8739,7 @@ body.account-page {
 }
 
 .account-edit-btn:hover {
-    color: #0891b2;
+    color: var(--teal-deep);
 }
 
 .account-edit-btn svg {
@@ -8873,10 +8873,10 @@ body.account-page {
 .account-signout-btn {
     width: 100%;
     padding: 14px;
-    background: white;
+    background: var(--paper);
     border: 1px solid var(--ink-line);
     border-radius: 12px;
-    color: #dc2626;
+    color: var(--error);
     font-family: 'Outfit', sans-serif;
     font-size: 15px;
     font-weight: 500;
@@ -8885,8 +8885,8 @@ body.account-page {
 }
 
 .account-signout-btn:hover {
-    background: #fef2f2;
-    border-color: #fecaca;
+    background: var(--error-tint);
+    border-color: var(--error);
 }
 
 @media (max-width: 480px) {

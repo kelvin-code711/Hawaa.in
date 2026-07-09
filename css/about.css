@@ -631,7 +631,7 @@
     align-items: center;
     gap: 8px;
     padding: 12px 24px;
-    background: white;
+    background: var(--paper);
     color: var(--ink);
     border: 1px solid var(--ink-line);
     border-radius: 9999px;
@@ -649,8 +649,8 @@
 }
 
 .about-newsletter-btn:hover {
-    border-color: #d1d5db;
-    background: #f9fafb;
+    border-color: var(--ink-line);
+    background: var(--mist-deep);
     transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
 }
