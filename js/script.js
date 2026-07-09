@@ -1176,3 +1176,21 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
+
+// Mark the current page's menu link so CSS can highlight it (teal-deep)
+document.querySelectorAll('.menu-nav-item[href]').forEach((link) => {
+    const current = location.pathname.split('/').pop() || 'index.html';
+    if (link.getAttribute('href') === current) {
+        link.setAttribute('aria-current', 'page');
+    }
+});
+
+// Hero video: retry playback if autoplay was blocked (e.g. iOS Low Power Mode)
+const heroVideo = document.querySelector('.hero-video');
+if (heroVideo) {
+    heroVideo.muted = true;
+    const tryPlayHeroVideo = () => { heroVideo.play().catch(() => {}); };
+    tryPlayHeroVideo();
+    document.addEventListener('touchstart', tryPlayHeroVideo, { once: true });
+    document.addEventListener('click', tryPlayHeroVideo, { once: true });
+}
