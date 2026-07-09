@@ -1172,7 +1172,7 @@ button.menu-nav-item {
 .warranty-number {
     font-size: 1.25rem;
     font-weight: 700;
-    color: var(--accent-strong);
+    color: var(--teal-deep);
 }
 
 @media (min-width: 640px) {
@@ -6183,13 +6183,13 @@ body.privacy-page .logo-awaa {
 }
 
 .privacy-answer-content a {
-    color: #0891b2;
+    color: var(--teal-deep);
     text-decoration: none;
     transition: color 0.2s ease;
 }
 
 .privacy-answer-content a:hover {
-    color: #0ea5e9;
+    color: var(--teal-deep);
     text-decoration: underline;
 }
 
@@ -7297,7 +7297,7 @@ body.tos-page .logo-awaa {
     font-weight: 500;
     letter-spacing: 0.15em;
     text-transform: uppercase;
-    color: var(--ink-faint);
+    color: var(--teal-deep);
     margin-bottom: 24px;
 }
 
@@ -7462,13 +7462,13 @@ body.tos-page .logo-awaa {
 }
 
 .tos-section-body a {
-    color: #0891b2;
+    color: var(--teal-deep);
     text-decoration: none;
     transition: color 0.2s ease;
 }
 
 .tos-section-body a:hover {
-    color: #0ea5e9;
+    color: var(--teal-deep);
     text-decoration: underline;
 }
 
@@ -9046,7 +9046,7 @@ body.account-page {
 }
 
 .checkout-success-text a {
-    color: #0891b2;
+    color: var(--teal-deep);
 }
 
 /* Order rows on the account page */

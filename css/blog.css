@@ -445,6 +445,16 @@
     flex-shrink: 0;
 }
 
+/* Links inside article prose */
+.ba-body a {
+    color: var(--teal-deep);
+    text-decoration: none;
+}
+
+.ba-body a:hover {
+    text-decoration: underline;
+}
+
 /* Article Body */
 .ba-body {
     padding: 0 20px 60px;

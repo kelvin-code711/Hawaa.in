@@ -33,7 +33,7 @@
     font-weight: 600;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: var(--ink-faint);
+    color: var(--teal-deep);
     margin: 0 0 18px;
 }
 
@@ -245,7 +245,7 @@
     font-weight: 600;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: var(--ink-faint);
+    color: var(--teal-deep);
     margin: 0 0 14px;
 }
 
@@ -452,7 +452,7 @@
     font-weight: 600;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: var(--ink-faint);
+    color: var(--teal-deep);
     margin: 0 0 14px;
 }
 
@@ -1136,7 +1136,7 @@
     font-weight: 600;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: var(--ink-faint);
+    color: var(--teal-deep);
     margin: 0 0 14px;
 }
 
