@@ -92,7 +92,7 @@
 
 .sp-tab {
     padding: 10px 22px;
-    background: #f5f5f5;
+    background: var(--mist-deep);
     color: var(--ink);
     border: 1px solid var(--ink-line);
     border-radius: 9999px;
@@ -107,18 +107,18 @@
 }
 
 .sp-tab:hover {
-    background: #ebebeb;
-    border-color: #d1d5db;
+    background: var(--mist-deeper);
+    border-color: var(--ink-line);
 }
 
 .sp-tab.active {
-    background: white;
+    background: var(--paper);
     color: var(--ink);
     border-color: var(--ink);
 }
 
 .sp-tab.active:hover {
-    background: white;
+    background: var(--paper);
 }
 
 @media (min-width: 640px) {

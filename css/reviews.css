@@ -263,7 +263,7 @@
 
 .rv-filter-btn {
     padding: 8px 16px;
-    background: #f5f5f5;
+    background: var(--mist-deep);
     border: 1px solid var(--ink-line);
     border-radius: 9999px;
     font-family: 'Outfit', sans-serif;
@@ -278,12 +278,12 @@
 }
 
 .rv-filter-btn:hover {
-    background: #ebebeb;
-    border-color: #d1d5db;
+    background: var(--mist-deeper);
+    border-color: var(--ink-line);
 }
 
 .rv-filter-btn.active {
-    background: white;
+    background: var(--paper);
     border-color: var(--ink);
 }
 
@@ -539,7 +539,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: white;
+    background: var(--paper);
     border: 1px solid var(--ink-line);
     border-radius: 50%;
     cursor: pointer;
@@ -550,7 +550,7 @@
 
 .rv-page-btn:hover:not(:disabled) {
     background: var(--ink);
-    border-color: #111827;
+    border-color: var(--ink);
     color: var(--on-ink);
 }
 
@@ -589,7 +589,7 @@
 }
 
 .rv-page-num:hover {
-    background: #f3f4f6;
+    background: var(--mist-deep);
 }
 
 .rv-page-num.active {
@@ -915,8 +915,8 @@
 }
 
 .rv-cancel-btn:hover {
-    border-color: #d1d5db;
-    color: #111827;
+    border-color: var(--ink-line);
+    color: var(--ink);
 }
 
 /* Modal Success State */

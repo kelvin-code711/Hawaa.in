@@ -614,7 +614,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #ffffff;
+    background: var(--paper);
     border: 1px solid var(--ink-line);
     border-radius: 50%;
     cursor: pointer;
@@ -625,7 +625,7 @@
 .cmp-arrow:hover {
     background: var(--ink);
     border-color: var(--ink);
-    color: #ffffff;
+    color: var(--on-ink);
     transform: scale(1.05);
 }
 
@@ -720,8 +720,8 @@
 }
 
 .cmp-vs-verdict-btn:hover {
-    border-color: #0891b2;
-    color: #0891b2;
+    border-color: var(--teal-deep);
+    color: var(--teal-deep);
 }
 
 /* ---- VERDICT POPUP OVERLAY ---- */
@@ -1110,7 +1110,7 @@
 .cmp-lab-arrow {
     width: 44px;
     height: 44px;
-    background: white;
+    background: var(--paper);
     border: 1px solid var(--ink-line);
     border-radius: 50%;
     cursor: pointer;
@@ -1122,11 +1122,11 @@
 
 .cmp-lab-arrow:hover {
     background: var(--ink);
-    border-color: #111827;
+    border-color: var(--ink);
 }
 
 .cmp-lab-arrow:hover svg {
-    color: white;
+    color: var(--on-ink);
 }
 
 .cmp-lab-arrow svg {

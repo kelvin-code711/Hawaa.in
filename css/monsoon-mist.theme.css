@@ -36,9 +36,7 @@
   --success-tint:    rgba(53, 132, 92, 0.10);
   --warning:         #B07A2E;
   --warning-tint:    rgba(176, 122, 46, 0.10);
-  /* MIGRATION SHIM: --error temporarily pinned to the Ascend value.
-     Restore at swap time: --error: #A8452F; */
-  --error:           #A24A3C;
+  --error:           #A8452F;
   --error-tint:      rgba(168, 69, 47, 0.10);
   --info:            var(--teal-deep);
   --info-tint:       var(--teal-tint);

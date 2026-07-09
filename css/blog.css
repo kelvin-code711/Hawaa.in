@@ -326,7 +326,7 @@
 }
 
 .bl-card:hover .bl-card-cta {
-    color: #111827;
+    color: var(--ink);
 }
 
 /* Empty State */
@@ -441,7 +441,7 @@
     width: 4px;
     height: 4px;
     border-radius: 50%;
-    background: #d1d5db;
+    background: var(--ink-line);
     flex-shrink: 0;
 }
 
@@ -736,8 +736,8 @@
 }
 
 .ba-rel-card:hover .ba-rel-card-cta {
-    color: #111827;
-    border-bottom-color: #111827;
+    color: var(--ink);
+    border-bottom-color: var(--ink);
 }
 
 /* Related Arrows */
@@ -763,7 +763,7 @@
 
 .ba-rel-arrow:hover {
     background: var(--ink);
-    border-color: #111827;
+    border-color: var(--ink);
 }
 
 .ba-rel-arrow svg {
@@ -774,7 +774,7 @@
 }
 
 .ba-rel-arrow:hover svg {
-    color: white;
+    color: var(--on-ink);
 }
 
 /* Hide related arrows on desktop when all cards visible */
