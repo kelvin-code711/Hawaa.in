@@ -520,7 +520,7 @@
     color: var(--teal-deep);
     padding-bottom: 8px;
     margin-bottom: 4px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    border-bottom: 1px solid var(--ink-line-soft);
 }
 
 /* ---- Metric cell: label above, value below (centered) ---- */
@@ -577,7 +577,7 @@
 
 /* total row emphasis */
 .cmp-cell--total {
-    border-top: 1px solid rgba(0, 0, 0, 0.08);
+    border-top: 1px solid var(--ink-line-soft);
     margin-top: 2px;
 }
 

@@ -2454,7 +2454,7 @@ button.menu-nav-item {
     background: rgba(249, 250, 251, 0.95);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(0, 0, 0, 0.06);
+    border: 1px solid var(--ink-line-soft);
     border-radius: 16px;
     padding: 20px;
     transition: all 0.3s ease;
@@ -2565,7 +2565,7 @@ button.menu-nav-item {
     background: rgba(255, 255, 255, 0.9);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--ink-line);
     border-radius: 50%;
     cursor: pointer;
     display: flex;
@@ -2845,7 +2845,7 @@ button.menu-nav-item {
     height: 40px;
     background: rgba(255, 255, 255, 0.8);
     backdrop-filter: blur(12px);
-    border: 1px solid rgba(0, 0, 0, 0.08);
+    border: 1px solid var(--ink-line-soft);
     border-radius: 50%;
     cursor: pointer;
     display: flex;
@@ -3424,7 +3424,7 @@ button.menu-nav-item {
 
 .faq-item {
     background: var(--paper);
-    border: 1px solid rgba(0, 0, 0, 0.06);
+    border: 1px solid var(--ink-line-soft);
     border-radius: 12px;
     overflow: hidden;
     transition: all 0.3s ease;
@@ -3523,7 +3523,7 @@ button.menu-nav-item {
     background: var(--mist-deep);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(0, 0, 0, 0.06);
+    border: 1px solid var(--ink-line-soft);
     border-radius: 20px;
     padding: 30px 24px;
 }
@@ -3565,7 +3565,7 @@ button.menu-nav-item {
     flex: 1;
     padding: 14px 18px;
     background: var(--paper);
-    border: 1px solid rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--ink-line);
     border-radius: 10px;
     font-family: 'Outfit', sans-serif;
     font-size: 1rem;
@@ -4811,7 +4811,7 @@ button.menu-nav-item {
     background: rgba(255, 255, 255, 0.97);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border-top: 1px solid rgba(0, 0, 0, 0.06);
+    border-top: 1px solid var(--ink-line-soft);
     padding: 12px 16px;
     padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px));
 }
@@ -6088,11 +6088,11 @@ body.privacy-page .logo-awaa {
 
 /* Accordion item */
 .privacy-item {
-    border-bottom: 1px dashed rgba(0, 0, 0, 0.15);
+    border-bottom: 1px dashed var(--ink-line);
 }
 
 .privacy-item:first-child {
-    border-top: 1px dashed rgba(0, 0, 0, 0.15);
+    border-top: 1px dashed var(--ink-line);
 }
 
 /* Accordion question/header button */
@@ -6354,12 +6354,12 @@ body.faq-page .logo-awaa {
 
 /* Individual FAQ item */
 .faqpage-item {
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-top: 1px solid var(--ink-line);
     overflow: hidden;
 }
 
 .faqpage-item:last-child {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid var(--ink-line);
 }
 
 /* Question button */
@@ -6941,7 +6941,7 @@ body.faq-page .logo-awaa {
     background-position: center;
     background-color: #e5e7eb;
     margin-bottom: 36px;
-    border: 1px solid rgba(0, 0, 0, 0.04);
+    border: 1px solid var(--ink-line-soft);
 }
 
 @media (min-width: 768px) {
@@ -7023,7 +7023,7 @@ body.faq-page .logo-awaa {
     background-position: center;
     background-color: #e5e7eb;
     margin: 32px 0 12px;
-    border: 1px solid rgba(0, 0, 0, 0.04);
+    border: 1px solid var(--ink-line-soft);
 }
 
 @media (min-width: 768px) {
@@ -7380,12 +7380,12 @@ body.tos-page .logo-awaa {
 
 /* Individual section */
 .tos-section {
-    border-top: 1px solid rgba(0, 0, 0, 0.08);
+    border-top: 1px solid var(--ink-line-soft);
     padding: 40px 0;
 }
 
 .tos-section:last-child {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    border-bottom: 1px solid var(--ink-line-soft);
 }
 
 @media (min-width: 768px) {
@@ -7603,7 +7603,7 @@ body.tos-page .logo-awaa {
 /* Individual bento card */
 .edge-int-card {
     background: var(--paper);
-    border: 1px solid rgba(0, 0, 0, 0.06);
+    border: 1px solid var(--ink-line-soft);
     border-radius: 20px;
     padding: 20px;
     box-shadow: 0 4px 20px var(--shadow-tint-sm);
@@ -8072,7 +8072,7 @@ body.tos-page .logo-awaa {
 }
 
 .edge-filter-item {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    border-bottom: 1px solid var(--ink-line-soft);
 }
 
 .edge-filter-header {
