@@ -273,7 +273,7 @@ button.menu-nav-item {
 }
 
 .menu-nav-item.signed-in svg {
-    color: var(--ok);
+    color: var(--success);
 }
 
 .menu-nav-item .cart-badge {
@@ -2454,7 +2454,7 @@ button.menu-nav-item {
     background: rgba(249, 250, 251, 0.95);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(0, 0, 0, 0.06);
+    border: 1px solid var(--ink-line-soft);
     border-radius: 16px;
     padding: 20px;
     transition: all 0.3s ease;
@@ -2565,7 +2565,7 @@ button.menu-nav-item {
     background: rgba(255, 255, 255, 0.9);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--ink-line);
     border-radius: 50%;
     cursor: pointer;
     display: flex;
@@ -2845,7 +2845,7 @@ button.menu-nav-item {
     height: 40px;
     background: rgba(255, 255, 255, 0.8);
     backdrop-filter: blur(12px);
-    border: 1px solid rgba(0, 0, 0, 0.08);
+    border: 1px solid var(--ink-line-soft);
     border-radius: 50%;
     cursor: pointer;
     display: flex;
@@ -2929,7 +2929,43 @@ button.menu-nav-item {
 }
 
 /* Reviews Slider */
-/* Reviews carousel — built on the Ascend .track / .tcard classes */
+/* Testimonial carousel base classes (migrated from the retired ascend.theme.css) */
+.track-mask { overflow: hidden; }
+.track {
+    display: flex;
+    gap: 22px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+}
+.track::-webkit-scrollbar { display: none; }
+.tcard {
+    flex: 0 0 360px;
+    scroll-snap-align: start;
+    background: var(--paper);
+    border: 1px solid var(--ink-line);
+    border-radius: 18px;
+    padding: 30px;
+    box-shadow: 0 20px 40px -28px var(--shadow-tint-lg);
+}
+.tcard.active { border-color: var(--teal-deep); box-shadow: 0 24px 50px -24px var(--shadow-cta); }
+.tcard .stars { color: var(--star); }
+.arrow {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    border: 1px solid var(--ink-line);
+    background: rgba(255, 255, 255, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ink);
+    cursor: pointer;
+}
+.arrow.primary { background: var(--ink); border-color: var(--ink); color: var(--on-ink); }
+
+/* Reviews carousel — built on the migrated .track / .tcard classes above */
 .reviews-section .track-mask {
     padding: 6px 0 14px;   /* vertical breathing room for card shadows */
 }
@@ -3000,7 +3036,7 @@ button.menu-nav-item {
     margin-top: 26px;
 }
 
-/* .arrow comes from ascend.theme.css; these are real <button>s */
+/* .arrow base is defined above; these are real <button>s */
 .reviews-controls .arrow {
     padding: 0;
     flex-shrink: 0;
@@ -3388,7 +3424,7 @@ button.menu-nav-item {
 
 .faq-item {
     background: var(--paper);
-    border: 1px solid rgba(0, 0, 0, 0.06);
+    border: 1px solid var(--ink-line-soft);
     border-radius: 12px;
     overflow: hidden;
     transition: all 0.3s ease;
@@ -3487,7 +3523,7 @@ button.menu-nav-item {
     background: var(--mist-deep);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(0, 0, 0, 0.06);
+    border: 1px solid var(--ink-line-soft);
     border-radius: 20px;
     padding: 30px 24px;
 }
@@ -3529,7 +3565,7 @@ button.menu-nav-item {
     flex: 1;
     padding: 14px 18px;
     background: var(--paper);
-    border: 1px solid rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--ink-line);
     border-radius: 10px;
     font-family: 'Outfit', sans-serif;
     font-size: 1rem;
@@ -4346,8 +4382,8 @@ button.menu-nav-item {
     top: 14px;
     right: 14px;
     padding: 2px 10px;
-    background: #111827;
-    color: #ffffff;
+    background: var(--ink);
+    color: var(--on-ink);
     font-size: 0.65rem;
     font-weight: 600;
     border-radius: 9999px;
@@ -4775,7 +4811,7 @@ button.menu-nav-item {
     background: rgba(255, 255, 255, 0.97);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border-top: 1px solid rgba(0, 0, 0, 0.06);
+    border-top: 1px solid var(--ink-line-soft);
     padding: 12px 16px;
     padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px));
 }
@@ -5289,7 +5325,7 @@ button.menu-nav-item {
 }
 
 .cart-free {
-    color: var(--ok);
+    color: var(--success);
     font-weight: 500;
 }
 
@@ -5960,7 +5996,7 @@ button.menu-nav-item {
 }
 
 .edge-gesture-dot.active {
-    background: #ffffff;
+    background: var(--on-ink);
     transform: scale(1.5);
 }
 
@@ -6052,11 +6088,11 @@ body.privacy-page .logo-awaa {
 
 /* Accordion item */
 .privacy-item {
-    border-bottom: 1px dashed rgba(0, 0, 0, 0.15);
+    border-bottom: 1px dashed var(--ink-line);
 }
 
 .privacy-item:first-child {
-    border-top: 1px dashed rgba(0, 0, 0, 0.15);
+    border-top: 1px dashed var(--ink-line);
 }
 
 /* Accordion question/header button */
@@ -6318,12 +6354,12 @@ body.faq-page .logo-awaa {
 
 /* Individual FAQ item */
 .faqpage-item {
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-top: 1px solid var(--ink-line);
     overflow: hidden;
 }
 
 .faqpage-item:last-child {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid var(--ink-line);
 }
 
 /* Question button */
@@ -6633,7 +6669,7 @@ body.faq-page .logo-awaa {
     font-family: 'Outfit', sans-serif;
     font-size: 1.6rem;
     font-weight: 500;
-    color: #0891b2;
+    color: var(--teal-deep);
     line-height: 1.2;
 }
 
@@ -6905,7 +6941,7 @@ body.faq-page .logo-awaa {
     background-position: center;
     background-color: #e5e7eb;
     margin-bottom: 36px;
-    border: 1px solid rgba(0, 0, 0, 0.04);
+    border: 1px solid var(--ink-line-soft);
 }
 
 @media (min-width: 768px) {
@@ -6987,7 +7023,7 @@ body.faq-page .logo-awaa {
     background-position: center;
     background-color: #e5e7eb;
     margin: 32px 0 12px;
-    border: 1px solid rgba(0, 0, 0, 0.04);
+    border: 1px solid var(--ink-line-soft);
 }
 
 @media (min-width: 768px) {
@@ -7079,7 +7115,7 @@ body.faq-page .logo-awaa {
 }
 
 .ba-related-viewall:hover {
-    color: #0891b2;
+    color: var(--teal-deep);
 }
 
 /* Related Posts Slider */
@@ -7344,12 +7380,12 @@ body.tos-page .logo-awaa {
 
 /* Individual section */
 .tos-section {
-    border-top: 1px solid rgba(0, 0, 0, 0.08);
+    border-top: 1px solid var(--ink-line-soft);
     padding: 40px 0;
 }
 
 .tos-section:last-child {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    border-bottom: 1px solid var(--ink-line-soft);
 }
 
 @media (min-width: 768px) {
@@ -7567,7 +7603,7 @@ body.tos-page .logo-awaa {
 /* Individual bento card */
 .edge-int-card {
     background: var(--paper);
-    border: 1px solid rgba(0, 0, 0, 0.06);
+    border: 1px solid var(--ink-line-soft);
     border-radius: 20px;
     padding: 20px;
     box-shadow: 0 4px 20px var(--shadow-tint-sm);
@@ -7705,7 +7741,7 @@ body.tos-page .logo-awaa {
     font-family: 'Outfit', sans-serif;
     font-size: 1.75rem;
     font-weight: 600;
-    color: #fff;
+    color: var(--on-ink);
     line-height: 1.25;
     margin: 0 0 56px;
 }
@@ -7790,7 +7826,7 @@ body.tos-page .logo-awaa {
 .edge-ctrl-btn-icon svg {
     width: 22px;
     height: 22px;
-    color: #fff;
+    color: var(--on-ink);
 }
 
 /* Active icon circle — bright LED ring */
@@ -8036,7 +8072,7 @@ body.tos-page .logo-awaa {
 }
 
 .edge-filter-item {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    border-bottom: 1px solid var(--ink-line-soft);
 }
 
 .edge-filter-header {
@@ -8096,7 +8132,7 @@ body.tos-page .logo-awaa {
 
 .edge-filter-item.active .edge-filter-toggle {
     transform: rotate(45deg);
-    color: #0891b2;
+    color: var(--teal-deep);
 }
 
 .edge-filter-body {
@@ -8368,7 +8404,7 @@ body.tos-page .logo-awaa {
 }
 
 .edge-info-link-row:hover {
-    color: #0891b2;
+    color: var(--teal-deep);
 }
 
 /* Large label text */
@@ -8406,8 +8442,8 @@ body.tos-page .logo-awaa {
 
 .edge-info-accordion-trigger:hover .edge-info-row-icon,
 .edge-info-link-row:hover .edge-info-row-icon {
-    border-color: #0891b2;
-    color: #0891b2;
+    border-color: var(--teal-deep);
+    color: var(--teal-deep);
 }
 
 .edge-info-link-row:hover .edge-info-row-icon {
@@ -8514,29 +8550,10 @@ body.tos-page .logo-awaa {
     }
 }
 
-/* ============================================================
-   LANDING PAGE THEME — neutral + navy
-   Scoped to the landing page only via body.page-landing, so the
-   other pages that share this stylesheet are unaffected.
-   To apply site-wide later, remove the `.page-landing` prefixes.
-   ============================================================ */
-
-.page-landing {
-    /* Neutral palette — tied to the brand navy, NOT to the product colour
-       (future products may not be almond, so the site stays product-agnostic) */
-    --bg:           #F4F5F7;   /* soft neutral canvas (faintly cool grey) */
-    --bg-tonal:     #ECEEF1;   /* subtle tonal section */
-    --surface:      #FFFFFF;   /* cards */
-    --navy:         #0D234A;   /* primary text / buttons / anchor sections */
-    --navy-hover:   #081A38;
-    --body-ink:     #2B3342;   /* body text */
-    --hairline:     #E3E5E9;   /* neutral hairline border */
-}
+/* (Legacy navy landing-theme token block removed — Monsoon Mist tokens are global.) */
 
 /* ---- 1. Transparent canvas: let the .page Ascend gradient show through ----- */
-/* (Removed `body.page-landing { background:var(--bg); color:var(--body-ink) }`
-   so the `.page` gradient + --ink apply.) Content sections go transparent so the
-   gradient is continuous down the whole page. */
+/* (Landing sections use Monsoon Mist surface tokens; no legacy body override.) */
 /* (Removed gradient-era transparent override; sections now alternate
    var(--mist) / var(--mist-deep) with dark var(--ink) anchor bands.) */
 

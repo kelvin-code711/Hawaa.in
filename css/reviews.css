@@ -76,7 +76,7 @@
     padding: 24px;
     background: var(--mist-deep);
     border-radius: 20px;
-    border: 1px solid rgba(0, 0, 0, 0.06);
+    border: 1px solid var(--ink-line-soft);
     margin-bottom: 32px;
 }
 
@@ -338,7 +338,7 @@
 
 .rv-card {
     background: var(--paper);
-    border: 1px solid rgba(0, 0, 0, 0.06);
+    border: 1px solid var(--ink-line-soft);
     border-radius: 20px;
     padding: 20px;
     box-shadow: 0 4px 20px var(--shadow-tint-sm);
