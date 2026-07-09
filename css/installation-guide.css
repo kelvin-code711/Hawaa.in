@@ -224,7 +224,7 @@
 ======================================== */
 
 .bp-section {
-    background: var(--mist);
+    background: var(--mist-deep);
     padding: 64px 20px 72px;
     border-top: 1px solid rgba(0, 0, 0, 0.06);
 }
