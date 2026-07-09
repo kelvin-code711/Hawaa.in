@@ -272,7 +272,7 @@
     font-family: 'Outfit', sans-serif;
     font-size: 0.9rem;
     font-weight: 400;
-    color: var(--ink-faint);
+    color: var(--teal-deep);
 }
 
 .about-development-text {
@@ -357,7 +357,7 @@
     font-family: 'Outfit', sans-serif;
     font-size: 0.9rem;
     font-weight: 400;
-    color: var(--ink-faint);
+    color: var(--teal-deep);
 }
 
 /* Founders Photo */
@@ -457,7 +457,7 @@
     font-family: 'Outfit', sans-serif;
     font-size: 0.9rem;
     font-weight: 400;
-    color: var(--ink-faint);
+    color: var(--teal-deep);
     margin-bottom: 20px;
 }
 
@@ -531,7 +531,7 @@
     font-family: 'Outfit', sans-serif;
     font-size: 0.9rem;
     font-weight: 400;
-    color: var(--ink-faint);
+    color: var(--teal-deep);
 }
 
 .about-values-list {

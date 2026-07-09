@@ -343,7 +343,7 @@
     font-family: 'Outfit', sans-serif;
     font-size: 0.9rem;
     font-weight: 400;
-    color: var(--ink-faint);
+    color: var(--teal-deep);
 }
 
 @media (min-width: 768px) {
