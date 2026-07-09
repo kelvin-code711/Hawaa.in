@@ -713,7 +713,7 @@
 ======================================== */
 
 .gh-section {
-    background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+    background: var(--ink);
     border-top: none;
     padding: 0;
     overflow: visible;
