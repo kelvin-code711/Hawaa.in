@@ -749,51 +749,6 @@ button.menu-nav-item {
     pointer-events: none;
 }
 
-/* Centered Product (spotlight + drop shadow + mirrored reflection) */
-.hero-product {
-    position: absolute;
-    top: 52%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 3;
-    width: min(78vw, 420px);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    pointer-events: none;
-}
-
-.hero-spotlight {
-    position: absolute;
-    top: 40%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 150%;
-    aspect-ratio: 1 / 1;
-    background: radial-gradient(circle, rgba(255, 240, 214, 0.22), transparent 60%);
-    z-index: -1;
-    pointer-events: none;
-}
-
-.hero-product-img {
-    width: 100%;
-    height: auto;
-    display: block;
-    filter: drop-shadow(0 28px 38px rgba(0, 0, 0, 0.45));
-}
-
-.hero-product-reflection {
-    width: 100%;
-    height: auto;
-    display: block;
-    margin-top: -4%;
-    transform: scaleY(-1);
-    opacity: 0.4;
-    -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, transparent 55%);
-            mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, transparent 55%);
-    pointer-events: none;
-}
-
 /* Gradient Overlay */
 .hero-overlay {
     position: absolute;
