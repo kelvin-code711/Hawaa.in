@@ -431,8 +431,8 @@
     align-items: center;
     justify-content: center;
     padding: 12px 24px;
-    background: #111827;
-    color: white;
+    background: var(--ink);
+    color: var(--on-ink);
     border: none;
     border-radius: 9999px;
     font-family: 'Outfit', sans-serif;
@@ -445,7 +445,7 @@
 }
 
 .sp-submit:hover {
-    background: #1f2937;
+    background: var(--ink);
     transform: translateY(-1px);
 }
 
@@ -454,7 +454,8 @@
 }
 
 .sp-submit:disabled {
-    opacity: 0.5;
+    background: var(--mist-deep);
+    color: var(--ink-faint);
     cursor: not-allowed;
     transform: none;
 }

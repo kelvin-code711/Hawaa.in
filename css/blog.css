@@ -143,8 +143,8 @@
 
 .bl-cat {
     padding: 8px 18px;
-    background: #111827;
-    color: white;
+    background: var(--ink);
+    color: var(--on-ink);
     border: none;
     border-radius: 4px;
     font-family: 'Outfit', sans-serif;
@@ -159,7 +159,7 @@
 }
 
 .bl-cat:hover {
-    background: #374151;
+    background: var(--ink);
 }
 
 .bl-cat.active {
@@ -762,7 +762,7 @@
 }
 
 .ba-rel-arrow:hover {
-    background: #111827;
+    background: var(--ink);
     border-color: #111827;
 }
 

@@ -294,8 +294,8 @@
     justify-content: center;
     gap: 8px;
     padding: 12px 24px;
-    background: #111827;
-    color: white;
+    background: var(--ink);
+    color: var(--on-ink);
     border: none;
     border-radius: 9999px;
     font-family: 'Outfit', sans-serif;
@@ -314,7 +314,7 @@
 }
 
 .rv-write-btn:hover {
-    background: #1f2937;
+    background: var(--ink);
     transform: translateY(-1px);
 }
 
@@ -549,13 +549,14 @@
 }
 
 .rv-page-btn:hover:not(:disabled) {
-    background: #111827;
+    background: var(--ink);
     border-color: #111827;
-    color: white;
+    color: var(--on-ink);
 }
 
 .rv-page-btn:disabled {
-    opacity: 0.3;
+    background: var(--mist-deep);
+    color: var(--ink-faint);
     cursor: not-allowed;
 }
 
@@ -592,8 +593,8 @@
 }
 
 .rv-page-num.active {
-    background: #111827;
-    color: white;
+    background: var(--ink);
+    color: var(--on-ink);
     border-color: var(--ink);
 }
 
@@ -609,8 +610,8 @@
     height: 56px;
     align-items: center;
     justify-content: center;
-    background: #111827;
-    color: white;
+    background: var(--ink);
+    color: var(--on-ink);
     border: none;
     border-radius: 50%;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
