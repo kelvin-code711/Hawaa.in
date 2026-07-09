@@ -77,20 +77,20 @@
 .btn-secondary:hover{background:#3a2f20}
 .btn-outline{background:transparent;border-color:currentColor;color:var(--ink)}
 .btn-outline.on-dark{color:var(--hero-ink)}      /* hero / dark bands only */
-.btn-outline:hover{background:rgba(44,36,25,.05)}
+.btn-outline:hover{background:rgba(18,49,44,.05)}
 .btn-text{background:transparent;color:var(--accent-strong);padding:13px 8px}
 .btn-text .u{border-bottom:1.5px solid currentColor;padding-bottom:1px}
-.btn-icon{padding:12px;border-radius:var(--r-btn);border:1px solid var(--line);
+.btn-icon{padding:12px;border-radius:var(--r-btn);border:1px solid var(--ink-line);
   background:rgba(255,255,255,.5);color:var(--ink)}
 .btn-sm{padding:9px 15px;font-size:13px}
 
 /* ---- CARDS -------------------------------------------------------------- */
 /* glass card — for the GRADIENT page (content shows through) */
-.card-glass{background:rgba(255,255,255,.6);border:1px solid var(--line);
+.card-glass{background:rgba(255,255,255,.6);border:1px solid var(--ink-line);
   border-radius:var(--r-card);padding:26px;backdrop-filter:blur(8px)}
 @supports not (backdrop-filter:blur(8px)){ .card-glass{background:rgba(255,255,255,.92)} }
 /* solid card — for SOLID pages */
-.card{background:var(--paper);border:1px solid var(--line);
+.card{background:var(--paper);border:1px solid var(--ink-line);
   border-radius:var(--r-card);padding:26px;box-shadow:0 14px 30px -24px rgba(60,42,20,.35)}
 
 /* icon tile used inside cards / stat strip */
@@ -99,11 +99,11 @@
 
 /* ---- FORMS / INPUTS ----------------------------------------------------- */
 .input{width:100%;font-family:var(--font-sans);font-size:15px;color:var(--ink);
-  background:var(--paper);border:1px solid var(--line);border-radius:10px;
+  background:var(--paper);border:1px solid var(--ink-line);border-radius:10px;
   padding:12px 14px}
-.input::placeholder{color:var(--muted);opacity:.7}
+.input::placeholder{color:var(--ink-faint)}
 .input:focus{outline:none;border-color:var(--accent-strong);box-shadow:0 0 0 3px var(--accent-tint)}
-.label{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.label{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft)}
 
 /* ---- PILLS / BADGES ----------------------------------------------------- */
 .pill{display:inline-flex;align-items:center;gap:6px;font-family:var(--font-mono);
@@ -113,11 +113,11 @@
 /* ---- MODAL / POPUP (solid surface) ------------------------------------- */
 .modal-scrim{position:fixed;inset:0;background:var(--scrim);
   display:flex;align-items:center;justify-content:center;padding:24px;z-index:100}
-.modal{background:var(--paper);border:1px solid var(--line);
+.modal{background:var(--paper);border:1px solid var(--ink-line);
   border-radius:var(--r-lg);padding:32px;max-width:460px;width:100%;
   box-shadow:0 40px 80px -30px rgba(36,27,18,.5)}
 .modal h3{font-family:var(--font-display);font-size:22px;color:var(--ink);margin-bottom:8px}
-.modal p{font-size:14.5px;color:var(--muted);line-height:1.55}
+.modal p{font-size:14.5px;color:var(--ink-soft);line-height:1.55}
 .modal .modal-actions{display:flex;gap:12px;margin-top:24px}
 
 /* ---- TOAST -------------------------------------------------------------- */
@@ -132,18 +132,18 @@
   scroll-behavior:smooth;-webkit-overflow-scrolling:touch}
 .track::-webkit-scrollbar{display:none}
 .tcard{flex:0 0 360px;scroll-snap-align:start;background:var(--paper);
-  border:1px solid var(--line);border-radius:18px;padding:30px;
+  border:1px solid var(--ink-line);border-radius:18px;padding:30px;
   box-shadow:0 20px 40px -28px rgba(60,42,20,.4)}
 .tcard.active{border-color:rgba(154,118,65,.5);box-shadow:0 24px 50px -24px rgba(135,98,53,.45)}
 .tcard .stars{color:var(--star)}
 .avatar{width:44px;height:44px;border-radius:50%;color:#fff;font-weight:700;
   display:flex;align-items:center;justify-content:center;
   background:linear-gradient(150deg,#C9A36B,#876235)}
-.arrow{width:46px;height:46px;border-radius:50%;border:1px solid var(--line);
+.arrow{width:46px;height:46px;border-radius:50%;border:1px solid var(--ink-line);
   background:rgba(255,255,255,.7);display:flex;align-items:center;justify-content:center;
   color:var(--ink);cursor:pointer}
 .arrow.primary{background:var(--accent-strong);border-color:var(--accent-strong);color:#fff}
-.dot{width:8px;height:8px;border-radius:50%;background:var(--line);transition:all .2s var(--ease)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--ink-line);transition:all .2s var(--ease)}
 .dot.on{width:26px;border-radius:5px;background:var(--accent-strong)}
 
 /* ---- FOOTER ------------------------------------------------------------- */

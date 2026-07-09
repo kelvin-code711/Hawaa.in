@@ -14,9 +14,7 @@
   --paper:           #F7FAF8;   /* elevated surfaces: modals, dropdowns, popovers */
 
   /* ---------- INK (TEXT) ---------- */
-  /* MIGRATION SHIM: --ink temporarily pinned to the Ascend value.
-     Restore at swap time: --ink: #12312C; */
-  --ink:             #2C2419;   /* headlines, primary body text */
+  --ink:             #12312C;   /* headlines, primary body text */
   --ink-soft:        rgba(18, 49, 44, 0.62);   /* secondary text, captions, labels */
   --ink-faint:       rgba(18, 49, 44, 0.38);   /* placeholders, disabled text */
   --ink-line:        rgba(18, 49, 44, 0.16);   /* borders, dividers, hairlines */
