@@ -13,7 +13,7 @@ body {
     font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     line-height: 1.5;
     overflow-x: hidden;
-    background: #ffffff;
+    background: var(--mist);
     color: #171717;
 }
 
@@ -200,7 +200,7 @@ body.menu-open .logo-img {
     left: 0;
     right: 0;
     z-index: 99;
-    background: var(--surface-sunken);
+    background: var(--mist-deep);
     border-radius: 0 0 24px 24px;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
     transform: translateY(-100%);
@@ -316,7 +316,7 @@ button.menu-nav-item {
 
 /* Modal card */
 .signin-modal {
-    background: var(--surface-raised);
+    background: var(--paper);
     border-radius: 24px 24px 0 0;
     width: 100%;
     max-width: 420px;
@@ -351,7 +351,7 @@ button.menu-nav-item {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: var(--surface-sunken);
+    background: var(--mist-deep);
     border: none;
     border-radius: 50%;
     cursor: pointer;
@@ -419,7 +419,7 @@ button.menu-nav-item {
     border-radius: 12px;
     overflow: hidden;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
-    background: var(--surface-raised);
+    background: var(--paper);
     margin-bottom: 8px;
 }
 
@@ -531,7 +531,7 @@ button.menu-nav-item {
     font-size: 1.25rem;
     font-weight: 600;
     color: var(--ink);
-    background: var(--surface-raised);
+    background: var(--paper);
     outline: none;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
     -moz-appearance: textfield;
@@ -945,7 +945,7 @@ button.menu-nav-item {
 .trust-badges {
     position: relative;
     padding: 40px 0;
-    background: white;
+    background: var(--mist);
 }
 
 @media (min-width: 640px) {
@@ -1189,7 +1189,7 @@ button.menu-nav-item {
 ======================================== */
 .aqi-section {
     padding: 0 16px 0;
-    background: white;
+    background: var(--mist);
     display: flex;
     justify-content: center;
 }
@@ -1201,7 +1201,7 @@ button.menu-nav-item {
 }
 
 .aqi-checker {
-    background: white;
+    background: var(--paper);
     border-radius: 0;
     padding: 40px 24px 50px;
     max-width: 420px;
@@ -1277,7 +1277,7 @@ button.menu-nav-item {
     top: 100%;
     left: 0;
     right: 0;
-    background: white;
+    background: var(--paper);
     border: 1px solid var(--line);
     border-radius: 10px;
     margin-top: 4px;
@@ -1301,7 +1301,7 @@ button.menu-nav-item {
 }
 
 .city-suggestion:hover {
-    background: var(--surface-sunken);
+    background: var(--mist-deep);
 }
 
 .city-suggestion:first-child {
@@ -1413,7 +1413,7 @@ button.menu-nav-item {
 }
 
 .modal-content {
-    background: var(--surface-raised);
+    background: var(--paper);
     border-radius: 20px;
     padding: 24px;
     max-width: 420px;
@@ -1436,7 +1436,7 @@ button.menu-nav-item {
     right: 16px;
     width: 32px;
     height: 32px;
-    background: var(--surface-sunken);
+    background: var(--mist-deep);
     border: none;
     border-radius: 50%;
     cursor: pointer;
@@ -1492,7 +1492,7 @@ button.menu-nav-item {
     flex-shrink: 0;
     width: 36px;
     height: 36px;
-    background: var(--surface-sunken);
+    background: var(--mist-deep);
     border: none;
     border-radius: 50%;
     cursor: pointer;
@@ -1532,7 +1532,7 @@ button.menu-nav-item {
 .impact-card {
     flex: 0 0 calc(100% - 8px);
     scroll-snap-align: start;
-    background: var(--surface-sunken);
+    background: var(--mist-deep);
     border-radius: 14px;
     padding: 20px;
     text-align: center;
@@ -1635,7 +1635,7 @@ button.menu-nav-item {
 }
 
 ::-webkit-scrollbar-track {
-    background: var(--surface-sunken);
+    background: var(--mist-deep);
 }
 
 ::-webkit-scrollbar-thumb {
@@ -1652,7 +1652,7 @@ button.menu-nav-item {
 ======================================== */
 .feature-section {
     padding: 50px 16px 60px;
-    background: white;
+    background: var(--mist);
     overflow: hidden;
 }
 
@@ -1990,7 +1990,7 @@ button.menu-nav-item {
 }
 
 .feature-expanded {
-    background: white;
+    background: var(--paper);
     border-radius: 24px;
     max-width: 900px;
     width: 100%;
@@ -2059,7 +2059,7 @@ button.menu-nav-item {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    background: var(--surface-sunken);
+    background: var(--mist-deep);
     padding: 8px 14px;
     border-radius: 20px;
     align-self: flex-start;
@@ -2087,7 +2087,7 @@ button.menu-nav-item {
     right: 16px;
     width: 36px;
     height: 36px;
-    background: var(--surface-sunken);
+    background: var(--mist-deep);
     border: none;
     border-radius: 50%;
     cursor: pointer;
@@ -2153,7 +2153,7 @@ button.menu-nav-item {
 
 /* Testimonial */
 .feature-testimonial {
-    background: var(--surface-sunken);
+    background: var(--mist-deep);
     border-radius: 16px;
     padding: 20px;
     margin-bottom: 24px;
@@ -2229,7 +2229,7 @@ button.menu-nav-item {
 .feature-expanded-arrow {
     width: 44px;
     height: 44px;
-    background: var(--surface-sunken);
+    background: var(--mist-deep);
     border: 1px solid var(--line);
     border-radius: 50%;
     cursor: pointer;
@@ -2373,7 +2373,7 @@ button.menu-nav-item {
 ======================================== */
 .certification-section {
     padding: 50px 16px 60px;
-    background: white;
+    background: var(--mist);
 }
 
 @media (min-width: 640px) {
@@ -2463,7 +2463,7 @@ button.menu-nav-item {
 /* Certification Card */
 .certification-card {
     /* Solid fallback for iOS */
-    background: var(--surface-sunken);
+    background: var(--mist-deep);
     background: rgba(249, 250, 251, 0.95);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
@@ -2641,7 +2641,7 @@ button.menu-nav-item {
 ======================================== */
 .testimonials-section {
     padding: 60px 16px 70px;
-    background: var(--surface-sunken);
+    background: var(--mist-deep);
 }
 
 @media (min-width: 640px) {
@@ -3063,7 +3063,7 @@ button.menu-nav-item {
 ======================================== */
 .blogs-section {
     padding: 50px 16px 60px;
-    background: white;
+    background: var(--mist);
 }
 
 @media (min-width: 640px) {
@@ -3345,7 +3345,7 @@ button.menu-nav-item {
 ======================================== */
 .faq-section {
     padding: 50px 16px 50px;
-    background: var(--surface-sunken);
+    background: var(--mist-deep);
 }
 
 @media (min-width: 640px) {
@@ -3400,7 +3400,7 @@ button.menu-nav-item {
 }
 
 .faq-item {
-    background: white;
+    background: var(--paper);
     border: 1px solid rgba(0, 0, 0, 0.06);
     border-radius: 12px;
     overflow: hidden;
@@ -3481,7 +3481,7 @@ button.menu-nav-item {
 ======================================== */
 .newsletter-section {
     padding: 40px 16px;
-    background: white;
+    background: var(--mist);
 }
 
 @media (min-width: 640px) {
@@ -3497,7 +3497,7 @@ button.menu-nav-item {
 }
 
 .newsletter-content {
-    background: var(--surface-sunken);
+    background: var(--mist-deep);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border: 1px solid rgba(0, 0, 0, 0.06);
@@ -3541,7 +3541,7 @@ button.menu-nav-item {
 .newsletter-input {
     flex: 1;
     padding: 14px 18px;
-    background: white;
+    background: var(--paper);
     border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 10px;
     font-family: 'Outfit', sans-serif;
@@ -3831,7 +3831,7 @@ button.menu-nav-item {
     position: relative;
     max-width: 90vw;
     max-height: 90vh;
-    background: white;
+    background: var(--paper);
     border-radius: 16px;
     overflow: hidden;
 }
@@ -4091,7 +4091,7 @@ button.menu-nav-item {
     gap: 0;
     padding: 14px 16px;
     border-bottom: 1px solid #f3f4f6;
-    background: #ffffff;
+    background: var(--paper);
     position: sticky;
     top: 64px;
     z-index: 50;
@@ -4234,7 +4234,7 @@ button.menu-nav-item {
     align-items: flex-start;
     text-align: left;
     padding: 20px 16px;
-    background: #ffffff;
+    background: var(--paper);
     border: 1.5px solid #e5e7eb;
     border-radius: 12px;
     cursor: pointer;
@@ -4318,7 +4318,7 @@ button.menu-nav-item {
     align-items: flex-start;
     text-align: left;
     padding: 14px 16px;
-    background: #ffffff;
+    background: var(--paper);
     border: 1.5px solid #e5e7eb;
     border-radius: 10px;
     cursor: pointer;
@@ -4460,7 +4460,7 @@ button.menu-nav-item {
     justify-content: space-between;
     gap: 16px;
     padding: 16px;
-    background: #ffffff;
+    background: var(--paper);
     border: 1.5px solid #e5e7eb;
     border-radius: 12px;
     margin-bottom: 28px;
@@ -4603,7 +4603,7 @@ button.menu-nav-item {
     position: fixed;
     inset: 0;
     z-index: 200;
-    background: #ffffff;
+    background: var(--paper);
     display: flex;
     flex-direction: column;
     opacity: 0;
@@ -4619,7 +4619,7 @@ button.menu-nav-item {
 .buy-details-modal {
     width: 100%;
     height: 100%;
-    background: #ffffff;
+    background: var(--paper);
     position: relative;
     display: flex;
     flex-direction: column;
@@ -4885,7 +4885,7 @@ button.menu-nav-item {
     min-width: 18px;
     height: 18px;
     background: var(--accent-strong);
-    color: var(--surface-raised);
+    color: var(--paper);
     font-family: 'Outfit', sans-serif;
     font-size: 0.65rem;
     font-weight: 600;
@@ -4959,7 +4959,7 @@ button.menu-nav-item {
     bottom: 0;
     width: 100%;
     max-width: 420px;
-    background: var(--surface-raised);
+    background: var(--paper);
     display: flex;
     flex-direction: column;
     transform: translateX(100%);
@@ -5008,7 +5008,7 @@ button.menu-nav-item {
 }
 
 .cart-close:hover {
-    background: var(--surface-sunken);
+    background: var(--mist-deep);
 }
 
 /* Cart Body */
@@ -5056,7 +5056,7 @@ button.menu-nav-item {
     display: flex;
     gap: 14px;
     padding: 14px;
-    background: var(--surface-sunken);
+    background: var(--mist-deep);
     border-radius: 12px;
 }
 
@@ -5065,7 +5065,7 @@ button.menu-nav-item {
     height: 64px;
     border-radius: 8px;
     overflow: hidden;
-    background: var(--surface-sunken);
+    background: var(--mist-deep);
     flex-shrink: 0;
 }
 
@@ -5136,7 +5136,7 @@ button.menu-nav-item {
 }
 
 .cart-qty-btn:hover {
-    background: var(--surface-sunken);
+    background: var(--mist-deep);
 }
 
 .cart-qty-btn:active {
@@ -5218,7 +5218,7 @@ button.menu-nav-item {
 
 .cart-upsell-btn {
     padding: 6px 14px;
-    background: var(--surface-raised);
+    background: var(--paper);
     border: 1.5px solid var(--line);
     border-radius: 9999px;
     font-family: 'Outfit', sans-serif;
@@ -5231,12 +5231,12 @@ button.menu-nav-item {
 
 .cart-upsell-btn:hover {
     border-color: var(--line-strong);
-    background: var(--surface-sunken);
+    background: var(--mist-deep);
 }
 
 .cart-upsell-btn.added {
     background: var(--ink);
-    color: var(--surface-raised);
+    color: var(--paper);
     border-color: var(--ink);
 }
 
@@ -5621,7 +5621,7 @@ button.menu-nav-item {
 .edge-spec-card {
     position: absolute;
     inset: 0;
-    background: #ffffff;
+    background: var(--paper);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -5801,7 +5801,7 @@ button.menu-nav-item {
 
 .edge-gestures-section {
     padding: 60px 16px 80px;
-    background: #ffffff;
+    background: var(--mist);
 }
 
 .edge-gestures-inner {
@@ -5998,7 +5998,7 @@ body.privacy-page .logo-awaa {
 /* Main content area */
 .privacy-main {
     padding: 100px 16px 60px;
-    background: #ffffff;
+    background: var(--mist);
     min-height: 100vh;
 }
 
@@ -6239,7 +6239,7 @@ body.faq-page .logo-awaa {
     padding-bottom: 60px;
     padding-left: 16px;
     padding-right: 16px;
-    background: #ffffff;
+    background: var(--mist);
     min-height: 100vh;
 }
 
@@ -6530,7 +6530,7 @@ body.faq-page .logo-awaa {
     position: sticky;
     top: 64px;
     z-index: 80;
-    background: white;
+    background: var(--mist);
     border-bottom: 1px solid #e5e7eb;
     transition: box-shadow 0.3s ease;
 }
@@ -6606,7 +6606,7 @@ body.faq-page .logo-awaa {
 /* Blog Listing Section */
 .bl-listing {
     padding: 40px 20px 60px;
-    background: #faf9f7;
+    background: var(--mist-deep);
     min-height: 50vh;
 }
 
@@ -6777,7 +6777,7 @@ body.faq-page .logo-awaa {
 /* Article Header */
 .ba-header {
     padding: 100px 20px 40px;
-    background: white;
+    background: var(--mist);
 }
 
 @media (min-width: 640px) {
@@ -6880,7 +6880,7 @@ body.faq-page .logo-awaa {
 /* Article Body */
 .ba-body {
     padding: 0 20px 60px;
-    background: white;
+    background: var(--mist);
 }
 
 @media (min-width: 640px) {
@@ -7016,7 +7016,7 @@ body.faq-page .logo-awaa {
 ======================================== */
 .ba-related {
     padding: 60px 20px 70px;
-    background: #faf9f7;
+    background: var(--mist-deep);
 }
 
 @media (min-width: 768px) {
@@ -7239,14 +7239,14 @@ body.tos-page .logo-awaa {
 
 /* TOS Main wrapper */
 .tos-main {
-    background: #ffffff;
+    background: var(--mist);
     min-height: 100vh;
 }
 
 /* Hero section */
 .tos-hero {
     padding: 120px 20px 48px;
-    background: #ffffff;
+    background: var(--mist);
 }
 
 @media (min-width: 640px) {
@@ -7325,7 +7325,7 @@ body.tos-page .logo-awaa {
 
 /* Content area */
 .tos-content {
-    background: #ffffff;
+    background: var(--mist);
     padding: 0 20px 80px;
 }
 
@@ -7501,7 +7501,7 @@ body.tos-page .logo-awaa {
 
 .edge-integrations-section {
     padding: 60px 16px;
-    background: white;
+    background: var(--mist);
 }
 
 @media (min-width: 768px) {
@@ -7570,7 +7570,7 @@ body.tos-page .logo-awaa {
 
 /* Individual bento card */
 .edge-int-card {
-    background: white;
+    background: var(--paper);
     border: 1px solid rgba(0, 0, 0, 0.06);
     border-radius: 20px;
     padding: 20px;
@@ -7999,7 +7999,7 @@ body.tos-page .logo-awaa {
    ============================================================ */
 
 .edge-filter-section {
-    background: #ffffff;
+    background: var(--mist);
     padding: 80px 24px;
 }
 
@@ -8145,7 +8145,7 @@ body.tos-page .logo-awaa {
 ======================================== */
 
 .edge-reviews-section {
-    background: #f9fafb;
+    background: var(--mist-deep);
     padding: 80px 24px;
 }
 
@@ -8189,7 +8189,7 @@ body.tos-page .logo-awaa {
 /* Single card */
 .edge-review-card {
     flex: 1;
-    background: white;
+    background: var(--paper);
     border: 1px solid #e5e7eb;
     border-radius: 16px;
     padding: 28px 32px 24px;
@@ -8331,7 +8331,7 @@ body.tos-page .logo-awaa {
    =================================================== */
 
 .edge-info-section {
-    background: #ffffff;
+    background: var(--mist);
     padding: 70px 20px;
 }
 
@@ -8615,7 +8615,7 @@ body.tos-page .logo-awaa {
    ACCOUNT PAGE
 ======================================== */
 body.account-page {
-    background: #f9fafb;
+    background: var(--mist);
 }
 
 .account-main {
@@ -8628,7 +8628,7 @@ body.account-page {
 
 /* Signed-out card */
 .account-signedout-card {
-    background: white;
+    background: var(--paper);
     border: 1px solid #e5e7eb;
     border-radius: 20px;
     padding: 48px 32px;
@@ -8672,7 +8672,7 @@ body.account-page {
 
 /* Profile card */
 .account-card {
-    background: white;
+    background: var(--paper);
     border: 1px solid #e5e7eb;
     border-radius: 20px;
     padding: 32px;
@@ -8795,7 +8795,7 @@ body.account-page {
 }
 
 .account-reviews {
-    background: white;
+    background: var(--paper);
     border: 1px solid #e5e7eb;
     border-radius: 16px;
     overflow: hidden;

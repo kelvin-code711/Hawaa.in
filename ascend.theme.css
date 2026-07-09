@@ -51,24 +51,14 @@
 }
 
 /* ---- SURFACE MODES ------------------------------------------------------ */
-.page{ /* landing only — DARK only behind the hero, then resolves to warm
-          off-white for the whole body. Stops are anchored in vh (not %) so the
-          dark band can't bleed onto light-text sections as the page grows. */
+.page{ /* landing only — MONSOON MIST MIGRATION: dark Ascend gradient hero
+          retired, replaced with the flat mist page background. */
   color:var(--ink);
-  background:linear-gradient(180deg,
-    #2C2218 0,
-    #2C2218 70vh,
-    #4A3B2A 86vh,
-    #8B7252 95vh,
-    #D8C5A4 101vh,
-    #ECDFC9 112vh,
-    #F6EFE1 150vh,
-    #FCF8EF 210vh);
-  background-color:#FCF8EF;
+  background:var(--mist);
 }
 .surface{ /* every secondary page + popups */
   color:var(--ink);
-  background:var(--paper);
+  background:var(--mist);
 }
 
 /* ---- BUTTONS ------------------------------------------------------------ */
@@ -100,7 +90,7 @@
   border-radius:var(--r-card);padding:26px;backdrop-filter:blur(8px)}
 @supports not (backdrop-filter:blur(8px)){ .card-glass{background:rgba(255,255,255,.92)} }
 /* solid card — for SOLID pages */
-.card{background:var(--surface-raised);border:1px solid var(--line);
+.card{background:var(--paper);border:1px solid var(--line);
   border-radius:var(--r-card);padding:26px;box-shadow:0 14px 30px -24px rgba(60,42,20,.35)}
 
 /* icon tile used inside cards / stat strip */
@@ -109,7 +99,7 @@
 
 /* ---- FORMS / INPUTS ----------------------------------------------------- */
 .input{width:100%;font-family:var(--font-sans);font-size:15px;color:var(--ink);
-  background:var(--surface-raised);border:1px solid var(--line);border-radius:10px;
+  background:var(--paper);border:1px solid var(--line);border-radius:10px;
   padding:12px 14px}
 .input::placeholder{color:var(--muted);opacity:.7}
 .input:focus{outline:none;border-color:var(--accent-strong);box-shadow:0 0 0 3px var(--accent-tint)}
@@ -123,7 +113,7 @@
 /* ---- MODAL / POPUP (solid surface) ------------------------------------- */
 .modal-scrim{position:fixed;inset:0;background:var(--scrim);
   display:flex;align-items:center;justify-content:center;padding:24px;z-index:100}
-.modal{background:var(--surface-raised);border:1px solid var(--line);
+.modal{background:var(--paper);border:1px solid var(--line);
   border-radius:var(--r-lg);padding:32px;max-width:460px;width:100%;
   box-shadow:0 40px 80px -30px rgba(36,27,18,.5)}
 .modal h3{font-family:var(--font-display);font-size:22px;color:var(--ink);margin-bottom:8px}
@@ -141,7 +131,7 @@
 .track{display:flex;gap:22px;overflow-x:auto;scroll-snap-type:x mandatory;
   scroll-behavior:smooth;-webkit-overflow-scrolling:touch}
 .track::-webkit-scrollbar{display:none}
-.tcard{flex:0 0 360px;scroll-snap-align:start;background:var(--surface-raised);
+.tcard{flex:0 0 360px;scroll-snap-align:start;background:var(--paper);
   border:1px solid var(--line);border-radius:18px;padding:30px;
   box-shadow:0 20px 40px -28px rgba(60,42,20,.4)}
 .tcard.active{border-color:rgba(154,118,65,.5);box-shadow:0 24px 50px -24px rgba(135,98,53,.45)}

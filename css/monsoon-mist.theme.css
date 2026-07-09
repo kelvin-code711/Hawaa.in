@@ -11,10 +11,7 @@
   --mist:            #EAF0EC;   /* primary page background */
   --mist-deep:       #DDE7E1;   /* alternating sections, cards on mist */
   --mist-deeper:     #CFDCD4;   /* pressed states, table row hover */
-  /* MIGRATION SHIM: --paper temporarily pinned to the Ascend value so the
-     site stays visually identical while both themes are linked.
-     Restore at swap time: --paper: #F7FAF8; */
-  --paper:           #FBF6EC;   /* elevated surfaces: modals, dropdowns, popovers */
+  --paper:           #F7FAF8;   /* elevated surfaces: modals, dropdowns, popovers */
 
   /* ---------- INK (TEXT) ---------- */
   /* MIGRATION SHIM: --ink temporarily pinned to the Ascend value.

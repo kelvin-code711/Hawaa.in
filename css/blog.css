@@ -98,7 +98,7 @@
     position: sticky;
     top: 64px;
     z-index: 80;
-    background: white;
+    background: var(--mist);
     border-bottom: 1px solid #e5e7eb;
     transition: box-shadow 0.3s ease;
 }
@@ -174,7 +174,7 @@
 /* Blog Listing Section */
 .bl-listing {
     padding: 40px 20px 60px;
-    background: #faf9f7;
+    background: var(--mist-deep);
     min-height: 50vh;
 }
 
@@ -345,7 +345,7 @@
 /* Article Header */
 .ba-header {
     padding: 100px 20px 40px;
-    background: white;
+    background: var(--mist);
 }
 
 @media (min-width: 640px) {
@@ -448,7 +448,7 @@
 /* Article Body */
 .ba-body {
     padding: 0 20px 60px;
-    background: white;
+    background: var(--mist);
 }
 
 @media (min-width: 640px) {
@@ -584,7 +584,7 @@
 ======================================== */
 .ba-related {
     padding: 60px 20px 70px;
-    background: #faf9f7;
+    background: var(--mist-deep);
 }
 
 @media (min-width: 768px) {

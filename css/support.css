@@ -8,7 +8,7 @@
 ======================================== */
 .sp-main {
     padding: 100px 16px 60px;
-    background: #ffffff;
+    background: var(--mist);
     min-height: 70vh;
 }
 
@@ -312,7 +312,7 @@
 ======================================== */
 .sp-contact {
     padding: 60px 16px;
-    background: #ffffff;
+    background: var(--mist);
 }
 
 @media (min-width: 640px) {
@@ -400,7 +400,7 @@
     font-family: 'Outfit', sans-serif;
     font-size: 1rem;
     color: #111827;
-    background: white;
+    background: var(--paper);
     transition: all 0.2s ease;
     -webkit-appearance: none;
 }

@@ -8,7 +8,7 @@
 ======================================== */
 .rv-main {
     padding: 100px 16px 60px;
-    background: #ffffff;
+    background: var(--mist);
     min-height: 70vh;
 }
 
@@ -74,7 +74,7 @@
     flex-direction: column;
     gap: 24px;
     padding: 24px;
-    background: #f9fafb;
+    background: var(--mist-deep);
     border-radius: 20px;
     border: 1px solid rgba(0, 0, 0, 0.06);
     margin-bottom: 32px;
@@ -229,7 +229,7 @@
     font-family: 'Outfit', sans-serif;
     font-size: 1rem;
     color: #111827;
-    background: white;
+    background: var(--paper);
     cursor: pointer;
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -337,7 +337,7 @@
 }
 
 .rv-card {
-    background: white;
+    background: var(--paper);
     border: 1px solid rgba(0, 0, 0, 0.06);
     border-radius: 20px;
     padding: 20px;
@@ -667,7 +667,7 @@
 }
 
 .rv-modal {
-    background: #ffffff;
+    background: var(--paper);
     border-radius: 24px 24px 0 0;
     width: 100%;
     max-width: 480px;
@@ -1054,7 +1054,7 @@
     font-family: 'Outfit', sans-serif;
     font-size: 1rem;
     color: #111827;
-    background: white;
+    background: var(--paper);
     transition: all 0.2s ease;
     -webkit-appearance: none;
 }
