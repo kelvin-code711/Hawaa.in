@@ -123,7 +123,7 @@
 
 /* ---- TOAST -------------------------------------------------------------- */
 .toast{background:var(--ink);color:var(--on-ink);border-radius:12px;
-  padding:14px 18px;font-size:14px;box-shadow:0 20px 40px -20px var(--shadow-tint)}
+  padding:14px 18px;font-size:14px;box-shadow:0 20px 40px -20px var(--shadow-tint-lg)}
 .toast.ok{border-left:3px solid var(--ok)}
 .toast.error{border-left:3px solid var(--error)}
 

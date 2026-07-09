@@ -652,7 +652,7 @@
     border-color: var(--ink-line);
     background: var(--mist-deep);
     transform: translateY(-1px);
-    box-shadow: 0 4px 12px var(--shadow-tint);
+    box-shadow: 0 4px 12px var(--shadow-tint-sm);
 }
 
 @media (min-width: 768px) {
