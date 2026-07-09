@@ -121,7 +121,7 @@
 ======================================== */
 .about-mission {
     padding: 60px 16px;
-    background: var(--mist);
+    background: var(--mist-deep);
 }
 
 .about-mission-container {
@@ -247,7 +247,7 @@
 ======================================== */
 .about-development {
     padding: 60px 16px;
-    background: var(--mist);
+    background: var(--mist-deep);
 }
 
 .about-development-container {
@@ -506,7 +506,7 @@
 ======================================== */
 .about-values {
     padding: 60px 16px;
-    background: var(--mist);
+    background: var(--mist-deep);
 }
 
 .about-values-container {

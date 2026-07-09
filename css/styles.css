@@ -43,7 +43,7 @@ textarea {
 }
 
 .header.scrolled {
-    background: rgba(251, 246, 236, 0.85);
+    background: rgba(234, 240, 236, 0.85);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--ink-line);
@@ -86,7 +86,7 @@ textarea {
     display: flex;
     align-items: center;
     font-size: 1.25rem;
-    color: var(--hero-ink);
+    color: var(--on-ink);
     letter-spacing: 0.01em;
 }
 
@@ -150,7 +150,7 @@ body.menu-open .logo-img {
     display: block;
     width: 22px;
     height: 2px;
-    background: var(--hero-ink);
+    background: var(--on-ink);
     transition: all 0.3s ease;
     border-radius: 1px;
 }
@@ -179,7 +179,7 @@ body.menu-open .logo-img {
 .menu-overlay {
     position: fixed;
     inset: 0;
-    background: var(--scrim);
+    background: rgba(18, 49, 44, 0.55);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     z-index: 98;
@@ -291,7 +291,7 @@ button.menu-nav-item {
 .signin-overlay {
     position: fixed;
     inset: 0;
-    background: var(--scrim);
+    background: rgba(18, 49, 44, 0.55);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     z-index: 200;
@@ -734,7 +734,7 @@ button.menu-nav-item {
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    background: var(--ink-bg);
+    background: var(--ink);
 }
 
 /* Background Video */
@@ -1210,7 +1210,7 @@ button.menu-nav-item {
 ======================================== */
 .aqi-section {
     padding: 0 16px 0;
-    background: var(--mist);
+    background: var(--mist-deep);
     display: flex;
     justify-content: center;
 }
@@ -1419,7 +1419,7 @@ button.menu-nav-item {
     left: 0;
     right: 0;
     bottom: 0;
-    background: var(--scrim);
+    background: rgba(18, 49, 44, 0.55);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     display: none;
@@ -2279,7 +2279,7 @@ button.menu-nav-item {
    REPLACEMENT FILTER SECTION
 ======================================== */
 .filter-section {
-    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-strong) 100%);
+    background: var(--ink);
     padding: 32px 16px;
     position: relative;
     overflow: hidden;
@@ -2372,8 +2372,8 @@ button.menu-nav-item {
     align-items: center;
     justify-content: center;
     padding: 14px 32px;
-    background: var(--ink);
-    color: var(--on-ink);
+    background: var(--paper);
+    color: var(--ink);
     font-family: 'Outfit', sans-serif;
     font-size: 0.9rem;
     font-weight: 600;
@@ -2767,7 +2767,7 @@ button.menu-nav-item {
     height: 380px;
     border-radius: 20px;
     overflow: hidden;
-    background: var(--ink-bg);
+    background: var(--ink);
 }
 
 @media (min-width: 640px) {
@@ -2908,7 +2908,7 @@ button.menu-nav-item {
 ======================================== */
 .reviews-section {
     padding: 50px 16px 60px;
-    background: var(--ink-bg);
+    background: var(--ink);
 }
 
 @media (min-width: 640px) {
@@ -3610,8 +3610,8 @@ button.menu-nav-item {
    FOOTER
 ======================================== */
 .footer {
-    background: var(--foot-bg);
-    color: var(--foot-ink);
+    background: var(--ink);
+    color: var(--on-ink);
     padding: 40px 16px 24px;
 }
 
@@ -3651,12 +3651,12 @@ button.menu-nav-item {
 }
 
 .footer-logo-text {
-    color: var(--foot-ink);
+    color: var(--on-ink);
 }
 
 .footer-tagline {
     font-size: 0.9rem;
-    color: var(--foot-muted);
+    color: rgba(234, 240, 236, 0.6);
     margin-bottom: 24px;
 }
 
@@ -3671,7 +3671,7 @@ button.menu-nav-item {
     align-items: flex-start;
     gap: 12px;
     font-size: 0.85rem;
-    color: var(--foot-ink);
+    color: var(--on-ink);
     line-height: 1.5;
 }
 
@@ -3680,7 +3680,7 @@ button.menu-nav-item {
     height: 18px;
     flex-shrink: 0;
     margin-top: 2px;
-    color: var(--foot-muted);
+    color: rgba(234, 240, 236, 0.6);
 }
 
 /* Footer Links */
@@ -3724,14 +3724,14 @@ button.menu-nav-item {
     font-size: 0.75rem;
     font-weight: 600;
     letter-spacing: 0.1em;
-    color: var(--foot-muted);
+    color: rgba(234, 240, 236, 0.6);
     margin: 0;
 }
 
 .footer-chevron {
     width: 18px;
     height: 18px;
-    color: var(--foot-muted);
+    color: rgba(234, 240, 236, 0.6);
     transition: transform 0.3s ease;
 }
 
@@ -3768,7 +3768,7 @@ button.menu-nav-item {
 
 .footer-links-list a {
     font-size: 0.9rem;
-    color: var(--foot-ink);
+    color: var(--on-ink);
     opacity: 0.8;
     text-decoration: none;
     transition: opacity 0.2s ease;
@@ -3824,7 +3824,7 @@ button.menu-nav-item {
 
 .footer-copyright {
     font-size: 0.8rem;
-    color: var(--foot-muted);
+    color: rgba(234, 240, 236, 0.6);
 }
 
 /* Certification Modal Styles */
@@ -3834,7 +3834,7 @@ button.menu-nav-item {
     left: 0;
     right: 0;
     bottom: 0;
-    background: var(--scrim);
+    background: rgba(18, 49, 44, 0.55);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     display: none;
@@ -3903,7 +3903,7 @@ button.menu-nav-item {
 /* Buy Page Body */
 .buy-page .header {
     position: fixed;
-    background: rgba(251, 246, 236, 0.95);
+    background: rgba(234, 240, 236, 0.95);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--ink-line);
@@ -4969,7 +4969,7 @@ button.menu-nav-item {
     content: '';
     position: absolute;
     inset: 0;
-    background: var(--scrim);
+    background: rgba(18, 49, 44, 0.55);
     backdrop-filter: blur(4px);
     -webkit-backdrop-filter: blur(4px);
 }
@@ -5384,7 +5384,7 @@ button.menu-nav-item {
     height: 100dvh;
     min-height: 600px;
     overflow: hidden;
-    background: #1a1a1a;
+    background: var(--ink);
 }
 
 .edge-hero-image {
@@ -5825,7 +5825,7 @@ button.menu-nav-item {
 
 .edge-gestures-section {
     padding: 60px 16px 80px;
-    background: var(--mist);
+    background: var(--mist-deep);
 }
 
 .edge-gestures-inner {
@@ -6008,7 +6008,7 @@ button.menu-nav-item {
 
 /* Page-specific header fix */
 body.privacy-page .header {
-    background: rgba(251, 246, 236, 0.95);
+    background: rgba(234, 240, 236, 0.95);
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
     border-bottom: 1px solid var(--ink-line);
@@ -6246,7 +6246,7 @@ body.privacy-page .logo-awaa {
 
 /* Page-level header overrides */
 body.faq-page .header {
-    background: rgba(251, 246, 236, 0.95);
+    background: rgba(234, 240, 236, 0.95);
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
     border-bottom: 1px solid var(--ink-line);
@@ -6493,7 +6493,7 @@ body.faq-page .logo-awaa {
     inset: 0;
     background-size: cover;
     background-position: center;
-    background-color: #1e293b;
+    background-color: var(--ink);
 }
 
 .bl-hero-overlay {
@@ -7250,7 +7250,7 @@ body.faq-page .logo-awaa {
 
 /* Header overrides for TOS page */
 body.tos-page .header {
-    background: rgba(251, 246, 236, 0.95);
+    background: rgba(234, 240, 236, 0.95);
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
     border-bottom: 1px solid var(--ink-line);
@@ -7705,7 +7705,7 @@ body.tos-page .logo-awaa {
    ============================================================ */
 
 .edge-controls-section {
-    background: #000;
+    background: var(--ink);
     padding: 80px 24px 100px;
 }
 
@@ -8565,15 +8565,8 @@ body.tos-page .logo-awaa {
 /* (Removed `body.page-landing { background:var(--bg); color:var(--body-ink) }`
    so the `.page` gradient + --ink apply.) Content sections go transparent so the
    gradient is continuous down the whole page. */
-.page-landing .trust-badges,
-.page-landing .aqi-section,
-.page-landing .feature-section,
-.page-landing .certification-section,
-.page-landing .blogs-section,
-.page-landing .newsletter-section,
-.page-landing .faq-section,
-.page-landing .testimonials-section,
-.page-landing .aqi-checker { background: transparent; }
+/* (Removed gradient-era transparent override; sections now alternate
+   var(--mist) / var(--mist-deep) with dark var(--ink) anchor bands.) */
 
 /* ---- 2. Dark anchor sections now use the Ascend tokens ------- */
 /* (Removed navy-gradient override; base .reviews-section=--ink-bg, .footer=--foot-bg.) */

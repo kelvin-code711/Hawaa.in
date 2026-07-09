@@ -312,7 +312,7 @@
 ======================================== */
 .sp-contact {
     padding: 60px 16px;
-    background: var(--mist);
+    background: var(--mist-deep);
 }
 
 @media (min-width: 640px) {

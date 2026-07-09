@@ -34,7 +34,7 @@
     bottom: 0;
     background-size: cover;
     background-position: center;
-    background-color: #1e293b;
+    background-color: var(--ink);
 }
 
 .bl-hero-overlay {

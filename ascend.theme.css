@@ -112,7 +112,7 @@
   background:var(--accent-tint);color:var(--accent-strong);padding:5px 11px;border-radius:99px}
 
 /* ---- MODAL / POPUP (solid surface) ------------------------------------- */
-.modal-scrim{position:fixed;inset:0;background:var(--scrim);
+.modal-scrim{position:fixed;inset:0;background:rgba(18,49,44,.55);
   display:flex;align-items:center;justify-content:center;padding:24px;z-index:100}
 .modal{background:var(--paper);border:1px solid var(--ink-line);
   border-radius:var(--r-lg);padding:32px;max-width:460px;width:100%;
@@ -122,7 +122,7 @@
 .modal .modal-actions{display:flex;gap:12px;margin-top:24px}
 
 /* ---- TOAST -------------------------------------------------------------- */
-.toast{background:var(--ink-bg);color:var(--hero-ink);border-radius:12px;
+.toast{background:var(--ink);color:var(--on-ink);border-radius:12px;
   padding:14px 18px;font-size:14px;box-shadow:0 20px 40px -20px rgba(0,0,0,.5)}
 .toast.ok{border-left:3px solid var(--ok)}
 .toast.error{border-left:3px solid var(--error)}
@@ -148,9 +148,9 @@
 .dot.on{width:26px;border-radius:5px;background:var(--accent-strong)}
 
 /* ---- FOOTER ------------------------------------------------------------- */
-.footer{background:var(--foot-bg);color:var(--foot-ink)}
-.footer a{color:var(--foot-ink);opacity:.8}
-.footer .muted{color:var(--foot-muted)}
+.footer{background:var(--ink);color:var(--on-ink)}
+.footer a{color:var(--on-ink);opacity:.8}
+.footer .muted{color:rgba(234, 240, 236, 0.6)}
 
 /* ---- MOTION / A11Y ------------------------------------------------------ */
 @media (prefers-reduced-motion:reduce){
