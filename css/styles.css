@@ -47,7 +47,7 @@ textarea {
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--ink-line);
-    box-shadow: 0 4px 30px var(--shadow-tint);
+    box-shadow: 0 4px 30px var(--shadow-tint-sm);
 }
 
 .header.scrolled .logo {
@@ -202,7 +202,7 @@ body.menu-open .logo-img {
     z-index: 99;
     background: var(--mist-deep);
     border-radius: 0 0 24px 24px;
-    box-shadow: 0 20px 60px var(--shadow-tint);
+    box-shadow: 0 20px 60px var(--shadow-tint-md);
     transform: translateY(-100%);
     transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     overflow: hidden;
@@ -1058,7 +1058,7 @@ button.menu-nav-item {
     width: 36px;
     height: 24px;
     border-radius: 2px;
-    box-shadow: 0 1px 3px var(--shadow-tint);
+    box-shadow: 0 1px 3px var(--shadow-tint-md);
 }
 
 @media (min-width: 640px) {
@@ -1269,7 +1269,7 @@ button.menu-nav-item {
     overflow-y: auto;
     z-index: 50;
     display: none;
-    box-shadow: 0 4px 12px var(--shadow-tint);
+    box-shadow: 0 4px 12px var(--shadow-tint-md);
 }
 
 .city-suggestions.active {
@@ -1335,13 +1335,13 @@ button.menu-nav-item {
     border-radius: 9999px;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 15px var(--shadow-tint);
+    box-shadow: 0 4px 15px var(--shadow-tint-lg);
 }
 
 .aqi-btn-glass:hover {
     background: rgba(18, 49, 44, 0.85);
     transform: scale(1.02);
-    box-shadow: 0 6px 20px var(--shadow-tint);
+    box-shadow: 0 6px 20px var(--shadow-tint-lg);
 }
 
 .aqi-btn-glass:active {
@@ -1405,7 +1405,7 @@ button.menu-nav-item {
     max-height: 90vh;
     overflow-y: auto;
     position: relative;
-    box-shadow: 0 20px 60px var(--shadow-tint);
+    box-shadow: 0 20px 60px var(--shadow-tint-lg);
 }
 
 @media (min-width: 640px) {
@@ -1982,7 +1982,7 @@ button.menu-nav-item {
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    box-shadow: 0 25px 60px var(--shadow-tint);
+    box-shadow: 0 25px 60px var(--shadow-tint-lg);
     transform: scale(0.95);
     transition: transform 0.3s ease;
 }
@@ -2343,12 +2343,12 @@ button.menu-nav-item {
     border-radius: 9999px;
     text-decoration: none;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 15px var(--shadow-tint);
+    box-shadow: 0 4px 15px var(--shadow-tint-md);
 }
 
 .filter-cta:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px var(--shadow-tint);
+    box-shadow: 0 6px 20px var(--shadow-tint-lg);
 }
 
 
@@ -2474,7 +2474,7 @@ button.menu-nav-item {
 
 .certification-card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 30px var(--shadow-tint);
+    box-shadow: 0 8px 30px var(--shadow-tint-sm);
 }
 
 .certification-card-desc {
@@ -3392,7 +3392,7 @@ button.menu-nav-item {
 }
 
 .faq-item:hover {
-    box-shadow: 0 4px 20px var(--shadow-tint);
+    box-shadow: 0 4px 20px var(--shadow-tint-sm);
 }
 
 .faq-question {
@@ -4037,7 +4037,7 @@ button.menu-nav-item {
     font-size: 0.75rem;
     font-weight: 500;
     color: var(--ink);
-    box-shadow: 0 2px 8px var(--shadow-tint);
+    box-shadow: 0 2px 8px var(--shadow-tint-sm);
 }
 
 .buy-carousel-counter svg {
@@ -4061,12 +4061,12 @@ button.menu-nav-item {
     color: var(--ink);
     cursor: pointer;
     transition: all 0.2s ease;
-    box-shadow: 0 2px 8px var(--shadow-tint);
+    box-shadow: 0 2px 8px var(--shadow-tint-sm);
 }
 
 .buy-details-btn:hover {
     background: rgba(255, 255, 255, 1);
-    box-shadow: 0 4px 16px var(--shadow-tint);
+    box-shadow: 0 4px 16px var(--shadow-tint-md);
 }
 
 /* ---- Step Navigation ---- */
@@ -4955,7 +4955,7 @@ button.menu-nav-item {
     flex-direction: column;
     transform: translateX(100%);
     transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    box-shadow: -8px 0 30px var(--shadow-tint);
+    box-shadow: -8px 0 30px var(--shadow-tint-md);
 }
 
 .cart-overlay.active .cart-panel {
@@ -5843,7 +5843,7 @@ button.menu-nav-item {
     cursor: grab;
     user-select: none;
     -webkit-user-select: none;
-    box-shadow: 0 24px 64px var(--shadow-tint);
+    box-shadow: 0 24px 64px var(--shadow-tint-md);
     touch-action: pan-y;
 }
 
@@ -6535,7 +6535,7 @@ body.faq-page .logo-awaa {
 }
 
 .bl-cats.shadow {
-    box-shadow: 0 4px 16px var(--shadow-tint);
+    box-shadow: 0 4px 16px var(--shadow-tint-sm);
 }
 
 .bl-cats-scroll {
@@ -6722,7 +6722,7 @@ body.faq-page .logo-awaa {
 }
 
 .bl-card:hover .bl-card-img {
-    box-shadow: 0 8px 30px var(--shadow-tint);
+    box-shadow: 0 8px 30px var(--shadow-tint-md);
 }
 
 .bl-card-title {
@@ -7136,7 +7136,7 @@ body.faq-page .logo-awaa {
 }
 
 .ba-rel-card:hover .ba-rel-card-img {
-    box-shadow: 0 8px 30px var(--shadow-tint);
+    box-shadow: 0 8px 30px var(--shadow-tint-md);
 }
 
 .ba-rel-card-title {
@@ -7567,7 +7567,7 @@ body.tos-page .logo-awaa {
     border: 1px solid rgba(0, 0, 0, 0.06);
     border-radius: 20px;
     padding: 20px;
-    box-shadow: 0 4px 20px var(--shadow-tint);
+    box-shadow: 0 4px 20px var(--shadow-tint-sm);
     display: flex;
     flex-direction: column;
     gap: 16px;
@@ -7581,7 +7581,7 @@ body.tos-page .logo-awaa {
 }
 
 .edge-int-card:hover {
-    box-shadow: 0 8px 30px var(--shadow-tint);
+    box-shadow: 0 8px 30px var(--shadow-tint-sm);
     transform: translateY(-2px);
 }
 
@@ -8544,7 +8544,7 @@ body.tos-page .logo-awaa {
 /* (Removed navy bg + navy text override; base .filter-section=brass gradient,
    .filter-cta=white bg + --accent-strong text.) */
 /* (filter band is light now; landing wash override removed) */
-.page-landing .filter-cta:hover      { box-shadow: 0 6px 20px var(--shadow-tint); }
+.page-landing .filter-cta:hover      { box-shadow: 0 6px 20px var(--shadow-tint-lg); }
 
 /* ---- 4. Sticky buy button: base Ascend brass gradient shows --- */
 /* (Removed navy/white-pill override.) */
@@ -8835,7 +8835,7 @@ body.account-page {
 }
 
 .account-empty a {
-    color: #0891b2;
+    color: var(--teal-deep);
 }
 
 /* Sign out */
@@ -8884,8 +8884,8 @@ body.account-page {
     flex-shrink: 0;
     font-size: 11px;
     font-weight: 500;
-    color: #b45309;
-    background: #fef3c7;
+    color: var(--warning);
+    background: var(--warning-tint);
     border-radius: 999px;
     padding: 2px 10px;
 }
@@ -9059,9 +9059,9 @@ body.account-page {
     text-transform: capitalize;
 }
 
-.account-order-status.placed { color: #1d4ed8; background: #dbeafe; }
-.account-order-status.confirmed { color: #0e7490; background: #cffafe; }
-.account-order-status.shipped { color: #b45309; background: #fef3c7; }
+.account-order-status.placed { color: var(--info); background: var(--info-tint); }
+.account-order-status.confirmed { color: var(--info); background: var(--info-tint); }
+.account-order-status.shipped { color: var(--success); background: var(--success-tint); }
 .account-order-status.delivered { color: var(--success); background: var(--success-tint); }
 .account-order-status.cancelled { color: var(--error); background: var(--error-tint); }
 

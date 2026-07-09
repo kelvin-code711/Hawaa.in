@@ -341,7 +341,7 @@
     border: 1px solid rgba(0, 0, 0, 0.06);
     border-radius: 20px;
     padding: 20px;
-    box-shadow: 0 4px 20px var(--shadow-tint);
+    box-shadow: 0 4px 20px var(--shadow-tint-sm);
 }
 
 @media (min-width: 640px) {
@@ -614,7 +614,7 @@
     color: var(--on-ink);
     border: none;
     border-radius: 50%;
-    box-shadow: 0 4px 20px var(--shadow-tint);
+    box-shadow: 0 4px 20px var(--shadow-tint-md);
     cursor: pointer;
     z-index: 50;
     transition: all 0.3s ease;
@@ -623,7 +623,7 @@
 
 .rv-fab:hover {
     transform: scale(1.05);
-    box-shadow: 0 8px 30px var(--shadow-tint);
+    box-shadow: 0 8px 30px var(--shadow-tint-lg);
 }
 
 .rv-fab svg {

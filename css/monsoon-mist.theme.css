@@ -50,7 +50,10 @@
   --device-black-edge:   #1B1D1F;
 
   /* ---------- SHADOWS (color component only) ---------- */
-  --shadow-tint:     rgba(18, 49, 44, 0.14);   /* use in all box-shadows instead of pure black */
+  --shadow-tint:     rgba(18, 49, 44, 0.14);   /* default / medium elevation */
+  --shadow-tint-sm:  rgba(18, 49, 44, 0.07);   /* low elevation: subtle lifts, hairline cards */
+  --shadow-tint-md:  rgba(18, 49, 44, 0.14);   /* mid elevation: cards, dropdowns, sticky bars */
+  --shadow-tint-lg:  rgba(18, 49, 44, 0.28);   /* high elevation: modals, popovers, hero lifts */
   --shadow-cta:      rgba(30, 124, 113, 0.28); /* CTA hover glow */
 
   /* ---------- FOCUS ---------- */
