@@ -484,7 +484,7 @@ button.menu-nav-item {
     width: 100%;
     padding: 14px 24px;
     background: var(--ink);
-    color: white;
+    color: var(--on-ink);
     font-family: 'Outfit', sans-serif;
     font-size: 0.95rem;
     font-weight: 500;
@@ -495,7 +495,7 @@ button.menu-nav-item {
 }
 
 .signin-btn:hover {
-    background: #714f29;
+    background: var(--ink);
 }
 
 .signin-btn:active {
@@ -503,7 +503,8 @@ button.menu-nav-item {
 }
 
 .signin-btn:disabled {
-    background: var(--ink-line);
+    background: var(--mist-deep);
+    color: var(--ink-faint);
     cursor: not-allowed;
 }
 
@@ -600,7 +601,7 @@ button.menu-nav-item {
     font-family: 'Outfit', sans-serif;
     font-size: 0.85rem;
     font-weight: 500;
-    color: var(--accent-strong);
+    color: var(--teal-deep);
     background: none;
     border: none;
     cursor: pointer;
@@ -609,11 +610,11 @@ button.menu-nav-item {
 }
 
 .signin-resend:hover {
-    color: var(--accent-strong);
+    color: var(--teal-deep-hover);
 }
 
 .signin-resend:disabled {
-    color: var(--ink-soft);
+    color: var(--ink-faint);
     cursor: not-allowed;
 }
 
@@ -697,8 +698,8 @@ button.menu-nav-item {
     align-items: center;
     justify-content: center;
     padding: 8px 18px;
-    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-strong) 100%);
-    border: 1px solid rgba(135, 98, 53, 0.5);
+    background: var(--teal-deep);
+    border: 1px solid var(--teal-deep);
     border-radius: 9999px;
     color: white;
     font-family: 'Outfit', sans-serif;
@@ -706,13 +707,13 @@ button.menu-nav-item {
     font-weight: 600;
     text-decoration: none;
     transition: all 0.3s ease;
-    box-shadow: 0 2px 12px rgba(135, 98, 53, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    box-shadow: 0 2px 12px var(--shadow-cta), inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 .sticky-buy-btn:hover {
-    background: linear-gradient(135deg, var(--accent-strong) 0%, #714f29 100%);
-    border-color: rgba(135, 98, 53, 0.7);
-    box-shadow: 0 4px 16px rgba(135, 98, 53, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+    background: var(--teal-deep-hover);
+    border-color: var(--teal-deep-hover);
+    box-shadow: 0 4px 16px var(--shadow-cta), inset 0 1px 0 rgba(255, 255, 255, 0.25);
     transform: scale(1.02);
 }
 
@@ -920,13 +921,22 @@ button.menu-nav-item {
 
 /* Primary CTA */
 .cta-primary {
-    background: var(--accent-strong);
+    background: var(--teal-deep);
     border: 1px solid transparent;
 }
 
 .cta-primary span {
-    color: white;
+    color: var(--on-teal);
     text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.cta-primary:hover {
+    background: var(--teal-deep-hover);
+    box-shadow: 0 4px 16px var(--shadow-cta);
+}
+
+.cta-primary:active {
+    background: var(--teal-deep-press);
 }
 
 /* Secondary CTA */
@@ -1317,7 +1327,7 @@ button.menu-nav-item {
     width: 100%;
     padding: 14px 24px;
     background: var(--ink);
-    color: white;
+    color: var(--on-ink);
     font-family: 'Outfit', sans-serif;
     font-size: 0.95rem;
     font-weight: 500;
@@ -1328,7 +1338,7 @@ button.menu-nav-item {
 }
 
 .aqi-btn:hover {
-    background: #714f29;
+    background: var(--ink);
     transform: scale(1.02);
 }
 
@@ -1948,8 +1958,8 @@ button.menu-nav-item {
 }
 
 .feature-arrow:hover {
-    background: #714f29;
-    border-color: #714f29;
+    background: var(--ink);
+    border-color: var(--ink);
 }
 
 .feature-arrow:hover svg {
@@ -2199,7 +2209,7 @@ button.menu-nav-item {
     gap: 8px;
     padding: 12px 24px;
     background: var(--ink);
-    color: white;
+    color: var(--on-ink);
     font-size: 0.9rem;
     font-weight: 500;
     border-radius: 9999px;
@@ -2208,7 +2218,7 @@ button.menu-nav-item {
 }
 
 .feature-learn-more:hover {
-    background: #714f29;
+    background: var(--ink);
     transform: translateY(-1px);
 }
 
@@ -2351,8 +2361,8 @@ button.menu-nav-item {
     align-items: center;
     justify-content: center;
     padding: 14px 32px;
-    background: white;
-    color: var(--accent-strong);
+    background: var(--ink);
+    color: var(--on-ink);
     font-family: 'Outfit', sans-serif;
     font-size: 0.9rem;
     font-weight: 600;
@@ -3562,7 +3572,7 @@ button.menu-nav-item {
 
 .newsletter-btn {
     padding: 14px 24px;
-    background: var(--accent-strong);
+    background: var(--ink);
     color: white;
     font-family: 'Outfit', sans-serif;
     font-size: 0.9rem;
@@ -3575,7 +3585,7 @@ button.menu-nav-item {
 }
 
 .newsletter-btn:hover {
-    background: var(--accent-strong);
+    background: var(--ink);
     transform: translateY(-1px);
 }
 
@@ -4519,8 +4529,8 @@ button.menu-nav-item {
 }
 
 .buy-accessory-add.added {
-    background: #111827;
-    color: #ffffff;
+    background: var(--ink);
+    color: var(--on-ink);
     border-color: var(--ink);
 }
 
@@ -4819,8 +4829,8 @@ button.menu-nav-item {
 .buy-sticky-btn {
     width: 100%;
     padding: 14px 28px;
-    background: #111827;
-    color: white;
+    background: var(--teal-deep);
+    color: var(--on-teal);
     border: none;
     border-radius: 9999px;
     font-family: 'Outfit', sans-serif;
@@ -4832,7 +4842,8 @@ button.menu-nav-item {
 }
 
 .buy-sticky-btn:hover {
-    background: #1f2937;
+    background: var(--teal-deep-hover);
+    box-shadow: 0 4px 16px var(--shadow-cta);
 }
 
 @media (min-width: 1024px) {
@@ -5325,8 +5336,8 @@ button.menu-nav-item {
 .cart-checkout-btn {
     width: 100%;
     padding: 14px 28px;
-    background: var(--ink);
-    color: white;
+    background: var(--teal-deep);
+    color: var(--on-teal);
     border: none;
     border-radius: 9999px;
     font-family: 'Outfit', sans-serif;
@@ -5338,7 +5349,8 @@ button.menu-nav-item {
 }
 
 .cart-checkout-btn:hover {
-    background: #714f29;
+    background: var(--teal-deep-hover);
+    box-shadow: 0 4px 16px var(--shadow-cta);
 }
 
 /* Mobile full-width cart */
@@ -5506,10 +5518,10 @@ button.menu-nav-item {
     align-items: center;
     justify-content: center;
     padding: 13px 32px;
-    background: #ffffff;
+    background: var(--teal-deep);
     border: none;
     border-radius: 9999px;
-    color: var(--ink);
+    color: var(--on-teal);
     font-family: 'Outfit', sans-serif;
     font-size: 0.9rem;
     font-weight: 500;
@@ -5519,7 +5531,8 @@ button.menu-nav-item {
 }
 
 .edge-buy-btn:hover {
-    background: rgba(255, 255, 255, 0.88);
+    background: var(--teal-deep-hover);
+    box-shadow: 0 4px 16px var(--shadow-cta);
     transform: scale(1.02);
 }
 
@@ -7194,7 +7207,7 @@ body.faq-page .logo-awaa {
 }
 
 .ba-rel-arrow:hover {
-    background: #111827;
+    background: var(--ink);
     border-color: #111827;
 }
 
@@ -8288,13 +8301,14 @@ body.tos-page .logo-awaa {
 }
 
 .edge-reviews-arrow:hover {
-    background: #111827;
+    background: var(--ink);
     border-color: #111827;
-    color: white;
+    color: var(--on-ink);
 }
 
 .edge-reviews-arrow:disabled {
-    opacity: 0.25;
+    background: var(--mist-deep);
+    color: var(--ink-faint);
     cursor: not-allowed;
     pointer-events: none;
 }
@@ -8574,12 +8588,13 @@ body.tos-page .logo-awaa {
    a solid brass treatment — colour only, original shape.) */
 .page-landing .certification-btn,
 .page-landing .blogs-read-all-btn {
-    background: var(--accent-strong);
-    color: #ffffff;
+    background: transparent;
+    border: 1.5px solid var(--ink);
+    color: var(--ink);
 }
-.page-landing .certification-btn svg      { color: #ffffff; }
+.page-landing .certification-btn svg      { color: var(--ink); }
 .page-landing .certification-btn:hover,
-.page-landing .blogs-read-all-btn:hover   { background: #714f29; color: #ffffff; }
+.page-landing .blogs-read-all-btn:hover   { background: var(--mist-deep); color: var(--ink); }
 
 /* "Read all reviews" + newsletter button: base Ascend styles show */
 /* (Removed navy reviews-cta + newsletter overrides; base reviews-cta = white
@@ -8604,7 +8619,7 @@ body.tos-page .logo-awaa {
 .page-landing a:focus-visible,
 .page-landing button:focus-visible,
 .page-landing input:focus-visible {
-    outline: 2px solid var(--accent-strong);
+    outline: 2px solid var(--focus-ring);
     outline-offset: 2px;
 }
 

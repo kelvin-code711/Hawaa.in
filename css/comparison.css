@@ -623,8 +623,8 @@
 }
 
 .cmp-arrow:hover {
-    background: #0f172a;
-    border-color: #0f172a;
+    background: var(--ink);
+    border-color: var(--ink);
     color: #ffffff;
     transform: scale(1.05);
 }
@@ -1121,7 +1121,7 @@
 }
 
 .cmp-lab-arrow:hover {
-    background: #111827;
+    background: var(--ink);
     border-color: #111827;
 }
 
@@ -1166,21 +1166,21 @@
     align-items: center;
     justify-content: center;
     padding: 14px 28px;
-    background: linear-gradient(135deg, #0ea5e9 0%, #0891b2 100%);
-    border: 1px solid rgba(56, 189, 248, 0.5);
+    background: var(--teal-deep);
+    border: 1px solid var(--teal-deep);
     border-radius: 9999px;
-    color: white;
+    color: var(--on-teal);
     font-family: 'Outfit', sans-serif;
     font-size: 0.9rem;
     font-weight: 600;
     text-decoration: none;
     transition: all 0.3s ease;
-    box-shadow: 0 2px 12px rgba(14, 165, 233, 0.4);
+    box-shadow: 0 2px 12px var(--shadow-cta);
 }
 
 .cmp-cta-buy:hover {
-    background: linear-gradient(135deg, #38bdf8 0%, #0ea5e9 100%);
-    box-shadow: 0 4px 16px rgba(14, 165, 233, 0.5);
+    background: var(--teal-deep-hover);
+    box-shadow: 0 4px 16px var(--shadow-cta);
     transform: scale(1.02);
 }
 
@@ -1189,9 +1189,9 @@
     align-items: center;
     justify-content: center;
     padding: 14px 28px;
-    background: #111827;
+    background: var(--ink);
     border-radius: 9999px;
-    color: white;
+    color: var(--on-ink);
     font-family: 'Outfit', sans-serif;
     font-size: 0.9rem;
     font-weight: 500;
@@ -1200,7 +1200,7 @@
 }
 
 .cmp-cta-secondary-dark:hover {
-    background: #1f2937;
+    background: var(--ink);
     transform: translateY(-1px);
 }
 

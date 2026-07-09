@@ -68,17 +68,18 @@
   transition:transform .15s var(--ease),background .15s,box-shadow .15s,color .15s}
 .btn svg{width:17px;height:17px}
 .btn:active{transform:translateY(1px)}
-.btn:focus-visible{outline:2px solid var(--accent-strong);outline-offset:2px}
-.btn[disabled]{opacity:.5;pointer-events:none}
+.btn:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px}
+.btn[disabled]{background:var(--mist-deep);color:var(--ink-faint);pointer-events:none}
 
-.btn-primary{background:var(--accent-strong);color:#fff;box-shadow:0 8px 20px -8px rgba(135,98,53,.7)}
-.btn-primary:hover{background:#714f29}
-.btn-secondary{background:var(--ink);color:var(--hero-ink)}
-.btn-secondary:hover{background:#3a2f20}
-.btn-outline{background:transparent;border-color:currentColor;color:var(--ink)}
+.btn-primary{background:var(--teal-deep);color:var(--on-teal);box-shadow:0 8px 20px -8px var(--shadow-cta)}
+.btn-primary:hover{background:var(--teal-deep-hover);box-shadow:0 4px 16px var(--shadow-cta)}
+.btn-primary:active{background:var(--teal-deep-press)}
+.btn-secondary{background:var(--ink);color:var(--on-ink)}
+.btn-secondary:hover{background:var(--ink)}
+.btn-outline{background:transparent;border:1.5px solid var(--ink);color:var(--ink)}
 .btn-outline.on-dark{color:var(--hero-ink)}      /* hero / dark bands only */
 .btn-outline:hover{background:rgba(18,49,44,.05)}
-.btn-text{background:transparent;color:var(--accent-strong);padding:13px 8px}
+.btn-text{background:transparent;color:var(--teal-deep);padding:13px 8px}
 .btn-text .u{border-bottom:1.5px solid currentColor;padding-bottom:1px}
 .btn-icon{padding:12px;border-radius:var(--r-btn);border:1px solid var(--ink-line);
   background:rgba(255,255,255,.5);color:var(--ink)}
@@ -142,7 +143,7 @@
 .arrow{width:46px;height:46px;border-radius:50%;border:1px solid var(--ink-line);
   background:rgba(255,255,255,.7);display:flex;align-items:center;justify-content:center;
   color:var(--ink);cursor:pointer}
-.arrow.primary{background:var(--accent-strong);border-color:var(--accent-strong);color:#fff}
+.arrow.primary{background:var(--ink);border-color:var(--ink);color:var(--on-ink)}
 .dot{width:8px;height:8px;border-radius:50%;background:var(--ink-line);transition:all .2s var(--ease)}
 .dot.on{width:26px;border-radius:5px;background:var(--accent-strong)}
 

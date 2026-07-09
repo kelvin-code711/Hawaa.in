@@ -144,8 +144,8 @@
     font-family: 'Outfit', sans-serif;
     font-size: 0.9rem;
     font-weight: 500;
-    color: #ffffff;
-    background: #111827;
+    color: var(--on-ink);
+    background: var(--ink);
     border: none;
     border-radius: 9999px;
     padding: 14px 32px;
@@ -156,9 +156,9 @@
 }
 
 .ig-hero-btn:hover {
-    background: #1f2937;
+    background: var(--ink);
     transform: translateY(-1px);
-    box-shadow: 0 4px 16px rgba(17, 24, 39, 0.18);
+    box-shadow: 0 4px 16px var(--shadow-tint);
 }
 
 .ig-hero-btn:active {
