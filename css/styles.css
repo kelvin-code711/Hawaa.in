@@ -22,6 +22,14 @@ a {
     color: inherit;
 }
 
+/* Form controls must never render below 16px: iOS Safari auto-zooms the
+   page when a smaller field receives focus. */
+input,
+select,
+textarea {
+    font-size: 1rem;
+}
+
 /* ========================================
    HEADER
 ======================================== */
@@ -48,10 +56,6 @@ a {
 
 .header.scrolled .hamburger-line {
     background: var(--ink);
-}
-
-.header.scrolled .header-profile-btn {
-    color: var(--ink);
 }
 
 .header-container {
@@ -109,7 +113,7 @@ a {
 }
 
 .header.scrolled .logo-img,
-.header-always-scrolled .logo-img {
+body.menu-open .logo-img {
     filter: none;
 }
 
@@ -123,42 +127,6 @@ a {
 @media (min-width: 640px) {
     .header-actions {
         gap: 12px;
-    }
-}
-
-/* Profile Button */
-.header-profile-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 36px;
-    height: 36px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-    color: var(--hero-ink);
-    transition: color 0.2s ease, opacity 0.2s ease;
-}
-
-.header-profile-btn svg {
-    width: 22px;
-    height: 22px;
-}
-
-.header-profile-btn:hover {
-    opacity: 0.7;
-}
-
-@media (min-width: 640px) {
-    .header-profile-btn {
-        width: 40px;
-        height: 40px;
-    }
-
-    .header-profile-btn svg {
-        width: 24px;
-        height: 24px;
     }
 }
 
@@ -271,17 +239,41 @@ a {
     font-size: 1rem;
     font-weight: 500;
     color: var(--ink);
-    border-bottom: 1px solid var(--line);
     transition: color 0.2s ease;
     text-decoration: none;
 }
 
-.menu-nav-item:first-child {
-    border-top: 1px solid var(--line);
-}
-
 .menu-nav-item:hover {
     color: var(--accent-strong);
+}
+
+/* Account & Cart entries inside the menu panel */
+button.menu-nav-item {
+    width: 100%;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+}
+
+.menu-nav-item svg {
+    width: 20px;
+    height: 20px;
+    color: var(--muted);
+    flex-shrink: 0;
+}
+
+.menu-nav-item:hover svg {
+    color: var(--accent-strong);
+}
+
+.menu-nav-item.signed-in svg {
+    color: var(--ok);
+}
+
+.menu-nav-item .cart-badge {
+    margin-left: 8px;
+    vertical-align: middle;
 }
 
 @media (min-width: 640px) {
@@ -464,7 +456,7 @@ a {
     border: none;
     outline: none;
     font-family: 'Outfit', sans-serif;
-    font-size: 0.95rem;
+    font-size: 1rem;
     font-weight: 400;
     color: var(--ink);
     padding: 14px 16px 14px 0;
@@ -1263,7 +1255,7 @@ a {
     width: 100%;
     padding: 12px 14px 12px 42px;
     font-family: 'Outfit', sans-serif;
-    font-size: 0.95rem;
+    font-size: 1rem;
     border: 1px solid var(--line);
     border-radius: 10px;
     outline: none;
@@ -3553,7 +3545,7 @@ a {
     border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 10px;
     font-family: 'Outfit', sans-serif;
-    font-size: 0.9rem;
+    font-size: 1rem;
     color: var(--ink);
     outline: none;
     transition: all 0.3s ease;
@@ -3686,15 +3678,6 @@ a {
     }
 }
 
-.footer-links-column {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.14);
-}
-
-@media (min-width: 640px) {
-    .footer-links-column {
-        border-bottom: none;
-    }
-}
 
 .footer-links-header {
     width: 100%;
@@ -3906,14 +3889,6 @@ a {
 }
 
 .buy-page .logo {
-    color: var(--ink);
-}
-
-.buy-page .hamburger-line {
-    background: var(--ink);
-}
-
-.buy-page .header-profile-btn {
     color: var(--ink);
 }
 
@@ -4904,86 +4879,24 @@ a {
     }
 }
 
-/* ---- Header Cart Button ---- */
-.header-cart-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 36px;
-    height: 36px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-    color: white;
-    transition: color 0.2s ease, opacity 0.2s ease;
-    position: relative;
-    text-decoration: none;
-}
-
-.header-cart-btn svg {
-    width: 22px;
-    height: 22px;
-}
-
-.header-cart-btn:hover {
-    opacity: 0.7;
-}
-
-.header.scrolled .header-cart-btn {
-    color: var(--ink);
-}
-
-.buy-page .header-cart-btn {
-    color: var(--ink);
-}
-
+/* Cart item count, shown inline next to the "Cart" label in the menu panel */
 .cart-badge {
     display: none;
-    position: absolute;
-    top: 2px;
-    right: 0px;
-    min-width: 16px;
-    height: 16px;
+    min-width: 18px;
+    height: 18px;
     background: var(--accent-strong);
     color: var(--surface-raised);
     font-family: 'Outfit', sans-serif;
-    font-size: 0.6rem;
+    font-size: 0.65rem;
     font-weight: 600;
     border-radius: 9999px;
-    line-height: 16px;
+    line-height: 18px;
     text-align: center;
-    padding: 0 4px;
+    padding: 0 5px;
 }
 
 .cart-badge.visible {
-    display: block;
-}
-
-.buy-page .cart-badge {
-    background: var(--accent-strong);
-    color: var(--surface-raised);
-}
-
-@media (min-width: 640px) {
-    .header-cart-btn {
-        width: 40px;
-        height: 40px;
-    }
-
-    .header-cart-btn svg {
-        width: 24px;
-        height: 24px;
-    }
-
-    .cart-badge {
-        top: 2px;
-        right: 0px;
-        min-width: 18px;
-        height: 18px;
-        font-size: 0.65rem;
-        line-height: 18px;
-    }
+    display: inline-block;
 }
 
 /* ---- Colour Info (Static - Single Colour) ---- */
@@ -6082,14 +5995,6 @@ body.privacy-page .logo-awaa {
     color: var(--ink);
 }
 
-body.privacy-page .hamburger-line {
-    background: var(--ink);
-}
-
-body.privacy-page .header-profile-btn {
-    color: var(--ink);
-}
-
 /* Main content area */
 .privacy-main {
     padding: 100px 16px 60px;
@@ -6325,14 +6230,6 @@ body.faq-page .header {
 
 body.faq-page .logo-h,
 body.faq-page .logo-awaa {
-    color: var(--ink);
-}
-
-body.faq-page .hamburger-line {
-    background: var(--ink);
-}
-
-body.faq-page .header-profile-btn {
     color: var(--ink);
 }
 
@@ -7337,14 +7234,6 @@ body.tos-page .header {
 
 body.tos-page .logo-h,
 body.tos-page .logo-awaa {
-    color: var(--ink);
-}
-
-body.tos-page .hamburger-line {
-    background: var(--ink);
-}
-
-body.tos-page .header-profile-btn {
     color: var(--ink);
 }
 
@@ -8719,21 +8608,6 @@ body.tos-page .header-profile-btn {
     outline-offset: 2px;
 }
 
-/* Signed-in indicator (dot on the profile icon) */
-.header-profile-btn { position: relative; }
-
-.header-profile-btn.signed-in::after {
-    content: '';
-    position: absolute;
-    top: 4px;
-    right: 4px;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: #059669;
-    border: 1.5px solid white;
-}
-
 /* Hidden helper for injected sign-in modal fields */
 .signin-modal .phone-input-group.hidden { display: none; }
 
@@ -9090,7 +8964,7 @@ body.account-page {
 
 .checkout-input {
     font-family: 'Outfit', sans-serif;
-    font-size: 15px;
+    font-size: 16px;
     padding: 12px 14px;
     border: 1px solid #e5e7eb;
     border-radius: 10px;

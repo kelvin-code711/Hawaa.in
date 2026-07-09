@@ -5,22 +5,8 @@
 (function() {
     'use strict';
 
-    // ========================================
-    // HEADER SCROLL STATE
-    // ========================================
-    var header = document.getElementById('header');
-
-    function updateHeader() {
-        if (!header) return;
-        if (window.scrollY > 10) {
-            header.classList.add('scrolled');
-        } else {
-            header.classList.remove('scrolled');
-        }
-    }
-
-    window.addEventListener('scroll', updateHeader, { passive: true });
-    updateHeader();
+    // The about page sits on a light background, so the header keeps the
+    // static "scrolled" treatment from the markup — no scroll toggle here.
 
     // ========================================
     // AUTO-SCROLLING IMAGE STRIP

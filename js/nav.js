@@ -22,6 +22,7 @@ window.hawaaFirebaseReady = window.hawaaFirebase
         hamburger.classList.add('active');
         menuPanel.classList.add('active');
         menuOverlay.classList.add('active');
+        document.body.classList.add('menu-open');
         document.body.style.overflow = 'hidden';
     }
 
@@ -29,6 +30,7 @@ window.hawaaFirebaseReady = window.hawaaFirebase
         hamburger.classList.remove('active');
         menuPanel.classList.remove('active');
         menuOverlay.classList.remove('active');
+        document.body.classList.remove('menu-open');
         document.body.style.overflow = '';
     }
 
@@ -151,6 +153,17 @@ window.hawaaFirebaseReady = window.hawaaFirebase
 
     var emailMode = 'signin'; // 'signin' | 'signup'
 
+    // Auto-focusing a field on touch devices pops the keyboard (and, on iOS,
+    // can zoom/shift the page) the moment the modal opens — only do it when
+    // a real pointer is available.
+    function canAutoFocus() {
+        return window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    }
+
+    function autoFocus(input) {
+        if (input && canAutoFocus()) input.focus();
+    }
+
     function showStep(step) {
         [phoneStep, otpStep, emailStep].forEach(function(s) {
             if (s) s.classList.add('hidden');
@@ -228,7 +241,7 @@ window.hawaaFirebaseReady = window.hawaaFirebase
         document.body.style.overflow = 'hidden';
         showStep(phoneStep);
         setTimeout(function() {
-            if (phoneInput) phoneInput.focus();
+            autoFocus(phoneInput);
         }, 400);
     }
 
@@ -533,7 +546,7 @@ window.hawaaFirebaseReady = window.hawaaFirebase
             }
 
             // Focus phone input
-            if (phoneInput) phoneInput.focus();
+            autoFocus(phoneInput);
         });
     }
 
@@ -599,14 +612,14 @@ window.hawaaFirebaseReady = window.hawaaFirebase
         useEmailBtn.addEventListener('click', function() {
             showStep(emailStep);
             setEmailMode('signin');
-            setTimeout(function() { if (emailInput) emailInput.focus(); }, 100);
+            setTimeout(function() { autoFocus(emailInput); }, 100);
         });
     }
 
     if (usePhoneBtn) {
         usePhoneBtn.addEventListener('click', function() {
             showStep(phoneStep);
-            setTimeout(function() { if (phoneInput) phoneInput.focus(); }, 100);
+            setTimeout(function() { autoFocus(phoneInput); }, 100);
         });
     }
 
