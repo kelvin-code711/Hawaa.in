@@ -242,9 +242,9 @@
 }
 
 .rv-sort-select:focus {
-    outline: none;
-    border-color: var(--ink);
-    box-shadow: 0 0 0 3px rgba(17, 24, 39, 0.1);
+    border-color: var(--teal-deep);
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 3px;
 }
 
 /* Filter Pills */
@@ -341,7 +341,7 @@
     border: 1px solid rgba(0, 0, 0, 0.06);
     border-radius: 20px;
     padding: 20px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 4px 20px var(--shadow-tint);
 }
 
 @media (min-width: 640px) {
@@ -450,7 +450,7 @@
     align-items: center;
     gap: 4px;
     font-size: 0.75rem;
-    color: #059669;
+    color: var(--success);
     font-weight: 500;
 }
 
@@ -481,9 +481,9 @@
 }
 
 .rv-card-helpful.active {
-    border-color: var(--ink);
+    border-color: var(--teal-deep);
     color: var(--ink);
-    background: #f9fafb;
+    background: var(--teal-tint);
 }
 
 .rv-card-helpful svg {
@@ -614,7 +614,7 @@
     color: var(--on-ink);
     border: none;
     border-radius: 50%;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 20px var(--shadow-tint);
     cursor: pointer;
     z-index: 50;
     transition: all 0.3s ease;
@@ -623,7 +623,7 @@
 
 .rv-fab:hover {
     transform: scale(1.05);
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 30px var(--shadow-tint);
 }
 
 .rv-fab svg {
@@ -786,7 +786,7 @@
 
 /* Required / Optional markers */
 .rv-required {
-    color: #ef4444;
+    color: var(--error);
 }
 
 .rv-optional {
@@ -932,7 +932,7 @@
 .rv-success-icon {
     width: 56px;
     height: 56px;
-    background: #ecfdf5;
+    background: var(--success-tint);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -943,7 +943,7 @@
 .rv-success-icon svg {
     width: 28px;
     height: 28px;
-    color: #059669;
+    color: var(--success);
 }
 
 .rv-success-title {
@@ -1065,14 +1065,14 @@
 }
 
 #rv-review-form .sp-input:focus {
-    outline: none;
-    border-color: var(--ink);
-    box-shadow: 0 0 0 3px rgba(17, 24, 39, 0.1);
+    border-color: var(--teal-deep);
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 3px;
 }
 
 #rv-review-form .sp-input.error {
-    border-color: #ef4444;
-    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.08);
+    border-color: var(--error);
+    box-shadow: 0 0 0 3px var(--error-tint);
 }
 
 #rv-review-form .sp-textarea {

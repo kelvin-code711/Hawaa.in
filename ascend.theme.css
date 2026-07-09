@@ -68,7 +68,7 @@
   transition:transform .15s var(--ease),background .15s,box-shadow .15s,color .15s}
 .btn svg{width:17px;height:17px}
 .btn:active{transform:translateY(1px)}
-.btn:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px}
+.btn:focus-visible{outline:2px solid var(--focus-ring);outline-offset:3px}
 .btn[disabled]{background:var(--mist-deep);color:var(--ink-faint);pointer-events:none}
 
 .btn-primary{background:var(--teal-deep);color:var(--on-teal);box-shadow:0 8px 20px -8px var(--shadow-cta)}
@@ -103,7 +103,7 @@
   background:var(--paper);border:1px solid var(--ink-line);border-radius:10px;
   padding:12px 14px}
 .input::placeholder{color:var(--ink-faint)}
-.input:focus{outline:none;border-color:var(--teal-deep);box-shadow:0 0 0 3px var(--teal-tint)}
+.input:focus{border-color:var(--teal-deep);outline:2px solid var(--focus-ring);outline-offset:3px}
 .label{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft)}
 
 /* ---- PILLS / BADGES ----------------------------------------------------- */
@@ -112,7 +112,7 @@
   background:var(--teal-tint);color:var(--teal-deep);padding:5px 11px;border-radius:99px}
 
 /* ---- MODAL / POPUP (solid surface) ------------------------------------- */
-.modal-scrim{position:fixed;inset:0;background:rgba(18,49,44,.55);
+.modal-scrim{position:fixed;inset:0;background:rgba(18,49,44,.4);
   display:flex;align-items:center;justify-content:center;padding:24px;z-index:100}
 .modal{background:var(--paper);border:1px solid var(--ink-line);
   border-radius:var(--r-lg);padding:32px;max-width:460px;width:100%;
@@ -123,7 +123,7 @@
 
 /* ---- TOAST -------------------------------------------------------------- */
 .toast{background:var(--ink);color:var(--on-ink);border-radius:12px;
-  padding:14px 18px;font-size:14px;box-shadow:0 20px 40px -20px rgba(0,0,0,.5)}
+  padding:14px 18px;font-size:14px;box-shadow:0 20px 40px -20px var(--shadow-tint)}
 .toast.ok{border-left:3px solid var(--ok)}
 .toast.error{border-left:3px solid var(--error)}
 

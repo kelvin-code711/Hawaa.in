@@ -499,7 +499,7 @@
     overflow: hidden;
     background: #f3f4f6;
     border: 1px solid rgba(0, 0, 0, 0.07);
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 4px 24px var(--shadow-tint);
 }
 
 .tc-video {
@@ -595,7 +595,7 @@
     pointer-events: none;
     width: 100%;
     box-sizing: border-box;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 2px 10px var(--shadow-tint);
 }
 
 .tc-chip.is-active {
@@ -890,7 +890,7 @@
     transform: scale(1);
     background: rgba(255, 255, 255, 0.08);
     border-color: rgba(255, 255, 255, 0.15);
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 30px var(--shadow-tint);
 }
 
 .gh-card-num {
@@ -976,7 +976,7 @@
 .gh-app-btn:hover {
     background: rgba(255, 255, 255, 0.15);
     transform: translateY(-1px);
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 14px var(--shadow-tint);
 }
 
 .gh-app-btn:active {
@@ -1210,20 +1210,20 @@
     display: flex;
     align-items: flex-start;
     gap: 16px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 4px 20px var(--shadow-tint);
     transition: box-shadow 0.3s ease, transform 0.3s ease;
     cursor: default;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0.04);
 }
 
 .fc-card:hover {
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.09);
+    box-shadow: 0 8px 30px var(--shadow-tint);
     transform: translateY(-2px);
 }
 
 .fc-card:active {
     transform: translateY(0);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 4px 20px var(--shadow-tint);
 }
 
 /* Icon container */
@@ -1299,9 +1299,9 @@
 }
 
 .fc-badge--no-wash {
-    background: rgba(239, 68, 68, 0.07);
-    color: #991b1b;
-    border: 1px solid rgba(239, 68, 68, 0.18);
+    background: var(--error-tint);
+    color: var(--error);
+    border: 1px solid var(--error);
 }
 
 .fc-badge--replace {

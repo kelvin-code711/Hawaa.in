@@ -757,7 +757,7 @@
     padding: 32px 24px;
     position: relative;
     border-radius: 20px;
-    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 25px 60px var(--shadow-tint);
     transform: scale(0.95);
     transition: transform 0.3s ease;
 }

@@ -110,7 +110,7 @@
 }
 
 .bl-cats.shadow {
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 4px 16px var(--shadow-tint);
 }
 
 .bl-cats-scroll {
@@ -297,7 +297,7 @@
 }
 
 .bl-card:hover .bl-card-img {
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 30px var(--shadow-tint);
 }
 
 .bl-card-title {
@@ -721,7 +721,7 @@
 }
 
 .ba-rel-card:hover .ba-rel-card-img {
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 30px var(--shadow-tint);
 }
 
 .ba-rel-card-title {

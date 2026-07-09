@@ -410,14 +410,14 @@
 }
 
 .sp-input:focus {
-    outline: none;
-    border-color: var(--ink);
-    box-shadow: 0 0 0 3px rgba(17, 24, 39, 0.1);
+    border-color: var(--teal-deep);
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 3px;
 }
 
 .sp-input.error {
-    border-color: #ef4444;
-    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.08);
+    border-color: var(--error);
+    box-shadow: 0 0 0 3px var(--error-tint);
 }
 
 .sp-textarea {
@@ -474,7 +474,7 @@
     width: 48px;
     height: 48px;
     margin: 0 auto 16px;
-    background: #ecfdf5;
+    background: var(--success-tint);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -484,7 +484,7 @@
 .sp-success-icon svg {
     width: 24px;
     height: 24px;
-    color: #10b981;
+    color: var(--success);
 }
 
 .sp-success-title {
