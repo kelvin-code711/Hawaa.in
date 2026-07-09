@@ -2929,7 +2929,43 @@ button.menu-nav-item {
 }
 
 /* Reviews Slider */
-/* Reviews carousel — built on the Ascend .track / .tcard classes */
+/* Testimonial carousel base classes (migrated from the retired ascend.theme.css) */
+.track-mask { overflow: hidden; }
+.track {
+    display: flex;
+    gap: 22px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+}
+.track::-webkit-scrollbar { display: none; }
+.tcard {
+    flex: 0 0 360px;
+    scroll-snap-align: start;
+    background: var(--paper);
+    border: 1px solid var(--ink-line);
+    border-radius: 18px;
+    padding: 30px;
+    box-shadow: 0 20px 40px -28px var(--shadow-tint-lg);
+}
+.tcard.active { border-color: var(--teal-deep); box-shadow: 0 24px 50px -24px var(--shadow-cta); }
+.tcard .stars { color: var(--star); }
+.arrow {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    border: 1px solid var(--ink-line);
+    background: rgba(255, 255, 255, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ink);
+    cursor: pointer;
+}
+.arrow.primary { background: var(--ink); border-color: var(--ink); color: var(--on-ink); }
+
+/* Reviews carousel — built on the migrated .track / .tcard classes above */
 .reviews-section .track-mask {
     padding: 6px 0 14px;   /* vertical breathing room for card shadows */
 }
@@ -3000,7 +3036,7 @@ button.menu-nav-item {
     margin-top: 26px;
 }
 
-/* .arrow comes from ascend.theme.css; these are real <button>s */
+/* .arrow base is defined above; these are real <button>s */
 .reviews-controls .arrow {
     padding: 0;
     flex-shrink: 0;

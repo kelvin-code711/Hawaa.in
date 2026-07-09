@@ -32,6 +32,10 @@
   --on-teal:         #F2FAF8;   /* text/icons on teal-deep */
   --on-ink:          #EAF0EC;   /* text/icons on ink (dark buttons, footer) */
 
+  /* ---------- RATING STARS ---------- */
+  --star:            #E2A93B;   /* filled rating star */
+  --star-empty:      #E3DBCB;   /* empty rating star */
+
   /* ---------- FEEDBACK ---------- */
   --success:         #35845C;
   --success-tint:    rgba(53, 132, 92, 0.10);
