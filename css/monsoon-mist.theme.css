@@ -1,0 +1,76 @@
+/* ============================================================
+   HAWAA — MONSOON MIST THEME
+   Color-only token file. Drop-in replacement for ascend.theme.css.
+   Typography, spacing, radii, shadows structure: UNCHANGED.
+   Version 1.0 · July 2026
+   ============================================================ */
+
+:root {
+
+  /* ---------- CORE SURFACES ---------- */
+  --mist:            #EAF0EC;   /* primary page background */
+  --mist-deep:       #DDE7E1;   /* alternating sections, cards on mist */
+  --mist-deeper:     #CFDCD4;   /* pressed states, table row hover */
+  /* MIGRATION SHIM: --paper temporarily pinned to the Ascend value so the
+     site stays visually identical while both themes are linked.
+     Restore at swap time: --paper: #F7FAF8; */
+  --paper:           #FBF6EC;   /* elevated surfaces: modals, dropdowns, popovers */
+
+  /* ---------- INK (TEXT) ---------- */
+  /* MIGRATION SHIM: --ink temporarily pinned to the Ascend value.
+     Restore at swap time: --ink: #12312C; */
+  --ink:             #2C2419;   /* headlines, primary body text */
+  --ink-soft:        rgba(18, 49, 44, 0.62);   /* secondary text, captions, labels */
+  --ink-faint:       rgba(18, 49, 44, 0.38);   /* placeholders, disabled text */
+  --ink-line:        rgba(18, 49, 44, 0.16);   /* borders, dividers, hairlines */
+  --ink-line-soft:   rgba(18, 49, 44, 0.08);   /* subtle card borders, table lines */
+
+  /* ---------- ACCENT ---------- */
+  --teal-deep:       #1E7C71;   /* primary accent: CTAs, links, eyebrows, active states */
+  --teal-deep-hover: #186B61;   /* hover on primary CTA */
+  --teal-deep-press: #135A52;   /* active/pressed CTA */
+  --teal-brand:      #3FB7AC;   /* RESERVED: device LED, logo arcs, live-status dots ONLY */
+  --teal-tint:       rgba(30, 124, 113, 0.10); /* accent-tinted backgrounds: selected cards, info banners */
+
+  /* ---------- ON-COLOR TEXT ---------- */
+  --on-teal:         #F2FAF8;   /* text/icons on teal-deep */
+  --on-ink:          #EAF0EC;   /* text/icons on ink (dark buttons, footer) */
+
+  /* ---------- FEEDBACK ---------- */
+  --success:         #35845C;
+  --success-tint:    rgba(53, 132, 92, 0.10);
+  --warning:         #B07A2E;
+  --warning-tint:    rgba(176, 122, 46, 0.10);
+  /* MIGRATION SHIM: --error temporarily pinned to the Ascend value.
+     Restore at swap time: --error: #A8452F; */
+  --error:           #A24A3C;
+  --error-tint:      rgba(168, 69, 47, 0.10);
+  --info:            var(--teal-deep);
+  --info-tint:       var(--teal-tint);
+
+  /* ---------- DEVICE COLORWAYS (product cards, configurator swatches) ---------- */
+  --device-almond:       #E8DCC8;
+  --device-almond-edge:  #D6C8AE;
+  --device-grey:         #8E9296;
+  --device-grey-edge:    #75797D;
+  --device-black:        #2A2C2E;
+  --device-black-edge:   #1B1D1F;
+
+  /* ---------- SHADOWS (color component only) ---------- */
+  --shadow-tint:     rgba(18, 49, 44, 0.14);   /* use in all box-shadows instead of pure black */
+  --shadow-cta:      rgba(30, 124, 113, 0.28); /* CTA hover glow */
+
+  /* ---------- FOCUS ---------- */
+  --focus-ring:      var(--teal-deep);          /* 2px outline, 3px offset */
+}
+
+/* ---------- DARK FOOTER BAND (optional, bottom of long pages) ---------- */
+.footer-band {
+  background: var(--ink);
+  color: var(--on-ink);
+}
+.footer-band a { color: rgba(234, 240, 236, 0.72); }
+.footer-band a:hover { color: var(--on-ink); }
+
+/* ---------- SELECTION ---------- */
+::selection { background: var(--teal-tint); color: var(--ink); }
