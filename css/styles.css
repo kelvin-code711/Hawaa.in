@@ -273,7 +273,7 @@ button.menu-nav-item {
 }
 
 .menu-nav-item.signed-in svg {
-    color: var(--ok);
+    color: var(--success);
 }
 
 .menu-nav-item .cart-badge {
@@ -4346,8 +4346,8 @@ button.menu-nav-item {
     top: 14px;
     right: 14px;
     padding: 2px 10px;
-    background: #111827;
-    color: #ffffff;
+    background: var(--ink);
+    color: var(--on-ink);
     font-size: 0.65rem;
     font-weight: 600;
     border-radius: 9999px;
@@ -5289,7 +5289,7 @@ button.menu-nav-item {
 }
 
 .cart-free {
-    color: var(--ok);
+    color: var(--success);
     font-weight: 500;
 }
 
@@ -5960,7 +5960,7 @@ button.menu-nav-item {
 }
 
 .edge-gesture-dot.active {
-    background: #ffffff;
+    background: var(--on-ink);
     transform: scale(1.5);
 }
 
@@ -6633,7 +6633,7 @@ body.faq-page .logo-awaa {
     font-family: 'Outfit', sans-serif;
     font-size: 1.6rem;
     font-weight: 500;
-    color: #0891b2;
+    color: var(--teal-deep);
     line-height: 1.2;
 }
 
@@ -7079,7 +7079,7 @@ body.faq-page .logo-awaa {
 }
 
 .ba-related-viewall:hover {
-    color: #0891b2;
+    color: var(--teal-deep);
 }
 
 /* Related Posts Slider */
@@ -7705,7 +7705,7 @@ body.tos-page .logo-awaa {
     font-family: 'Outfit', sans-serif;
     font-size: 1.75rem;
     font-weight: 600;
-    color: #fff;
+    color: var(--on-ink);
     line-height: 1.25;
     margin: 0 0 56px;
 }
@@ -7790,7 +7790,7 @@ body.tos-page .logo-awaa {
 .edge-ctrl-btn-icon svg {
     width: 22px;
     height: 22px;
-    color: #fff;
+    color: var(--on-ink);
 }
 
 /* Active icon circle — bright LED ring */
@@ -8096,7 +8096,7 @@ body.tos-page .logo-awaa {
 
 .edge-filter-item.active .edge-filter-toggle {
     transform: rotate(45deg);
-    color: #0891b2;
+    color: var(--teal-deep);
 }
 
 .edge-filter-body {
@@ -8368,7 +8368,7 @@ body.tos-page .logo-awaa {
 }
 
 .edge-info-link-row:hover {
-    color: #0891b2;
+    color: var(--teal-deep);
 }
 
 /* Large label text */
@@ -8406,8 +8406,8 @@ body.tos-page .logo-awaa {
 
 .edge-info-accordion-trigger:hover .edge-info-row-icon,
 .edge-info-link-row:hover .edge-info-row-icon {
-    border-color: #0891b2;
-    color: #0891b2;
+    border-color: var(--teal-deep);
+    color: var(--teal-deep);
 }
 
 .edge-info-link-row:hover .edge-info-row-icon {
@@ -8514,29 +8514,10 @@ body.tos-page .logo-awaa {
     }
 }
 
-/* ============================================================
-   LANDING PAGE THEME — neutral + navy
-   Scoped to the landing page only via body.page-landing, so the
-   other pages that share this stylesheet are unaffected.
-   To apply site-wide later, remove the `.page-landing` prefixes.
-   ============================================================ */
-
-.page-landing {
-    /* Neutral palette — tied to the brand navy, NOT to the product colour
-       (future products may not be almond, so the site stays product-agnostic) */
-    --bg:           #F4F5F7;   /* soft neutral canvas (faintly cool grey) */
-    --bg-tonal:     #ECEEF1;   /* subtle tonal section */
-    --surface:      #FFFFFF;   /* cards */
-    --navy:         #0D234A;   /* primary text / buttons / anchor sections */
-    --navy-hover:   #081A38;
-    --body-ink:     #2B3342;   /* body text */
-    --hairline:     #E3E5E9;   /* neutral hairline border */
-}
+/* (Legacy navy landing-theme token block removed — Monsoon Mist tokens are global.) */
 
 /* ---- 1. Transparent canvas: let the .page Ascend gradient show through ----- */
-/* (Removed `body.page-landing { background:var(--bg); color:var(--body-ink) }`
-   so the `.page` gradient + --ink apply.) Content sections go transparent so the
-   gradient is continuous down the whole page. */
+/* (Landing sections use Monsoon Mist surface tokens; no legacy body override.) */
 /* (Removed gradient-era transparent override; sections now alternate
    var(--mist) / var(--mist-deep) with dark var(--ink) anchor bands.) */
 
