@@ -1042,11 +1042,22 @@ button.menu-nav-item {
 
 .badge-icon {
     margin-bottom: 8px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 @media (min-width: 640px) {
     .badge-icon {
         margin-bottom: 10px;
+        height: 72px;
+    }
+}
+
+@media (min-width: 768px) {
+    .badge-icon {
+        height: 84px;
     }
 }
 
@@ -1068,116 +1079,53 @@ button.menu-nav-item {
     }
 }
 
-/* India Flag - Smaller */
-.india-flag {
-    width: 36px;
-    height: 24px;
-    border-radius: 2px;
-    box-shadow: 0 1px 3px var(--shadow-tint-md);
+/* Badge Images - uniform size, horizontally aligned */
+.badge-img {
+    height: 56px;
+    width: auto;
+    object-fit: contain;
+    display: block;
 }
 
 @media (min-width: 640px) {
-    .india-flag {
-        width: 48px;
-        height: 32px;
+    .badge-img {
+        height: 72px;
     }
 }
 
-/* Rating Icon - Smaller */
-.rating-icon {
-    display: flex;
-    align-items: center;
-    gap: 2px;
-}
-
-@media (min-width: 640px) {
-    .rating-icon {
-        gap: 4px;
+@media (min-width: 768px) {
+    .badge-img {
+        height: 84px;
     }
 }
 
-.rating-number {
-    font-size: 1.25rem;
+/* Warranty Map - "1 Yr" overlaid inside the India map */
+.warranty-map {
+    position: relative;
+    display: inline-block;
+}
+
+.warranty-map-text {
+    position: absolute;
+    top: 45%;
+    left: 43%;
+    transform: translate(-50%, -50%);
+    color: var(--on-teal);
+    font-size: 0.7rem;
     font-weight: 700;
-    color: var(--teal-deep);
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    pointer-events: none;
 }
 
 @media (min-width: 640px) {
-    .rating-number {
-        font-size: 1.5rem;
+    .warranty-map-text {
+        font-size: 0.85rem;
     }
 }
 
 @media (min-width: 768px) {
-    .rating-number {
-        font-size: 1.75rem;
-    }
-}
-
-.star-icon {
-    width: 18px;
-    height: 18px;
-}
-
-@media (min-width: 640px) {
-    .star-icon {
-        width: 24px;
-        height: 24px;
-    }
-}
-
-@media (min-width: 768px) {
-    .star-icon {
-        width: 28px;
-        height: 28px;
-    }
-}
-
-/* Warranty Icon - Smaller */
-.warranty-icon {
-    display: flex;
-    align-items: baseline;
-    gap: 1px;
-}
-
-@media (min-width: 640px) {
-    .warranty-icon {
-        gap: 2px;
-    }
-}
-
-.warranty-number {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: var(--teal-deep);
-}
-
-@media (min-width: 640px) {
-    .warranty-number {
-        font-size: 1.5rem;
-    }
-}
-
-@media (min-width: 768px) {
-    .warranty-number {
-        font-size: 1.75rem;
-    }
-}
-
-.warranty-yr {
-    font-size: 0.8rem;
-    font-weight: 500;
-    color: var(--teal-deep);
-}
-
-@media (min-width: 640px) {
-    .warranty-yr {
-        font-size: 0.9rem;
-    }
-}
-
-@media (min-width: 768px) {
-    .warranty-yr {
+    .warranty-map-text {
         font-size: 1rem;
     }
 }
@@ -1186,7 +1134,7 @@ button.menu-nav-item {
    AQI CHECKER SECTION - SEAMLESS
 ======================================== */
 .aqi-section {
-    padding: 0 16px 0;
+    padding: 48px 16px;
     background: var(--mist-deep);
     display: flex;
     justify-content: center;
@@ -1194,17 +1142,18 @@ button.menu-nav-item {
 
 @media (min-width: 640px) {
     .aqi-section {
-        padding: 0 24px 0;
+        padding: 64px 24px;
     }
 }
 
 .aqi-checker {
     background: var(--paper);
-    border-radius: 0;
+    border-radius: 24px;
     padding: 40px 24px 50px;
     max-width: 420px;
     width: 100%;
     text-align: center;
+    box-shadow: 0 8px 30px var(--shadow-tint-sm);
 }
 
 @media (min-width: 640px) {
