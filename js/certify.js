@@ -44,9 +44,9 @@
             idx = (idx + dir + rivals.length) % rivals.length;
             render();
             if (rivalCol) {
-                rivalCol.classList.remove('swapping');
+                rivalCol.classList.remove('swapping-next', 'swapping-prev');
                 void rivalCol.offsetWidth; /* restart the animation */
-                rivalCol.classList.add('swapping');
+                rivalCol.classList.add(dir > 0 ? 'swapping-next' : 'swapping-prev');
             }
         }
 
@@ -74,6 +74,53 @@
         }
 
         render();
+    }
+
+    /* ---------- LAB TEST REPORT LIGHTBOX ---------- */
+    function initReportLightbox() {
+        var box = document.getElementById('report-lightbox');
+        if (!box) return;
+        var img = document.getElementById('report-lightbox-img');
+        var fallback = document.getElementById('report-lightbox-fallback');
+        var caption = document.getElementById('report-lightbox-caption');
+        var closeBtn = document.getElementById('report-lightbox-close');
+        var cards = document.querySelectorAll('.report-card');
+        var lastFocus = null;
+
+        img.addEventListener('error', function () {
+            img.style.display = 'none';
+            fallback.style.display = 'flex';
+        });
+
+        function open(card) {
+            lastFocus = card;
+            var title = card.getAttribute('data-report-title');
+            caption.textContent = title + ' — ' + card.getAttribute('data-report-stat');
+            img.style.display = '';
+            fallback.style.display = 'none';
+            img.alt = title + ' lab report';
+            img.src = card.getAttribute('data-report-src');
+            box.classList.add('open');
+            document.body.style.overflow = 'hidden';
+            closeBtn.focus();
+        }
+
+        function close() {
+            box.classList.remove('open');
+            document.body.style.overflow = '';
+            if (lastFocus) lastFocus.focus();
+        }
+
+        cards.forEach(function (card) {
+            card.addEventListener('click', function () { open(card); });
+        });
+        closeBtn.addEventListener('click', close);
+        box.addEventListener('click', function (e) {
+            if (e.target === box) close();
+        });
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && box.classList.contains('open')) close();
+        });
     }
 
     /* ---------- LAB REPORT CARD ---------- */
@@ -242,6 +289,7 @@
 
     document.addEventListener('DOMContentLoaded', function () {
         initMiniCompare();
+        initReportLightbox();
         initLabCard();
     });
 })();
