@@ -1133,7 +1133,7 @@ button.menu-nav-item {
 ======================================== */
 .aqi-section {
     padding: 48px 16px;
-    background: var(--mist-deep);
+    background: var(--mist);
     display: flex;
     justify-content: center;
 }
