@@ -2631,64 +2631,179 @@ button.menu-nav-item {
     margin: 0 auto;
 }
 
-.reports-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 24px 16px;
-    max-width: 480px;
+/* The dossier: a fanned stack of report "papers" + a numbered index.
+   Selecting an index row shuffles that report to the top of the stack;
+   tapping the top paper opens the zoom lightbox. */
+.dossier {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    max-width: 420px;
     margin: 0 auto;
 }
 
-@media (min-width: 800px) {
-    .reports-grid {
-        grid-template-columns: repeat(4, 1fr);
-        gap: 28px 24px;
-        max-width: none;
+@media (min-width: 880px) {
+    .dossier {
+        flex-direction: row-reverse;   /* stack right, index left */
+        align-items: center;
+        justify-content: center;
+        gap: 72px;
+        max-width: 860px;
     }
 }
 
-.report-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background: none;
-    border: 0;
+/* Stage — papers are stacked absolutely inside; padding leaves room
+   for the fanned rotation so nothing clips */
+.dossier-stage {
+    position: relative;
+    width: min(250px, 72vw);
+    aspect-ratio: 3 / 4;
+    margin: 10px auto 26px;
+}
+
+@media (min-width: 880px) {
+    .dossier-stage {
+        width: 280px;
+        margin: 10px 0 16px;
+        flex-shrink: 0;
+    }
+}
+
+.dossier-paper {
+    position: absolute;
+    inset: 0;
+    background: var(--paper);
+    border: 1px solid var(--ink-line-soft);
+    border-radius: 14px;
+    overflow: hidden;
     padding: 0;
     cursor: pointer;
     font-family: 'Outfit', sans-serif;
-    text-align: center;
+    box-shadow: 0 18px 36px -22px var(--shadow-tint-lg);
+    transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s ease;
 }
 
-/* Document-style thumbnail (portrait, paper) */
-.report-thumb {
-    position: relative;
-    width: 100%;
-    aspect-ratio: 3 / 4;
-    background: var(--paper);
-    border: 1px solid var(--ink-line-soft);
-    border-radius: 12px;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 12px 26px -20px var(--shadow-tint-lg);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+/* Fanned stack positions — stack-0 is the active (top) paper */
+.dossier-paper.stack-0 {
+    transform: none;
+    z-index: 4;
 }
 
-.report-card:hover .report-thumb,
-.report-card:focus-visible .report-thumb {
+.dossier-paper.stack-1 {
+    transform: rotate(-5deg) translate(-14px, 10px);
+    z-index: 3;
+    pointer-events: none;
+}
+
+.dossier-paper.stack-2 {
+    transform: rotate(4deg) translate(14px, 16px);
+    z-index: 2;
+    pointer-events: none;
+}
+
+.dossier-paper.stack-3 {
+    transform: rotate(-2deg) translate(0, 22px);
+    z-index: 1;
+    pointer-events: none;
+}
+
+.dossier-paper.stack-0:hover {
     transform: translateY(-4px);
-    box-shadow: 0 18px 32px -20px var(--shadow-tint-lg);
+    box-shadow: 0 26px 44px -22px var(--shadow-tint-lg);
 }
 
-/* Faint document glyph shows through until a real report image loads */
-.report-thumb-icon {
-    width: 34px;
-    height: 34px;
+/* CSS letterhead — a designed certificate that shows until the real
+   report scan loads on top of it */
+.dossier-letterhead {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 24px 18px;
+}
+
+.dossier-brand {
+    font-size: 0.58rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
     color: var(--ink-faint);
+    padding-bottom: 12px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid var(--ink-line-soft);
+    width: 100%;
 }
 
-.report-thumb img {
+.dossier-doc-title {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 14px;
+}
+
+.dossier-doc-stat {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.9rem;
+    line-height: 1.1;
+    color: var(--teal-deep);
+}
+
+.dossier-doc-sub {
+    font-size: 0.68rem;
+    color: var(--ink-soft);
+    margin-top: 4px;
+    margin-bottom: 18px;
+}
+
+/* Suggestion of document body text */
+.dossier-lines {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 7px;
+}
+
+.dossier-lines i {
+    display: block;
+    height: 3px;
+    border-radius: 2px;
+    background: var(--ink-line-soft);
+}
+
+.dossier-lines i:nth-child(1) { width: 82%; }
+.dossier-lines i:nth-child(2) { width: 70%; }
+.dossier-lines i:nth-child(3) { width: 76%; }
+
+/* Rubber-stamp verification mark */
+.dossier-stamp {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%) rotate(-8deg);
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 12px;
+    border: 1.5px solid var(--teal-deep);
+    border-radius: 6px;
+    color: var(--teal-deep);
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    opacity: 0.85;
+}
+
+.dossier-stamp svg {
+    width: 11px;
+    height: 11px;
+}
+
+.dossier-paper img {
     position: absolute;
     inset: 0;
     width: 100%;
@@ -2696,8 +2811,95 @@ button.menu-nav-item {
     object-fit: cover;
 }
 
-.report-thumb img.is-missing {
+.dossier-paper img.is-missing {
     display: none;
+}
+
+/* Zoom badge only invites on the top paper */
+.dossier-paper .report-zoom {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.dossier-paper.stack-0 .report-zoom {
+    opacity: 1;
+}
+
+/* Numbered index — echoes the FAQ dividers and blog numerals */
+.dossier-index {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+@media (min-width: 880px) {
+    .dossier-index {
+        width: 340px;
+        flex-shrink: 0;
+    }
+}
+
+.dossier-index li + li .dossier-row {
+    border-top: 1px solid var(--ink-line);
+}
+
+.dossier-row {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 15px 2px;
+    background: none;
+    border: 0;
+    cursor: pointer;
+    text-align: left;
+    font-family: 'Outfit', sans-serif;
+    transition: opacity 0.25s ease;
+    opacity: 0.55;
+}
+
+.dossier-row:hover,
+.dossier-row.active {
+    opacity: 1;
+}
+
+.dossier-num {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.25rem;
+    line-height: 1;
+    color: var(--teal-deep);
+    min-width: 30px;
+}
+
+.dossier-row-text {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+
+.dossier-row-name {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--ink);
+}
+
+.dossier-row-stat {
+    font-size: 0.75rem;
+    color: var(--ink-soft);
+}
+
+.dossier-row-arrow {
+    width: 16px;
+    height: 16px;
+    color: var(--ink-faint);
+    transition: transform 0.25s ease, color 0.25s ease;
+}
+
+.dossier-row.active .dossier-row-arrow {
+    color: var(--teal-deep);
+    transform: translateX(2px);
 }
 
 .report-zoom {
@@ -2719,20 +2921,6 @@ button.menu-nav-item {
 .report-zoom svg {
     width: 14px;
     height: 14px;
-}
-
-.report-name {
-    margin-top: 12px;
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: var(--ink);
-    line-height: 1.3;
-}
-
-.report-stat {
-    margin-top: 2px;
-    font-size: 0.75rem;
-    color: var(--ink-soft);
 }
 
 /* Report lightbox */
