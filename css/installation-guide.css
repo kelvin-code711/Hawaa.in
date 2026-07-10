@@ -117,7 +117,7 @@
     font-family: 'Outfit', sans-serif;
     font-size: 0.72rem;
     font-weight: 400;
-    color: var(--ink-faint);
+    color: var(--ink-soft);
     white-space: nowrap;
     letter-spacing: 0.01em;
 }
@@ -171,7 +171,7 @@
     font-family: 'Outfit', sans-serif;
     font-size: 0.78rem;
     font-weight: 400;
-    color: var(--ink-faint);
+    color: var(--ink-soft);
     margin: 0;
 }
 
@@ -537,7 +537,7 @@
     font-family: 'Outfit', sans-serif;
     font-size: 0.78rem;
     font-weight: 400;
-    color: var(--ink-faint);
+    color: var(--ink-soft);
     letter-spacing: 0.04em;
     margin: 0;
 }

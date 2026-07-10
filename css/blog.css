@@ -333,7 +333,7 @@
 .bl-empty {
     text-align: center;
     padding: 60px 20px;
-    color: var(--ink-faint);
+    color: var(--ink-soft);
     font-size: 1rem;
     grid-column: 1 / -1;
 }
@@ -433,7 +433,7 @@
     gap: 10px;
     font-family: 'Outfit', sans-serif;
     font-size: 0.85rem;
-    color: var(--ink-faint);
+    color: var(--ink-soft);
     font-weight: 400;
 }
 
@@ -582,7 +582,7 @@
 .ba-img-caption {
     font-family: 'Outfit', sans-serif;
     font-size: 0.8rem !important;
-    color: var(--ink-faint) !important;
+    color: var(--ink-soft) !important;
     font-style: italic;
     text-align: center;
     margin-bottom: 28px !important;

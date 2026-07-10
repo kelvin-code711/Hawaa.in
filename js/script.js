@@ -1185,9 +1185,10 @@ document.querySelectorAll('.menu-nav-item[href]').forEach((link) => {
     }
 });
 
-// Hero video: retry playback if autoplay was blocked (e.g. iOS Low Power Mode)
+// Hero video: retry playback if autoplay was blocked (e.g. iOS Low Power Mode).
+// Respect prefers-reduced-motion — do not autoplay the background loop.
 const heroVideo = document.querySelector('.hero-video');
-if (heroVideo) {
+if (heroVideo && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     heroVideo.muted = true;
     const tryPlayHeroVideo = () => { heroVideo.play().catch(() => {}); };
     tryPlayHeroVideo();

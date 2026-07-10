@@ -204,7 +204,7 @@
 .sp-policy-note {
     margin-top: 12px;
     font-size: 0.85rem;
-    color: var(--ink-faint);
+    color: var(--ink-soft);
 }
 
 @media (min-width: 640px) {
@@ -559,7 +559,7 @@
     font-family: 'Outfit', sans-serif;
     font-size: 0.75rem;
     font-weight: 500;
-    color: var(--ink-faint);
+    color: var(--ink-soft);
     text-transform: uppercase;
     letter-spacing: 0.05em;
 }
