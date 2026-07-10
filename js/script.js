@@ -622,16 +622,6 @@ document.querySelectorAll('[data-close]').forEach(closeBtn => {
     });
 });
 
-// Close modal when clicking overlay
-document.querySelectorAll('.cert-modal-overlay').forEach(overlay => {
-    overlay.addEventListener('click', function(e) {
-        if (e.target === this) {
-            this.classList.remove('active');
-            document.body.style.overflow = '';
-        }
-    });
-});
-
 // ========================================
 // TESTIMONIALS SLIDER
 // ========================================
@@ -1014,7 +1004,6 @@ document.addEventListener('DOMContentLoaded', function() {
     initReviewsSlider();
     initBlogsSlider();
     initFAQ();
-    initCertModals();
 });
 
 // ========================================
@@ -1040,57 +1029,6 @@ function initFAQ() {
                 item.classList.add('active');
             }
         });
-    });
-}
-
-// ========================================
-// CERTIFICATION MODALS
-// ========================================
-
-function initCertModals() {
-    // Open modal from eye button
-    document.querySelectorAll('.cert-preview-eye-btn').forEach(btn => {
-        btn.addEventListener('click', function(e) {
-            e.preventDefault();
-            const modalId = this.dataset.modal;
-            const modal = document.getElementById(modalId);
-            if (modal) {
-                modal.classList.add('active');
-                document.body.style.overflow = 'hidden';
-            }
-        });
-    });
-
-    // Close modal from close button
-    document.querySelectorAll('.cert-modal-close').forEach(closeBtn => {
-        closeBtn.addEventListener('click', function() {
-            const modalId = this.dataset.close;
-            const modal = document.getElementById(modalId);
-            if (modal) {
-                modal.classList.remove('active');
-                document.body.style.overflow = '';
-            }
-        });
-    });
-
-    // Close modal when clicking overlay
-    document.querySelectorAll('.cert-modal-overlay').forEach(overlay => {
-        overlay.addEventListener('click', function(e) {
-            if (e.target === this) {
-                this.classList.remove('active');
-                document.body.style.overflow = '';
-            }
-        });
-    });
-
-    // Close with Escape key
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
-            document.querySelectorAll('.cert-modal-overlay.active').forEach(modal => {
-                modal.classList.remove('active');
-                document.body.style.overflow = '';
-            });
-        }
     });
 }
 

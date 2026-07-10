@@ -2386,200 +2386,331 @@ button.menu-nav-item {
     }
 }
 
-/* Certification Grid */
-.certification-grid {
+/* ========================================
+   MINI COMPARISON (Mila-style, side by side)
+======================================== */
+.cmpm {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+    max-width: 720px;
+    margin: 0 auto;
+}
+
+.cmpm-col {
+    padding: 24px 12px;
     display: flex;
     flex-direction: column;
-    gap: 24px;
-    width: 100%;
+    align-items: center;
+    text-align: center;
 }
 
-@media (min-width: 768px) {
-    .certification-grid {
-        flex-direction: row;
-        gap: 32px;
-    }
-
-    .certification-grid .certification-card {
-        flex: 1;
-        max-width: 50%;
-    }
-}
-
-/* Certification Card */
-.certification-card {
-    /* Solid fallback for iOS */
+.cmpm-col--hawaa {
     background: var(--mist-deep);
-    background: rgba(249, 250, 251, 0.95);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid var(--ink-line-soft);
-    border-radius: 16px;
-    padding: 20px;
-    transition: all 0.3s ease;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
+    border-radius: 20px;
 }
 
 @media (min-width: 640px) {
-    .certification-card {
-        padding: 24px;
+    .cmpm-col {
+        padding: 32px 24px;
     }
 }
 
-@media (min-width: 768px) {
-    .certification-card {
-        min-height: 420px;
-    }
-}
-
-.certification-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 30px var(--shadow-tint-sm);
-}
-
-.certification-card-desc {
-    flex-grow: 1;
-}
-
-.certification-card-title {
-    font-family: 'Outfit', sans-serif;
-    font-size: 1.1rem;
+.cmpm-compare-label {
+    font-size: 0.95rem;
     font-weight: 600;
     color: var(--ink);
-    margin-bottom: 8px;
+    margin-bottom: 12px;
 }
 
-@media (min-width: 640px) {
-    .certification-card-title {
-        font-size: 1.2rem;
-    }
-}
-
-.certification-card-desc {
+.cmpm-pill {
+    display: inline-flex;
+    align-items: center;
+    background: var(--paper);
+    border-radius: 999px;
+    padding: 10px 20px;
     font-size: 0.85rem;
-    color: var(--ink-soft);
-    line-height: 1.5;
+    font-weight: 600;
+    color: var(--ink);
+    box-shadow: 0 2px 10px var(--shadow-tint-sm);
     margin-bottom: 20px;
+    white-space: nowrap;
+}
+
+.cmpm-figure {
+    width: 100%;
+    height: 140px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    margin-bottom: 18px;
+}
+
+.cmpm-figure img {
+    max-height: 100%;
+    max-width: 85%;
+    object-fit: contain;
+}
+
+/* Rival figure fills the space the compare-to label + pill occupy on the left */
+.cmpm-col--rival .cmpm-figure {
+    height: 236px;
+    color: var(--ink);
+}
+
+.cmpm-figure svg {
+    height: 170px;
+    width: auto;
 }
 
 @media (min-width: 640px) {
-    .certification-card-desc {
-        font-size: 0.9rem;
-        margin-bottom: 24px;
+    .cmpm-figure {
+        height: 170px;
     }
-}
 
-/* Certification Preview Container */
-.cert-preview-container {
-    position: relative;
-    height: 180px;
-    border-radius: 12px;
-    overflow: hidden;
-    margin-bottom: 16px;
-    background: var(--ink-line);
-}
+    .cmpm-col--rival .cmpm-figure {
+        height: 266px;
+    }
 
-@media (min-width: 640px) {
-    .cert-preview-container {
+    .cmpm-figure svg {
         height: 200px;
-        margin-bottom: 20px;
     }
 }
 
-@media (min-width: 768px) {
-    .cert-preview-container {
-        height: 220px;
+.cmpm-name {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.3;
+    margin-bottom: 18px;
+    min-height: 2.6em;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+@media (min-width: 640px) {
+    .cmpm-name {
+        font-size: 1.15rem;
     }
 }
 
-.cert-preview-image {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-size: cover;
-    background-position: center;
+.cmpm-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    width: 100%;
 }
 
-.cert-preview-blur {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(255, 255, 255, 0.4);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+.cmpm-stat-label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--ink-soft);
+    margin-bottom: 2px;
 }
 
-.cert-preview-eye-btn {
-    position: absolute;
-    bottom: 12px;
-    left: 12px;
-    width: 40px;
-    height: 40px;
-    background: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid var(--ink-line);
+.cmpm-stat-value {
+    display: block;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--ink);
+}
+
+@media (min-width: 640px) {
+    .cmpm-stat-label {
+        font-size: 0.85rem;
+    }
+
+    .cmpm-stat-value {
+        font-size: 1.05rem;
+    }
+}
+
+.cmpm-nav {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    margin-top: 28px;
+}
+
+.cmpm-arrow {
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
-    cursor: pointer;
+    border: 1.5px solid var(--ink);
+    background: transparent;
+    color: var(--ink);
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.3s ease;
-    z-index: 2;
+    cursor: pointer;
+    transition: all 0.2s ease;
 }
 
-.cert-preview-eye-btn:hover {
+.cmpm-arrow:hover {
     background: var(--ink);
-    transform: scale(1.1);
-}
-
-.cert-preview-eye-btn:hover svg {
     color: var(--on-ink);
 }
 
-.cert-preview-eye-btn svg {
+.cmpm-arrow svg {
     width: 18px;
     height: 18px;
-    color: var(--ink);
-    transition: color 0.3s ease;
 }
 
+/* ========================================
+   LAB REPORTS (chart card + chips + fun fact)
+======================================== */
+.lab-section {
+    padding: 50px 16px 60px;
+    background: var(--mist);
+}
 
-/* Certification Button/Link */
-.certification-btn {
+@media (min-width: 640px) {
+    .lab-section {
+        padding: 60px 24px 70px;
+    }
+}
+
+.lab-container {
+    max-width: 640px;
+    margin: 0 auto;
+}
+
+.lab-card {
+    background: var(--paper);
+    border-radius: 20px;
+    padding: 28px 20px;
+    box-shadow: 0 8px 30px var(--shadow-tint-sm);
+}
+
+@media (min-width: 640px) {
+    .lab-card {
+        padding: 36px 32px;
+    }
+}
+
+.lab-card-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--ink);
+    text-align: center;
+    line-height: 1.4;
+    margin-bottom: 18px;
+}
+
+@media (min-width: 640px) {
+    .lab-card-title {
+        font-size: 1.3rem;
+    }
+}
+
+.lab-card-title strong {
+    color: var(--teal-deep);
+}
+
+.lab-legend {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 18px;
+    flex-wrap: wrap;
+    margin-bottom: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--ink-soft);
+}
+
+.lab-legend-item {
     display: inline-flex;
     align-items: center;
-    justify-content: center;
-    gap: 8px;
-    padding: 12px 20px;
-    background: rgba(17, 24, 39, 0.06);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    color: var(--ink);
-    font-family: 'Outfit', sans-serif;
-    font-size: 0.85rem;
-    font-weight: 500;
-    border: 1px solid rgba(17, 24, 39, 0.1);
-    border-radius: 10px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-decoration: none;
+    gap: 6px;
 }
 
-.certification-btn:hover {
-    background: rgba(17, 24, 39, 0.12);
+.lab-legend-swatch {
+    width: 22px;
+    height: 3px;
+    border-radius: 2px;
+    background: var(--teal-deep);
+}
+
+.lab-legend-swatch--grad {
+    background: linear-gradient(90deg, var(--error), var(--warning), var(--teal-deep));
+}
+
+.lab-legend-swatch--dash {
+    background: repeating-linear-gradient(90deg, var(--ink-faint) 0 4px, transparent 4px 8px);
+}
+
+.lab-chart svg {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.lab-footnote {
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+    line-height: 1.55;
+    border-top: 1px solid var(--ink-line-soft);
+    padding-top: 14px;
+    margin: 6px 0 18px;
+}
+
+.lab-chips {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 10px;
 }
 
-.certification-btn svg {
-    width: 16px;
-    height: 16px;
+.lab-chip {
+    border: none;
+    background: var(--mist);
+    border-radius: 999px;
+    padding: 10px 16px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--ink);
+    box-shadow: 0 2px 8px var(--shadow-tint-sm);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.lab-chip:hover {
+    background: var(--mist-deeper);
+}
+
+.lab-chip.active {
+    background: var(--ink);
+    color: var(--on-ink);
+}
+
+.lab-funfact {
+    text-align: center;
+    margin-top: 44px;
+}
+
+.lab-funfact-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 12px;
+}
+
+.lab-funfact-text {
+    font-size: 0.95rem;
+    color: var(--ink-soft);
+    line-height: 1.6;
+    max-width: 480px;
+    margin: 0 auto;
+}
+
+@media (min-width: 640px) {
+    .lab-funfact-text {
+        font-size: 1.05rem;
+    }
 }
 
 /* ========================================
@@ -3788,75 +3919,6 @@ button.menu-nav-item {
 .footer-copyright {
     font-size: 0.8rem;
     color: var(--ink-soft);
-}
-
-/* Certification Modal Styles */
-.cert-modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(18, 49, 44, 0.4);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-    padding: 20px;
-}
-
-.cert-modal-overlay.active {
-    display: flex;
-}
-
-.cert-modal {
-    position: relative;
-    max-width: 90vw;
-    max-height: 90vh;
-    background: var(--paper);
-    border-radius: 16px;
-    overflow: hidden;
-}
-
-.cert-modal-close {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    width: 36px;
-    height: 36px;
-    background: rgba(0, 0, 0, 0.6);
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 10;
-    transition: background 0.3s ease;
-}
-
-.cert-modal-close:hover {
-    background: rgba(0, 0, 0, 0.8);
-}
-
-.cert-modal-close svg {
-    width: 18px;
-    height: 18px;
-    color: white;
-}
-
-.cert-modal-content {
-    width: 100%;
-    height: 100%;
-}
-
-.cert-modal-image {
-    max-width: 100%;
-    max-height: 85vh;
-    object-fit: contain;
-    display: block;
 }
 
 /* ========================================
