@@ -76,15 +76,37 @@
         render();
     }
 
-    /* ---------- LAB TEST REPORT LIGHTBOX ---------- */
-    function initReportLightbox() {
+    /* ---------- LAB TEST REPORT DOSSIER + LIGHTBOX ---------- */
+    function initReportDossier() {
+        var papers = Array.prototype.slice.call(document.querySelectorAll('.dossier-paper'));
+        var rows = Array.prototype.slice.call(document.querySelectorAll('.dossier-row'));
+        if (!papers.length) return;
+
+        function setActive(active) {
+            var pos = 1;
+            papers.forEach(function (p, i) {
+                p.classList.remove('stack-0', 'stack-1', 'stack-2', 'stack-3');
+                p.classList.add('stack-' + (i === active ? 0 : pos++));
+            });
+            rows.forEach(function (r, i) {
+                r.classList.toggle('active', i === active);
+                if (i === active) r.setAttribute('aria-current', 'true');
+                else r.removeAttribute('aria-current');
+            });
+        }
+
+        rows.forEach(function (row, i) {
+            row.addEventListener('click', function () { setActive(i); });
+        });
+        setActive(0);
+
+        /* Lightbox */
         var box = document.getElementById('report-lightbox');
         if (!box) return;
         var img = document.getElementById('report-lightbox-img');
         var fallback = document.getElementById('report-lightbox-fallback');
         var caption = document.getElementById('report-lightbox-caption');
         var closeBtn = document.getElementById('report-lightbox-close');
-        var cards = document.querySelectorAll('.report-card');
         var lastFocus = null;
 
         img.addEventListener('error', function () {
@@ -92,14 +114,14 @@
             fallback.style.display = 'flex';
         });
 
-        function open(card) {
-            lastFocus = card;
-            var title = card.getAttribute('data-report-title');
-            caption.textContent = title + ' — ' + card.getAttribute('data-report-stat');
+        function open(paper) {
+            lastFocus = paper;
+            var title = paper.getAttribute('data-report-title');
+            caption.textContent = title + ' — ' + paper.getAttribute('data-report-stat');
             img.style.display = '';
             fallback.style.display = 'none';
             img.alt = title + ' lab report';
-            img.src = card.getAttribute('data-report-src');
+            img.src = paper.getAttribute('data-report-src');
             box.classList.add('open');
             document.body.style.overflow = 'hidden';
             closeBtn.focus();
@@ -111,8 +133,10 @@
             if (lastFocus) lastFocus.focus();
         }
 
-        cards.forEach(function (card) {
-            card.addEventListener('click', function () { open(card); });
+        papers.forEach(function (paper) {
+            paper.addEventListener('click', function () {
+                if (paper.classList.contains('stack-0')) open(paper);
+            });
         });
         closeBtn.addEventListener('click', close);
         box.addEventListener('click', function (e) {
@@ -289,7 +313,7 @@
 
     document.addEventListener('DOMContentLoaded', function () {
         initMiniCompare();
-        initReportLightbox();
+        initReportDossier();
         initLabCard();
     });
 })();

@@ -445,54 +445,108 @@
                 <p class="certification-subtitle">Four independent lab reports behind every claim we make. Tap a report to view it up close.</p>
             </div>
 
-            <div class="reports-grid">
-                <button type="button" class="report-card" data-report-src="public/images/report_filtration.webp" data-report-title="Particle Filtration" data-report-stat="&gt;99.95% filtration efficiency">
-                    <span class="report-thumb">
-                        <svg class="report-thumb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-                        <img src="public/images/report_filtration.webp" alt="Particle Filtration lab report" loading="lazy" onerror="this.classList.add('is-missing')">
-                        <span class="report-zoom" aria-hidden="true">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/><path d="M11 8v6M8 11h6"/></svg>
-                        </span>
+            <div class="dossier">
+                <div class="dossier-stage" aria-live="polite">
+                <button type="button" class="dossier-paper" data-paper="0" data-report-src="public/images/report_filtration.webp" data-report-title="Particle Filtration" data-report-stat="&gt;99.95% filtration efficiency" aria-label="View Particle Filtration report">
+                    <span class="dossier-letterhead" aria-hidden="true">
+                        <span class="dossier-brand">Hawaa &middot; Lab Certified</span>
+                        <span class="dossier-doc-title">Particle Filtration</span>
+                        <span class="dossier-doc-stat">&gt;99.95%</span>
+                        <span class="dossier-doc-sub">filtration efficiency</span>
+                        <span class="dossier-lines"><i></i><i></i><i></i></span>
+                        <span class="dossier-stamp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Verified</span>
                     </span>
-                    <span class="report-name">Particle Filtration</span>
-                    <span class="report-stat">&gt;99.95% efficiency</span>
+                    <img src="public/images/report_filtration.webp" alt="Particle Filtration lab report" loading="lazy" onerror="this.classList.add('is-missing')">
+                    <span class="report-zoom" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/><path d="M11 8v6M8 11h6"/></svg>
+                    </span>
                 </button>
+                <button type="button" class="dossier-paper" data-paper="1" data-report-src="public/images/report_cadr.webp" data-report-title="Airflow & CADR" data-report-stat="410 m³/h verified CADR" aria-label="View Airflow & CADR report">
+                    <span class="dossier-letterhead" aria-hidden="true">
+                        <span class="dossier-brand">Hawaa &middot; Lab Certified</span>
+                        <span class="dossier-doc-title">Airflow &amp; CADR</span>
+                        <span class="dossier-doc-stat">410 m³/h</span>
+                        <span class="dossier-doc-sub">verified CADR</span>
+                        <span class="dossier-lines"><i></i><i></i><i></i></span>
+                        <span class="dossier-stamp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Verified</span>
+                    </span>
+                    <img src="public/images/report_cadr.webp" alt="Airflow and CADR lab report" loading="lazy" onerror="this.classList.add('is-missing')">
+                    <span class="report-zoom" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/><path d="M11 8v6M8 11h6"/></svg>
+                    </span>
+                </button>
+                <button type="button" class="dossier-paper" data-paper="2" data-report-src="public/images/report_noise.webp" data-report-title="Noise Level" data-report-stat="24 dB in sleep mode" aria-label="View Noise Level report">
+                    <span class="dossier-letterhead" aria-hidden="true">
+                        <span class="dossier-brand">Hawaa &middot; Lab Certified</span>
+                        <span class="dossier-doc-title">Noise Level</span>
+                        <span class="dossier-doc-stat">24 dB</span>
+                        <span class="dossier-doc-sub">sleep mode verified</span>
+                        <span class="dossier-lines"><i></i><i></i><i></i></span>
+                        <span class="dossier-stamp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Verified</span>
+                    </span>
+                    <img src="public/images/report_noise.webp" alt="Noise level lab report" loading="lazy" onerror="this.classList.add('is-missing')">
+                    <span class="report-zoom" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/><path d="M11 8v6M8 11h6"/></svg>
+                    </span>
+                </button>
+                <button type="button" class="dossier-paper" data-paper="3" data-report-src="public/images/report_energy.webp" data-report-title="Energy Consumption" data-report-stat="45W maximum power draw" aria-label="View Energy Consumption report">
+                    <span class="dossier-letterhead" aria-hidden="true">
+                        <span class="dossier-brand">Hawaa &middot; Lab Certified</span>
+                        <span class="dossier-doc-title">Energy Consumption</span>
+                        <span class="dossier-doc-stat">45W</span>
+                        <span class="dossier-doc-sub">max power draw</span>
+                        <span class="dossier-lines"><i></i><i></i><i></i></span>
+                        <span class="dossier-stamp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Verified</span>
+                    </span>
+                    <img src="public/images/report_energy.webp" alt="Energy consumption lab report" loading="lazy" onerror="this.classList.add('is-missing')">
+                    <span class="report-zoom" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/><path d="M11 8v6M8 11h6"/></svg>
+                    </span>
+                </button>
+                </div>
 
-                <button type="button" class="report-card" data-report-src="public/images/report_cadr.webp" data-report-title="Airflow &amp; CADR" data-report-stat="410 m³/h verified CADR">
-                    <span class="report-thumb">
-                        <svg class="report-thumb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-                        <img src="public/images/report_cadr.webp" alt="Airflow and CADR lab report" loading="lazy" onerror="this.classList.add('is-missing')">
-                        <span class="report-zoom" aria-hidden="true">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/><path d="M11 8v6M8 11h6"/></svg>
-                        </span>
-                    </span>
-                    <span class="report-name">Airflow &amp; CADR</span>
-                    <span class="report-stat">410 m³/h verified</span>
-                </button>
-
-                <button type="button" class="report-card" data-report-src="public/images/report_noise.webp" data-report-title="Noise Level" data-report-stat="24 dB in sleep mode">
-                    <span class="report-thumb">
-                        <svg class="report-thumb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-                        <img src="public/images/report_noise.webp" alt="Noise level lab report" loading="lazy" onerror="this.classList.add('is-missing')">
-                        <span class="report-zoom" aria-hidden="true">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/><path d="M11 8v6M8 11h6"/></svg>
-                        </span>
-                    </span>
-                    <span class="report-name">Noise Level</span>
-                    <span class="report-stat">24 dB sleep mode</span>
-                </button>
-
-                <button type="button" class="report-card" data-report-src="public/images/report_energy.webp" data-report-title="Energy Consumption" data-report-stat="45W maximum power draw">
-                    <span class="report-thumb">
-                        <svg class="report-thumb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-                        <img src="public/images/report_energy.webp" alt="Energy consumption lab report" loading="lazy" onerror="this.classList.add('is-missing')">
-                        <span class="report-zoom" aria-hidden="true">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/><path d="M11 8v6M8 11h6"/></svg>
-                        </span>
-                    </span>
-                    <span class="report-name">Energy Consumption</span>
-                    <span class="report-stat">45W max draw</span>
-                </button>
+                <ol class="dossier-index">
+                    <li>
+                        <button type="button" class="dossier-row active" data-row="0" aria-current="true">
+                            <span class="dossier-num">01</span>
+                            <span class="dossier-row-text">
+                                <span class="dossier-row-name">Particle Filtration</span>
+                                <span class="dossier-row-stat">&gt;99.95% efficiency</span>
+                            </span>
+                            <svg class="dossier-row-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+                        </button>
+                    </li>
+                    <li>
+                        <button type="button" class="dossier-row" data-row="1">
+                            <span class="dossier-num">02</span>
+                            <span class="dossier-row-text">
+                                <span class="dossier-row-name">Airflow &amp; CADR</span>
+                                <span class="dossier-row-stat">410 m³/h verified</span>
+                            </span>
+                            <svg class="dossier-row-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+                        </button>
+                    </li>
+                    <li>
+                        <button type="button" class="dossier-row" data-row="2">
+                            <span class="dossier-num">03</span>
+                            <span class="dossier-row-text">
+                                <span class="dossier-row-name">Noise Level</span>
+                                <span class="dossier-row-stat">24 dB sleep mode</span>
+                            </span>
+                            <svg class="dossier-row-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+                        </button>
+                    </li>
+                    <li>
+                        <button type="button" class="dossier-row" data-row="3">
+                            <span class="dossier-num">04</span>
+                            <span class="dossier-row-text">
+                                <span class="dossier-row-name">Energy Consumption</span>
+                                <span class="dossier-row-stat">45W max draw</span>
+                            </span>
+                            <svg class="dossier-row-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+                        </button>
+                    </li>
+                </ol>
             </div>
         </div>
 
