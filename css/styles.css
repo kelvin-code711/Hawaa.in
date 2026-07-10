@@ -2467,24 +2467,27 @@ button.menu-nav-item {
     color: var(--ink);
 }
 
-/* Direction-aware ease-out glide when the rival purifier is swapped
-   (buttons or swipe) — content drifts in from the side you swiped toward */
-.cmpm-col--rival.swapping-next {
-    animation: cmpm-swap-next 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+/* Rival strip — native scroll-snap, same rules as the comparison page's
+   .cmp-scroll, so swiping tracks the finger with real momentum */
+.cmpm-scroll {
+    min-width: 0;
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
 }
 
-.cmpm-col--rival.swapping-prev {
-    animation: cmpm-swap-prev 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+.cmpm-scroll::-webkit-scrollbar {
+    display: none;
 }
 
-@keyframes cmpm-swap-next {
-    from { opacity: 0; transform: translateX(32px); }
-    to   { opacity: 1; transform: none; }
-}
-
-@keyframes cmpm-swap-prev {
-    from { opacity: 0; transform: translateX(-32px); }
-    to   { opacity: 1; transform: none; }
+.cmpm-scroll .cmpm-col--rival {
+    flex: 0 0 100%;
+    scroll-snap-align: center;
 }
 
 .cmpm-figure svg {
@@ -2710,6 +2713,17 @@ button.menu-nav-item {
 .dossier-paper.stack-0:hover {
     transform: translateY(-4px);
     box-shadow: 0 26px 44px -22px var(--shadow-tint-lg);
+}
+
+/* Selecting/deselecting papers is a pointer gesture — no focus ring on
+   the papers or index rows (overrides the site-wide focus-visible rule) */
+.dossier-paper:focus,
+.dossier-paper:focus-visible,
+.dossier-row:focus,
+.dossier-row:focus-visible,
+.page-landing .dossier-paper:focus-visible,
+.page-landing .dossier-row:focus-visible {
+    outline: none;
 }
 
 /* CSS letterhead — a designed certificate that shows until the real

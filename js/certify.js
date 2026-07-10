@@ -17,63 +17,54 @@
         filterPrice: 'Filter Price'
     };
 
+    // Rival columns live in a native scroll-snap strip (#cmpm-scroll), the
+    // same mechanism as the comparison page's .cmp-scroll: touch swipes
+    // track the finger with real momentum, arrows scroll smoothly.
+    var CMPM_FIGURE_SVG =
+        '<svg viewBox="0 0 200 220" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">' +
+            '<rect x="26" y="18" width="148" height="184" rx="20"/>' +
+            '<circle cx="100" cy="118" r="48"/>' +
+            '<ellipse cx="58" cy="32" rx="5" ry="2"/>' +
+            '<ellipse cx="75" cy="32" rx="5" ry="2"/>' +
+            '<ellipse cx="92" cy="32" rx="5" ry="2"/>' +
+            '<ellipse cx="109" cy="32" rx="5" ry="2"/>' +
+            '<ellipse cx="126" cy="32" rx="5" ry="2"/>' +
+            '<ellipse cx="143" cy="32" rx="5" ry="2"/>' +
+        '</svg>';
+
     function initMiniCompare() {
-        var nameEl = document.getElementById('cmpm-rival-name');
-        var statsEl = document.getElementById('cmpm-rival-stats');
+        var scroller = document.getElementById('cmpm-scroll');
         var prevBtn = document.getElementById('cmpm-prev');
         var nextBtn = document.getElementById('cmpm-next');
-        if (!nameEl || !statsEl || !window.HAWAA_COMPARE) return;
+        if (!scroller || !window.HAWAA_COMPARE) return;
 
         var rivals = window.HAWAA_COMPARE.rivals;
-        var idx = 0;
 
-        function render() {
-            var rival = rivals[idx];
-            nameEl.textContent = rival.brand + ' ' + rival.model;
-            statsEl.innerHTML = STAT_KEYS.map(function (key) {
+        scroller.innerHTML = rivals.map(function (rival, i) {
+            var stats = STAT_KEYS.map(function (key) {
                 return '<div class="cmpm-stat">' +
                     '<span class="cmpm-stat-label">' + STAT_LABELS[key] + '</span>' +
                     '<span class="cmpm-stat-value">' + rival.values[key].v + '</span>' +
                     '</div>';
             }).join('');
+            return '<div class="cmpm-col cmpm-col--rival" data-rival="' + i + '">' +
+                '<div class="cmpm-figure cmpm-figure--rival">' + CMPM_FIGURE_SVG + '</div>' +
+                '<h3 class="cmpm-name">' + rival.brand + ' ' + rival.model + '</h3>' +
+                '<div class="cmpm-stats">' + stats + '</div>' +
+                '</div>';
+        }).join('');
+
+        function currentIndex() {
+            return Math.round(scroller.scrollLeft / scroller.clientWidth);
         }
 
-        var rivalCol = document.querySelector('.cmpm-col--rival');
-
-        function step(dir) {
-            idx = (idx + dir + rivals.length) % rivals.length;
-            render();
-            if (rivalCol) {
-                rivalCol.classList.remove('swapping-next', 'swapping-prev');
-                void rivalCol.offsetWidth; /* restart the animation */
-                rivalCol.classList.add(dir > 0 ? 'swapping-next' : 'swapping-prev');
-            }
+        function goTo(i) {
+            var idx = Math.max(0, Math.min(rivals.length - 1, i));
+            scroller.scrollTo({ left: idx * scroller.clientWidth, behavior: 'smooth' });
         }
 
-        if (prevBtn) prevBtn.addEventListener('click', function () { step(-1); });
-        if (nextBtn) nextBtn.addEventListener('click', function () { step(1); });
-
-        // Touch swipe anywhere on the comparison block cycles rivals
-        var swipeEl = document.querySelector('.cmpm');
-        if (swipeEl) {
-            var startX = 0, startY = 0, swiping = false;
-            swipeEl.addEventListener('touchstart', function (e) {
-                startX = e.touches[0].clientX;
-                startY = e.touches[0].clientY;
-                swiping = true;
-            }, { passive: true });
-            swipeEl.addEventListener('touchend', function (e) {
-                if (!swiping) return;
-                swiping = false;
-                var dx = e.changedTouches[0].clientX - startX;
-                var dy = e.changedTouches[0].clientY - startY;
-                if (Math.abs(dx) > 48 && Math.abs(dx) > Math.abs(dy)) {
-                    step(dx < 0 ? 1 : -1);
-                }
-            }, { passive: true });
-        }
-
-        render();
+        if (prevBtn) prevBtn.addEventListener('click', function () { goTo(currentIndex() - 1); });
+        if (nextBtn) nextBtn.addEventListener('click', function () { goTo(currentIndex() + 1); });
     }
 
     /* ---------- LAB TEST REPORT DOSSIER + LIGHTBOX ---------- */
@@ -82,7 +73,11 @@
         var rows = Array.prototype.slice.call(document.querySelectorAll('.dossier-row'));
         if (!papers.length) return;
 
+        var current = 0;
+        var justSwiped = false;
+
         function setActive(active) {
+            current = active;
             var pos = 1;
             papers.forEach(function (p, i) {
                 p.classList.remove('stack-0', 'stack-1', 'stack-2', 'stack-3');
@@ -99,6 +94,28 @@
             row.addEventListener('click', function () { setActive(i); });
         });
         setActive(0);
+
+        // Swipe left/right on the stack leafs through the reports
+        var stage = document.querySelector('.dossier-stage');
+        if (stage) {
+            var startX = 0, startY = 0, tracking = false;
+            stage.addEventListener('touchstart', function (e) {
+                startX = e.touches[0].clientX;
+                startY = e.touches[0].clientY;
+                tracking = true;
+            }, { passive: true });
+            stage.addEventListener('touchend', function (e) {
+                if (!tracking) return;
+                tracking = false;
+                var dx = e.changedTouches[0].clientX - startX;
+                var dy = e.changedTouches[0].clientY - startY;
+                if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) {
+                    setActive((current + (dx < 0 ? 1 : -1) + papers.length) % papers.length);
+                    justSwiped = true;   /* don't let the tail end of a swipe open the lightbox */
+                    setTimeout(function () { justSwiped = false; }, 400);
+                }
+            }, { passive: true });
+        }
 
         /* Lightbox */
         var box = document.getElementById('report-lightbox');
@@ -135,7 +152,7 @@
 
         papers.forEach(function (paper) {
             paper.addEventListener('click', function () {
-                if (paper.classList.contains('stack-0')) open(paper);
+                if (!justSwiped && paper.classList.contains('stack-0')) open(paper);
             });
         });
         closeBtn.addEventListener('click', close);
