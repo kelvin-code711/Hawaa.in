@@ -103,7 +103,7 @@
 .cmp-hero-scroll-segment {
     width: 1px;
     height: 12px;
-    background: var(--teal-deep);
+    background: var(--teal-on-dark);
     position: absolute;
     top: -12px;
     left: 0;

@@ -24,7 +24,13 @@
   --teal-deep:       #1E7C71;   /* primary accent: CTAs, links, eyebrows, active states */
   --teal-deep-hover: #186B61;   /* hover on primary CTA */
   --teal-deep-press: #135A52;   /* active/pressed CTA */
-  --teal-brand:      #3FB7AC;   /* RESERVED: device LED, logo arcs, live-status dots ONLY */
+  --teal-brand:      #3FB7AC;   /* RESERVED: device LED, logo arcs, live-status dots,
+                                   and status-display accents inside dark product-feature
+                                   sections (e.g. the smart-control / LED showcase bands).
+                                   Do NOT use on light surfaces or for plain text links. */
+  --teal-on-dark:    #4FC4B8;   /* lighter teal for NON-product accents on dark bands
+                                   (text links, focus rings) — readable without the
+                                   reserved brand LED tone. */
   --teal-tint:       rgba(30, 124, 113, 0.10); /* accent-tinted backgrounds: info banners */
   --teal-tint-soft:  rgba(30, 124, 113, 0.05); /* lighter wash for selected cards / pickers */
 
