@@ -2983,7 +2983,7 @@ button.menu-nav-item {
 ======================================== */
 .reviews-section {
     padding: 50px 16px 60px;
-    background: var(--mist);
+    background: var(--paper);
 }
 
 @media (min-width: 640px) {
@@ -3074,27 +3074,48 @@ button.menu-nav-item {
 }
 .arrow.primary { background: var(--ink); border-color: var(--ink); color: var(--on-ink); }
 
-/* Reviews carousel — built on the migrated .track / .tcard classes above */
+/* Reviews carousel — editorial spotlight quotes, one per view, no card chrome.
+   Same scroll-snap track underneath, so swipe / dots / autoplay are unchanged. */
 .reviews-section .track-mask {
-    padding: 6px 0 14px;   /* vertical breathing room for card shadows */
+    padding: 0;
 }
 
 #reviews-track {
-    padding-inline: clamp(16px, 6vw, 64px);        /* edge gutters so neighbours peek */
-    scroll-padding-inline: clamp(16px, 6vw, 64px);
+    gap: 0;
 }
 
-#reviews-track .tcard {
-    flex: 0 0 min(360px, 80vw);   /* one card + peeking neighbours on mobile */
-    scroll-snap-align: center;    /* active card centred, prev/next peek past edges */
+#reviews-track .tcard,
+#reviews-track .tcard.active {
+    flex: 0 0 100%;               /* one spotlight quote per view */
+    scroll-snap-align: center;
     display: flex;
     flex-direction: column;
+    align-items: center;
+    text-align: center;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    border-radius: 0;
+    padding: 0 8px;
+}
+
+/* Oversized decorative quote mark */
+#reviews-track .tcard::before {
+    content: '\201C';
+    font-family: 'Playfair Display', serif;
+    font-size: 4.5rem;
+    line-height: 0.6;
+    height: 0.45em;
+    color: var(--teal-deep);
+    opacity: 0.35;
+    margin-bottom: 18px;
 }
 
 .review-stars {
     display: flex;
+    justify-content: center;
     gap: 4px;
-    margin-bottom: 16px;
+    margin-bottom: 20px;
     flex-shrink: 0;
 }
 
@@ -3108,32 +3129,48 @@ button.menu-nav-item {
 
 .review-text {
     font-family: 'Playfair Display', serif;
-    font-size: 1rem;
+    font-size: 1.15rem;
     font-style: italic;
     color: var(--ink);
-    line-height: 1.6;
-    flex: 1;
-    margin-bottom: 20px;
+    line-height: 1.7;
+    max-width: 640px;
+    margin: 0 auto 24px;
+}
+
+@media (min-width: 640px) {
+    .review-text {
+        font-size: 1.35rem;
+    }
 }
 
 .review-author {
-    margin-bottom: 8px;
+    margin-bottom: 6px;
 }
 
 .review-name {
+    display: inline;
     font-size: 0.95rem;
     font-weight: 600;
     color: var(--ink);
 }
 
+.review-name::after {
+    content: '\00a0\00b7\00a0';
+    font-weight: 400;
+    color: var(--ink-soft);
+}
+
 .review-location {
-    font-size: 0.8rem;
+    display: inline;
+    font-size: 0.9rem;
     color: var(--ink-soft);
 }
 
 .review-product {
     font-size: 0.75rem;
-    color: var(--ink-soft);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
 }
 
 /* Reviews Controls — dots / "Read all reviews" CTA, mirrors .blogs-controls */
@@ -3270,94 +3307,114 @@ button.menu-nav-item {
     display: none;
 }
 
-/* Blog Card */
+/* Blog Card — premium editorial teaser: a paper panel overlaps the image,
+   with a serif index numeral + small-caps tag as the meta line */
 .blog-card {
-    flex: 0 0 280px;
-    min-width: 280px;
-    max-width: 280px;
+    flex: 0 0 282px;
+    min-width: 282px;
+    max-width: 282px;
     scroll-snap-align: start;
-    position: relative;
-    height: 380px;
-    border-radius: 20px;
-    overflow: hidden;
     display: block;
     text-decoration: none;
 }
 
 @media (min-width: 640px) {
     .blog-card {
-        flex: 0 0 320px;
-        min-width: 320px;
-        max-width: 320px;
-        height: 420px;
+        flex: 0 0 330px;
+        min-width: 330px;
+        max-width: 330px;
     }
 }
 
 .blog-image {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    position: relative;
+    height: 240px;
+    border-radius: 20px;
+    overflow: hidden;
     background-size: cover;
     background-position: center;
-    background-color: var(--ink);
+    background-color: var(--mist-deeper);
     transition: transform 0.5s ease;
 }
 
-.blog-card:hover .blog-image {
-    transform: scale(1.05);
+@media (min-width: 640px) {
+    .blog-image {
+        height: 260px;
+    }
 }
 
-.blog-overlay {
+/* Soft vignette for depth (also dresses up a missing image gracefully) */
+.blog-image::after {
+    content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(to top, rgba(17, 24, 39, 0.95) 0%, rgba(17, 24, 39, 0.4) 50%, transparent 100%);
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    padding: 24px;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(18, 49, 44, 0) 45%, rgba(18, 49, 44, 0.22) 100%);
 }
 
+.blog-card:hover .blog-image {
+    transform: translateY(-4px);
+}
+
+/* Overlapping paper panel */
 .blog-content {
-    color: white;
+    position: relative;
+    background: var(--paper);
+    border-radius: 16px;
+    margin: -64px 14px 0;
+    padding: 18px 20px 20px;
+    box-shadow: 0 16px 32px -20px var(--shadow-tint-lg);
+    color: var(--ink);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.blog-card:hover .blog-content {
+    transform: translateY(-4px);
+    box-shadow: 0 22px 38px -20px var(--shadow-tint-lg);
+}
+
+.blog-meta {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.blog-index {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.35rem;
+    line-height: 1;
+    color: var(--teal-deep);
 }
 
 .blog-tag {
-    display: inline-block;
-    padding: 4px 10px;
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(8px);
-    border-radius: 9999px;
-    font-size: 0.7rem;
-    font-weight: 500;
+    font-size: 0.65rem;
+    font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-bottom: 12px;
+    letter-spacing: 0.14em;
+    color: var(--ink-soft);
 }
 
 .blog-title {
     font-family: 'Outfit', sans-serif;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-weight: 600;
     margin-bottom: 8px;
-    line-height: 1.3;
+    line-height: 1.35;
+    color: var(--ink);
 }
 
 @media (min-width: 640px) {
     .blog-title {
-        font-size: 1.35rem;
+        font-size: 1.2rem;
     }
 }
 
 .blog-desc {
     font-size: 0.85rem;
-    color: rgba(255, 255, 255, 0.7);
+    color: var(--ink-soft);
     line-height: 1.5;
-    margin-bottom: 16px;
+    margin-bottom: 12px;
 }
 
 .blog-cta {
@@ -3521,24 +3578,24 @@ button.menu-nav-item {
 .faq-list {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 0;
 }
 
 .faq-item {
-    background: var(--paper);
-    border: 1px solid var(--ink-line-soft);
-    border-radius: 12px;
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid var(--ink-line);
     overflow: hidden;
     transition: all 0.3s ease;
 }
 
-.faq-item:hover {
-    box-shadow: 0 4px 20px var(--shadow-tint-sm);
+.faq-item:last-child {
+    border-bottom: 0;
 }
 
 .faq-question {
     width: 100%;
-    padding: 16px 20px;
+    padding: 20px 2px;
     background: none;
     border: none;
     display: flex;
@@ -3556,7 +3613,7 @@ button.menu-nav-item {
 
 @media (min-width: 640px) {
     .faq-question {
-        padding: 18px 24px;
+        padding: 22px 2px;
         font-size: 1rem;
     }
 }
@@ -3589,7 +3646,7 @@ button.menu-nav-item {
 }
 
 .faq-answer p {
-    padding: 0 20px 16px;
+    padding: 0 36px 20px 2px;
     font-size: 0.9rem;
     color: var(--ink-soft);
     line-height: 1.6;
@@ -3597,7 +3654,7 @@ button.menu-nav-item {
 
 @media (min-width: 640px) {
     .faq-answer p {
-        padding: 0 24px 20px;
+        padding: 0 44px 24px 2px;
     }
 }
 
@@ -3605,70 +3662,71 @@ button.menu-nav-item {
    NEWSLETTER SECTION
 ======================================== */
 .newsletter-section {
-    padding: 40px 16px;
+    padding: 56px 16px 64px;
     background: var(--mist);
 }
 
 @media (min-width: 640px) {
     .newsletter-section {
-        padding: 50px 24px;
+        padding: 72px 24px 80px;
     }
 }
 
 .newsletter-container {
-    max-width: 480px;
+    max-width: 560px;
     margin: 0 auto;
     text-align: center;
 }
 
+/* Open block — no card chrome */
 .newsletter-content {
-    background: var(--mist-deep);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid var(--ink-line-soft);
-    border-radius: 20px;
-    padding: 30px 24px;
-}
-
-@media (min-width: 640px) {
-    .newsletter-content {
-        padding: 40px 32px;
-    }
+    background: transparent;
+    border: 0;
+    padding: 0;
 }
 
 .newsletter-title {
     font-family: 'Outfit', sans-serif;
-    font-size: 1.25rem;
+    font-size: 1.5rem;
     font-weight: 600;
     color: var(--ink);
-    margin-bottom: 8px;
+    margin-bottom: 10px;
+}
+
+@media (min-width: 640px) {
+    .newsletter-title {
+        font-size: 1.8rem;
+    }
+}
+
+.newsletter-title .italic {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-weight: 400;
 }
 
 .newsletter-desc {
     font-size: 0.9rem;
     color: var(--ink-soft);
-    margin-bottom: 24px;
+    margin-bottom: 28px;
     line-height: 1.5;
 }
 
+/* Single pill: input with the subscribe button nested inside (stacks on
+   narrow screens) */
 .newsletter-form {
+    position: relative;
     display: flex;
     flex-direction: column;
     gap: 12px;
 }
 
-@media (min-width: 480px) {
-    .newsletter-form {
-        flex-direction: row;
-    }
-}
-
 .newsletter-input {
     flex: 1;
-    padding: 14px 18px;
+    padding: 16px 24px;
     background: var(--paper);
     border: 1px solid var(--ink-line);
-    border-radius: 10px;
+    border-radius: 9999px;
     font-family: 'Outfit', sans-serif;
     font-size: 1rem;
     color: var(--ink);
@@ -3687,14 +3745,14 @@ button.menu-nav-item {
 }
 
 .newsletter-btn {
-    padding: 14px 24px;
+    padding: 14px 28px;
     background: var(--ink);
     color: var(--on-ink);
     font-family: 'Outfit', sans-serif;
     font-size: 0.9rem;
     font-weight: 500;
     border: none;
-    border-radius: 10px;
+    border-radius: 9999px;
     cursor: pointer;
     transition: all 0.3s ease;
     white-space: nowrap;
@@ -3703,6 +3761,30 @@ button.menu-nav-item {
 .newsletter-btn:hover {
     background: var(--ink);
     transform: translateY(-1px);
+}
+
+@media (min-width: 480px) {
+    .newsletter-form {
+        display: block;
+    }
+
+    .newsletter-input {
+        width: 100%;
+        padding-right: 148px;
+    }
+
+    .newsletter-btn {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        bottom: 5px;
+        padding: 0 26px;
+    }
+
+    .newsletter-btn:hover {
+        transform: none;
+        background: var(--teal-deep);
+    }
 }
 
 .newsletter-disclaimer {
@@ -8629,14 +8711,13 @@ body.tos-page .logo-awaa {
 .page-landing .faq-item   { border-color: var(--ink-line); }
 
 /* ---- 9. Cards float on the gradient: glass, not solid blocks --- */
-.page-landing .certification-card,
-.page-landing .newsletter-content {
+/* (.newsletter-content removed — the newsletter is an open block now.) */
+.page-landing .certification-card {
     background: rgba(255, 255, 255, 0.6);
     border-color: var(--ink-line);
 }
 @supports not (backdrop-filter: blur(8px)) {
-    .page-landing .certification-card,
-    .page-landing .newsletter-content { background: rgba(255, 255, 255, 0.92); }
+    .page-landing .certification-card { background: rgba(255, 255, 255, 0.92); }
 }
 
 /* ---- 10. Accessibility: visible keyboard focus (brass) ------ */
