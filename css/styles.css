@@ -9,6 +9,18 @@ html {
     scroll-behavior: smooth;
 }
 
+/* Motion / A11y — site-wide reduced-motion override
+   (restored from the retired ascend.theme.css) */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+        scroll-behavior: auto !important;
+    }
+    .hero-video { display: none; }
+}
+
 body {
     font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     line-height: 1.5;
@@ -3264,7 +3276,7 @@ button.menu-nav-item {
     gap: 6px;
     font-size: 0.85rem;
     font-weight: 500;
-    color: var(--on-ink);
+    color: var(--teal-deep);
     transition: gap 0.2s ease;
 }
 
@@ -3659,7 +3671,7 @@ button.menu-nav-item {
 
 .footer-tagline {
     font-size: 0.9rem;
-    color: var(--ink-faint);
+    color: var(--ink-soft);
     margin-bottom: 24px;
 }
 
@@ -3727,7 +3739,7 @@ button.menu-nav-item {
     font-size: 0.75rem;
     font-weight: 600;
     letter-spacing: 0.1em;
-    color: var(--ink-faint);
+    color: var(--ink-soft);
     margin: 0;
 }
 
@@ -3828,7 +3840,7 @@ button.menu-nav-item {
 
 .footer-copyright {
     font-size: 0.8rem;
-    color: var(--ink-faint);
+    color: var(--ink-soft);
 }
 
 /* Certification Modal Styles */
@@ -4150,7 +4162,7 @@ button.menu-nav-item {
     font-family: 'Outfit', sans-serif;
     font-size: 0.8rem;
     font-weight: 500;
-    color: var(--ink-faint);
+    color: var(--ink-soft);
     cursor: pointer;
     transition: color 0.2s ease;
     white-space: nowrap;
@@ -4329,7 +4341,7 @@ button.menu-nav-item {
     font-family: 'Outfit', sans-serif;
     font-size: 0.75rem;
     font-weight: 400;
-    color: var(--ink-faint);
+    color: var(--ink-soft);
     margin-bottom: 14px;
 }
 
@@ -4373,7 +4385,7 @@ button.menu-nav-item {
 .buy-filter-plan-detail {
     font-size: 0.75rem;
     font-weight: 400;
-    color: var(--ink-faint);
+    color: var(--ink-soft);
     margin-top: 2px;
 }
 
@@ -4512,7 +4524,7 @@ button.menu-nav-item {
     font-family: 'Outfit', sans-serif;
     font-size: 0.75rem;
     font-weight: 400;
-    color: var(--ink-faint);
+    color: var(--ink-soft);
 }
 
 .buy-accessory-action {
@@ -6797,7 +6809,7 @@ body.faq-page .logo-awaa {
 .bl-empty {
     text-align: center;
     padding: 60px 20px;
-    color: var(--ink-faint);
+    color: var(--ink-soft);
     font-size: 1rem;
     grid-column: 1 / -1;
 }
@@ -6897,7 +6909,7 @@ body.faq-page .logo-awaa {
     gap: 10px;
     font-family: 'Outfit', sans-serif;
     font-size: 0.85rem;
-    color: var(--ink-faint);
+    color: var(--ink-soft);
     font-weight: 400;
 }
 
@@ -7036,7 +7048,7 @@ body.faq-page .logo-awaa {
 .ba-img-caption {
     font-family: 'Outfit', sans-serif;
     font-size: 0.8rem !important;
-    color: var(--ink-faint) !important;
+    color: var(--ink-soft) !important;
     font-style: italic;
     text-align: center;
     margin-bottom: 28px !important;
@@ -7346,7 +7358,7 @@ body.tos-page .logo-awaa {
     font-family: 'Outfit', sans-serif;
     font-size: 0.85rem;
     font-weight: 400;
-    color: var(--ink-faint);
+    color: var(--ink-soft);
 }
 
 @media (min-width: 640px) {
@@ -7426,7 +7438,7 @@ body.tos-page .logo-awaa {
     font-family: 'Outfit', sans-serif;
     font-size: 0.8rem;
     font-weight: 400;
-    color: var(--ink-faint);
+    color: var(--ink-soft);
     flex-shrink: 0;
     min-width: 20px;
 }
@@ -8786,7 +8798,7 @@ body.account-page {
 
 .account-since {
     font-size: 13px;
-    color: var(--ink-faint);
+    color: var(--ink-soft);
     margin-top: 10px;
 }
 
@@ -8844,7 +8856,7 @@ body.account-page {
 
 .account-review-date {
     font-size: 12px;
-    color: var(--ink-faint);
+    color: var(--ink-soft);
     flex-shrink: 0;
 }
 
@@ -9087,6 +9099,6 @@ body.account-page {
 
 .account-order-date {
     font-size: 12px;
-    color: var(--ink-faint);
+    color: var(--ink-soft);
     flex-shrink: 0;
 }

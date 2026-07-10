@@ -369,7 +369,7 @@
 
 .rv-card-date {
     font-size: 0.8rem;
-    color: var(--ink-faint);
+    color: var(--ink-soft);
 }
 
 .rv-card-title {
@@ -790,7 +790,7 @@
 }
 
 .rv-optional {
-    color: var(--ink-faint);
+    color: var(--ink-soft);
     font-weight: 400;
 }
 
@@ -830,7 +830,7 @@
 
 .rv-upload-hint {
     font-size: 0.75rem !important;
-    color: var(--ink-faint) !important;
+    color: var(--ink-soft) !important;
 }
 
 /* Upload Previews */

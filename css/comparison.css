@@ -546,7 +546,7 @@
     display: block;
     font-size: 0.6rem;
     font-weight: 400;
-    color: var(--ink-faint);
+    color: var(--ink-soft);
 }
 
 .cmp-cell-val {
@@ -672,7 +672,7 @@
     font-family: 'Outfit', sans-serif;
     font-size: 0.7rem;
     font-style: italic;
-    color: var(--ink-faint);
+    color: var(--ink-soft);
     line-height: 1.5;
 }
 
@@ -806,7 +806,7 @@
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.2em;
-    color: var(--ink-faint);
+    color: var(--ink-soft);
     margin-bottom: 12px;
 }
 
@@ -1139,7 +1139,7 @@
 .cmp-lab-disclaimer {
     margin-top: 28px;
     font-size: 0.75rem;
-    color: var(--ink-faint);
+    color: var(--ink-soft);
     line-height: 1.5;
 }
 

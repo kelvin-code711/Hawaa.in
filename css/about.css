@@ -398,7 +398,7 @@
     font-family: 'Outfit', sans-serif;
     font-size: 0.85rem;
     font-weight: 400;
-    color: var(--ink-faint);
+    color: var(--ink-soft);
     margin-bottom: 16px;
 }
 
@@ -622,7 +622,7 @@
     font-family: 'Outfit', sans-serif;
     font-size: 0.85rem;
     font-weight: 400;
-    color: var(--ink-faint);
+    color: var(--ink-soft);
     margin-bottom: 24px;
 }
 
