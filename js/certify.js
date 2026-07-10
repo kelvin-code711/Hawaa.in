@@ -38,14 +38,40 @@
             }).join('');
         }
 
-        if (prevBtn) prevBtn.addEventListener('click', function () {
-            idx = (idx - 1 + rivals.length) % rivals.length;
+        var rivalCol = document.querySelector('.cmpm-col--rival');
+
+        function step(dir) {
+            idx = (idx + dir + rivals.length) % rivals.length;
             render();
-        });
-        if (nextBtn) nextBtn.addEventListener('click', function () {
-            idx = (idx + 1) % rivals.length;
-            render();
-        });
+            if (rivalCol) {
+                rivalCol.classList.remove('swapping');
+                void rivalCol.offsetWidth; /* restart the animation */
+                rivalCol.classList.add('swapping');
+            }
+        }
+
+        if (prevBtn) prevBtn.addEventListener('click', function () { step(-1); });
+        if (nextBtn) nextBtn.addEventListener('click', function () { step(1); });
+
+        // Touch swipe anywhere on the comparison block cycles rivals
+        var swipeEl = document.querySelector('.cmpm');
+        if (swipeEl) {
+            var startX = 0, startY = 0, swiping = false;
+            swipeEl.addEventListener('touchstart', function (e) {
+                startX = e.touches[0].clientX;
+                startY = e.touches[0].clientY;
+                swiping = true;
+            }, { passive: true });
+            swipeEl.addEventListener('touchend', function (e) {
+                if (!swiping) return;
+                swiping = false;
+                var dx = e.changedTouches[0].clientX - startX;
+                var dy = e.changedTouches[0].clientY - startY;
+                if (Math.abs(dx) > 48 && Math.abs(dx) > Math.abs(dy)) {
+                    step(dx < 0 ? 1 : -1);
+                }
+            }, { passive: true });
+        }
 
         render();
     }
