@@ -3307,12 +3307,12 @@ button.menu-nav-item {
     display: none;
 }
 
-/* Blog Card — editorial teaser: framed image on top, open text below
-   (no card box), so the slider reads differently from the other carousels */
+/* Blog Card — premium editorial teaser: a paper panel overlaps the image,
+   with a serif index numeral + small-caps tag as the meta line */
 .blog-card {
-    flex: 0 0 280px;
-    min-width: 280px;
-    max-width: 280px;
+    flex: 0 0 282px;
+    min-width: 282px;
+    max-width: 282px;
     scroll-snap-align: start;
     display: block;
     text-decoration: none;
@@ -3320,54 +3320,79 @@ button.menu-nav-item {
 
 @media (min-width: 640px) {
     .blog-card {
-        flex: 0 0 320px;
-        min-width: 320px;
-        max-width: 320px;
+        flex: 0 0 330px;
+        min-width: 330px;
+        max-width: 330px;
     }
 }
 
 .blog-image {
     position: relative;
-    height: 200px;
-    border-radius: 16px;
+    height: 240px;
+    border-radius: 20px;
     overflow: hidden;
     background-size: cover;
     background-position: center;
     background-color: var(--mist-deeper);
-    transition: transform 0.5s ease, box-shadow 0.5s ease;
+    transition: transform 0.5s ease;
 }
 
 @media (min-width: 640px) {
     .blog-image {
-        height: 220px;
+        height: 260px;
     }
+}
+
+/* Soft vignette for depth (also dresses up a missing image gracefully) */
+.blog-image::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(18, 49, 44, 0) 45%, rgba(18, 49, 44, 0.22) 100%);
 }
 
 .blog-card:hover .blog-image {
     transform: translateY(-4px);
-    box-shadow: 0 16px 30px -18px var(--shadow-tint-lg);
+}
+
+/* Overlapping paper panel */
+.blog-content {
+    position: relative;
+    background: var(--paper);
+    border-radius: 16px;
+    margin: -64px 14px 0;
+    padding: 18px 20px 20px;
+    box-shadow: 0 16px 32px -20px var(--shadow-tint-lg);
+    color: var(--ink);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.blog-card:hover .blog-content {
+    transform: translateY(-4px);
+    box-shadow: 0 22px 38px -20px var(--shadow-tint-lg);
+}
+
+.blog-meta {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.blog-index {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.35rem;
+    line-height: 1;
+    color: var(--teal-deep);
 }
 
 .blog-tag {
-    position: absolute;
-    top: 12px;
-    left: 12px;
-    display: inline-block;
-    padding: 4px 10px;
-    background: rgba(18, 49, 44, 0.55);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border-radius: 9999px;
-    color: var(--on-ink);
-    font-size: 0.7rem;
-    font-weight: 500;
+    font-size: 0.65rem;
+    font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-}
-
-.blog-content {
-    padding: 16px 4px 0;
-    color: var(--ink);
+    letter-spacing: 0.14em;
+    color: var(--ink-soft);
 }
 
 .blog-title {
