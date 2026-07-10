@@ -810,7 +810,7 @@
     font-family: 'Outfit', sans-serif;
     font-size: 0.78rem;
     font-weight: 600;
-    color: var(--teal-deep);
+    color: var(--teal-brand);
     min-width: 16px;
 }
 
@@ -841,7 +841,7 @@
 .gh-progress-fill {
     height: 100%;
     width: 0%;
-    background: var(--teal-deep);
+    background: var(--teal-brand);
     border-radius: 9999px;
     transition: width 0.15s ease-out;
     will-change: width;
@@ -881,7 +881,7 @@
 }
 
 .gh-card:focus-visible {
-    outline: 2px solid var(--teal-deep);
+    outline: 2px solid var(--teal-on-dark);
     outline-offset: 2px;
 }
 
@@ -898,7 +898,7 @@
     font-size: 0.68rem;
     font-weight: 700;
     letter-spacing: 0.05em;
-    color: var(--teal-deep);
+    color: var(--teal-brand);
 }
 
 .gh-card-title {
@@ -928,7 +928,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--teal-deep);
+    color: var(--teal-brand);
 }
 
 .gh-card-icon svg {
@@ -942,7 +942,7 @@
     font-size: 0.82rem;
     font-weight: 600;
     background: rgba(30, 124, 113, 0.12);
-    color: var(--teal-deep);
+    color: var(--teal-brand);
     padding: 1px 7px;
     border-radius: 5px;
     letter-spacing: 0.02em;
