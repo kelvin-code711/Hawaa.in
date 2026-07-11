@@ -4478,10 +4478,19 @@ button.menu-nav-item {
    BUY PAGE — Veloretti-inspired Redesign
 ======================================== */
 
+/* Buy Page Palette — warm porcelain surfaces (overrides the site's
+   mint tokens on this page only; ink + teal accents stay unchanged) */
+body.buy-page {
+    --mist:        #F7F5F0;   /* page background: warm porcelain */
+    --mist-deep:   #EFEBE3;   /* hovers, pressed fills */
+    --mist-deeper: #E4DED2;   /* deepest pressed state */
+    --paper:       #FDFCFA;   /* cards, modals, panels: warm white */
+}
+
 /* Buy Page Body */
 .buy-page .header {
     position: fixed;
-    background: rgba(234, 240, 236, 0.92);
+    background: rgba(247, 245, 240, 0.92);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--ink-line);
@@ -4561,7 +4570,7 @@ button.menu-nav-item {
 
 /* ---- Product Image / Carousel ---- */
 .buy-product-image {
-    background: #f3f4f6;
+    background: linear-gradient(180deg, #F3F0E9 0%, #EAE5DA 100%);
     position: relative;
     overflow: hidden;
 }
@@ -4678,7 +4687,7 @@ button.menu-nav-item {
 }
 
 .buy-details-btn:hover {
-    background: rgba(255, 255, 255, 1);
+    background: var(--paper);
     box-shadow: 0 4px 16px var(--shadow-tint-md);
 }
 
@@ -4812,9 +4821,9 @@ button.menu-nav-item {
 /* ---- Price Display ---- */
 .buy-price {
     font-family: 'Outfit', sans-serif;
-    font-size: 1rem;
-    font-weight: 400;
-    color: var(--ink-soft);
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: var(--ink);
     display: block;
     margin-bottom: 28px;
 }
@@ -4835,15 +4844,18 @@ button.menu-nav-item {
     padding: 20px 16px;
     background: var(--paper);
     border: 1.5px solid var(--ink-line-soft);
-    border-radius: 12px;
+    border-radius: 14px;
     cursor: pointer;
     transition: all 0.2s ease;
     font-family: 'Outfit', sans-serif;
     min-height: 160px;
+    box-shadow: 0 1px 2px var(--shadow-tint-sm);
 }
 
 .buy-variant-card:hover {
     border-color: var(--ink-line);
+    box-shadow: 0 6px 20px var(--shadow-tint-sm);
+    transform: translateY(-1px);
 }
 
 .buy-variant-card.active {
@@ -4966,19 +4978,19 @@ button.menu-nav-item {
 
 /* ---- Colour Selector ---- */
 .buy-colour-section {
-    margin-bottom: 4px;
+    margin-top: 4px;
 }
 
 .buy-colour-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: baseline;
     margin-bottom: 14px;
 }
 
 .buy-colour-label {
     font-family: 'Outfit', sans-serif;
-    font-size: 1rem;
+    font-size: 0.95rem;
     font-weight: 600;
     color: var(--ink);
 }
@@ -4992,18 +5004,18 @@ button.menu-nav-item {
 
 .buy-colour-swatches {
     display: flex;
-    gap: 10px;
+    gap: 14px;
 }
 
 .buy-colour-swatch {
-    width: 44px;
-    height: 44px;
-    padding: 3px;
-    border-radius: 10px;
+    width: 42px;
+    height: 42px;
+    padding: 4px;
+    border-radius: 50%;
     border: 1.5px solid transparent;
     background: none;
     cursor: pointer;
-    transition: border-color 0.2s ease;
+    transition: border-color 0.2s ease, transform 0.2s ease;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -5022,14 +5034,8 @@ button.menu-nav-item {
     display: block;
     width: 100%;
     height: 100%;
-    border-radius: 7px;
-}
-
-/* ---- Divider ---- */
-.buy-divider {
-    height: 1px;
-    background: #f3f4f6;
-    margin: 20px 0 0;
+    border-radius: 50%;
+    box-shadow: inset 0 0 0 1px var(--ink-line-soft), inset 0 -2px 4px rgba(18, 49, 44, 0.08);
 }
 
 /* ---- Section Headings (Step 2) ---- */
@@ -5134,7 +5140,7 @@ button.menu-nav-item {
     gap: 12px;
     padding: 20px 0;
     border-top: 1px solid var(--ink-line-soft);
-    margin-top: 4px;
+    margin-top: 28px;
 }
 
 .buy-trust-item {
@@ -5198,7 +5204,7 @@ button.menu-nav-item {
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background: #d1d5db;
+    background: var(--ink-line);
 }
 
 /* ---- Details Modal (Full Screen) ---- */
@@ -5238,7 +5244,7 @@ button.menu-nav-item {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(253, 252, 250, 0.9);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     border: none;
@@ -5255,7 +5261,7 @@ button.menu-nav-item {
 }
 
 .buy-details-close:hover {
-    background: rgba(243, 244, 246, 1);
+    background: var(--mist-deep);
 }
 
 /* Details Carousel */
@@ -5287,7 +5293,7 @@ button.menu-nav-item {
     flex: 1;
     min-height: 0;
     overflow: hidden;
-    background: #f3f4f6;
+    background: linear-gradient(180deg, #F3F0E9 0%, #EAE5DA 100%);
 }
 
 .buy-details-slide-img img {
@@ -5382,7 +5388,7 @@ button.menu-nav-item {
     left: 0;
     right: 0;
     z-index: 90;
-    background: rgba(255, 255, 255, 0.97);
+    background: rgba(253, 252, 250, 0.96);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-top: 1px solid var(--ink-line-soft);
@@ -5402,6 +5408,7 @@ button.menu-nav-item {
     display: flex;
     align-items: baseline;
     justify-content: space-between;
+    gap: 12px;
 }
 
 .buy-sticky-price {
@@ -5444,7 +5451,7 @@ button.menu-nav-item {
         left: 55%;
         border-top: 1px solid var(--ink-line-soft);
         padding: 16px 32px;
-        background: rgba(255, 255, 255, 0.98);
+        background: rgba(253, 252, 250, 0.98);
     }
 
     .buy-sticky-inner {
@@ -5501,35 +5508,6 @@ button.menu-nav-item {
 
 .cart-badge.visible {
     display: inline-block;
-}
-
-/* ---- Colour Info (Static - Single Colour) ---- */
-.buy-colour-info {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 4px;
-}
-
-.buy-colour-display {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.buy-colour-dot {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    border: 1.5px solid var(--ink-line);
-    flex-shrink: 0;
-}
-
-.buy-colour-name-static {
-    font-family: 'Outfit', sans-serif;
-    font-size: 0.85rem;
-    font-weight: 400;
-    color: var(--ink-soft);
 }
 
 /* ---- Cart Overlay ---- */
