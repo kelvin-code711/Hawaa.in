@@ -4479,19 +4479,17 @@ button.menu-nav-item {
 ======================================== */
 
 /* Buy Page Palette — themed per selected colourway. Almond Beige (default)
-   uses warm porcelain surfaces; Space Grey swaps every token below for a
-   cool graphite set. All buy-page surfaces read from these tokens, so the
-   whole page re-themes when js toggles .buy-theme-grey on <body>. */
+   uses the site-wide Monsoon Mist tokens as-is: --mist page background,
+   --paper elevated surfaces (cards, cart, details popup), and a
+   mist-deep → mist-deeper gradient for the product stage. Space Grey
+   swaps the token set for cool graphite via .buy-theme-grey on <body>. */
 body.buy-page {
-    /* Almond Beige — warm porcelain */
-    --mist:        #F7F5F0;   /* page background */
-    --mist-deep:   #EFEBE3;   /* hovers, pressed fills */
-    --mist-deeper: #E4DED2;   /* deepest pressed state */
-    --paper:       #FDFCFA;   /* cards, modals, panels */
-    --buy-header-bg: rgba(247, 245, 240, 0.92);
-    --buy-stage-grad: linear-gradient(180deg, #F3F0E9 0%, #EAE5DA 100%);
-    --buy-sticky-bg: rgba(253, 252, 250, 0.96);
-    --buy-sticky-bg-desktop: rgba(253, 252, 250, 0.98);
+    /* Almond Beige — Monsoon Mist. rgba values below are --mist and
+       --paper with alpha, for the blurred fixed bars. */
+    --buy-header-bg: rgba(234, 240, 236, 0.92);
+    --buy-stage-grad: linear-gradient(180deg, var(--mist-deep) 0%, var(--mist-deeper) 100%);
+    --buy-sticky-bg: rgba(247, 250, 248, 0.96);
+    --buy-sticky-bg-desktop: rgba(247, 250, 248, 0.98);
 }
 
 body.buy-page.buy-theme-grey {
@@ -4519,7 +4517,6 @@ body.buy-page.buy-theme-grey {
     --shadow-cta:      rgba(29, 32, 35, 0.28);
     --focus-ring:      #2E3238;
     --buy-header-bg: rgba(237, 238, 240, 0.92);
-    --buy-stage-grad: linear-gradient(180deg, #E7E9EB 0%, #D7DADE 100%);
     --buy-sticky-bg: rgba(250, 251, 252, 0.96);
     --buy-sticky-bg-desktop: rgba(250, 251, 252, 0.98);
 }
