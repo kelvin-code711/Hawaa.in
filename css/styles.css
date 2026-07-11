@@ -4478,19 +4478,66 @@ button.menu-nav-item {
    BUY PAGE — Veloretti-inspired Redesign
 ======================================== */
 
-/* Buy Page Palette — warm porcelain surfaces (overrides the site's
-   mint tokens on this page only; ink + teal accents stay unchanged) */
+/* Buy Page Palette — themed per selected colourway. Almond Beige (default)
+   uses warm porcelain surfaces; Space Grey swaps every token below for a
+   cool graphite set. All buy-page surfaces read from these tokens, so the
+   whole page re-themes when js toggles .buy-theme-grey on <body>. */
 body.buy-page {
-    --mist:        #F7F5F0;   /* page background: warm porcelain */
+    /* Almond Beige — warm porcelain */
+    --mist:        #F7F5F0;   /* page background */
     --mist-deep:   #EFEBE3;   /* hovers, pressed fills */
     --mist-deeper: #E4DED2;   /* deepest pressed state */
-    --paper:       #FDFCFA;   /* cards, modals, panels: warm white */
+    --paper:       #FDFCFA;   /* cards, modals, panels */
+    --buy-header-bg: rgba(247, 245, 240, 0.92);
+    --buy-stage-grad: linear-gradient(180deg, #F3F0E9 0%, #EAE5DA 100%);
+    --buy-sticky-bg: rgba(253, 252, 250, 0.96);
+    --buy-sticky-bg-desktop: rgba(253, 252, 250, 0.98);
+}
+
+body.buy-page.buy-theme-grey {
+    /* Space Grey — cool graphite */
+    --mist:        #EDEEF0;
+    --mist-deep:   #E2E4E7;
+    --mist-deeper: #D4D7DB;
+    --paper:       #FAFBFC;
+    --ink:         #1D2023;
+    --ink-soft:    rgba(29, 32, 35, 0.62);
+    --ink-faint:   rgba(29, 32, 35, 0.38);
+    --ink-line:    rgba(29, 32, 35, 0.16);
+    --ink-line-soft: rgba(29, 32, 35, 0.08);
+    --teal-deep:       #2E3238;   /* accent goes graphite: CTAs, active borders */
+    --teal-deep-hover: #22262B;
+    --teal-deep-press: #17191D;
+    --teal-tint:       rgba(46, 50, 56, 0.10);
+    --teal-tint-soft:  rgba(46, 50, 56, 0.05);
+    --on-teal:         #F5F6F7;
+    --on-ink:          #EDEEF0;
+    --shadow-tint:     rgba(29, 32, 35, 0.14);
+    --shadow-tint-sm:  rgba(29, 32, 35, 0.07);
+    --shadow-tint-md:  rgba(29, 32, 35, 0.14);
+    --shadow-tint-lg:  rgba(29, 32, 35, 0.28);
+    --shadow-cta:      rgba(29, 32, 35, 0.28);
+    --focus-ring:      #2E3238;
+    --buy-header-bg: rgba(237, 238, 240, 0.92);
+    --buy-stage-grad: linear-gradient(180deg, #E7E9EB 0%, #D7DADE 100%);
+    --buy-sticky-bg: rgba(250, 251, 252, 0.96);
+    --buy-sticky-bg-desktop: rgba(250, 251, 252, 0.98);
+}
+
+/* Smooth colourway crossfade on the big fixed surfaces */
+body.buy-page,
+.buy-page .header,
+.buy-product-image,
+.buy-steps,
+.buy-sticky-bottom,
+.buy-page .footer {
+    transition: background 0.5s ease, background-color 0.5s ease, border-color 0.5s ease;
 }
 
 /* Buy Page Body */
 .buy-page .header {
     position: fixed;
-    background: rgba(247, 245, 240, 0.92);
+    background: var(--buy-header-bg);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--ink-line);
@@ -4570,7 +4617,7 @@ body.buy-page {
 
 /* ---- Product Image / Carousel ---- */
 .buy-product-image {
-    background: linear-gradient(180deg, #F3F0E9 0%, #EAE5DA 100%);
+    background: var(--buy-stage-grad);
     position: relative;
     overflow: hidden;
 }
@@ -5244,7 +5291,7 @@ body.buy-page {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(253, 252, 250, 0.9);
+    background: var(--paper);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     border: none;
@@ -5293,7 +5340,7 @@ body.buy-page {
     flex: 1;
     min-height: 0;
     overflow: hidden;
-    background: linear-gradient(180deg, #F3F0E9 0%, #EAE5DA 100%);
+    background: var(--buy-stage-grad);
 }
 
 .buy-details-slide-img img {
@@ -5388,7 +5435,7 @@ body.buy-page {
     left: 0;
     right: 0;
     z-index: 90;
-    background: rgba(253, 252, 250, 0.96);
+    background: var(--buy-sticky-bg);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-top: 1px solid var(--ink-line-soft);
@@ -5451,7 +5498,7 @@ body.buy-page {
         left: 55%;
         border-top: 1px solid var(--ink-line-soft);
         padding: 16px 32px;
-        background: rgba(253, 252, 250, 0.98);
+        background: var(--buy-sticky-bg-desktop);
     }
 
     .buy-sticky-inner {

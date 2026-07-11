@@ -280,6 +280,10 @@
         });
 
         if (colourNameEl) colourNameEl.textContent = COLOUR_NAMES[colour];
+
+        // Re-theme the whole page to match the chosen colourway
+        // (warm porcelain for almond, cool graphite for space grey).
+        document.body.classList.toggle('buy-theme-grey', colour === 'grey');
     }
 
     colourSwatches.forEach(function(swatch) {
