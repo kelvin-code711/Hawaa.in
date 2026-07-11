@@ -200,17 +200,21 @@
                         </div>
                     </div>
 
-                    <!-- Colour Info (Single colour - Almond Beige) -->
-                    <div class="buy-colour-info">
-                        <span class="buy-colour-label">Colour</span>
-                        <div class="buy-colour-display">
-                            <span class="buy-colour-dot" style="background: #d4c5a9;"></span>
-                            <span class="buy-colour-name-static">Almond Beige</span>
+                    <!-- Colour Selector -->
+                    <div class="buy-colour-section">
+                        <div class="buy-colour-header">
+                            <span class="buy-colour-label">Colour</span>
+                            <span class="buy-colour-name" id="buy-colour-name">Almond Beige</span>
+                        </div>
+                        <div class="buy-colour-swatches" role="radiogroup" aria-label="Choose colour">
+                            <button type="button" class="buy-colour-swatch active" data-colour="almond" role="radio" aria-checked="true" aria-label="Almond Beige">
+                                <span class="buy-swatch-fill" style="background: var(--device-almond);"></span>
+                            </button>
+                            <button type="button" class="buy-colour-swatch" data-colour="grey" role="radio" aria-checked="false" aria-label="Space Grey">
+                                <span class="buy-swatch-fill" style="background: var(--device-grey);"></span>
+                            </button>
                         </div>
                     </div>
-
-                    <!-- Divider -->
-                    <div class="buy-divider"></div>
 
                     <!-- Trust Indicators -->
                     <div class="buy-trust-row">

@@ -12,6 +12,12 @@
     var totalSteps = 2;
     var purchaseType = 'onetime'; // 'onetime' or 'subscribe'
     var filterInterval = 5; // 5 or 6 months
+    var selectedColour = 'almond'; // 'almond' or 'grey'
+
+    var COLOUR_NAMES = {
+        almond: 'Almond Beige',
+        grey: 'Space Grey'
+    };
 
     var PRICES = {
         onetime: 5999,
@@ -58,6 +64,10 @@
     var filterPlans = document.getElementById('buy-filter-plans');
     var filter5 = document.getElementById('filter-5');
     var filter6 = document.getElementById('filter-6');
+
+    // Colour selector
+    var colourNameEl = document.getElementById('buy-colour-name');
+    var colourSwatches = document.querySelectorAll('.buy-colour-swatch');
 
     // Price displays
     var priceDisplay = document.getElementById('buy-price');
@@ -255,6 +265,32 @@
     if (btnSubscribe) {
         btnSubscribe.addEventListener('click', function() { selectVariant('subscribe'); });
     }
+
+    // ========================================
+    // COLOUR SELECTION
+    // ========================================
+    function selectColour(colour) {
+        if (!COLOUR_NAMES[colour]) return;
+        selectedColour = colour;
+
+        colourSwatches.forEach(function(swatch) {
+            var isActive = swatch.getAttribute('data-colour') === colour;
+            swatch.classList.toggle('active', isActive);
+            swatch.setAttribute('aria-checked', isActive ? 'true' : 'false');
+        });
+
+        if (colourNameEl) colourNameEl.textContent = COLOUR_NAMES[colour];
+
+        // Re-theme the whole page to match the chosen colourway
+        // (warm porcelain for almond, cool graphite for space grey).
+        document.body.classList.toggle('buy-theme-grey', colour === 'grey');
+    }
+
+    colourSwatches.forEach(function(swatch) {
+        swatch.addEventListener('click', function() {
+            selectColour(this.getAttribute('data-colour'));
+        });
+    });
 
     // ========================================
     // FILTER INTERVAL
@@ -632,10 +668,13 @@
 
         // Quantities per SKU — the security rules recompute and verify
         // every amount from these, so tampering can't change the price.
+        // Colour is a suffix on the purifier id (e.g. 'purifier-onetime-grey');
+        // both colours share the same SKU price, so match by prefix. Plain
+        // ids from carts saved before colours existed still match too.
         var qtyOnetime = 0, qtySubscribe = 0, qtyFilter = 0;
         for (var i = 0; i < cart.length; i++) {
-            if (cart[i].id === 'purifier-onetime') qtyOnetime += cart[i].qty;
-            else if (cart[i].id === 'purifier-subscribe') qtySubscribe += cart[i].qty;
+            if (cart[i].id.indexOf('purifier-onetime') === 0) qtyOnetime += cart[i].qty;
+            else if (cart[i].id.indexOf('purifier-subscribe') === 0) qtySubscribe += cart[i].qty;
             else if (cart[i].id === 'filter') qtyFilter += cart[i].qty;
         }
         if (qtyOnetime + qtySubscribe + qtyFilter === 0) return;
@@ -735,12 +774,11 @@
     if (stickyBtn) {
         stickyBtn.addEventListener('click', function() {
             var price = PRICES[purchaseType];
-            var variant = purchaseType === 'subscribe'
-                ? 'Subscribe \u00B7 Almond Beige'
-                : 'One-time \u00B7 Almond Beige';
+            var variant = (purchaseType === 'subscribe' ? 'Subscribe' : 'One-time')
+                + ' \u00B7 ' + COLOUR_NAMES[selectedColour];
 
             addToCart({
-                id: 'purifier-' + purchaseType,
+                id: 'purifier-' + purchaseType + '-' + selectedColour,
                 name: 'Hawaa Edge',
                 variant: variant,
                 price: price,
