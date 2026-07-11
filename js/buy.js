@@ -788,7 +788,7 @@
 
             // Show feedback
             stickyBtn.textContent = 'Added!';
-            stickyBtn.style.background = '#059669';
+            stickyBtn.style.background = 'var(--success)';
             setTimeout(function() {
                 stickyBtn.textContent = 'Add to Cart';
                 stickyBtn.style.background = '';
