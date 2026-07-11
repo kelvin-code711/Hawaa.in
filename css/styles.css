@@ -2326,9 +2326,12 @@ button.menu-nav-item {
 /* ========================================
    CERTIFICATION SECTION
 ======================================== */
+/* Evidence chapter (comparison → reports → lab charts) sits on the
+   brightest surface — paper — so the proof story reads as one clean,
+   clinical band. Cards inside lift to white for separation. */
 .certification-section {
     padding: 50px 16px 60px;
-    background: var(--mist);
+    background: var(--paper);
 }
 
 @media (min-width: 640px) {
@@ -2435,7 +2438,7 @@ button.menu-nav-item {
 .cmpm-pill {
     display: inline-flex;
     align-items: center;
-    background: var(--paper);
+    background: #FFFFFF;   /* lifted above the paper section surface */
     border-radius: 999px;
     padding: 10px 20px;
     font-size: 0.85rem;
@@ -2620,7 +2623,7 @@ button.menu-nav-item {
 ======================================== */
 .reports-section {
     padding: 50px 16px 60px;
-    background: var(--mist-deep);
+    background: var(--paper);
 }
 
 @media (min-width: 640px) {
@@ -2675,7 +2678,7 @@ button.menu-nav-item {
 .dossier-paper {
     position: absolute;
     inset: 0;
-    background: var(--paper);
+    background: #FFFFFF;   /* lifted above the paper section surface */
     border: 1px solid var(--ink-line-soft);
     border-radius: 14px;
     overflow: hidden;
@@ -3037,7 +3040,7 @@ button.menu-nav-item {
 ======================================== */
 .lab-section {
     padding: 50px 16px 60px;
-    background: var(--mist);
+    background: var(--paper);
 }
 
 @media (min-width: 640px) {
@@ -3052,7 +3055,8 @@ button.menu-nav-item {
 }
 
 .lab-card {
-    background: var(--paper);
+    background: #FFFFFF;   /* lifted above the paper section surface */
+    border: 1px solid var(--ink-line-soft);
     border-radius: 20px;
     padding: 28px 20px;
     box-shadow: 0 8px 30px var(--shadow-tint-sm);
@@ -3980,9 +3984,11 @@ button.menu-nav-item {
 /* ========================================
    FAQ SECTION
 ======================================== */
+/* Calm outro: blogs → FAQ → newsletter share one continuous mist
+   surface, easing the page down toward the dark footer */
 .faq-section {
     padding: 50px 16px 50px;
-    background: var(--mist-deep);
+    background: var(--mist);
 }
 
 @media (min-width: 640px) {
