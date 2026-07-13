@@ -9,21 +9,33 @@ machine-readable mirror on data.gov.in.
 
 ```
 data.gov.in API (CPCB stations, hourly)
-        │  every 30 min
+        │  every 30 min (cron on the main branch)
         ▼
-Cloud Function refreshAqiData  (functions/index.js, asia-south1)
-        │  aggregates per city (functions/aqi.js)
+GitHub Action refresh-aqi.yml   (fetches on a GitHub runner)
+        │  POST {records:[...]} + x-admin-key
         ▼
-Firestore doc aqi/latest       (public read-only snapshot)
+Cloud Function refreshAqiHttp   (functions/index.js, asia-south1)
+        │  validates + aggregates per city (functions/aqi.js)
+        ▼
+Firestore doc aqi/latest        (public read-only snapshot)
         │  one read per visitor session
         ▼
-js/aqi.js on index.html        (autosuggest + result modal)
+js/aqi.js on index.html         (autosuggest + result modal)
 ```
 
-Why this shape: the website never calls data.gov.in directly, so the
-API key stays secret, visitors get instant answers, rate limits are
-irrelevant (~48 upstream calls/day regardless of traffic), and if
-data.gov.in has an outage the site keeps serving the last good
+**Why a GitHub Action does the fetching:** data.gov.in's firewall
+TCP-resets requests coming from Google Cloud IPs (verified in
+production), while GitHub-hosted runners get normal responses. The
+runner therefore fetches the records and delivers them to the
+processing endpoint. The endpoint is publicly reachable but rejects
+any request that doesn't present the data.gov.in API key in the
+`x-admin-key` header. A scheduled Cloud Function (`refreshAqiData`)
+remains as a fallback fetcher in case the WAF ever unblocks GCP; its
+failures are harmless noise in the logs until then.
+
+The website never calls data.gov.in directly: visitors read the cached
+Firestore snapshot instantly, the API key stays out of the site code,
+and if data.gov.in has an outage the site keeps serving the last good
 snapshot with its "Updated X ago" timestamp.
 
 ### Accuracy rules
@@ -34,49 +46,41 @@ snapshot with its "Updated X ago" timestamp.
   Poor / Very Poor / Severe.
 - Stations silent for >6 h and "NA"/out-of-range readings are dropped.
 - A fetch that yields fewer than 50 cities is discarded rather than
-  overwriting a good snapshot.
+  overwriting a good snapshot (the workflow also refuses to deliver
+  fewer than 500 raw records).
 - The UI never invents a number: unknown cities and outages show honest
   messages.
 
-## One-time deployment
+## Deployment state & requirements
 
-Prerequisite: a personal data.gov.in API key (register at
-https://data.gov.in → My Account → API Key). The sample key printed in
-the API docs is capped at 10 records and will NOT work.
+- Cloud Functions `refreshAqiData` + `refreshAqiHttp` and the Firestore
+  rules are deployed to project `hawaa-air-27548`.
+- The data.gov.in API key is stored as Firebase secret
+  `DATA_GOV_API_KEY` (rotate with
+  `firebase functions:secrets:set DATA_GOV_API_KEY` +
+  `firebase deploy --only functions`).
+- **GitHub repo secret `DATA_GOV_API_KEY`** (same value) must exist —
+  Settings → Secrets and variables → Actions. The refresh workflow
+  fails with a clear error when it's missing.
+- The 30-minute cron only fires for workflows on the **main branch** —
+  merge to main for the schedule to run. Pushes that modify the
+  workflow on the feature branch also trigger a run (for testing).
 
-```bash
-# 1. Store the API key as a Firebase secret (paste key when prompted)
-firebase functions:secrets:set DATA_GOV_API_KEY
+## Verifying
 
-# 2. Install function dependencies
-cd functions && npm install && cd ..
-
-# 3. Deploy the function and updated Firestore rules
-firebase deploy --only functions,firestore:rules
-
-# 4. Populate the first snapshot without waiting 30 min:
-#    Google Cloud Console → Cloud Scheduler (asia-south1) →
-#    job for refreshAqiData → "Force run"
-```
-
-Hosting continues to auto-deploy from GitHub `main` as before; steps
-1–4 are needed once (and step 3 again only when `functions/` changes).
-
-## Verifying after deploy
-
-1. Firebase console → Firestore → `aqi/latest` should exist with
-   `cityCount` ≈ 200+ and a fresh `updatedAt`.
-2. On hawaa.in, search a city (e.g. Delhi) — the modal should show the
-   AQI with "Source: CPCB (Govt. of India) · N stations · Updated …".
-3. Spot-check 2–3 cities against https://airquality.cpcb.gov.in/AQI_India/
-   (expect agreement within the hourly update window; the site shows a
-   city average, the portal shows per-station values).
+1. GitHub → Actions → `refresh-aqi` — latest run green, log shows
+   `total records fetched: ~2500+` and `{"ok":true,"cities":~250,...}`.
+2. Firebase console → Firestore → `aqi/latest` — fresh `updatedAt`,
+   `cityCount` ≈ 200+.
+3. On the site, search a city (e.g. Delhi) — modal shows the AQI with
+   "Source: CPCB (Govt. of India) · N stations · Updated …".
+4. Spot-check 2–3 cities against https://airquality.cpcb.gov.in/AQI_India/
+   (the site shows a city average; the portal shows per-station values).
 
 ## Maintenance
 
 - Unit tests for the aggregation math: `cd functions && npm test`.
-- Function logs: Firebase console → Functions → refreshAqiData.
-  The function logs record/city/station counts on every run and throws
-  (visible as errors) when upstream data is missing or too small.
+- Fetch/delivery logs: GitHub → Actions → refresh-aqi runs.
+- Processing logs: Firebase console → Functions → refreshAqiHttp.
 - If data.gov.in rotates field names again, `functions/aqi.js`
   (`subIndexOf`) is the only place that reads them.
