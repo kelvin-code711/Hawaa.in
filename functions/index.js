@@ -79,9 +79,12 @@ async function fetchAllRecords(apiKey) {
     return records;
 }
 
-async function runRefresh() {
-    const records = await fetchAllRecords(dataGovApiKey.value());
-    logger.info(`Fetched ${records.length} CPCB records`);
+async function runRefresh(providedRecords) {
+    const records = Array.isArray(providedRecords) && providedRecords.length > 0
+        ? providedRecords
+        : await fetchAllRecords(dataGovApiKey.value());
+    logger.info(`Processing ${records.length} CPCB records` +
+        (providedRecords ? ' (delivered by caller)' : ' (fetched)'));
 
     const snapshot = buildCitySnapshot(records, Date.now());
     if (snapshot.cityCount < MIN_CITIES_FOR_WRITE) {
@@ -127,10 +130,16 @@ exports.refreshAqiData = onSchedule(
     }
 );
 
-// Manual refresh trigger (used for ops/debugging — the schedule above
-// is the normal path). Authenticated by presenting the DATA_GOV_API_KEY
+// Refresh trigger for callers outside Google Cloud. data.gov.in's WAF
+// TCP-resets requests from GCP, so the scheduled GitHub Action
+// (.github/workflows/refresh-aqi.yml) fetches the records on a GitHub
+// runner and POSTs them here as {"records": [...]}; this function
+// validates, aggregates, and writes the snapshot. A request without a
+// body makes the function fetch data.gov.in itself (works if the WAF
+// ever unblocks GCP). Authenticated by presenting the DATA_GOV_API_KEY
 // secret value in the x-admin-key header, so no extra secret is needed;
-// only the project owner and this function know it.
+// only the project owner, the GitHub secret store, and this function
+// know it.
 exports.refreshAqiHttp = onRequest(
     {
         region: 'asia-south1',
@@ -145,8 +154,11 @@ exports.refreshAqiHttp = onRequest(
             return;
         }
         try {
-            const summary = await runRefresh();
-            res.json({ ok: true, ...summary });
+            const provided = req.body && Array.isArray(req.body.records)
+                ? req.body.records
+                : undefined;
+            const summary = await runRefresh(provided);
+            res.json({ ok: true, delivered: !!provided, ...summary });
         } catch (err) {
             logger.error('Manual refresh failed', err);
             res.status(500).json({ ok: false, error: String(err && err.message) });

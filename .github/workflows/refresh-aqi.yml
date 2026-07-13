@@ -1,0 +1,75 @@
+# Fetches live CPCB station data from data.gov.in every 30 minutes and
+# delivers it to the refreshAqiHttp Cloud Function, which aggregates it
+# and writes the Firestore snapshot the website reads (aqi/latest).
+#
+# Why GitHub and not Cloud Scheduler: data.gov.in's WAF TCP-resets
+# requests from Google Cloud IPs but answers GitHub runners normally.
+#
+# Requires repo secret DATA_GOV_API_KEY (personal key from
+# data.gov.in → My Account). It authenticates both the data.gov.in
+# fetch and, via the x-admin-key header, the delivery to the function.
+name: refresh-aqi
+
+on:
+  schedule:
+    - cron: '*/30 * * * *'
+  workflow_dispatch:
+  push:
+    branches:
+      - claude/aqi-data-integration-research-a3ph3s
+    paths:
+      - .github/workflows/refresh-aqi.yml
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Fetch CPCB records and deliver to processor
+        env:
+          KEY: ${{ secrets.DATA_GOV_API_KEY }}
+        run: |
+          set -euo pipefail
+          if [ -z "$KEY" ]; then
+            echo "::error::DATA_GOV_API_KEY repo secret is not set (Settings → Secrets and variables → Actions)"
+            exit 1
+          fi
+
+          BASE='https://api.data.gov.in/resource/3b01bcb8-0b14-4abf-b6f2-c1bfd384ba69'
+          UA='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36'
+          echo '[]' > records.json
+
+          for offset in 0 1000 2000 3000 4000 5000 6000 7000 8000 9000; do
+            for attempt in 1 2 3; do
+              code=$(curl -sS -o page.json -w '%{http_code}' --max-time 60 \
+                -H "User-Agent: $UA" -H 'Accept: application/json' \
+                "$BASE?api-key=$KEY&format=json&limit=1000&offset=$offset") && break || true
+              echo "offset=$offset attempt=$attempt failed (curl)"; sleep $((attempt * 5))
+            done
+            if [ "${code:-0}" != "200" ]; then
+              echo "::error::data.gov.in returned HTTP ${code:-network-error} at offset $offset"
+              head -c 300 page.json || true
+              exit 1
+            fi
+            count=$(jq '.records | length' page.json)
+            echo "offset=$offset records=$count"
+            jq -s '.[0] + .[1].records' records.json page.json > merged.json
+            mv merged.json records.json
+            [ "$count" -lt 1000 ] && break
+          done
+
+          total=$(jq 'length' records.json)
+          echo "total records fetched: $total"
+          if [ "$total" -lt 500 ]; then
+            echo "::error::suspiciously few records ($total) — not delivering"
+            exit 1
+          fi
+
+          jq '{records: .}' records.json > payload.json
+          code=$(curl -sS -o result.json -w '%{http_code}' --max-time 300 \
+            -X POST -H 'Content-Type: application/json' \
+            -H "x-admin-key: $KEY" \
+            --data @payload.json \
+            'https://refreshaqihttp-6ec6kntf6a-el.a.run.app/')
+          echo "processor http=$code"; cat result.json; echo
+          [ "$code" = "200" ] && jq -e '.ok == true' result.json > /dev/null
