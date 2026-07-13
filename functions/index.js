@@ -145,7 +145,10 @@ exports.refreshAqiHttp = onRequest(
         region: 'asia-south1',
         secrets: [dataGovApiKey],
         timeoutSeconds: 300,
-        memory: '256MiB'
+        memory: '256MiB',
+        // Publicly reachable (user-approved) so the GitHub runner can
+        // deliver data; the x-admin-key check below is the auth.
+        invoker: 'public'
     },
     async (req, res) => {
         const suppliedKey = req.get('x-admin-key') || req.query.admin_key;
