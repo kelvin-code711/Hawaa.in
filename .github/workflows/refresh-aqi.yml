@@ -73,5 +73,3 @@ jobs:
             'https://refreshaqihttp-6ec6kntf6a-el.a.run.app/')
           echo "processor http=$code"; cat result.json; echo
           [ "$code" = "200" ] && jq -e '.ok == true' result.json > /dev/null
-
-# touch: trigger test run
