@@ -1310,6 +1310,24 @@ button.menu-nav-item {
     transform: scale(0.98);
 }
 
+.aqi-btn-glass.is-loading {
+    opacity: 0.7;
+    cursor: wait;
+    transform: none;
+}
+
+/* Inline status/error line under the AQI search box */
+.aqi-inline-msg {
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+    margin: -6px 0 14px;
+    text-align: center;
+}
+
+.aqi-inline-msg.error {
+    color: #b3423a;
+}
+
 /* AQI Preview Icons */
 .aqi-preview-icons {
     display: inline-flex;
@@ -1433,6 +1451,13 @@ button.menu-nav-item {
 .aqi-label {
     color: var(--ink-soft);
     font-weight: 400;
+}
+
+/* Data provenance line in the AQI modal */
+.modal-source {
+    font-size: 0.72rem;
+    color: var(--ink-soft);
+    margin-top: 6px;
 }
 
 /* Card Slider */

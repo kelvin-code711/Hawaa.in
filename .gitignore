@@ -15,6 +15,10 @@ Thumbs.db
 .env
 .env.*
 
+# Cloud Functions
+functions/node_modules/
+.firebase/
+
 # Windows artifact
 nul
 

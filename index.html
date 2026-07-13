@@ -225,6 +225,8 @@
                 <div class="city-suggestions" id="city-suggestions"></div>
             </div>
 
+            <p class="aqi-inline-msg" id="aqi-inline-msg" hidden></p>
+
             <!-- Glassmorphism Button -->
             <button class="aqi-btn-glass" id="check-aqi-btn">
                 Check Air Impact
@@ -1134,7 +1136,8 @@
 
             <div class="modal-header">
                 <h2 class="modal-city" id="modal-city">Delhi</h2>
-                <p class="modal-aqi" id="modal-aqi">AQI 150 <span class="aqi-label">(Unhealthy)</span></p>
+                <p class="modal-aqi" id="modal-aqi">AQI 150 <span class="aqi-label">(Moderate)</span></p>
+                <p class="modal-source" id="modal-source"></p>
             </div>
 
             <div class="card-slider-container">
@@ -1223,6 +1226,7 @@
     <script type="module" src="js/firebase.js"></script>
     <script src="js/nav.js"></script>
     <script src="js/script.js"></script>
+    <script type="module" src="js/aqi.js"></script>
     <script src="js/comparison-data.js"></script>
     <script src="js/certify.js"></script>
 </body>

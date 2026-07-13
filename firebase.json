@@ -9,12 +9,25 @@
       "firebase.json",
       "firestore.rules",
       "firestore.indexes.json",
+      "functions/**",
       "**/.*",
       "**/node_modules/**",
       "**/*.md"
     ],
     "cleanUrls": true
   },
+  "functions": [
+    {
+      "source": "functions",
+      "codebase": "default",
+      "runtime": "nodejs20",
+      "ignore": [
+        "node_modules",
+        ".git",
+        "test"
+      ]
+    }
+  ],
   "auth": {
     "providers": {
       "emailPassword": true
