@@ -266,6 +266,16 @@ service cloud.firestore {
     }
 
     // ===============================================================
+    // aqi — public CPCB air-quality snapshot (aqi/latest), written
+    // only by the scheduled Cloud Function via the Admin SDK (which
+    // bypasses these rules). Clients read, never write.
+    // ===============================================================
+    match /aqi/{docId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // ===============================================================
     // Default deny: everything not matched above is inaccessible.
     // This keeps the device backend's collections (users, device_owners)
     // server-only.
