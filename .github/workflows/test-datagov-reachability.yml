@@ -5,6 +5,11 @@ name: test-datagov-reachability
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - claude/aqi-data-integration-research-a3ph3s
+    paths:
+      - .github/workflows/test-datagov-reachability.yml
 
 jobs:
   probe:
