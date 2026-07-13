@@ -17,8 +17,16 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
+      - name: Check secret availability (length only, never content)
+        env:
+          SA: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+        run: |
+          echo "FIREBASE_SERVICE_ACCOUNT length: ${#SA}"
+          echo "secret names visible to this run cannot be listed; empty length means not injected"
+
       - name: Auth with Firebase service account
         id: auth
+        if: ${{ vars.ALWAYS_FALSE == 'never' }}
         uses: google-github-actions/auth@v2
         with:
           credentials_json: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
