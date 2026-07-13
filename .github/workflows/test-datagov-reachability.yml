@@ -1,0 +1,29 @@
+# Temporary diagnostic: can a GitHub-hosted runner reach api.data.gov.in?
+# (Cloud Functions in asia-south1 get TCP resets from the data.gov.in WAF.)
+# Safe to delete once the AQI fetch path is settled.
+name: test-datagov-reachability
+
+on:
+  workflow_dispatch:
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Probe api.data.gov.in with public sample key
+        run: |
+          set +e
+          URL='https://api.data.gov.in/resource/3b01bcb8-0b14-4abf-b6f2-c1bfd384ba69?api-key=579b464db66ec23bdd000001cdd3946e44ce4aad7209ff7b23ac571b&format=json&limit=1'
+          echo "--- plain curl ---"
+          code=$(curl -sS -o /tmp/r1.json -w '%{http_code}' --max-time 30 "$URL"); rc=$?
+          echo "exit=$rc http=$code"; head -c 400 /tmp/r1.json; echo
+          echo "--- browser-like curl ---"
+          code=$(curl -sS -o /tmp/r2.json -w '%{http_code}' --max-time 30 \
+            -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36' \
+            -H 'Accept: application/json, text/plain, */*' \
+            -H 'Accept-Language: en-IN,en;q=0.9' \
+            -H 'Referer: https://www.data.gov.in/' \
+            "$URL"); rc=$?
+          echo "exit=$rc http=$code"; head -c 400 /tmp/r2.json; echo
+          exit 0
