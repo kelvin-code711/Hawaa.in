@@ -329,63 +329,36 @@
             <span class="edge-integrations-label">Smart Integrations</span>
             <h2 class="edge-integrations-title">No extra apps. <span class="italic">Just pure control.</span></h2>
 
-            <div class="edge-int-grid">
+            <!-- Live command console — commands type themselves, EDGE replies -->
+            <div class="edge-int-console" aria-hidden="true">
+                <div class="edge-int-console-line">
+                    <span class="edge-int-console-source" id="edge-int-source">Google Home</span>
+                    <span class="edge-int-console-cmd"><span id="edge-int-typed">“Hey Google, set the purifier to auto.”</span><span class="edge-int-caret"></span></span>
+                </div>
+                <div class="edge-int-console-reply visible" id="edge-int-reply">
+                    <span class="edge-int-led"></span>
+                    <span class="edge-int-reply-text" id="edge-int-reply-text">EDGE — Fan set to Auto</span>
+                </div>
+            </div>
 
-                <!-- Voice control -->
-                <article class="edge-int-card">
-                    <div class="edge-int-media" aria-hidden="true">
-                        <div class="edge-int-bubble edge-int-bubble--user">“Hey Google, set the purifier to auto.”</div>
-                        <div class="edge-int-bubble edge-int-bubble--device">
-                            <span class="edge-int-led"></span>
-                            <span>EDGE — Fan set to <strong>Auto</strong></span>
-                        </div>
-                    </div>
-                    <div class="edge-int-body">
-                        <h3 class="edge-int-name">Speak. It listens.</h3>
-                        <p class="edge-int-text">Works natively with Google Home &amp; Alexa — no app to install.</p>
-                    </div>
-                </article>
-
-                <!-- Control from anywhere -->
-                <article class="edge-int-card">
-                    <div class="edge-int-media" aria-hidden="true">
-                        <div class="edge-int-rings"><i></i><i></i><i></i></div>
-                        <div class="edge-int-phone">
-                            <span class="edge-int-led"></span>
-                            <div class="edge-int-phone-meta">
-                                <span class="edge-int-phone-title">Living Room</span>
-                                <span class="edge-int-phone-sub">Purifying · AQI 42</span>
-                            </div>
-                            <span class="edge-int-toggle"><i></i></span>
-                        </div>
-                    </div>
-                    <div class="edge-int-body">
-                        <h3 class="edge-int-name">Control from anywhere</h3>
-                        <p class="edge-int-text">Check and adjust the air from the next room or another city.</p>
-                    </div>
-                </article>
-
-                <!-- Smart scheduling -->
-                <article class="edge-int-card">
-                    <div class="edge-int-media" aria-hidden="true">
-                        <div class="edge-int-timeline">
-                            <div class="edge-int-timeline-track">
-                                <span class="edge-int-timeline-fill"></span>
-                                <span class="edge-int-timeline-dot" style="left: 12%;"></span>
-                                <span class="edge-int-timeline-dot edge-int-timeline-dot--active" style="left: 50%;"></span>
-                                <span class="edge-int-timeline-dot" style="left: 88%;"></span>
-                            </div>
-                            <div class="edge-int-timeline-labels">
-                                <span>6 AM</span><span>2 PM</span><span>10 PM</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="edge-int-body">
-                        <h3 class="edge-int-name">Set once, breathe always</h3>
-                        <p class="edge-int-text">Schedules that wake before you do and go quiet when you sleep.</p>
-                    </div>
-                </article>
-
+            <!-- Capability row -->
+            <div class="edge-int-caps">
+                <div class="edge-int-cap">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5L12 3l9 7.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V10.5z"/></svg>
+                    <span class="edge-int-cap-name">Google Home</span>
+                </div>
+                <div class="edge-int-cap">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2a3 3 0 00-3 3v7a3 3 0 006 0V5a3 3 0 00-3-3z"/><path d="M19 10v1a7 7 0 01-14 0v-1"/><line x1="12" y1="18" x2="12" y2="22"/></svg>
+                    <span class="edge-int-cap-name">Amazon Alexa</span>
+                </div>
+                <div class="edge-int-cap">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+                    <span class="edge-int-cap-name">Control anywhere</span>
+                </div>
+                <div class="edge-int-cap">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    <span class="edge-int-cap-name">Smart schedules</span>
+                </div>
             </div>
         </div>
     </section>
@@ -846,6 +819,67 @@
             window.addEventListener('scroll', onScroll, { passive: true });
             window.addEventListener('resize', onScroll, { passive: true });
             update();
+        })();
+    </script>
+
+    <!-- Smart Integrations: live command console (typewriter loop) -->
+    <script>
+        (function () {
+            var typedEl  = document.getElementById('edge-int-typed');
+            var sourceEl = document.getElementById('edge-int-source');
+            var replyEl  = document.getElementById('edge-int-reply');
+            var replyTxt = document.getElementById('edge-int-reply-text');
+            if (!typedEl || !replyEl) return;
+
+            // Static first command stays if the user prefers reduced motion
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+            var commands = [
+                { source: 'Google Home', cmd: '“Hey Google, set the purifier to auto.”', reply: 'EDGE — Fan set to Auto' },
+                { source: 'Amazon Alexa', cmd: '“Alexa, turn on sleep mode.”', reply: 'EDGE — Sleep mode · 22 dB' },
+                { source: 'Google Home', cmd: '“Hey Google, how’s my air?”', reply: 'EDGE — AQI 42 · Good' }
+            ];
+
+            var index = 0;
+            var TYPE_MS = 34;
+            var HOLD_MS = 2600;
+
+            function typeCommand(text, done) {
+                var i = 0;
+                typedEl.textContent = '';
+                (function tick() {
+                    if (i <= text.length) {
+                        typedEl.textContent = text.slice(0, i);
+                        i++;
+                        setTimeout(tick, TYPE_MS);
+                    } else {
+                        done();
+                    }
+                })();
+            }
+
+            function cycle() {
+                var item = commands[index];
+                replyEl.classList.remove('visible');
+                sourceEl.style.opacity = '0';
+
+                setTimeout(function () {
+                    sourceEl.textContent = item.source;
+                    sourceEl.style.opacity = '1';
+                    typeCommand(item.cmd, function () {
+                        replyTxt.textContent = item.reply;
+                        replyEl.classList.add('visible');
+                        index = (index + 1) % commands.length;
+                        setTimeout(cycle, HOLD_MS);
+                    });
+                }, 420);
+            }
+
+            // Begin the loop after a beat on the static first command
+            setTimeout(function () {
+                index = 1; // static markup already shows command 0
+                cycle();
+            }, HOLD_MS);
         })();
     </script>
 

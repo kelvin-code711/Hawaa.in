@@ -8302,6 +8302,7 @@ body.tos-page .logo-awaa {
 
 /* ========================================
    EDGE — SMART INTEGRATIONS (Section 5)
+   Live command console + capability row
 ======================================== */
 
 .edge-integrations-section {
@@ -8318,7 +8319,7 @@ body.tos-page .logo-awaa {
 }
 
 .edge-integrations-inner {
-    max-width: 1120px;
+    max-width: 760px;
     margin: 0 auto;
 }
 
@@ -8339,7 +8340,7 @@ body.tos-page .logo-awaa {
     color: var(--ink);
     line-height: 1.2;
     letter-spacing: -0.01em;
-    margin: 0 0 36px;
+    margin: 0 0 28px;
 }
 
 .edge-integrations-title .italic {
@@ -8348,112 +8349,94 @@ body.tos-page .logo-awaa {
     font-weight: 400;
 }
 
-/* Brief 3-up grid */
-.edge-int-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 14px;
+/* --- Live command console --- */
+.edge-int-console {
+    position: relative;
+    background:
+        radial-gradient(80% 120% at 100% 0%, rgba(63, 183, 172, 0.14) 0%, transparent 55%),
+        linear-gradient(165deg, #143832 0%, #0C2320 100%);
+    border: 1px solid rgba(63, 183, 172, 0.14);
+    border-radius: 22px;
+    padding: 26px 24px 24px;
+    min-height: 168px;
+    box-shadow: 0 18px 48px var(--shadow-tint);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 22px;
 }
 
 @media (min-width: 640px) {
-    .edge-int-grid {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 16px;
+    .edge-int-console {
+        padding: 32px 34px 28px;
+        min-height: 178px;
     }
 }
 
-/* Card shell */
-.edge-int-card {
-    position: relative;
-    background: var(--paper);
-    border: 1px solid var(--ink-line-soft);
-    border-radius: 20px;
-    padding: 22px;
-    box-shadow: 0 8px 28px var(--shadow-tint-sm);
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-    overflow: hidden;
-    transition: box-shadow 0.35s ease, transform 0.35s ease, border-color 0.35s ease;
-}
-
-.edge-int-card:hover {
-    box-shadow: 0 16px 42px var(--shadow-tint);
-    transform: translateY(-3px);
-    border-color: rgba(30, 124, 113, 0.18);
-}
-
-/* Compact media panel at the top of each card */
-.edge-int-media {
-    position: relative;
-    height: 116px;
-    border-radius: 14px;
-    background:
-        radial-gradient(90% 90% at 50% 20%, rgba(63, 183, 172, 0.08) 0%, transparent 70%),
-        var(--mist);
-    border: 1px solid var(--ink-line-soft);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    padding: 14px;
-    overflow: hidden;
-}
-
-.edge-int-body {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-
-.edge-int-name {
+.edge-int-console-source {
+    display: block;
     font-family: 'Outfit', sans-serif;
-    font-size: 1.02rem;
+    font-size: 0.62rem;
     font-weight: 600;
-    color: var(--ink);
-    letter-spacing: -0.01em;
-    margin: 0;
-}
-
-.edge-int-text {
-    font-size: 0.85rem;
-    color: var(--ink-soft);
-    line-height: 1.55;
-    margin: 0;
-}
-
-/* Voice bubbles (compact) */
-.edge-int-bubble {
-    font-family: 'Outfit', sans-serif;
-    font-size: 0.76rem;
-    line-height: 1.4;
-    padding: 9px 12px;
-    border-radius: 12px;
-    max-width: 92%;
-}
-
-.edge-int-bubble--user {
-    align-self: flex-start;
-    background: var(--paper);
-    border: 1px solid var(--ink-line-soft);
-    border-bottom-left-radius: 4px;
-    color: var(--ink);
-}
-
-.edge-int-bubble--device {
-    align-self: flex-end;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background: var(--ink);
-    color: rgba(234, 240, 236, 0.92);
-    border-bottom-right-radius: 4px;
-}
-
-.edge-int-bubble--device strong {
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
     color: var(--teal-brand);
-    font-weight: 600;
+    margin-bottom: 10px;
+    transition: opacity 0.3s ease;
+}
+
+.edge-int-console-cmd {
+    font-family: 'Outfit', sans-serif;
+    font-size: clamp(1.05rem, 3vw, 1.45rem);
+    font-weight: 500;
+    line-height: 1.4;
+    color: #F2FAF8;
+    letter-spacing: -0.01em;
+}
+
+/* Blinking caret */
+.edge-int-caret {
+    display: inline-block;
+    width: 2px;
+    height: 1.05em;
+    margin-left: 3px;
+    vertical-align: text-bottom;
+    background: var(--teal-brand);
+    animation: edge-int-caret 1.05s step-end infinite;
+}
+
+@keyframes edge-int-caret {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+/* Device reply chip */
+.edge-int-console-reply {
+    align-self: flex-end;
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    background: rgba(234, 240, 236, 0.06);
+    border: 1px solid rgba(234, 240, 236, 0.12);
+    border-radius: 999px;
+    padding: 9px 16px;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.edge-int-console-reply.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.edge-int-reply-text {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: rgba(234, 240, 236, 0.88);
+    white-space: nowrap;
 }
 
 .edge-int-led {
@@ -8471,140 +8454,53 @@ body.tos-page .logo-awaa {
     50% { opacity: 0.4; }
 }
 
-/* Control-from-anywhere mini phone + rings */
-.edge-int-rings {
-    position: absolute;
-    inset: 0;
-    display: flex;
+/* --- Capability row --- */
+.edge-int-caps {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px 12px;
+    border-top: 1px solid var(--ink-line-soft);
+    margin-top: 22px;
+    padding-top: 20px;
+}
+
+@media (min-width: 640px) {
+    .edge-int-caps {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+    }
+}
+
+.edge-int-cap {
+    display: inline-flex;
     align-items: center;
-    justify-content: center;
-    pointer-events: none;
+    gap: 9px;
 }
 
-.edge-int-rings i {
-    position: absolute;
-    width: 54px;
-    height: 54px;
-    border-radius: 50%;
-    border: 1.5px solid rgba(30, 124, 113, 0.3);
-    animation: edge-int-ring 3s ease-out infinite;
-}
-
-.edge-int-rings i:nth-child(2) { animation-delay: 1s; }
-.edge-int-rings i:nth-child(3) { animation-delay: 2s; }
-
-@keyframes edge-int-ring {
-    0% { transform: scale(0.5); opacity: 0.7; }
-    100% { transform: scale(2.6); opacity: 0; }
-}
-
-.edge-int-phone {
-    position: relative;
-    z-index: 1;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background: var(--ink);
-    color: var(--on-ink);
-    padding: 10px 14px;
-    border-radius: 12px;
-    box-shadow: 0 10px 24px var(--shadow-tint);
-}
-
-.edge-int-phone-meta {
-    display: flex;
-    flex-direction: column;
-    gap: 1px;
-}
-
-.edge-int-phone-title {
-    font-family: 'Outfit', sans-serif;
-    font-size: 0.78rem;
-    font-weight: 600;
-    color: var(--on-ink);
-}
-
-.edge-int-phone-sub {
-    font-family: 'Outfit', sans-serif;
-    font-size: 0.64rem;
-    color: var(--teal-brand);
-}
-
-.edge-int-toggle {
-    width: 30px;
-    height: 18px;
-    border-radius: 999px;
-    background: var(--teal-deep);
-    position: relative;
+.edge-int-cap svg {
+    width: 15px;
+    height: 15px;
+    color: var(--teal-deep);
     flex-shrink: 0;
 }
 
-.edge-int-toggle i {
-    position: absolute;
-    top: 2px;
-    right: 2px;
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    background: #fff;
-}
-
-/* Scheduling timeline (compact) */
-.edge-int-timeline {
-    width: 100%;
-    padding: 0 6px;
-}
-
-.edge-int-timeline-track {
-    position: relative;
-    height: 4px;
-    border-radius: 999px;
-    background: var(--ink-line-soft);
-    margin-bottom: 14px;
-}
-
-.edge-int-timeline-fill {
-    position: absolute;
-    left: 0;
-    top: 0;
-    height: 100%;
-    width: 50%;
-    border-radius: 999px;
-    background: linear-gradient(90deg, var(--teal-deep), var(--teal-brand));
-}
-
-.edge-int-timeline-dot {
-    position: absolute;
-    top: 50%;
-    width: 11px;
-    height: 11px;
-    border-radius: 50%;
-    background: var(--paper);
-    border: 2px solid var(--ink-line);
-    transform: translate(-50%, -50%);
-}
-
-.edge-int-timeline-dot--active {
-    border-color: var(--teal-deep);
-    background: var(--teal-deep);
-    box-shadow: 0 0 0 4px var(--teal-tint);
-}
-
-.edge-int-timeline-labels {
-    display: flex;
-    justify-content: space-between;
+.edge-int-cap-name {
     font-family: 'Outfit', sans-serif;
-    font-size: 0.64rem;
+    font-size: 0.78rem;
     font-weight: 500;
     color: var(--ink-soft);
+    letter-spacing: 0.01em;
+    white-space: nowrap;
 }
 
-.edge-int-timeline-labels span:nth-child(2) { color: var(--teal-deep); }
-
 @media (prefers-reduced-motion: reduce) {
-    .edge-int-led,
-    .edge-int-rings i {
+    .edge-int-caret,
+    .edge-int-led {
         animation: none;
+    }
+    .edge-int-console-reply {
+        transition: none;
     }
 }
 
@@ -8643,11 +8539,12 @@ body.tos-page .logo-awaa {
 
 .edge-controls-title {
     font-family: 'Outfit', sans-serif;
-    font-size: 1.75rem;
+    font-size: clamp(1.75rem, 5vw, 2.6rem);
     font-weight: 600;
     color: var(--on-ink);
-    line-height: 1.25;
-    margin: 0 0 56px;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    margin: 0 0 52px;
 }
 
 .edge-controls-title .italic {
@@ -8656,25 +8553,27 @@ body.tos-page .logo-awaa {
     font-weight: 400;
 }
 
-@media (min-width: 768px) {
-    .edge-controls-title {
-        font-size: 2.25rem;
-    }
-}
-
-/* ---- Button + Indicator Strip ---- */
+/* ---- Control deck — machined glass housing for the buttons ---- */
 
 .edge-controls-strip {
     display: flex;
-    align-items: flex-start;
+    align-items: stretch;
     justify-content: flex-start;
     gap: 0;
     flex-wrap: nowrap;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
-    width: 100%;
-    margin-bottom: 16px;
+    max-width: 100%;
+    margin-bottom: 18px;
+    padding: 10px 12px;
+    border-radius: 26px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.055) 0%, rgba(255, 255, 255, 0.015) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.08),
+        inset 0 -12px 24px rgba(0, 0, 0, 0.22),
+        0 24px 60px rgba(0, 0, 0, 0.4);
 }
 
 .edge-controls-strip::-webkit-scrollbar {
@@ -8695,18 +8594,18 @@ body.tos-page .logo-awaa {
     gap: 10px;
     cursor: pointer;
     user-select: none;
-    padding: 20px 16px;
+    padding: 14px 14px 12px;
     flex-shrink: 0;
     transition: opacity 0.3s ease;
     outline: none;
     /* Inactive / LED off */
-    opacity: 0.22;
+    opacity: 0.3;
 }
 
 .edge-ctrl-btn:focus-visible {
-    outline: 2px solid rgba(255, 255, 255, 0.4);
+    outline: 2px solid rgba(79, 196, 184, 0.5);
     outline-offset: 2px;
-    border-radius: 12px;
+    border-radius: 16px;
 }
 
 /* Active button — LED on, full opacity only; glow lives on the icon circle */
@@ -8714,52 +8613,65 @@ body.tos-page .logo-awaa {
     opacity: 1;
 }
 
-/* Icon circle */
+/* Icon key — recessed into the deck */
 .edge-ctrl-btn-icon {
     width: 56px;
     height: 56px;
     border-radius: 50%;
-    border: 1px solid rgba(255, 255, 255, 0.14);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(255, 255, 255, 0.03);
-    transition: border-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+    background: radial-gradient(120% 120% at 32% 22%, rgba(255, 255, 255, 0.07) 0%, rgba(255, 255, 255, 0.012) 100%);
+    box-shadow:
+        inset 0 -5px 12px rgba(0, 0, 0, 0.32),
+        inset 0 1px 0 rgba(255, 255, 255, 0.07);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease, transform 0.15s ease;
+}
+
+.edge-ctrl-btn:active .edge-ctrl-btn-icon {
+    transform: scale(0.94);
 }
 
 .edge-ctrl-btn-icon svg {
     width: 22px;
     height: 22px;
     color: var(--on-ink);
+    transition: color 0.3s ease;
 }
 
-/* Active icon circle — bright LED ring */
+/* Active key — the device's teal LED wakes up */
 .edge-ctrl-btn.active .edge-ctrl-btn-icon {
-    border-color: rgba(255, 255, 255, 0.55);
-    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(63, 183, 172, 0.55);
+    background: radial-gradient(120% 120% at 32% 22%, rgba(63, 183, 172, 0.14) 0%, rgba(63, 183, 172, 0.03) 100%);
     box-shadow:
-        0 0 0 3px rgba(255, 255, 255, 0.06),
-        0 0 20px rgba(255, 255, 255, 0.18),
-        inset 0 0 8px rgba(255, 255, 255, 0.06);
+        0 0 0 3px rgba(63, 183, 172, 0.08),
+        0 0 22px rgba(63, 183, 172, 0.28),
+        inset 0 -5px 12px rgba(0, 0, 0, 0.25),
+        inset 0 0 10px rgba(63, 183, 172, 0.12);
+}
+
+.edge-ctrl-btn.active .edge-ctrl-btn-icon svg {
+    color: var(--teal-brand);
 }
 
 .edge-ctrl-btn-label {
     font-family: 'Outfit', sans-serif;
-    font-size: 0.65rem;
+    font-size: 0.62rem;
     font-weight: 500;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(255, 255, 255, 0.55);
     transition: color 0.3s ease;
 }
 
 .edge-ctrl-btn.active .edge-ctrl-btn-label {
-    color: rgba(255, 255, 255, 0.9);
+    color: var(--teal-brand);
 }
 
 /* Hover — slightly brighten inactive buttons */
 .edge-ctrl-btn:not(.active):hover {
-    opacity: 0.45;
+    opacity: 0.55;
 }
 
 /* ---- Divider ---- */
@@ -8767,27 +8679,32 @@ body.tos-page .logo-awaa {
     display: none;
 }
 
-/* ---- Indicators ---- */
+/* ---- Indicators (separated from keys by a hairline) ---- */
 .edge-ctrl-indicator {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 10px;
-    padding: 20px 16px;
+    padding: 14px 14px 12px;
     flex-shrink: 0;
     cursor: default;
     opacity: 0.55;
+    border-left: 1px solid rgba(255, 255, 255, 0.08);
+    margin-left: 4px;
 }
 
 .edge-ctrl-indicator-icon {
     width: 56px;
     height: 56px;
     border-radius: 50%;
-    border: 1px solid rgba(255, 255, 255, 0.14);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(255, 255, 255, 0.03);
+    background: radial-gradient(120% 120% at 32% 22%, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%);
+    box-shadow:
+        inset 0 -5px 12px rgba(0, 0, 0, 0.28),
+        inset 0 1px 0 rgba(255, 255, 255, 0.06);
     position: relative;
 }
 
@@ -8985,15 +8902,29 @@ body.tos-page .logo-awaa {
     font-weight: 600;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.4);
+    color: var(--teal-brand);
     margin: 0;
+    padding-top: 18px;
+    position: relative;
+}
+
+/* Thin teal rule above the active control's name */
+.edge-ctrl-info-title::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 28px;
+    height: 1px;
+    background: rgba(63, 183, 172, 0.5);
 }
 
 .edge-ctrl-info-text {
     font-family: 'Outfit', sans-serif;
     font-size: 0.95rem;
     font-weight: 400;
-    color: rgba(255, 255, 255, 0.65);
+    color: rgba(234, 240, 236, 0.68);
     line-height: 1.7;
     margin: 0;
 }
@@ -9001,9 +8932,10 @@ body.tos-page .logo-awaa {
 @media (min-width: 640px) {
     .edge-controls-strip {
         gap: 4px;
+        padding: 12px 16px;
     }
     .edge-ctrl-btn {
-        padding: 20px 20px;
+        padding: 14px 18px 12px;
     }
     .edge-ctrl-info-text {
         font-size: 1rem;
@@ -9030,7 +8962,7 @@ body.tos-page .logo-awaa {
 @media (max-width: 400px) {
     .edge-ctrl-btn,
     .edge-ctrl-indicator {
-        padding: 16px 12px;
+        padding: 12px 10px;
     }
     .edge-ctrl-btn-icon,
     .edge-ctrl-indicator-icon {
