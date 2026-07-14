@@ -9053,7 +9053,7 @@ body.tos-page .logo-awaa {
         radial-gradient(70% 50% at 0% 0%, rgba(30, 124, 113, 0.08) 0%, transparent 55%),
         radial-gradient(70% 50% at 100% 100%, rgba(63, 183, 172, 0.10) 0%, transparent 55%),
         linear-gradient(180deg, var(--mist-deep) 0%, var(--mist) 100%);
-    padding: 84px 24px 96px;
+    padding: 68px 24px 76px;
 }
 
 .edge-filter-inner {
@@ -9068,7 +9068,7 @@ body.tos-page .logo-awaa {
     letter-spacing: 0.2em;
     text-transform: uppercase;
     color: var(--teal-deep);
-    margin-bottom: 14px;
+    margin-bottom: 12px;
 }
 
 .edge-filter-title {
@@ -9076,7 +9076,7 @@ body.tos-page .logo-awaa {
     font-size: clamp(1.65rem, 4.5vw, 2.5rem);
     font-weight: 600;
     color: var(--ink);
-    margin: 0 0 14px;
+    margin: 0 0 32px;
     line-height: 1.22;
     letter-spacing: -0.01em;
 }
@@ -9087,57 +9087,67 @@ body.tos-page .logo-awaa {
     font-weight: 400;
 }
 
-.edge-filter-sub {
-    font-family: 'Outfit', sans-serif;
-    font-size: 0.95rem;
-    color: var(--ink-soft);
-    line-height: 1.65;
-    max-width: 540px;
-    margin: 0 0 40px;
+/* ---- Photo tiles: image-first, details on tap/hover ---- */
+.edge-filter-tiles {
+    display: flex;
+    gap: 14px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    margin: 0 -16px;
+    padding: 4px 16px 8px;
 }
 
-/* ---- Image-forward stage cards ---- */
-.edge-filter-stages {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 18px;
+.edge-filter-tiles::-webkit-scrollbar {
+    display: none;
 }
 
 @media (min-width: 760px) {
-    .edge-filter-stages {
+    .edge-filter-tiles {
+        display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: 20px;
-        align-items: stretch;
+        gap: 18px;
+        overflow: visible;
+        margin: 0;
+        padding: 0;
     }
 }
 
-.edge-filter-stage {
+/* Tile — a photo that opens up */
+.edge-filter-tile {
     position: relative;
-    display: flex;
-    flex-direction: column;
-    background: var(--paper);
+    flex: 0 0 74%;
+    scroll-snap-align: center;
+    aspect-ratio: 4 / 3;
     border: 1px solid var(--ink-line-soft);
     border-radius: 20px;
-    box-shadow: 0 8px 28px var(--shadow-tint-sm);
-    transition: box-shadow 0.35s ease, transform 0.35s ease, border-color 0.35s ease;
+    padding: 0;
+    background: none;
+    cursor: pointer;
     overflow: hidden;
+    box-shadow: 0 8px 28px var(--shadow-tint-sm);
+    transition: box-shadow 0.35s ease, transform 0.35s ease;
+    -webkit-tap-highlight-color: transparent;
+    text-align: left;
 }
 
-.edge-filter-stage:hover {
+@media (min-width: 760px) {
+    .edge-filter-tile {
+        flex: initial;
+    }
+}
+
+.edge-filter-tile:hover {
     box-shadow: 0 18px 48px var(--shadow-tint);
     transform: translateY(-4px);
-    border-color: rgba(30, 124, 113, 0.18);
 }
 
-.edge-filter-stage--hepa {
-    border-color: rgba(30, 124, 113, 0.22);
-}
-
-/* Product photo */
+/* Product photo fills the tile */
 .edge-filter-photo {
-    position: relative;
-    aspect-ratio: 4 / 3;
-    overflow: hidden;
+    position: absolute;
+    inset: 0;
+    display: block;
     background:
         radial-gradient(120% 100% at 50% 0%, rgba(63, 183, 172, 0.10) 0%, transparent 60%),
         linear-gradient(160deg, #EEF3F0 0%, #DDE7E1 100%);
@@ -9153,8 +9163,9 @@ body.tos-page .logo-awaa {
     transition: transform 0.5s ease;
 }
 
-.edge-filter-stage:hover .edge-filter-photo img {
-    transform: scale(1.04);
+.edge-filter-tile:hover .edge-filter-photo img,
+.edge-filter-tile.active .edge-filter-photo img {
+    transform: scale(1.05);
 }
 
 /* Graceful fallback shown when the photo asset is missing */
@@ -9180,112 +9191,173 @@ body.tos-page .logo-awaa {
 
 .edge-filter-photo.is-missing .edge-filter-photo-fallback {
     display: flex;
+    transition: opacity 0.3s ease;
 }
 
-/* Number chip on the photo */
-.edge-filter-stage-num {
+/* Fallback caption steps aside while the details overlay is showing */
+.edge-filter-tile:hover .edge-filter-photo-fallback,
+.edge-filter-tile.active .edge-filter-photo-fallback,
+.edge-filter-tile:focus-visible .edge-filter-photo-fallback {
+    opacity: 0;
+}
+
+/* Resting state: frosted name pill, bottom-left */
+.edge-filter-tile-name {
     position: absolute;
-    top: 14px;
     left: 14px;
+    bottom: 14px;
     z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
     font-family: 'Outfit', sans-serif;
-    font-size: 0.7rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    color: var(--ink);
+    background: rgba(247, 250, 248, 0.82);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    padding: 8px 14px;
+    border-radius: 999px;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.edge-filter-tile-name i {
+    font-style: normal;
+    font-size: 0.62rem;
     font-weight: 600;
     letter-spacing: 0.14em;
-    color: var(--on-ink);
-    background: rgba(18, 49, 44, 0.55);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-    padding: 5px 10px;
-    border-radius: 999px;
+    color: var(--teal-deep);
 }
 
-/* Certified badge on featured card */
-.edge-filter-badge {
+/* Plus toggle, bottom-right — rotates to × when open */
+.edge-filter-tile-plus {
     position: absolute;
-    top: 14px;
     right: 14px;
-    z-index: 2;
-    font-family: 'Outfit', sans-serif;
-    font-size: 0.64rem;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--on-teal);
-    background: var(--teal-deep);
-    padding: 5px 10px;
-    border-radius: 999px;
-    box-shadow: 0 4px 12px var(--shadow-cta);
+    bottom: 14px;
+    z-index: 3;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: rgba(247, 250, 248, 0.82);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    transition: transform 0.35s ease, background 0.35s ease;
 }
 
-/* Text body */
-.edge-filter-stage-body {
-    padding: 22px 22px 24px;
+.edge-filter-tile-plus::before,
+.edge-filter-tile-plus::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    background: var(--ink);
+    transition: background 0.35s ease;
+}
+
+.edge-filter-tile-plus::before {
+    width: 12px;
+    height: 1.5px;
+    transform: translate(-50%, -50%);
+}
+
+.edge-filter-tile-plus::after {
+    width: 1.5px;
+    height: 12px;
+    transform: translate(-50%, -50%);
+}
+
+.edge-filter-tile:hover .edge-filter-tile-plus,
+.edge-filter-tile.active .edge-filter-tile-plus {
+    transform: rotate(45deg);
+    background: rgba(247, 250, 248, 0.95);
+}
+
+/* Details overlay — hidden until hover / tap / focus */
+.edge-filter-tile-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
     display: flex;
     flex-direction: column;
-    flex: 1;
+    justify-content: flex-end;
+    gap: 5px;
+    padding: 20px 64px 18px 20px;
+    background: linear-gradient(to top, rgba(11, 33, 29, 0.86) 0%, rgba(11, 33, 29, 0.4) 55%, transparent 100%);
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.35s ease, transform 0.35s ease;
+    pointer-events: none;
 }
 
-.edge-filter-stage-name {
+.edge-filter-tile:hover .edge-filter-tile-overlay,
+.edge-filter-tile.active .edge-filter-tile-overlay,
+.edge-filter-tile:focus-visible .edge-filter-tile-overlay {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Name pill hides while the overlay is showing */
+.edge-filter-tile:hover .edge-filter-tile-name,
+.edge-filter-tile.active .edge-filter-tile-name,
+.edge-filter-tile:focus-visible .edge-filter-tile-name {
+    opacity: 0;
+    transform: translateY(6px);
+}
+
+.edge-filter-tile-title {
     font-family: 'Outfit', sans-serif;
-    font-size: 1.15rem;
+    font-size: 1.05rem;
     font-weight: 600;
-    color: var(--ink);
+    color: var(--on-ink);
     letter-spacing: -0.01em;
-    margin: 0 0 4px;
 }
 
-.edge-filter-stage-tag {
+.edge-filter-tile-tag {
     font-family: 'Playfair Display', serif;
     font-style: italic;
-    font-size: 0.9rem;
-    color: var(--teal-deep);
-    margin: 0 0 12px;
+    font-size: 0.85rem;
+    color: var(--teal-brand);
 }
 
-.edge-filter-stage-stat {
+.edge-filter-tile-desc {
     font-family: 'Outfit', sans-serif;
-    font-size: 0.82rem;
-    color: var(--ink-soft);
-    margin: 0 0 12px;
-}
-
-.edge-filter-stage-stat strong {
-    font-size: 1.15rem;
-    font-weight: 600;
-    color: var(--ink);
-    letter-spacing: -0.01em;
-}
-
-.edge-filter-stage-desc {
-    font-family: 'Outfit', sans-serif;
-    font-size: 0.875rem;
-    line-height: 1.65;
-    color: var(--ink-soft);
-    margin: 0 0 16px;
+    font-size: 0.8rem;
+    line-height: 1.55;
+    color: rgba(234, 240, 236, 0.82);
 }
 
 .edge-filter-chips {
     display: flex;
     flex-wrap: wrap;
-    gap: 7px;
-    margin-top: auto;
+    gap: 6px;
+    margin-top: 6px;
 }
 
 .edge-filter-chips span {
     font-family: 'Outfit', sans-serif;
-    font-size: 0.68rem;
+    font-size: 0.64rem;
     font-weight: 500;
-    color: var(--teal-deep);
-    background: var(--teal-tint);
-    border: 1px solid rgba(30, 124, 113, 0.12);
-    padding: 5px 11px;
+    color: var(--teal-brand);
+    background: rgba(63, 183, 172, 0.14);
+    border: 1px solid rgba(63, 183, 172, 0.28);
+    padding: 4px 10px;
     border-radius: 999px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .edge-filter-photo img,
+    .edge-filter-tile-overlay,
+    .edge-filter-tile-name,
+    .edge-filter-tile-plus {
+        transition: none;
+    }
 }
 
 @media (max-width: 640px) {
     .edge-filter-section {
-        padding: 64px 16px 72px;
+        padding: 56px 16px 64px;
     }
 }
 

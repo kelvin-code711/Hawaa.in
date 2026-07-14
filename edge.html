@@ -513,65 +513,58 @@
             <span class="edge-filter-label">Filter Technology</span>
             <h2 class="edge-filter-title">Three layers. <span class="italic">One clean breath.</span></h2>
 
-            <p class="edge-filter-sub">Every breath passes a three-stage defence — each layer engineered for what the last one can't catch.</p>
-
-            <div class="edge-filter-stages">
+            <div class="edge-filter-tiles">
 
                 <!-- Stage 1: Pre-Filter -->
-                <article class="edge-filter-stage">
-                    <div class="edge-filter-photo">
+                <button class="edge-filter-tile" type="button" aria-expanded="false" aria-label="Pre-Filter — show details">
+                    <span class="edge-filter-photo">
                         <img src="public/images/filter-pre.webp" alt="Hawaa EDGE pre-filter — washable mesh layer" loading="lazy"
                              onerror="this.closest('.edge-filter-photo').classList.add('is-missing')">
                         <span class="edge-filter-photo-fallback" aria-hidden="true">Pre-Filter</span>
-                        <span class="edge-filter-stage-num">01</span>
-                    </div>
-                    <div class="edge-filter-stage-body">
-                        <h3 class="edge-filter-stage-name">Pre-Filter</h3>
-                        <p class="edge-filter-stage-tag">The first line of defence</p>
-                        <p class="edge-filter-stage-desc">Captures dust, hair, lint and pet dander before they reach the finer layers — extending HEPA life and keeping the system at peak efficiency. Washable, built for years of daily use.</p>
-                        <div class="edge-filter-chips">
-                            <span>Dust</span><span>Hair</span><span>Pet dander</span><span>Washable</span>
-                        </div>
-                    </div>
-                </article>
+                    </span>
+                    <span class="edge-filter-tile-name"><i>01</i>Pre-Filter</span>
+                    <span class="edge-filter-tile-plus" aria-hidden="true"></span>
+                    <span class="edge-filter-tile-overlay">
+                        <span class="edge-filter-tile-title">Pre-Filter</span>
+                        <span class="edge-filter-tile-tag">The first line of defence</span>
+                        <span class="edge-filter-tile-desc">Catches dust, hair and pet dander before the finer layers. Washable, built for years.</span>
+                        <span class="edge-filter-chips"><span>Dust</span><span>Hair</span><span>Washable</span></span>
+                    </span>
+                </button>
 
-                <!-- Stage 2: H13 HEPA (featured) -->
-                <article class="edge-filter-stage edge-filter-stage--hepa">
-                    <div class="edge-filter-photo">
+                <!-- Stage 2: H13 HEPA -->
+                <button class="edge-filter-tile" type="button" aria-expanded="false" aria-label="H13 HEPA filter — show details">
+                    <span class="edge-filter-photo">
                         <img src="public/images/filter-hepa.webp" alt="Hawaa EDGE H13 HEPA filter — pleated medical-grade core" loading="lazy"
                              onerror="this.closest('.edge-filter-photo').classList.add('is-missing')">
                         <span class="edge-filter-photo-fallback" aria-hidden="true">H13 HEPA</span>
-                        <span class="edge-filter-stage-num">02</span>
-                        <span class="edge-filter-badge">Certified H13</span>
-                    </div>
-                    <div class="edge-filter-stage-body">
-                        <h3 class="edge-filter-stage-name">H13 HEPA</h3>
-                        <p class="edge-filter-stage-tag">Medical-grade core</p>
-                        <div class="edge-filter-stage-stat"><strong>99.97%</strong> of particles at 0.3 µm</div>
-                        <p class="edge-filter-stage-desc">Fine dust, pollen, mould spores and airborne bacteria — captured to certified H13 standards. This is what separates genuine purification from basic filtration.</p>
-                        <div class="edge-filter-chips">
-                            <span>PM2.5</span><span>Pollen</span><span>Bacteria</span>
-                        </div>
-                    </div>
-                </article>
+                    </span>
+                    <span class="edge-filter-tile-name"><i>02</i>H13 HEPA</span>
+                    <span class="edge-filter-tile-plus" aria-hidden="true"></span>
+                    <span class="edge-filter-tile-overlay">
+                        <span class="edge-filter-tile-title">H13 HEPA</span>
+                        <span class="edge-filter-tile-tag">Medical-grade core</span>
+                        <span class="edge-filter-tile-desc">99.97% of particles at 0.3 µm — fine dust, pollen and bacteria, to certified H13 standards.</span>
+                        <span class="edge-filter-chips"><span>PM2.5</span><span>Pollen</span><span>Bacteria</span></span>
+                    </span>
+                </button>
 
                 <!-- Stage 3: Activated Carbon -->
-                <article class="edge-filter-stage">
-                    <div class="edge-filter-photo">
+                <button class="edge-filter-tile" type="button" aria-expanded="false" aria-label="Activated Carbon filter — show details">
+                    <span class="edge-filter-photo">
                         <img src="public/images/filter-carbon.webp" alt="Hawaa EDGE activated carbon filter — granular odour layer" loading="lazy"
                              onerror="this.closest('.edge-filter-photo').classList.add('is-missing')">
                         <span class="edge-filter-photo-fallback" aria-hidden="true">Activated Carbon</span>
-                        <span class="edge-filter-stage-num">03</span>
-                    </div>
-                    <div class="edge-filter-stage-body">
-                        <h3 class="edge-filter-stage-name">Activated Carbon</h3>
-                        <p class="edge-filter-stage-tag">Beyond particles</p>
-                        <p class="edge-filter-stage-desc">Millions of microscopic pores absorb what HEPA can't — cooking smells, smoke, VOCs and airborne chemicals — at a molecular level. Not air that smells neutral. Air that's genuinely clean.</p>
-                        <div class="edge-filter-chips">
-                            <span>VOCs</span><span>Odours</span><span>Smoke</span>
-                        </div>
-                    </div>
-                </article>
+                    </span>
+                    <span class="edge-filter-tile-name"><i>03</i>Activated Carbon</span>
+                    <span class="edge-filter-tile-plus" aria-hidden="true"></span>
+                    <span class="edge-filter-tile-overlay">
+                        <span class="edge-filter-tile-title">Activated Carbon</span>
+                        <span class="edge-filter-tile-tag">Beyond particles</span>
+                        <span class="edge-filter-tile-desc">Millions of micro-pores absorb what HEPA can't — smoke, VOCs and cooking odours.</span>
+                        <span class="edge-filter-chips"><span>VOCs</span><span>Odours</span><span>Smoke</span></span>
+                    </span>
+                </button>
 
             </div>
         </div>
@@ -809,6 +802,28 @@
     <script type="module" src="js/firebase.js"></script>
     <script src="js/nav.js"></script>
     <script src="js/script.js"></script>
+
+    <!-- Filter Technology: tap-to-reveal tiles (hover handled in CSS) -->
+    <script>
+        (function () {
+            var tiles = document.querySelectorAll('.edge-filter-tile');
+            if (!tiles.length) return;
+
+            tiles.forEach(function (tile) {
+                tile.addEventListener('click', function () {
+                    var isOpen = tile.classList.contains('active');
+                    tiles.forEach(function (t) {
+                        t.classList.remove('active');
+                        t.setAttribute('aria-expanded', 'false');
+                    });
+                    if (!isOpen) {
+                        tile.classList.add('active');
+                        tile.setAttribute('aria-expanded', 'true');
+                    }
+                });
+            });
+        })();
+    </script>
 
     <!-- Touch Controls: button selection & info panel -->
     <script>
