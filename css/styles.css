@@ -9227,14 +9227,6 @@ body.tos-page .logo-awaa {
     background: linear-gradient(180deg, rgba(10, 28, 25, 0.15) 0%, rgba(10, 28, 25, 0.55) 45%, rgba(8, 24, 22, 0.9) 100%);
 }
 
-/* Header row (name + toggle). Toggle is mobile-only. */
-.edge-filter-head {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-}
-
 /* Minimal always-visible label */
 .edge-filter-stage-name {
     font-family: 'Outfit', sans-serif;
@@ -9246,12 +9238,16 @@ body.tos-page .logo-awaa {
     text-shadow: 0 1px 8px rgba(0, 0, 0, 0.35);
 }
 
-/* "+" reveal button — hidden on hover-capable (desktop) screens */
+/* Floating "+" reveal button — the sole affordance on touch screens.
+   Hidden on hover-capable (desktop) screens, which reveal on hover instead. */
 .edge-filter-toggle {
     display: none;
-    flex: 0 0 auto;
-    width: 34px;
-    height: 34px;
+    position: absolute;
+    bottom: 14px;
+    right: 14px;
+    z-index: 4;
+    width: 44px;
+    height: 44px;
     align-items: center;
     justify-content: center;
     padding: 0;
@@ -9260,18 +9256,18 @@ body.tos-page .logo-awaa {
     background: var(--teal-deep);
     color: var(--on-teal);
     cursor: pointer;
-    box-shadow: 0 3px 10px var(--shadow-cta);
-    transition: background 0.25s ease, transform 0.3s ease;
+    box-shadow: 0 6px 18px var(--shadow-cta);
+    transition: transform 0.3s ease, background 0.25s ease;
 }
 
 .edge-filter-toggle-icon {
-    width: 18px;
-    height: 18px;
-    transition: transform 0.3s ease;
+    width: 20px;
+    height: 20px;
+    transition: transform 0.35s ease;
 }
 
 .edge-filter-stage.is-open .edge-filter-toggle-icon {
-    transform: rotate(45deg);
+    transform: rotate(135deg);
 }
 
 /* Hidden details — revealed on hover / focus / tap.
@@ -9362,97 +9358,99 @@ body.tos-page .logo-awaa {
 
 @media (max-width: 760px) {
     .edge-filter-section {
-        padding: 64px 16px 72px;
+        padding: 56px 16px 64px;
     }
 
-    /* Single-column stack of clean cards */
+    /* Stacked, minimal image tiles */
     .edge-filter-stages {
         grid-template-columns: 1fr;
         gap: 14px;
     }
 
-    /* Card = image on top, solid info panel below — no text on the image */
+    /* Each tile = just the product image + one floating "+" button. Nothing else. */
     .edge-filter-stage {
-        aspect-ratio: auto;
-        display: flex;
-        flex-direction: column;
-        background: var(--paper);
-        border: 1px solid var(--ink-line-soft);
+        aspect-ratio: 4 / 3;
         border-radius: 18px;
-        box-shadow: 0 6px 22px var(--shadow-tint-sm);
     }
 
-    .edge-filter-stage--hepa {
-        border-color: rgba(30, 124, 113, 0.28);
-    }
-
-    /* Tap feedback instead of hover lift */
+    /* No hover behaviour, no numbers, no badge text — keep the default pristine */
     .edge-filter-stage:hover,
-    .edge-filter-stage:focus-visible,
-    .edge-filter-stage.is-open {
+    .edge-filter-stage:focus-visible {
         transform: none;
-        box-shadow: 0 10px 30px var(--shadow-tint);
+        box-shadow: 0 8px 28px var(--shadow-tint-sm);
     }
 
     .edge-filter-stage:hover .edge-filter-photo img,
-    .edge-filter-stage:focus-visible .edge-filter-photo img,
-    .edge-filter-stage.is-open .edge-filter-photo img {
+    .edge-filter-stage:focus-visible .edge-filter-photo img {
         transform: none;
     }
 
-    /* Photo flows in-document with a wide, compact crop */
-    .edge-filter-photo {
-        position: relative;
-        inset: auto;
-        aspect-ratio: 16 / 10;
-        border-radius: 18px 18px 0 0;
-    }
-
-    /* No numbers on mobile */
-    .edge-filter-stage-num {
+    .edge-filter-stage-num,
+    .edge-filter-badge {
         display: none;
     }
 
-    /* Info panel sits below the image on a solid surface */
-    .edge-filter-overlay {
-        position: relative;
-        inset: auto;
-        z-index: 1;
-        padding: 14px 16px 16px;
-        background: none;
-    }
-
-    .edge-filter-stage:hover .edge-filter-overlay,
-    .edge-filter-stage:focus-visible .edge-filter-overlay,
-    .edge-filter-stage.is-open .edge-filter-overlay {
-        background: none;
-    }
-
-    /* Dark text on the light panel */
-    .edge-filter-stage-name {
-        font-size: 1.02rem;
-        color: var(--ink);
-        text-shadow: none;
-    }
-
-    /* Show the + button */
+    /* The floating + button is the only affordance */
     .edge-filter-toggle {
         display: flex;
     }
 
     .edge-filter-toggle:active {
-        transform: scale(0.92);
+        transform: scale(0.9);
+    }
+
+    /* Info sheet — hidden until "+" is tapped, then slides up as a solid
+       surface over the photo so text never sits directly on the image. */
+    .edge-filter-overlay {
+        justify-content: flex-start;
+        padding: 22px 20px 24px;
+        overflow-y: auto;
+        background: var(--paper);
+        opacity: 0;
+        transform: translateY(14px);
+        pointer-events: none;
+        transition: opacity 0.38s ease, transform 0.38s ease;
+    }
+
+    /* Keep the sheet a solid surface (override desktop's dark scrim) */
+    .edge-filter-stage:hover .edge-filter-overlay,
+    .edge-filter-stage:focus-visible .edge-filter-overlay,
+    .edge-filter-stage.is-open .edge-filter-overlay {
+        background: var(--paper);
+    }
+
+    .edge-filter-stage.is-open .edge-filter-overlay {
+        opacity: 1;
+        transform: none;
+        pointer-events: auto;
+    }
+
+    /* On the sheet, everything is shown at once (no per-item collapse) */
+    .edge-filter-reveal {
+        grid-template-rows: 1fr;
+        opacity: 1;
+        transform: none;
+        margin-top: 12px;
+    }
+
+    /* Dark, readable text on the light sheet */
+    .edge-filter-stage-name {
+        font-family: 'Outfit', sans-serif;
+        font-size: 1.2rem;
+        color: var(--ink);
+        text-shadow: none;
+        padding-right: 52px; /* clear the × button */
     }
 
     .edge-filter-stage-tag {
         color: var(--teal-deep);
-        font-size: 0.92rem;
-        margin: 0 0 8px;
+        font-size: 0.95rem;
+        margin: 0 0 10px;
     }
 
     .edge-filter-stage-stat {
         color: var(--ink-soft);
-        font-size: 0.82rem;
+        font-size: 0.85rem;
     }
 
     .edge-filter-stage-stat strong {
@@ -9461,8 +9459,8 @@ body.tos-page .logo-awaa {
 
     .edge-filter-stage-desc {
         color: var(--ink-soft);
-        font-size: 0.85rem;
-        line-height: 1.6;
+        font-size: 0.88rem;
+        line-height: 1.62;
     }
 
     .edge-filter-chips span {
@@ -9471,7 +9469,7 @@ body.tos-page .logo-awaa {
         border: 1px solid rgba(30, 124, 113, 0.14);
         backdrop-filter: none;
         -webkit-backdrop-filter: none;
-        font-size: 0.68rem;
+        font-size: 0.7rem;
         padding: 5px 11px;
     }
 }
