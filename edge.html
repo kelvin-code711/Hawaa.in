@@ -507,100 +507,56 @@
         </div>
     </section>
 
-    <!-- Filter Technology Section (Section 7) -->
+    <!-- Filter Technology Section (Section 7) — sticky visual, scroll-driven steps -->
     <section class="edge-filter-section" id="edge-filters">
-        <div class="edge-filter-inner">
-            <span class="edge-filter-label">Filter Technology</span>
-            <h2 class="edge-filter-title">Three layers. <span class="italic">One clean breath.</span></h2>
+        <div class="edge-filter-layout">
 
-            <p class="edge-filter-sub">Every breath passes a three-stage defence — each layer engineered for what the last one can't catch.</p>
-
-            <div class="edge-filter-stages">
-
-                <!-- Stage 1: Pre-Filter -->
-                <article class="edge-filter-stage" tabindex="0">
-                    <div class="edge-filter-photo">
-                        <img src="public/images/filter-pre.webp" alt="Hawaa EDGE pre-filter — washable mesh layer" loading="lazy"
-                             onerror="this.closest('.edge-filter-photo').classList.add('is-missing')">
-                        <span class="edge-filter-photo-fallback" aria-hidden="true">Pre-Filter</span>
+            <!-- Sticky visual — the image swaps as steps scroll past -->
+            <div class="edge-filter-visual-shell">
+                <div class="edge-filter-visual">
+                    <div class="edge-filter-frame is-active" data-frame="0" aria-hidden="true">
+                        <img src="public/images/filter-pre.webp" alt="" loading="lazy"
+                             onerror="this.closest('.edge-filter-frame').classList.add('is-missing')">
+                        <span class="edge-filter-frame-fallback">Pre-Filter</span>
                     </div>
-                    <span class="edge-filter-stage-num">01</span>
-                    <button class="edge-filter-toggle" type="button" aria-label="Show Pre-Filter details" aria-expanded="false">
-                        <svg class="edge-filter-toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                    </button>
-                    <div class="edge-filter-overlay">
-                        <span class="edge-filter-sheet-handle" aria-hidden="true"></span>
-                        <h3 class="edge-filter-stage-name">Pre-Filter</h3>
-                        <div class="edge-filter-reveal">
-                            <div class="edge-filter-reveal-inner">
-                                <p class="edge-filter-stage-tag">The first line of defence</p>
-                                <p class="edge-filter-stage-desc">Captures dust, hair, lint and pet dander before they reach the finer layers — extending HEPA life and keeping the system at peak efficiency. Washable, built for years of daily use.</p>
-                                <div class="edge-filter-chips">
-                                    <span>Dust</span><span>Hair</span><span>Pet dander</span><span>Washable</span>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="edge-filter-frame" data-frame="1" aria-hidden="true">
+                        <img src="public/images/filter-hepa.webp" alt="" loading="lazy"
+                             onerror="this.closest('.edge-filter-frame').classList.add('is-missing')">
+                        <span class="edge-filter-frame-fallback">H13 HEPA</span>
                     </div>
-                </article>
-
-                <!-- Stage 2: H13 HEPA (featured) -->
-                <article class="edge-filter-stage edge-filter-stage--hepa" tabindex="0">
-                    <div class="edge-filter-photo">
-                        <img src="public/images/filter-hepa.webp" alt="Hawaa EDGE H13 HEPA filter — pleated medical-grade core" loading="lazy"
-                             onerror="this.closest('.edge-filter-photo').classList.add('is-missing')">
-                        <span class="edge-filter-photo-fallback" aria-hidden="true">H13 HEPA</span>
+                    <div class="edge-filter-frame" data-frame="2" aria-hidden="true">
+                        <img src="public/images/filter-carbon.webp" alt="" loading="lazy"
+                             onerror="this.closest('.edge-filter-frame').classList.add('is-missing')">
+                        <span class="edge-filter-frame-fallback">Activated Carbon</span>
                     </div>
-                    <span class="edge-filter-stage-num">02</span>
-                    <span class="edge-filter-badge">Certified H13</span>
-                    <button class="edge-filter-toggle" type="button" aria-label="Show H13 HEPA details" aria-expanded="false">
-                        <svg class="edge-filter-toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                    </button>
-                    <div class="edge-filter-overlay">
-                        <span class="edge-filter-sheet-handle" aria-hidden="true"></span>
-                        <h3 class="edge-filter-stage-name">H13 HEPA</h3>
-                        <div class="edge-filter-reveal">
-                            <div class="edge-filter-reveal-inner">
-                                <p class="edge-filter-stage-tag">Medical-grade core</p>
-                                <div class="edge-filter-stage-stat"><strong>99.97%</strong> of particles at 0.3 µm</div>
-                                <p class="edge-filter-stage-desc">Fine dust, pollen, mould spores and airborne bacteria — captured to certified H13 standards. This is what separates genuine purification from basic filtration.</p>
-                                <div class="edge-filter-chips">
-                                    <span>PM2.5</span><span>Pollen</span><span>Bacteria</span>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="edge-filter-scrim" aria-hidden="true"></div>
+                    <div class="edge-filter-caption">
+                        <span class="edge-filter-label">Filter Technology</span>
+                        <h2 class="edge-filter-title">Three layers. <span class="italic">One clean breath.</span></h2>
                     </div>
-                </article>
-
-                <!-- Stage 3: Activated Carbon -->
-                <article class="edge-filter-stage" tabindex="0">
-                    <div class="edge-filter-photo">
-                        <img src="public/images/filter-carbon.webp" alt="Hawaa EDGE activated carbon filter — granular odour layer" loading="lazy"
-                             onerror="this.closest('.edge-filter-photo').classList.add('is-missing')">
-                        <span class="edge-filter-photo-fallback" aria-hidden="true">Activated Carbon</span>
-                    </div>
-                    <span class="edge-filter-stage-num">03</span>
-                    <button class="edge-filter-toggle" type="button" aria-label="Show Activated Carbon details" aria-expanded="false">
-                        <svg class="edge-filter-toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                    </button>
-                    <div class="edge-filter-overlay">
-                        <span class="edge-filter-sheet-handle" aria-hidden="true"></span>
-                        <h3 class="edge-filter-stage-name">Activated Carbon</h3>
-                        <div class="edge-filter-reveal">
-                            <div class="edge-filter-reveal-inner">
-                                <p class="edge-filter-stage-tag">Beyond particles</p>
-                                <p class="edge-filter-stage-desc">Millions of microscopic pores absorb what HEPA can't — cooking smells, smoke, VOCs and airborne chemicals — at a molecular level. Not air that smells neutral. Air that's genuinely clean.</p>
-                                <div class="edge-filter-chips">
-                                    <span>VOCs</span><span>Odours</span><span>Smoke</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-
+                </div>
             </div>
+
+            <!-- Scrolling steps — the active step drives the image above -->
+            <div class="edge-filter-steps">
+                <div class="edge-filter-step is-active" data-step="0">
+                    <span class="edge-filter-step-num">01</span>
+                    <h3 class="edge-filter-step-name">Pre-Filter</h3>
+                    <p class="edge-filter-step-desc">Catches dust, hair, lint and pet dander before the finer layers — washable, and built for years of daily use.</p>
+                </div>
+                <div class="edge-filter-step" data-step="1">
+                    <span class="edge-filter-step-num">02</span>
+                    <h3 class="edge-filter-step-name">H13 HEPA</h3>
+                    <p class="edge-filter-step-desc">Captures 99.97% of particles at 0.3 microns — fine dust, pollen and bacteria, to certified medical-grade standards.</p>
+                </div>
+                <div class="edge-filter-step" data-step="2">
+                    <span class="edge-filter-step-num">03</span>
+                    <h3 class="edge-filter-step-name">Activated Carbon</h3>
+                    <p class="edge-filter-step-desc">Millions of micro-pores absorb what HEPA can't — smoke, VOCs and cooking odours, at a molecular level.</p>
+                </div>
+            </div>
+
         </div>
-        <!-- Backdrop for the mobile detail sheet -->
-        <div class="edge-filter-backdrop" aria-hidden="true"></div>
     </section>
 
     <!-- Reviews Section (Section 8) -->
@@ -835,6 +791,63 @@
     <script type="module" src="js/firebase.js"></script>
     <script src="js/nav.js"></script>
     <script src="js/script.js"></script>
+
+    <!-- Filter Technology: sticky visual + scroll-driven steps -->
+    <script>
+        (function () {
+            var section = document.getElementById('edge-filters');
+            if (!section) return;
+
+            var visual = section.querySelector('.edge-filter-visual');
+            var steps  = section.querySelectorAll('.edge-filter-step');
+            var frames = section.querySelectorAll('.edge-filter-frame');
+            if (!visual || !steps.length) return;
+
+            var mqDesktop = window.matchMedia('(min-width: 900px)');
+            var current = -1;
+            var ticking = false;
+
+            function setActive(index) {
+                if (index === current) return;
+                current = index;
+                steps.forEach(function (step, i) {
+                    step.classList.toggle('is-active', i === index);
+                });
+                frames.forEach(function (frame, i) {
+                    frame.classList.toggle('is-active', i === index);
+                });
+            }
+
+            function update() {
+                ticking = false;
+                var line;
+                if (mqDesktop.matches) {
+                    // Desktop: activate the step crossing mid-viewport
+                    line = window.innerHeight * 0.5;
+                } else {
+                    // Mobile: activate the step just below the sticky image
+                    var vb = visual.getBoundingClientRect().bottom;
+                    line = vb + (window.innerHeight - vb) * 0.4;
+                }
+                var active = 0;
+                steps.forEach(function (step, i) {
+                    if (step.getBoundingClientRect().top < line) active = i;
+                });
+                setActive(active);
+            }
+
+            function onScroll() {
+                if (!ticking) {
+                    ticking = true;
+                    requestAnimationFrame(update);
+                }
+            }
+
+            window.addEventListener('scroll', onScroll, { passive: true });
+            window.addEventListener('resize', onScroll, { passive: true });
+            update();
+        })();
+    </script>
 
     <!-- Touch Controls: button selection & info panel -->
     <script>
@@ -1256,51 +1269,5 @@
         })();
     </script>
 
-    <!-- Section 7: Filter tiles — "+" opens a detail sheet on mobile -->
-    <script>
-        (function () {
-            var stages = document.querySelectorAll('.edge-filter-stage');
-            if (!stages.length) return;
-            var backdrop = document.querySelector('.edge-filter-backdrop');
-
-            function setOpen(stage, open) {
-                stage.classList.toggle('is-open', open);
-                var btn = stage.querySelector('.edge-filter-toggle');
-                if (btn) {
-                    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-                    btn.setAttribute('aria-label',
-                        (open ? 'Hide ' : 'Show ') +
-                        stage.querySelector('.edge-filter-stage-name').textContent + ' details');
-                }
-            }
-
-            function closeAll() {
-                stages.forEach(function (s) { setOpen(s, false); });
-                if (backdrop) backdrop.classList.remove('is-active');
-                document.body.classList.remove('edge-filter-lock');
-            }
-
-            stages.forEach(function (stage) {
-                var btn = stage.querySelector('.edge-filter-toggle');
-                if (btn) {
-                    btn.addEventListener('click', function (e) {
-                        e.stopPropagation();
-                        var willOpen = !stage.classList.contains('is-open');
-                        stages.forEach(function (s) { if (s !== stage) setOpen(s, false); });
-                        setOpen(stage, willOpen);
-                        if (backdrop) backdrop.classList.toggle('is-active', willOpen);
-                        document.body.classList.toggle('edge-filter-lock', willOpen);
-                    });
-                }
-                var handle = stage.querySelector('.edge-filter-sheet-handle');
-                if (handle) handle.addEventListener('click', closeAll);
-            });
-
-            if (backdrop) backdrop.addEventListener('click', closeAll);
-            document.addEventListener('keydown', function (e) {
-                if (e.key === 'Escape') closeAll();
-            });
-        })();
-    </script>
 </body>
 </html>
