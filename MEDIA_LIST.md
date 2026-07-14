@@ -82,6 +82,18 @@ This document contains a comprehensive list of all images and videos needed for 
 
 ---
 
+## 7. EDGE PAGE — FILTER TECHNOLOGY SECTION
+
+> Product-macro photography for the three filter stage cards on `edge.html`. Each card shows a real photo of the filter layer so the section reads as a genuine product, not an illustration. If a file is missing, the card falls back to a tasteful tinted panel with the filter name, so the layout never breaks — but real photos are strongly recommended here.
+
+| File Name | Location | Status | Ratio | Description/Prompt |
+|-----------|----------|--------|--------|-------------------|
+| `filter-pre.webp` | `/public/images/` | NEEDED | 4:3 (landscape) | **Pre-Filter macro.** Clean studio close-up of the washable pre-filter mesh/frame — visible weave or honeycomb texture. Neutral light background matching the Monsoon Mist palette (#EAF0EC). Crisp, product-catalog quality. Optionally show a hand holding it to convey scale. |
+| `filter-hepa.webp` | `/public/images/` | NEEDED | 4:3 (landscape) | **H13 HEPA macro.** Close-up of the pleated white/off-white HEPA media showing the accordion folds. Clinical, premium feel. Soft directional light to bring out the pleats. Neutral/mist background. This is the hero of the three — highest quality shot. |
+| `filter-carbon.webp` | `/public/images/` | NEEDED | 4:3 (landscape) | **Activated Carbon macro.** Close-up of the granular activated-carbon layer — dark charcoal granules, honeycomb carbon block, or carbon-coated mesh. Texture-rich. Neutral background, soft light. Conveys the "molecular absorption" story. |
+
+---
+
 ## SUMMARY
 
 ### Total Media Assets Required: 29 files
