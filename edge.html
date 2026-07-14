@@ -363,62 +363,57 @@
         </div>
     </section>
 
-    <!-- Touch Controls Section (Section 6) -->
+    <!-- Touch Controls Section (Section 6) — the device's top panel, up close -->
     <section class="edge-controls-section" id="edge-controls">
         <div class="edge-controls-inner">
             <span class="edge-controls-label">Touch Controls</span>
             <h2 class="edge-controls-title">One touch. <span class="italic">Total control.</span></h2>
 
-            <!-- Button + Indicator Strip -->
-            <div class="edge-controls-strip" role="group" aria-label="Touch controls">
+            <!-- The capacitive deck -->
+            <div class="edge-deck" role="group" aria-label="EDGE touch panel — interactive demo">
 
-                <!-- Touch Buttons -->
-                <div class="edge-ctrl-btn active" role="button" tabindex="0" data-ctrl="power" aria-pressed="true" aria-label="Power button">
-                    <div class="edge-ctrl-btn-icon">
+                <div class="edge-deck-keys">
+                    <div class="edge-ctrl-btn active" role="button" tabindex="0" data-ctrl="power" data-readout="ON" aria-pressed="true" aria-label="Power">
+                        <span class="edge-ctrl-glow" aria-hidden="true"></span>
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M18.36 6.64a9 9 0 11-12.73 0"/>
                             <line x1="12" y1="2" x2="12" y2="12"/>
                         </svg>
+                        <span class="edge-ctrl-dot" aria-hidden="true"></span>
                     </div>
-                    <span class="edge-ctrl-btn-label">Power</span>
-                </div>
 
-                <div class="edge-ctrl-btn" role="button" tabindex="0" data-ctrl="fan" aria-pressed="false" aria-label="Fan speed button">
-                    <div class="edge-ctrl-btn-icon">
+                    <div class="edge-ctrl-btn" role="button" tabindex="0" data-ctrl="fan" data-readout="TURBO" aria-pressed="false" aria-label="Fan speed">
+                        <span class="edge-ctrl-glow" aria-hidden="true"></span>
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M12 12c2.21 0 4-1.79 4-4s-3-7-4-7-4 4.79-4 7 1.79 4 4 4z"/>
                             <path d="M12 12c-2.21 0-4 1.79-4 4s3 7 4 7 4-4.79 4-7-1.79-4-4-4z"/>
                             <path d="M12 12c0 2.21 1.79 4 4 4s7-3 7-4-4.79-4-7-4-4 1.79-4 4z"/>
                             <path d="M12 12c0-2.21-1.79-4-4-4s-7 3-7 4 4.79 4 7 4 4-1.79 4-4z"/>
                         </svg>
+                        <span class="edge-ctrl-dot" aria-hidden="true"></span>
                     </div>
-                    <span class="edge-ctrl-btn-label">Fan Speed</span>
-                </div>
 
-                <div class="edge-ctrl-btn" role="button" tabindex="0" data-ctrl="timer" aria-pressed="false" aria-label="Timer button">
-                    <div class="edge-ctrl-btn-icon">
+                    <div class="edge-ctrl-btn" role="button" tabindex="0" data-ctrl="timer" data-readout="4 H" aria-pressed="false" aria-label="Timer">
+                        <span class="edge-ctrl-glow" aria-hidden="true"></span>
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                             <circle cx="12" cy="12" r="10"/>
                             <polyline points="12 6 12 12 16 14"/>
                         </svg>
+                        <span class="edge-ctrl-dot" aria-hidden="true"></span>
                     </div>
-                    <span class="edge-ctrl-btn-label">Timer</span>
-                </div>
 
-                <div class="edge-ctrl-btn" role="button" tabindex="0" data-ctrl="sleep" aria-pressed="false" aria-label="Sleep mode button">
-                    <div class="edge-ctrl-btn-icon">
+                    <div class="edge-ctrl-btn" role="button" tabindex="0" data-ctrl="sleep" data-readout="22 dB" aria-pressed="false" aria-label="Sleep mode">
+                        <span class="edge-ctrl-glow" aria-hidden="true"></span>
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
                         </svg>
+                        <span class="edge-ctrl-dot" aria-hidden="true"></span>
                     </div>
-                    <span class="edge-ctrl-btn-label">Sleep</span>
-                </div>
 
-                <!-- Wi-Fi — long-press touch button -->
-                <div class="edge-ctrl-btn edge-ctrl-btn--wifi" role="button" tabindex="0" data-ctrl="wifi" aria-pressed="false" aria-label="Wi-Fi pairing button — press and hold 10 to 15 seconds for discoverable mode">
-                    <div class="edge-ctrl-btn-icon">
-                        <svg class="edge-ctrl-hold-ring" viewBox="0 0 64 64" aria-hidden="true">
-                            <circle cx="32" cy="32" r="30" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" pathLength="100"/>
+                    <div class="edge-ctrl-btn edge-ctrl-btn--wifi" role="button" tabindex="0" data-ctrl="wifi" data-readout="PAIR" aria-pressed="false" aria-label="Wi-Fi pairing — press and hold 10 to 15 seconds for discoverable mode">
+                        <span class="edge-ctrl-glow" aria-hidden="true"></span>
+                        <svg class="edge-ctrl-hold-ring" viewBox="0 0 56 56" aria-hidden="true">
+                            <circle cx="28" cy="28" r="26" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" pathLength="100"/>
                         </svg>
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M5 12.55a11 11 0 0114.08 0"/>
@@ -426,56 +421,53 @@
                             <path d="M8.53 16.11a6 6 0 016.95 0"/>
                             <circle cx="12" cy="20" r="1" fill="currentColor"/>
                         </svg>
+                        <span class="edge-ctrl-dot" aria-hidden="true"></span>
                     </div>
-                    <span class="edge-ctrl-btn-label">Wi-Fi</span>
-                    <span class="edge-ctrl-btn-hint">Hold 10 sec</span>
                 </div>
 
-                <!-- Indicator (passive — no touch required) -->
-                <div class="edge-ctrl-indicator" aria-label="Filter change indicator">
-                    <div class="edge-ctrl-indicator-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                            <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
-                        </svg>
-                        <span class="edge-ctrl-led edge-ctrl-led--amber"></span>
-                    </div>
-                    <span class="edge-ctrl-indicator-label">Filter</span>
+                <!-- Recessed LED status display -->
+                <div class="edge-deck-display" aria-hidden="true">
+                    <span class="edge-deck-display-label">Status</span>
+                    <span class="edge-deck-display-value" id="edge-deck-readout">ON</span>
                 </div>
 
-            </div><!-- end strip -->
+                <!-- Filter service LED — lives on the panel like real hardware -->
+                <span class="edge-deck-filter-led" aria-hidden="true" title="Filter indicator"></span>
 
-            <!-- Indicators note -->
-            <p class="edge-controls-indicator-note">The filter indicator glows on its own when it's time for a change — no touch needed</p>
+            </div><!-- end deck -->
 
-            <!-- Explanation Panel -->
+            <!-- Active control caption -->
             <div class="edge-controls-info" aria-live="polite">
 
                 <div class="edge-ctrl-info active" data-ctrl="power">
                     <h3 class="edge-ctrl-info-title">Power</h3>
-                    <p class="edge-ctrl-info-text">A single touch turns your EDGE on or off. No long press, no sequence — just instant control at your fingertip.</p>
+                    <p class="edge-ctrl-info-text">One touch on. One touch off. No sequence, no waiting.</p>
                 </div>
 
                 <div class="edge-ctrl-info" data-ctrl="fan">
                     <h3 class="edge-ctrl-info-title">Fan Speed</h3>
-                    <p class="edge-ctrl-info-text">Each touch cycles through fan speeds — Low, Medium, High, and Turbo. The LED brightens as speed increases, so you always know where you are.</p>
+                    <p class="edge-ctrl-info-text">Tap to cycle Low, Medium, High and Turbo. The display keeps count.</p>
                 </div>
 
                 <div class="edge-ctrl-info" data-ctrl="timer">
                     <h3 class="edge-ctrl-info-title">Timer</h3>
-                    <p class="edge-ctrl-info-text">Set a 1, 2, or 4-hour auto-shutoff countdown. Tap once to activate, again to cycle through, once more to cancel. Perfect for sleeping without worrying about leaving it on.</p>
+                    <p class="edge-ctrl-info-text">One, two or four hours. Set it, sleep — it switches itself off.</p>
                 </div>
 
                 <div class="edge-ctrl-info" data-ctrl="sleep">
                     <h3 class="edge-ctrl-info-title">Sleep Mode</h3>
-                    <p class="edge-ctrl-info-text">Drops to whisper-quiet operation and dims all LEDs to near-invisible. Your room stays clean and silent through the night — undisturbed.</p>
+                    <p class="edge-ctrl-info-text">Drops to 22 dB with every light off. Working all night, noticed never.</p>
                 </div>
 
                 <div class="edge-ctrl-info" data-ctrl="wifi">
-                    <h3 class="edge-ctrl-info-title">Wi-Fi Pairing</h3>
-                    <p class="edge-ctrl-info-text">Press and hold for 10–15 seconds and EDGE enters discoverable mode — the LED pulses softly while it waits to be found on your network. Pair once, and it stays connected for good.</p>
+                    <h3 class="edge-ctrl-info-title">Wi-Fi · Hold 10 sec</h3>
+                    <p class="edge-ctrl-info-text" id="edge-wifi-info-text">Press and hold for 10–15 seconds — EDGE turns discoverable, pairs once, and stays connected for good.</p>
                 </div>
 
             </div><!-- end info -->
+
+            <!-- Filter LED legend -->
+            <p class="edge-controls-indicator-note"><span class="edge-note-led" aria-hidden="true"></span>Filter — the amber LED wakes on its own when replacement is due. Nothing to press.</p>
 
         </div>
     </section>
@@ -883,88 +875,94 @@
         })();
     </script>
 
-    <!-- Touch Controls: button selection & info panel -->
+    <!-- Touch Controls: deck keys, LED display, captions, wifi hold-to-pair -->
     <script>
         (function () {
-            var btns  = document.querySelectorAll('.edge-ctrl-btn');
-            var infos = document.querySelectorAll('.edge-ctrl-info');
-            if (!btns.length) return;
+            var deck = document.querySelector('.edge-deck');
+            if (!deck) return;
 
-            function activate(target) {
-                // Deactivate all
-                btns.forEach(function (btn) {
-                    btn.classList.remove('active');
-                    btn.setAttribute('aria-pressed', 'false');
+            var keys     = Array.from(deck.querySelectorAll('.edge-ctrl-btn'));
+            var infos    = document.querySelectorAll('.edge-ctrl-info');
+            var readout  = document.getElementById('edge-deck-readout');
+            var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            function activate(key) {
+                keys.forEach(function (k) {
+                    k.classList.toggle('active', k === key);
+                    k.setAttribute('aria-pressed', k === key ? 'true' : 'false');
                 });
                 infos.forEach(function (info) {
-                    info.classList.remove('active');
+                    info.classList.toggle('active',
+                        info.getAttribute('data-ctrl') === key.getAttribute('data-ctrl'));
                 });
-
-                // Activate clicked
-                target.classList.add('active');
-                target.setAttribute('aria-pressed', 'true');
-
-                var key = target.getAttribute('data-ctrl');
-                var panel = document.querySelector('.edge-ctrl-info[data-ctrl="' + key + '"]');
-                if (panel) {
-                    // Force reflow so transition fires even when toggling same panel
-                    panel.style.transition = 'none';
-                    panel.style.opacity = '0';
-                    panel.style.transform = 'translateY(6px)';
-                    panel.classList.add('active');
-                    requestAnimationFrame(function () {
-                        requestAnimationFrame(function () {
-                            panel.style.transition = '';
-                            panel.style.opacity = '';
-                            panel.style.transform = '';
-                        });
-                    });
+                if (readout) {
+                    readout.classList.add('swap');
+                    setTimeout(function () {
+                        readout.textContent = key.getAttribute('data-readout') || '';
+                        readout.classList.remove('swap');
+                    }, 160);
                 }
             }
 
-            btns.forEach(function (btn) {
-                btn.addEventListener('click', function () { activate(btn); });
-                btn.addEventListener('keydown', function (e) {
+            /* --- Auto-demo: keys light up in sequence until the user steps in --- */
+            var autoTimer = null;
+            var autoIndex = 0;
+
+            function stopAuto() {
+                if (autoTimer) { clearInterval(autoTimer); autoTimer = null; }
+            }
+
+            if (!reduceMotion) {
+                autoTimer = setInterval(function () {
+                    autoIndex = (autoIndex + 1) % keys.length;
+                    activate(keys[autoIndex]);
+                }, 3600);
+            }
+
+            /* --- Manual control --- */
+            keys.forEach(function (key, i) {
+                key.addEventListener('click', function () {
+                    stopAuto();
+                    autoIndex = i;
+                    activate(key);
+                });
+                key.addEventListener('keydown', function (e) {
                     if (e.key === 'Enter' || e.key === ' ') {
                         e.preventDefault();
-                        activate(btn);
+                        stopAuto();
+                        autoIndex = i;
+                        activate(key);
                     }
-                    // Arrow key navigation between buttons
                     if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
-                        var list = Array.from(btns);
-                        var idx  = list.indexOf(btn);
+                        stopAuto();
                         var next = e.key === 'ArrowRight'
-                            ? list[idx + 1] || list[0]
-                            : list[idx - 1] || list[list.length - 1];
+                            ? keys[i + 1] || keys[0]
+                            : keys[i - 1] || keys[keys.length - 1];
                         next.focus();
+                        autoIndex = keys.indexOf(next);
                         activate(next);
                     }
                 });
             });
-        })();
-    </script>
 
-    <!-- Touch Controls: Wi-Fi press-and-hold → discoverable (pairing) mode -->
-    <script>
-        (function () {
-            var wifi = document.querySelector('.edge-ctrl-btn--wifi');
+            /* --- Wi-Fi: press & hold → discoverable mode --- */
+            var wifi = deck.querySelector('.edge-ctrl-btn--wifi');
             if (!wifi) return;
 
-            var HOLD_MS = 2000;          // visual hold duration (demo-scaled from real 10–15s)
+            var HOLD_MS = 2000;   /* demo-scaled from the real 10–15 s */
             var holdTimer = null;
             var releaseTimer = null;
             var holding = false;
 
-            var infoPanel = document.querySelector('.edge-ctrl-info[data-ctrl="wifi"]');
-            var infoTextEl = infoPanel ? infoPanel.querySelector('.edge-ctrl-info-text') : null;
-            var defaultText = infoTextEl ? infoTextEl.textContent : '';
-            var pairingText = 'Discoverable mode active — EDGE is broadcasting and waiting to be found on your network. Open the Hawaa app or your smart-home hub to connect.';
+            var wifiText = document.getElementById('edge-wifi-info-text');
+            var defaultText = wifiText ? wifiText.textContent : '';
+            var pairingText = 'Discoverable mode active — EDGE is broadcasting, waiting to be found on your network.';
 
             function startHold() {
                 if (holding || wifi.classList.contains('pairing')) return;
                 holding = true;
+                stopAuto();
                 wifi.classList.add('holding');
-                clearTimeout(holdTimer);
                 holdTimer = setTimeout(completeHold, HOLD_MS);
             }
 
@@ -979,31 +977,27 @@
                 holding = false;
                 wifi.classList.remove('holding');
                 wifi.classList.add('pairing');
-                wifi.setAttribute('aria-pressed', 'true');
-                if (infoTextEl) infoTextEl.textContent = pairingText;
+                autoIndex = keys.indexOf(wifi);
+                activate(wifi);
+                if (readout) readout.classList.add('blink');
+                if (wifiText) wifiText.textContent = pairingText;
 
-                // Auto-exit discoverable mode after a while (demo)
                 clearTimeout(releaseTimer);
                 releaseTimer = setTimeout(function () {
                     wifi.classList.remove('pairing');
-                    if (infoTextEl) infoTextEl.textContent = defaultText;
+                    if (readout) readout.classList.remove('blink');
+                    if (wifiText) wifiText.textContent = defaultText;
                 }, 6000);
             }
 
-            /* Pointer / touch */
             wifi.addEventListener('mousedown', startHold);
-            wifi.addEventListener('touchstart', function (e) { startHold(); }, { passive: true });
+            wifi.addEventListener('touchstart', function () { startHold(); }, { passive: true });
             wifi.addEventListener('mouseup', cancelHold);
             wifi.addEventListener('mouseleave', cancelHold);
             wifi.addEventListener('touchend', cancelHold);
             wifi.addEventListener('touchcancel', cancelHold);
-
-            /* Keyboard: hold space/enter */
             wifi.addEventListener('keydown', function (e) {
-                if ((e.key === 'Enter' || e.key === ' ') && !e.repeat) {
-                    e.preventDefault();
-                    startHold();
-                }
+                if ((e.key === 'Enter' || e.key === ' ') && !e.repeat) startHold();
             });
             wifi.addEventListener('keyup', function (e) {
                 if (e.key === 'Enter' || e.key === ' ') cancelHold();
