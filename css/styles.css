@@ -9096,47 +9096,35 @@ body.tos-page .logo-awaa {
     margin: 0 0 40px;
 }
 
-/* ---- Image-forward stage cards ---- */
+/* ---- Minimal image tiles — text hidden, reveals on hover ---- */
 .edge-filter-stages {
     display: grid;
-    grid-template-columns: 1fr;
-    gap: 18px;
-}
-
-@media (min-width: 760px) {
-    .edge-filter-stages {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 20px;
-        align-items: stretch;
-    }
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
 }
 
 .edge-filter-stage {
     position: relative;
-    display: flex;
-    flex-direction: column;
-    background: var(--paper);
-    border: 1px solid var(--ink-line-soft);
-    border-radius: 20px;
-    box-shadow: 0 8px 28px var(--shadow-tint-sm);
-    transition: box-shadow 0.35s ease, transform 0.35s ease, border-color 0.35s ease;
+    aspect-ratio: 3 / 4;
+    border-radius: 18px;
     overflow: hidden;
+    cursor: pointer;
+    box-shadow: 0 8px 28px var(--shadow-tint-sm);
+    transition: box-shadow 0.4s ease, transform 0.4s ease;
+    outline: none;
 }
 
-.edge-filter-stage:hover {
+.edge-filter-stage:hover,
+.edge-filter-stage:focus-visible,
+.edge-filter-stage.is-open {
     box-shadow: 0 18px 48px var(--shadow-tint);
     transform: translateY(-4px);
-    border-color: rgba(30, 124, 113, 0.18);
 }
 
-.edge-filter-stage--hepa {
-    border-color: rgba(30, 124, 113, 0.22);
-}
-
-/* Product photo */
+/* Product photo fills the tile */
 .edge-filter-photo {
-    position: relative;
-    aspect-ratio: 4 / 3;
+    position: absolute;
+    inset: 0;
     overflow: hidden;
     background:
         radial-gradient(120% 100% at 50% 0%, rgba(63, 183, 172, 0.10) 0%, transparent 60%),
@@ -9150,11 +9138,13 @@ body.tos-page .logo-awaa {
     height: 100%;
     object-fit: cover;
     display: block;
-    transition: transform 0.5s ease;
+    transition: transform 0.6s ease;
 }
 
-.edge-filter-stage:hover .edge-filter-photo img {
-    transform: scale(1.04);
+.edge-filter-stage:hover .edge-filter-photo img,
+.edge-filter-stage:focus-visible .edge-filter-photo img,
+.edge-filter-stage.is-open .edge-filter-photo img {
+    transform: scale(1.05);
 }
 
 /* Graceful fallback shown when the photo asset is missing */
@@ -9185,15 +9175,15 @@ body.tos-page .logo-awaa {
 /* Number chip on the photo */
 .edge-filter-stage-num {
     position: absolute;
-    top: 14px;
-    left: 14px;
-    z-index: 2;
+    top: 12px;
+    left: 12px;
+    z-index: 3;
     font-family: 'Outfit', sans-serif;
-    font-size: 0.7rem;
+    font-size: 0.68rem;
     font-weight: 600;
     letter-spacing: 0.14em;
     color: var(--on-ink);
-    background: rgba(18, 49, 44, 0.55);
+    background: rgba(18, 49, 44, 0.45);
     backdrop-filter: blur(6px);
     -webkit-backdrop-filter: blur(6px);
     padding: 5px 10px;
@@ -9203,11 +9193,11 @@ body.tos-page .logo-awaa {
 /* Certified badge on featured card */
 .edge-filter-badge {
     position: absolute;
-    top: 14px;
-    right: 14px;
-    z-index: 2;
+    top: 12px;
+    right: 12px;
+    z-index: 3;
     font-family: 'Outfit', sans-serif;
-    font-size: 0.64rem;
+    font-size: 0.6rem;
     font-weight: 600;
     letter-spacing: 0.08em;
     text-transform: uppercase;
@@ -9218,74 +9208,144 @@ body.tos-page .logo-awaa {
     box-shadow: 0 4px 12px var(--shadow-cta);
 }
 
-/* Text body */
-.edge-filter-stage-body {
-    padding: 22px 22px 24px;
+/* Overlay — scrim + text pinned to the bottom of the tile */
+.edge-filter-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
     display: flex;
     flex-direction: column;
-    flex: 1;
+    justify-content: flex-end;
+    padding: 18px;
+    background: linear-gradient(180deg, transparent 40%, rgba(12, 33, 30, 0.32) 68%, rgba(10, 28, 25, 0.82) 100%);
+    transition: background 0.4s ease;
 }
 
+.edge-filter-stage:hover .edge-filter-overlay,
+.edge-filter-stage:focus-visible .edge-filter-overlay,
+.edge-filter-stage.is-open .edge-filter-overlay {
+    background: linear-gradient(180deg, rgba(10, 28, 25, 0.15) 0%, rgba(10, 28, 25, 0.55) 45%, rgba(8, 24, 22, 0.9) 100%);
+}
+
+/* Minimal always-visible label */
 .edge-filter-stage-name {
     font-family: 'Outfit', sans-serif;
-    font-size: 1.15rem;
+    font-size: 1.05rem;
     font-weight: 600;
-    color: var(--ink);
+    color: var(--on-ink);
     letter-spacing: -0.01em;
-    margin: 0 0 4px;
+    margin: 0;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.35);
+}
+
+/* Hidden details — revealed on hover / focus / tap */
+.edge-filter-reveal {
+    display: grid;
+    grid-template-rows: 0fr;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: grid-template-rows 0.42s ease, opacity 0.42s ease, transform 0.42s ease;
+    overflow: hidden;
+}
+
+.edge-filter-stage:hover .edge-filter-reveal,
+.edge-filter-stage:focus-visible .edge-filter-reveal,
+.edge-filter-stage.is-open .edge-filter-reveal {
+    grid-template-rows: 1fr;
+    opacity: 1;
+    transform: translateY(0);
+    margin-top: 8px;
+}
+
+.edge-filter-reveal > * {
+    min-height: 0;
+}
+
+.edge-filter-reveal > *:first-child {
+    padding-top: 2px;
 }
 
 .edge-filter-stage-tag {
     font-family: 'Playfair Display', serif;
     font-style: italic;
-    font-size: 0.9rem;
-    color: var(--teal-deep);
-    margin: 0 0 12px;
+    font-size: 0.88rem;
+    color: var(--teal-on-dark);
+    margin: 0 0 8px;
 }
 
 .edge-filter-stage-stat {
     font-family: 'Outfit', sans-serif;
-    font-size: 0.82rem;
-    color: var(--ink-soft);
-    margin: 0 0 12px;
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.82);
+    margin: 0 0 8px;
 }
 
 .edge-filter-stage-stat strong {
-    font-size: 1.15rem;
+    font-size: 1.1rem;
     font-weight: 600;
-    color: var(--ink);
+    color: var(--on-ink);
     letter-spacing: -0.01em;
 }
 
 .edge-filter-stage-desc {
     font-family: 'Outfit', sans-serif;
-    font-size: 0.875rem;
-    line-height: 1.65;
-    color: var(--ink-soft);
-    margin: 0 0 16px;
+    font-size: 0.8rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.78);
+    margin: 0 0 12px;
 }
 
 .edge-filter-chips {
     display: flex;
     flex-wrap: wrap;
-    gap: 7px;
-    margin-top: auto;
+    gap: 6px;
 }
 
 .edge-filter-chips span {
     font-family: 'Outfit', sans-serif;
-    font-size: 0.68rem;
+    font-size: 0.66rem;
     font-weight: 500;
-    color: var(--teal-deep);
-    background: var(--teal-tint);
-    border: 1px solid rgba(30, 124, 113, 0.12);
-    padding: 5px 11px;
+    color: var(--on-ink);
+    background: rgba(255, 255, 255, 0.14);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    padding: 4px 10px;
     border-radius: 999px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .edge-filter-stage,
+    .edge-filter-photo img,
+    .edge-filter-overlay,
+    .edge-filter-reveal {
+        transition: none;
+    }
 }
 
 @media (max-width: 640px) {
     .edge-filter-section {
         padding: 64px 16px 72px;
+    }
+
+    .edge-filter-stages {
+        gap: 10px;
+    }
+
+    .edge-filter-stage {
+        border-radius: 14px;
+    }
+
+    .edge-filter-overlay {
+        padding: 14px;
+    }
+
+    .edge-filter-stage-name {
+        font-size: 0.9rem;
+    }
+
+    .edge-filter-stage-desc {
+        font-size: 0.75rem;
     }
 }
 

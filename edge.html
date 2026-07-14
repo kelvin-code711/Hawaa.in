@@ -518,57 +518,63 @@
             <div class="edge-filter-stages">
 
                 <!-- Stage 1: Pre-Filter -->
-                <article class="edge-filter-stage">
+                <article class="edge-filter-stage" tabindex="0">
                     <div class="edge-filter-photo">
                         <img src="public/images/filter-pre.webp" alt="Hawaa EDGE pre-filter — washable mesh layer" loading="lazy"
                              onerror="this.closest('.edge-filter-photo').classList.add('is-missing')">
                         <span class="edge-filter-photo-fallback" aria-hidden="true">Pre-Filter</span>
-                        <span class="edge-filter-stage-num">01</span>
                     </div>
-                    <div class="edge-filter-stage-body">
+                    <span class="edge-filter-stage-num">01</span>
+                    <div class="edge-filter-overlay">
                         <h3 class="edge-filter-stage-name">Pre-Filter</h3>
-                        <p class="edge-filter-stage-tag">The first line of defence</p>
-                        <p class="edge-filter-stage-desc">Captures dust, hair, lint and pet dander before they reach the finer layers — extending HEPA life and keeping the system at peak efficiency. Washable, built for years of daily use.</p>
-                        <div class="edge-filter-chips">
-                            <span>Dust</span><span>Hair</span><span>Pet dander</span><span>Washable</span>
+                        <div class="edge-filter-reveal">
+                            <p class="edge-filter-stage-tag">The first line of defence</p>
+                            <p class="edge-filter-stage-desc">Captures dust, hair, lint and pet dander before they reach the finer layers — extending HEPA life and keeping the system at peak efficiency. Washable, built for years of daily use.</p>
+                            <div class="edge-filter-chips">
+                                <span>Dust</span><span>Hair</span><span>Pet dander</span><span>Washable</span>
+                            </div>
                         </div>
                     </div>
                 </article>
 
                 <!-- Stage 2: H13 HEPA (featured) -->
-                <article class="edge-filter-stage edge-filter-stage--hepa">
+                <article class="edge-filter-stage edge-filter-stage--hepa" tabindex="0">
                     <div class="edge-filter-photo">
                         <img src="public/images/filter-hepa.webp" alt="Hawaa EDGE H13 HEPA filter — pleated medical-grade core" loading="lazy"
                              onerror="this.closest('.edge-filter-photo').classList.add('is-missing')">
                         <span class="edge-filter-photo-fallback" aria-hidden="true">H13 HEPA</span>
-                        <span class="edge-filter-stage-num">02</span>
-                        <span class="edge-filter-badge">Certified H13</span>
                     </div>
-                    <div class="edge-filter-stage-body">
+                    <span class="edge-filter-stage-num">02</span>
+                    <span class="edge-filter-badge">Certified H13</span>
+                    <div class="edge-filter-overlay">
                         <h3 class="edge-filter-stage-name">H13 HEPA</h3>
-                        <p class="edge-filter-stage-tag">Medical-grade core</p>
-                        <div class="edge-filter-stage-stat"><strong>99.97%</strong> of particles at 0.3 µm</div>
-                        <p class="edge-filter-stage-desc">Fine dust, pollen, mould spores and airborne bacteria — captured to certified H13 standards. This is what separates genuine purification from basic filtration.</p>
-                        <div class="edge-filter-chips">
-                            <span>PM2.5</span><span>Pollen</span><span>Bacteria</span>
+                        <div class="edge-filter-reveal">
+                            <p class="edge-filter-stage-tag">Medical-grade core</p>
+                            <div class="edge-filter-stage-stat"><strong>99.97%</strong> of particles at 0.3 µm</div>
+                            <p class="edge-filter-stage-desc">Fine dust, pollen, mould spores and airborne bacteria — captured to certified H13 standards. This is what separates genuine purification from basic filtration.</p>
+                            <div class="edge-filter-chips">
+                                <span>PM2.5</span><span>Pollen</span><span>Bacteria</span>
+                            </div>
                         </div>
                     </div>
                 </article>
 
                 <!-- Stage 3: Activated Carbon -->
-                <article class="edge-filter-stage">
+                <article class="edge-filter-stage" tabindex="0">
                     <div class="edge-filter-photo">
                         <img src="public/images/filter-carbon.webp" alt="Hawaa EDGE activated carbon filter — granular odour layer" loading="lazy"
                              onerror="this.closest('.edge-filter-photo').classList.add('is-missing')">
                         <span class="edge-filter-photo-fallback" aria-hidden="true">Activated Carbon</span>
-                        <span class="edge-filter-stage-num">03</span>
                     </div>
-                    <div class="edge-filter-stage-body">
+                    <span class="edge-filter-stage-num">03</span>
+                    <div class="edge-filter-overlay">
                         <h3 class="edge-filter-stage-name">Activated Carbon</h3>
-                        <p class="edge-filter-stage-tag">Beyond particles</p>
-                        <p class="edge-filter-stage-desc">Millions of microscopic pores absorb what HEPA can't — cooking smells, smoke, VOCs and airborne chemicals — at a molecular level. Not air that smells neutral. Air that's genuinely clean.</p>
-                        <div class="edge-filter-chips">
-                            <span>VOCs</span><span>Odours</span><span>Smoke</span>
+                        <div class="edge-filter-reveal">
+                            <p class="edge-filter-stage-tag">Beyond particles</p>
+                            <p class="edge-filter-stage-desc">Millions of microscopic pores absorb what HEPA can't — cooking smells, smoke, VOCs and airborne chemicals — at a molecular level. Not air that smells neutral. Air that's genuinely clean.</p>
+                            <div class="edge-filter-chips">
+                                <span>VOCs</span><span>Odours</span><span>Smoke</span>
+                            </div>
                         </div>
                     </div>
                 </article>
@@ -1226,6 +1232,23 @@
                 var isOpen = trigger.getAttribute('aria-expanded') === 'true';
                 trigger.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
                 body.classList.toggle('open', !isOpen);
+            });
+        })();
+    </script>
+
+    <!-- Section 7: Filter tiles — tap to reveal on touch devices -->
+    <script>
+        (function () {
+            var stages = document.querySelectorAll('.edge-filter-stage');
+            if (!stages.length) return;
+            if (!window.matchMedia || !window.matchMedia('(hover: none)').matches) return;
+
+            stages.forEach(function (stage) {
+                stage.addEventListener('click', function () {
+                    var wasOpen = stage.classList.contains('is-open');
+                    stages.forEach(function (s) { s.classList.remove('is-open'); });
+                    if (!wasOpen) stage.classList.add('is-open');
+                });
             });
         })();
     </script>
