@@ -529,6 +529,7 @@
                         <svg class="edge-filter-toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
                     </button>
                     <div class="edge-filter-overlay">
+                        <span class="edge-filter-sheet-handle" aria-hidden="true"></span>
                         <h3 class="edge-filter-stage-name">Pre-Filter</h3>
                         <div class="edge-filter-reveal">
                             <div class="edge-filter-reveal-inner">
@@ -555,6 +556,7 @@
                         <svg class="edge-filter-toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
                     </button>
                     <div class="edge-filter-overlay">
+                        <span class="edge-filter-sheet-handle" aria-hidden="true"></span>
                         <h3 class="edge-filter-stage-name">H13 HEPA</h3>
                         <div class="edge-filter-reveal">
                             <div class="edge-filter-reveal-inner">
@@ -581,6 +583,7 @@
                         <svg class="edge-filter-toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
                     </button>
                     <div class="edge-filter-overlay">
+                        <span class="edge-filter-sheet-handle" aria-hidden="true"></span>
                         <h3 class="edge-filter-stage-name">Activated Carbon</h3>
                         <div class="edge-filter-reveal">
                             <div class="edge-filter-reveal-inner">
@@ -596,6 +599,8 @@
 
             </div>
         </div>
+        <!-- Backdrop for the mobile detail sheet -->
+        <div class="edge-filter-backdrop" aria-hidden="true"></div>
     </section>
 
     <!-- Reviews Section (Section 8) -->
@@ -1251,11 +1256,12 @@
         })();
     </script>
 
-    <!-- Section 7: Filter tiles — "+" button reveals details (mobile) -->
+    <!-- Section 7: Filter tiles — "+" opens a detail sheet on mobile -->
     <script>
         (function () {
             var stages = document.querySelectorAll('.edge-filter-stage');
             if (!stages.length) return;
+            var backdrop = document.querySelector('.edge-filter-backdrop');
 
             function setOpen(stage, open) {
                 stage.classList.toggle('is-open', open);
@@ -1268,16 +1274,31 @@
                 }
             }
 
+            function closeAll() {
+                stages.forEach(function (s) { setOpen(s, false); });
+                if (backdrop) backdrop.classList.remove('is-active');
+                document.body.classList.remove('edge-filter-lock');
+            }
+
             stages.forEach(function (stage) {
                 var btn = stage.querySelector('.edge-filter-toggle');
-                if (!btn) return;
-                btn.addEventListener('click', function (e) {
-                    e.stopPropagation();
-                    var willOpen = !stage.classList.contains('is-open');
-                    // Accordion: only one open at a time
-                    stages.forEach(function (s) { if (s !== stage) setOpen(s, false); });
-                    setOpen(stage, willOpen);
-                });
+                if (btn) {
+                    btn.addEventListener('click', function (e) {
+                        e.stopPropagation();
+                        var willOpen = !stage.classList.contains('is-open');
+                        stages.forEach(function (s) { if (s !== stage) setOpen(s, false); });
+                        setOpen(stage, willOpen);
+                        if (backdrop) backdrop.classList.toggle('is-active', willOpen);
+                        document.body.classList.toggle('edge-filter-lock', willOpen);
+                    });
+                }
+                var handle = stage.querySelector('.edge-filter-sheet-handle');
+                if (handle) handle.addEventListener('click', closeAll);
+            });
+
+            if (backdrop) backdrop.addEventListener('click', closeAll);
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape') closeAll();
             });
         })();
     </script>

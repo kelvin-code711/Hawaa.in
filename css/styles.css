@@ -9270,6 +9270,15 @@ body.tos-page .logo-awaa {
     transform: rotate(135deg);
 }
 
+/* Sheet grab-handle & backdrop — mobile only (inert on desktop) */
+.edge-filter-sheet-handle {
+    display: none;
+}
+
+.edge-filter-backdrop {
+    display: none;
+}
+
 /* Hidden details — revealed on hover / focus / tap.
    Single-child grid so the 0fr→1fr height animation collapses cleanly. */
 .edge-filter-reveal {
@@ -9358,26 +9367,29 @@ body.tos-page .logo-awaa {
 
 @media (max-width: 760px) {
     .edge-filter-section {
-        padding: 56px 16px 64px;
+        padding: 52px 16px 60px;
     }
 
-    /* Stacked, minimal image tiles */
+    /* All three images in one short, non-scrolling row */
     .edge-filter-stages {
-        grid-template-columns: 1fr;
-        gap: 14px;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
     }
 
-    /* Each tile = just the product image + one floating "+" button. Nothing else. */
+    /* Each tile = just the product image + one small "+" button */
     .edge-filter-stage {
-        aspect-ratio: 4 / 3;
-        border-radius: 18px;
+        aspect-ratio: 3 / 4;
+        border-radius: 14px;
     }
 
-    /* No hover behaviour, no numbers, no badge text — keep the default pristine */
+    /* No hover behaviour, no numbers, no badge — keep the row pristine.
+       Also clear the transform on the open tile: a transformed ancestor
+       would trap the fixed-position sheet inside the tile. */
     .edge-filter-stage:hover,
-    .edge-filter-stage:focus-visible {
+    .edge-filter-stage:focus-visible,
+    .edge-filter-stage.is-open {
         transform: none;
-        box-shadow: 0 8px 28px var(--shadow-tint-sm);
+        box-shadow: 0 6px 18px var(--shadow-tint-sm);
     }
 
     .edge-filter-stage:hover .edge-filter-photo img,
@@ -9390,26 +9402,45 @@ body.tos-page .logo-awaa {
         display: none;
     }
 
-    /* The floating + button is the only affordance */
+    /* Compact + button, centred at the bottom of each tile */
     .edge-filter-toggle {
         display: flex;
+        width: 32px;
+        height: 32px;
+        right: 50%;
+        bottom: 8px;
+        transform: translateX(50%);
+        box-shadow: 0 3px 10px var(--shadow-cta);
+    }
+
+    .edge-filter-toggle-icon {
+        width: 16px;
+        height: 16px;
     }
 
     .edge-filter-toggle:active {
-        transform: scale(0.9);
+        transform: translateX(50%) scale(0.9);
     }
 
-    /* Info sheet — hidden until "+" is tapped, then slides up as a solid
-       surface over the photo so text never sits directly on the image. */
+    /* Details open as a bottom sheet — a tiny tile can't hold readable text */
     .edge-filter-overlay {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        top: auto;
+        z-index: 1001;
         justify-content: flex-start;
-        padding: 22px 20px 24px;
+        max-height: 82vh;
         overflow-y: auto;
+        padding: 12px 22px 30px;
         background: var(--paper);
-        opacity: 0;
-        transform: translateY(14px);
+        border-radius: 22px 22px 0 0;
+        box-shadow: 0 -12px 44px rgba(8, 24, 22, 0.22);
+        transform: translateY(101%);
+        opacity: 1;
         pointer-events: none;
-        transition: opacity 0.38s ease, transform 0.38s ease;
+        transition: transform 0.42s cubic-bezier(0.22, 0.61, 0.36, 1);
     }
 
     /* Keep the sheet a solid surface (override desktop's dark scrim) */
@@ -9420,12 +9451,21 @@ body.tos-page .logo-awaa {
     }
 
     .edge-filter-stage.is-open .edge-filter-overlay {
-        opacity: 1;
-        transform: none;
+        transform: translateY(0);
         pointer-events: auto;
     }
 
-    /* On the sheet, everything is shown at once (no per-item collapse) */
+    /* Grab handle at the top of the sheet */
+    .edge-filter-sheet-handle {
+        display: block;
+        width: 42px;
+        height: 4px;
+        border-radius: 999px;
+        background: var(--ink-line);
+        margin: 0 auto 16px;
+    }
+
+    /* Everything is shown at once inside the sheet */
     .edge-filter-reveal {
         grid-template-rows: 1fr;
         opacity: 1;
@@ -9436,21 +9476,20 @@ body.tos-page .logo-awaa {
     /* Dark, readable text on the light sheet */
     .edge-filter-stage-name {
         font-family: 'Outfit', sans-serif;
-        font-size: 1.2rem;
+        font-size: 1.3rem;
         color: var(--ink);
         text-shadow: none;
-        padding-right: 52px; /* clear the × button */
     }
 
     .edge-filter-stage-tag {
         color: var(--teal-deep);
-        font-size: 0.95rem;
+        font-size: 1rem;
         margin: 0 0 10px;
     }
 
     .edge-filter-stage-stat {
         color: var(--ink-soft);
-        font-size: 0.85rem;
+        font-size: 0.9rem;
     }
 
     .edge-filter-stage-stat strong {
@@ -9459,8 +9498,8 @@ body.tos-page .logo-awaa {
 
     .edge-filter-stage-desc {
         color: var(--ink-soft);
-        font-size: 0.88rem;
-        line-height: 1.62;
+        font-size: 0.92rem;
+        line-height: 1.65;
     }
 
     .edge-filter-chips span {
@@ -9469,9 +9508,31 @@ body.tos-page .logo-awaa {
         border: 1px solid rgba(30, 124, 113, 0.14);
         backdrop-filter: none;
         -webkit-backdrop-filter: none;
-        font-size: 0.7rem;
-        padding: 5px 11px;
+        font-size: 0.74rem;
+        padding: 5px 12px;
     }
+
+    /* Dim backdrop behind the sheet */
+    .edge-filter-backdrop {
+        display: block;
+        position: fixed;
+        inset: 0;
+        z-index: 1000;
+        background: rgba(8, 24, 22, 0.5);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.35s ease;
+    }
+
+    .edge-filter-backdrop.is-active {
+        opacity: 1;
+        pointer-events: auto;
+    }
+}
+
+/* Lock page scroll while the filter sheet is open */
+body.edge-filter-lock {
+    overflow: hidden;
 }
 
 /* ========================================
