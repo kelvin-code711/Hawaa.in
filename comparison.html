@@ -120,9 +120,10 @@
     <section class="cmp-hero">
         <canvas class="cmp-hero-particles" id="cmp-hero-particles"></canvas>
 
-        <!-- Headline with blur reveal -->
-        <div class="cmp-hero-headline" id="cmp-hero-headline">
-            <h1 class="cmp-hero-headline-1">Every Air Purifier. <span class="italic">Compared.</span></h1>
+        <!-- Headline — staggered reveal, no JS delay -->
+        <div class="cmp-hero-headline">
+            <span class="cmp-hero-eyebrow">The honest comparison</span>
+            <h1 class="cmp-hero-headline-1">Every air purifier. <span class="italic">Compared.</span></h1>
             <p class="cmp-hero-headline-2">See how Hawaa Edge performs against the most popular air purifiers in India — airflow, noise, filters, and real ownership cost.</p>
         </div>
 
@@ -134,59 +135,158 @@
             <span class="cmp-hero-scroll-label">SCROLL</span>
         </div>
 
-        <!-- Auto-scrolling card carousel -->
-        <div class="cmp-hero-carousel-wrapper">
-            <div class="cmp-hero-carousel" id="cmp-hero-carousel">
-                <!-- Set 1 -->
-                <a href="#comparison-honeywell" class="cmp-hero-card">
-                    <span class="cmp-hero-card-brand">HONEYWELL</span>
-                    <span class="cmp-hero-card-model">Air Touch V1 &amp; V2</span>
-                </a>
-                <a href="#comparison-philips" class="cmp-hero-card">
-                    <span class="cmp-hero-card-brand">PHILIPS</span>
-                    <span class="cmp-hero-card-model">AC0920</span>
-                </a>
-                <a href="#comparison-levoit" class="cmp-hero-card">
-                    <span class="cmp-hero-card-brand">LEVOIT</span>
-                    <span class="cmp-hero-card-model">Core 300 &amp; Mini</span>
-                </a>
-                <a href="#comparison-qubo" class="cmp-hero-card">
-                    <span class="cmp-hero-card-brand">QUBO</span>
-                    <span class="cmp-hero-card-model">Q200</span>
-                </a>
-                <a href="#comparison-winix" class="cmp-hero-card">
-                    <span class="cmp-hero-card-brand">WINIX</span>
-                    <span class="cmp-hero-card-model">A231</span>
-                </a>
-                <a href="#comparison-dyson" class="cmp-hero-card">
-                    <span class="cmp-hero-card-brand">DYSON</span>
-                    <span class="cmp-hero-card-model">HushJet</span>
-                </a>
-                <!-- Set 2 (duplicate for seamless loop) -->
-                <a href="#comparison-honeywell" class="cmp-hero-card" aria-hidden="true">
-                    <span class="cmp-hero-card-brand">HONEYWELL</span>
-                    <span class="cmp-hero-card-model">Air Touch V1 &amp; V2</span>
-                </a>
-                <a href="#comparison-philips" class="cmp-hero-card" aria-hidden="true">
-                    <span class="cmp-hero-card-brand">PHILIPS</span>
-                    <span class="cmp-hero-card-model">AC0920</span>
-                </a>
-                <a href="#comparison-levoit" class="cmp-hero-card" aria-hidden="true">
-                    <span class="cmp-hero-card-brand">LEVOIT</span>
-                    <span class="cmp-hero-card-model">Core 300 &amp; Mini</span>
-                </a>
-                <a href="#comparison-qubo" class="cmp-hero-card" aria-hidden="true">
-                    <span class="cmp-hero-card-brand">QUBO</span>
-                    <span class="cmp-hero-card-model">Q200</span>
-                </a>
-                <a href="#comparison-winix" class="cmp-hero-card" aria-hidden="true">
-                    <span class="cmp-hero-card-brand">WINIX</span>
-                    <span class="cmp-hero-card-model">A231</span>
-                </a>
-                <a href="#comparison-dyson" class="cmp-hero-card" aria-hidden="true">
-                    <span class="cmp-hero-card-brand">DYSON</span>
-                    <span class="cmp-hero-card-model">HushJet</span>
-                </a>
+        <!-- Compare deck — auto-scrolling "vs" cards -->
+        <div class="cmp-hero-deck">
+            <p class="cmp-hero-deck-label">Compare Hawaa Edge against</p>
+            <div class="cmp-hero-carousel-wrapper">
+                <div class="cmp-hero-carousel" id="cmp-hero-carousel">
+                    <!-- Set 1 -->
+                    <a href="#comparison-honeywell" class="cmp-hero-card">
+                        <span class="cmp-hero-card-top">
+                            <span class="cmp-hero-card-vs">vs</span>
+                            <span class="cmp-hero-card-arrow" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg>
+                            </span>
+                        </span>
+                        <span class="cmp-hero-card-name">
+                            <span class="cmp-hero-card-brand">Honeywell</span>
+                            <span class="cmp-hero-card-model">Air Touch V1 &amp; V2</span>
+                        </span>
+                    </a>
+                    <a href="#comparison-philips" class="cmp-hero-card">
+                        <span class="cmp-hero-card-top">
+                            <span class="cmp-hero-card-vs">vs</span>
+                            <span class="cmp-hero-card-arrow" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg>
+                            </span>
+                        </span>
+                        <span class="cmp-hero-card-name">
+                            <span class="cmp-hero-card-brand">Philips</span>
+                            <span class="cmp-hero-card-model">AC0920</span>
+                        </span>
+                    </a>
+                    <a href="#comparison-levoit" class="cmp-hero-card">
+                        <span class="cmp-hero-card-top">
+                            <span class="cmp-hero-card-vs">vs</span>
+                            <span class="cmp-hero-card-arrow" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg>
+                            </span>
+                        </span>
+                        <span class="cmp-hero-card-name">
+                            <span class="cmp-hero-card-brand">Levoit</span>
+                            <span class="cmp-hero-card-model">Core 300 &amp; Mini</span>
+                        </span>
+                    </a>
+                    <a href="#comparison-qubo" class="cmp-hero-card">
+                        <span class="cmp-hero-card-top">
+                            <span class="cmp-hero-card-vs">vs</span>
+                            <span class="cmp-hero-card-arrow" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg>
+                            </span>
+                        </span>
+                        <span class="cmp-hero-card-name">
+                            <span class="cmp-hero-card-brand">Qubo</span>
+                            <span class="cmp-hero-card-model">Q200</span>
+                        </span>
+                    </a>
+                    <a href="#comparison-winix" class="cmp-hero-card">
+                        <span class="cmp-hero-card-top">
+                            <span class="cmp-hero-card-vs">vs</span>
+                            <span class="cmp-hero-card-arrow" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg>
+                            </span>
+                        </span>
+                        <span class="cmp-hero-card-name">
+                            <span class="cmp-hero-card-brand">Winix</span>
+                            <span class="cmp-hero-card-model">A231</span>
+                        </span>
+                    </a>
+                    <a href="#comparison-dyson" class="cmp-hero-card">
+                        <span class="cmp-hero-card-top">
+                            <span class="cmp-hero-card-vs">vs</span>
+                            <span class="cmp-hero-card-arrow" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg>
+                            </span>
+                        </span>
+                        <span class="cmp-hero-card-name">
+                            <span class="cmp-hero-card-brand">Dyson</span>
+                            <span class="cmp-hero-card-model">HushJet</span>
+                        </span>
+                    </a>
+                    <!-- Set 2 (duplicate for seamless loop) -->
+                    <a href="#comparison-honeywell" class="cmp-hero-card" aria-hidden="true" tabindex="-1">
+                        <span class="cmp-hero-card-top">
+                            <span class="cmp-hero-card-vs">vs</span>
+                            <span class="cmp-hero-card-arrow" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg>
+                            </span>
+                        </span>
+                        <span class="cmp-hero-card-name">
+                            <span class="cmp-hero-card-brand">Honeywell</span>
+                            <span class="cmp-hero-card-model">Air Touch V1 &amp; V2</span>
+                        </span>
+                    </a>
+                    <a href="#comparison-philips" class="cmp-hero-card" aria-hidden="true" tabindex="-1">
+                        <span class="cmp-hero-card-top">
+                            <span class="cmp-hero-card-vs">vs</span>
+                            <span class="cmp-hero-card-arrow" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg>
+                            </span>
+                        </span>
+                        <span class="cmp-hero-card-name">
+                            <span class="cmp-hero-card-brand">Philips</span>
+                            <span class="cmp-hero-card-model">AC0920</span>
+                        </span>
+                    </a>
+                    <a href="#comparison-levoit" class="cmp-hero-card" aria-hidden="true" tabindex="-1">
+                        <span class="cmp-hero-card-top">
+                            <span class="cmp-hero-card-vs">vs</span>
+                            <span class="cmp-hero-card-arrow" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg>
+                            </span>
+                        </span>
+                        <span class="cmp-hero-card-name">
+                            <span class="cmp-hero-card-brand">Levoit</span>
+                            <span class="cmp-hero-card-model">Core 300 &amp; Mini</span>
+                        </span>
+                    </a>
+                    <a href="#comparison-qubo" class="cmp-hero-card" aria-hidden="true" tabindex="-1">
+                        <span class="cmp-hero-card-top">
+                            <span class="cmp-hero-card-vs">vs</span>
+                            <span class="cmp-hero-card-arrow" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg>
+                            </span>
+                        </span>
+                        <span class="cmp-hero-card-name">
+                            <span class="cmp-hero-card-brand">Qubo</span>
+                            <span class="cmp-hero-card-model">Q200</span>
+                        </span>
+                    </a>
+                    <a href="#comparison-winix" class="cmp-hero-card" aria-hidden="true" tabindex="-1">
+                        <span class="cmp-hero-card-top">
+                            <span class="cmp-hero-card-vs">vs</span>
+                            <span class="cmp-hero-card-arrow" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg>
+                            </span>
+                        </span>
+                        <span class="cmp-hero-card-name">
+                            <span class="cmp-hero-card-brand">Winix</span>
+                            <span class="cmp-hero-card-model">A231</span>
+                        </span>
+                    </a>
+                    <a href="#comparison-dyson" class="cmp-hero-card" aria-hidden="true" tabindex="-1">
+                        <span class="cmp-hero-card-top">
+                            <span class="cmp-hero-card-vs">vs</span>
+                            <span class="cmp-hero-card-arrow" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg>
+                            </span>
+                        </span>
+                        <span class="cmp-hero-card-name">
+                            <span class="cmp-hero-card-brand">Dyson</span>
+                            <span class="cmp-hero-card-model">HushJet</span>
+                        </span>
+                    </a>
+                </div>
             </div>
         </div>
     </section>
@@ -231,11 +331,13 @@
 
             <!-- Savings + verdict (tracks the purifier in view) -->
             <div class="cmp-summary">
-                <div class="cmp-save" id="cmp-save"></div>
-                <p class="cmp-footnote" id="cmp-footnote" hidden></p>
-                <div class="cmp-verdict">
-                    <p class="cmp-vs-verdict-line" id="cmp-verdict-line"></p>
-                    <button class="cmp-vs-verdict-btn" id="cmp-verdict-btn" data-verdict="honeywell">Read full verdict</button>
+                <div class="cmp-summary-inner" id="cmp-summary-inner">
+                    <div class="cmp-save" id="cmp-save"></div>
+                    <p class="cmp-footnote" id="cmp-footnote" hidden></p>
+                    <div class="cmp-verdict">
+                        <p class="cmp-vs-verdict-line" id="cmp-verdict-line"></p>
+                        <button class="cmp-vs-verdict-btn" id="cmp-verdict-btn" data-verdict="honeywell">Read full verdict</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -254,149 +356,6 @@
             </div>
         </div>
     </div>
-
-    <!-- ==================== LAB REPORTS ==================== -->
-    <section class="cmp-lab-reports" id="lab-reports">
-        <div class="cmp-section-container">
-            <span class="cmp-section-label">INDEPENDENTLY VERIFIED</span>
-            <h2 class="cmp-section-title">Lab reports &amp; <span class="italic">test results</span></h2>
-            <p class="cmp-lab-reports-desc">Our performance claims are backed by independent lab testing. Every number on this page comes from certified test results.</p>
-        </div>
-        <div class="cmp-lab-slider-wrapper">
-            <div class="cmp-lab-slider" id="lab-slider">
-                <!-- Particle Filtration -->
-                <div class="cmp-lab-card" data-lab="filtration">
-                    <div class="cmp-lab-card-image" style="--lab-gradient: linear-gradient(135deg, var(--ink) 0%, var(--teal-deep-press) 50%, var(--teal-deep) 100%)">
-                        <div class="cmp-lab-tag">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-5"/></svg>
-                            <span>Filtration Test</span>
-                        </div>
-                        <button class="cmp-lab-expand-btn" data-lab-expand="filtration" aria-label="View details">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
-                        </button>
-                        <div class="cmp-lab-card-content">
-                            <div class="cmp-lab-stat-overlay">
-                                <span class="cmp-lab-stat-big">&gt;99.95%</span>
-                                <span class="cmp-lab-stat-sub">filtration efficiency</span>
-                            </div>
-                            <h3 class="cmp-lab-card-title">Particle <span class="italic">Filtration</span></h3>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Airflow / CADR -->
-                <div class="cmp-lab-card" data-lab="cadr">
-                    <div class="cmp-lab-card-image" style="--lab-gradient: linear-gradient(135deg, var(--ink) 0%, var(--teal-deep-press) 50%, var(--teal-deep) 100%)">
-                        <div class="cmp-lab-tag">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9.59 4.59A2 2 0 1111 8H2m10.59 11.41A2 2 0 1014 16H2m15.73-8.27A2.5 2.5 0 1119.5 12H2"/></svg>
-                            <span>CADR Test</span>
-                        </div>
-                        <button class="cmp-lab-expand-btn" data-lab-expand="cadr" aria-label="View details">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
-                        </button>
-                        <div class="cmp-lab-card-content">
-                            <div class="cmp-lab-stat-overlay">
-                                <span class="cmp-lab-stat-big">410 m³/h</span>
-                                <span class="cmp-lab-stat-sub">verified CADR</span>
-                            </div>
-                            <h3 class="cmp-lab-card-title">Airflow &amp; <span class="italic">CADR</span></h3>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Noise Level -->
-                <div class="cmp-lab-card" data-lab="noise">
-                    <div class="cmp-lab-card-image" style="--lab-gradient: linear-gradient(135deg, var(--ink) 0%, var(--teal-deep-press) 50%, var(--teal-deep) 100%)">
-                        <div class="cmp-lab-tag">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 010 7.07"/></svg>
-                            <span>Noise Test</span>
-                        </div>
-                        <button class="cmp-lab-expand-btn" data-lab-expand="noise" aria-label="View details">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
-                        </button>
-                        <div class="cmp-lab-card-content">
-                            <div class="cmp-lab-stat-overlay">
-                                <span class="cmp-lab-stat-big">24 dB</span>
-                                <span class="cmp-lab-stat-sub">sleep mode verified</span>
-                            </div>
-                            <h3 class="cmp-lab-card-title">Noise <span class="italic">Level</span></h3>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Energy Consumption -->
-                <div class="cmp-lab-card" data-lab="energy">
-                    <div class="cmp-lab-card-image" style="--lab-gradient: linear-gradient(135deg, var(--ink) 0%, var(--teal-deep-press) 50%, var(--teal-deep) 100%)">
-                        <div class="cmp-lab-tag">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-                            <span>Energy Test</span>
-                        </div>
-                        <button class="cmp-lab-expand-btn" data-lab-expand="energy" aria-label="View details">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
-                        </button>
-                        <div class="cmp-lab-card-content">
-                            <div class="cmp-lab-stat-overlay">
-                                <span class="cmp-lab-stat-big">45W</span>
-                                <span class="cmp-lab-stat-sub">max power draw</span>
-                            </div>
-                            <h3 class="cmp-lab-card-title">Energy <span class="italic">Consumption</span></h3>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="cmp-lab-controls">
-                <div class="cmp-lab-progress">
-                    <div class="cmp-lab-progress-bar" id="lab-progress-bar"></div>
-                </div>
-                <div class="cmp-lab-arrows">
-                    <button class="cmp-lab-arrow" id="lab-prev" aria-label="Previous">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
-                    </button>
-                    <button class="cmp-lab-arrow" id="lab-next" aria-label="Next">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
-                    </button>
-                </div>
-            </div>
-
-        <!-- Lab Report Expanded Overlay (matches home page feature popup) -->
-        <div class="feature-overlay" id="cmp-lab-overlay">
-            <div class="feature-expanded">
-                <div class="feature-expanded-image" id="cmp-lab-expanded-image"></div>
-                <div class="feature-expanded-content">
-                    <div class="feature-expanded-tag" id="cmp-lab-expanded-tag"></div>
-                    <button class="feature-close-btn" id="cmp-lab-close" aria-label="Close">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M18 6L6 18M6 6l12 12"/>
-                        </svg>
-                    </button>
-                    <h2 class="feature-expanded-title" id="cmp-lab-expanded-title"></h2>
-                    <p class="feature-expanded-desc" id="cmp-lab-expanded-desc"></p>
-                    <div class="feature-testimonial" id="cmp-lab-expanded-stats"></div>
-                    <div class="feature-expanded-actions">
-                        <a href="#" class="feature-learn-more"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" style="flex-shrink:0"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>Report</a>
-                        <div class="feature-expanded-nav">
-                            <button class="feature-expanded-arrow" id="cmp-lab-prev-expanded" aria-label="Previous">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M19 12H5M12 19l-7-7 7-7"/>
-                                </svg>
-                            </button>
-                            <button class="feature-expanded-arrow" id="cmp-lab-next-expanded" aria-label="Next">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M5 12h14M12 5l7 7-7 7"/>
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="cmp-section-container">
-            <p class="cmp-lab-disclaimer">All tests conducted by independent certified laboratories. Full reports available on request — contact support@hawaa.in</p>
-        </div>
-    </section>
 
     <!-- ==================== BOTTOM CTA ==================== -->
     <section class="cmp-bottom-cta">
@@ -514,6 +473,5 @@
     <script src="js/comparison-data.js"></script>
     <script src="js/comparison-card.js"></script>
     <script src="js/comparison-vs.js"></script>
-    <script src="js/comparison.js"></script>
 </body>
 </html>

@@ -79,7 +79,7 @@
                 costFilters: { v: R + '13,600', s: 'lose' },
                 costTotal: { v: R + '18,430', s: 'lose' }
             },
-            save: 'You save <strong>' + R + '5,230</strong> over 5 years with Hawaa Edge',
+            saveAmount: R + '5,230', saveNote: 'vs Honeywell Air Touch V1 over five years of ownership',
             verdictLine: 'Hawaa Edge wins on CADR, coverage, smart control, and 5-year cost. The only trade-off is ' + R + '1,170 more upfront.'
         },
         {
@@ -100,7 +100,7 @@
                 costFilters: { v: R + '19,832', s: 'lose' },
                 costTotal: { v: R + '27,131', s: 'lose' }
             },
-            save: 'You save <strong>' + R + '13,139</strong> over 5 years — for identical CADR',
+            saveAmount: R + '13,139', saveNote: 'vs Honeywell Air Touch V2 — for identical CADR',
             verdictLine: 'Same CADR. Lower price. BLDC motor. Built-in smart control. The V2 costs more upfront, runs louder, and its filters cost nearly 2.5x more.'
         },
         {
@@ -121,7 +121,7 @@
                 costFilters: { v: R + '15,360', s: 'lose' },
                 costTotal: { v: R + '25,355', s: 'lose' }
             },
-            save: 'You save <strong>' + R + '11,363</strong> over 5 years — for air that is equally clean',
+            saveAmount: R + '11,363', saveNote: 'vs Philips AC0920 — for air that is equally clean',
             verdictLine: 'Identical CADR. Identical coverage. Same filter grade. The Philips costs ' + R + '3,995 more upfront, runs louder, and locks smart features behind a proprietary app.'
         },
         {
@@ -142,7 +142,7 @@
                 costFilters: { v: R + '24,000', s: 'lose' },
                 costTotal: { v: R + '33,000', s: 'lose' }
             },
-            save: 'You save <strong>' + R + '19,008</strong> over 5 years',
+            saveAmount: R + '19,008', saveNote: 'vs Levoit Core 300 over five years of ownership',
             verdictLine: 'The Core 300 was engineered for Western room sizes. Its 220 sq ft coverage leaves a standard Indian bedroom outside its rated zone. The Edge costs ' + R + '3,000 less and covers 80 sq ft more.'
         },
         {
@@ -163,7 +163,7 @@
                 costFilters: { v: R + '15,992', s: 'lose' },
                 costTotal: { v: R + '20,992', s: 'lose' }
             },
-            save: 'You save <strong>' + R + '7,000</strong> over 5 years — and get 2.5x the CADR',
+            saveAmount: R + '7,000', saveNote: 'vs Levoit Core Mini — and you get 2.5\u00D7 the CADR',
             verdictLine: 'The Core Mini costs ' + R + '1,000 less upfront. That is where its advantages end. Its ~100 ' + M3 + '/hr CADR is built for personal spaces — not a standard Indian bedroom.'
         },
         {
@@ -184,7 +184,7 @@
                 costFilters: { v: R + '12,720', s: 'lose' },
                 costTotal: { v: R + '25,710', s: 'lose' }
             },
-            save: 'You save <strong>' + R + '11,718</strong> over 5 years — and get 67% more CADR',
+            saveAmount: R + '11,718', saveNote: 'vs Qubo Q200 — and you get 67% more CADR',
             verdictLine: 'The Q200 costs 2.2x more to deliver 40% less cleaning power. Both have BLDC motors. Both support voice control. The Edge does it without another app.'
         },
         {
@@ -205,7 +205,7 @@
                 costFilters: { v: R + '23,992', s: 'lose' },
                 costTotal: { v: R + '41,992', s: 'lose' }
             },
-            save: 'You save <strong>' + R + '28,000</strong> over 5 years',
+            saveAmount: R + '28,000', saveNote: 'vs Winix A231 over five years of ownership',
             verdictLine: 'Same CADR. Larger coverage. Native smart home integration. ' + R + '28,000 cheaper over five years. The A231 lacks official India distribution and after-sales support.'
         },
         {
@@ -226,7 +226,7 @@
                 costFilters: { v: R + '0*', s: 'win' },
                 costTotal: { v: R + '29,900', s: 'lose' }
             },
-            save: 'You save <strong>' + R + '15,908</strong> over 5 years',
+            saveAmount: R + '15,908', saveNote: 'vs Dyson HushJet over five years of ownership',
             footnote: '*Dyson’s electrostatic filter is rated for 5 years at 12 hrs/day in standard conditions. In Indian environments with heavy PM2.5, cooking smoke, and incense, real-world filter life may vary. Dyson does not publish India-specific filter degradation data.',
             verdictLine: 'Both deliver 250 ' + M3 + '/hr CADR to the same room size. The air that comes out is equally clean. The question is what the ' + R + '23,900 difference means to you.'
         }
