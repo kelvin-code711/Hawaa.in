@@ -197,7 +197,8 @@
 
 .cmp-hero-carousel-wrapper {
     overflow: hidden;
-    padding: 0 12px;
+    /* top inset so the hover lift is never clipped */
+    padding: 6px 12px 0;
     -webkit-mask-image: linear-gradient(to right, transparent 0%, black 3%, black 97%, transparent 100%);
     mask-image: linear-gradient(to right, transparent 0%, black 3%, black 97%, transparent 100%);
 }
@@ -212,10 +213,6 @@
 @keyframes cmp-card-scroll {
     0% { transform: translateX(0); }
     100% { transform: translateX(-50%); }
-}
-
-.cmp-hero-carousel:hover {
-    animation-play-state: paused;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -244,9 +241,33 @@
     cursor: pointer;
 }
 
-.cmp-hero-card:hover {
-    transform: translateY(-3px);
-    border-color: rgba(79, 196, 184, 0.45);
+/* Hover effects only on real pointer devices — on touch, iOS makes
+   :hover stick after a tap, leaving cards lifted and clipped */
+@media (hover: hover) and (pointer: fine) {
+    .cmp-hero-carousel:hover {
+        animation-play-state: paused;
+    }
+
+    .cmp-hero-card:hover {
+        transform: translateY(-3px);
+        border-color: rgba(79, 196, 184, 0.45);
+        background: rgba(255, 255, 255, 0.08);
+    }
+
+    .cmp-hero-card:hover .cmp-hero-card-vs {
+        color: var(--teal-on-dark);
+        border-color: rgba(79, 196, 184, 0.4);
+    }
+
+    .cmp-hero-card:hover .cmp-hero-card-arrow {
+        color: var(--teal-on-dark);
+        transform: translate(2px, -2px);
+    }
+}
+
+/* Touch feedback: press in place, never lift */
+.cmp-hero-card:active {
+    transform: scale(0.98);
     background: rgba(255, 255, 255, 0.08);
 }
 
@@ -270,11 +291,6 @@
     transition: color 0.3s ease, border-color 0.3s ease;
 }
 
-.cmp-hero-card:hover .cmp-hero-card-vs {
-    color: var(--teal-on-dark);
-    border-color: rgba(79, 196, 184, 0.4);
-}
-
 .cmp-hero-card-arrow {
     display: flex;
     align-items: center;
@@ -286,11 +302,6 @@
 .cmp-hero-card-arrow svg {
     width: 15px;
     height: 15px;
-}
-
-.cmp-hero-card:hover .cmp-hero-card-arrow {
-    color: var(--teal-on-dark);
-    transform: translate(2px, -2px);
 }
 
 .cmp-hero-card-name {
@@ -516,30 +527,37 @@
     border-radius: 24px;
 }
 
+/* The scroller itself is the rounded paper panel; rival columns slide
+   inside it. Keeping radius/border on the container (not the cards)
+   means nothing "flashes" at the edges while switching rivals. */
 .cmp-scroll {
     flex: 1 1 0;
     min-width: 0;
     display: flex;
-    gap: 10px;
+    gap: 0;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     -ms-overflow-style: none;
+    background: var(--paper);
+    border: 1px solid var(--ink-line-soft);
+    border-radius: 24px;
 }
 
 .cmp-scroll::-webkit-scrollbar {
     display: none;
 }
 
-/* Rival cards mirror the Hawaa panel: same radius, same footprint */
 .cmp-col--rival {
     flex: 0 0 100%;
     scroll-snap-align: start;
-    background: var(--paper);
-    border: 1px solid var(--ink-line-soft);
-    border-radius: 24px;
+}
+
+/* Hairline between rival columns when two are visible side by side */
+.cmp-col--rival + .cmp-col--rival {
+    border-left: 1px solid var(--ink-line-soft);
 }
 
 @media (min-width: 768px) {
