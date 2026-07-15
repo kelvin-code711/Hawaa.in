@@ -2,7 +2,8 @@
    HAWAA vs RIVALS — Comparison (Mila-style)
    Fixed Hawaa column on the left; rival product
    cards scroll horizontally on the right. Summary
-   (savings / verdict) tracks the rival in view.
+   (savings / verdict) tracks the rival in view and
+   crossfades between rivals instead of blinking.
 ======================================== */
 (function () {
     'use strict';
@@ -17,6 +18,7 @@
 
     var els = {
         section: document.getElementById('comparison'),
+        summaryInner: document.getElementById('cmp-summary-inner'),
         save: document.getElementById('cmp-save'),
         footnote: document.getElementById('cmp-footnote'),
         verdictLine: document.getElementById('cmp-verdict-line'),
@@ -28,6 +30,7 @@
 
     var rivals = DATA.rivals;
     var current = 0;
+    var SWITCH_MS = 200;
 
     /* --- Build the stacked label/value cells for one column --- */
     function cellsHtml(getCell) {
@@ -78,19 +81,13 @@
 
     scroll.innerHTML = rivals.map(rivalCardHtml).join('');
 
-    /* --- Summary (savings + verdict) reflects the rival in view --- */
-    function setActive(i) {
-        if (i < 0 || i >= rivals.length || i === current) {
-            if (i === current) updateSummary(i);
-            return;
-        }
-        current = i;
-        updateSummary(i);
-    }
-
-    function updateSummary(i) {
+    /* --- Summary rendering --- */
+    function renderSummary(i) {
         var r = rivals[i];
-        els.save.innerHTML = r.save;
+        els.save.innerHTML =
+            '<span class="cmp-save-eyebrow">Total 5-year savings</span>' +
+            '<span class="cmp-save-amount">' + r.saveAmount + '</span>' +
+            '<span class="cmp-save-note">' + r.saveNote + '</span>';
         if (r.footnote) {
             els.footnote.innerHTML = r.footnote;
             els.footnote.hidden = false;
@@ -100,14 +97,54 @@
         }
         els.verdictLine.textContent = r.verdictLine;
         els.verdictBtn.setAttribute('data-verdict', r.key);
-        els.index.textContent = (i + 1) + ' / ' + rivals.length;
     }
 
-    updateSummary(0);
+    function updateControls(i) {
+        els.index.textContent = (i + 1) + ' / ' + rivals.length;
+        if (els.prev) els.prev.disabled = (i === 0);
+        if (els.next) els.next.disabled = (i === rivals.length - 1);
+    }
 
-    /* Detect which rival card is centered in the scroller */
+    /* Crossfade: fade the summary out, swap content, fade back in.
+       Rapid calls collapse into one swap (no flicker). */
+    var switchTimer = null;
+    function setActive(i, animate) {
+        if (i < 0 || i >= rivals.length || i === current) return;
+        current = i;
+        updateControls(i);
+
+        if (!animate || !els.summaryInner) {
+            renderSummary(i);
+            return;
+        }
+        els.summaryInner.classList.add('is-switching');
+        clearTimeout(switchTimer);
+        switchTimer = setTimeout(function () {
+            renderSummary(current);
+            els.summaryInner.classList.remove('is-switching');
+        }, SWITCH_MS);
+    }
+
+    renderSummary(0);
+    updateControls(0);
+
+    /* --- Scroll tracking ---
+       While an arrow click drives a smooth scroll, the observer is
+       suppressed so intermediate cards don't rewrite the summary
+       (that rewriting was the "blink"). It re-arms once scrolling
+       settles. */
+    var suppressObserver = false;
+    var settleTimer = null;
+
+    scroll.addEventListener('scroll', function () {
+        if (!suppressObserver) return;
+        clearTimeout(settleTimer);
+        settleTimer = setTimeout(function () { suppressObserver = false; }, 150);
+    }, { passive: true });
+
     if ('IntersectionObserver' in window) {
         var io = new IntersectionObserver(function (entries) {
+            if (suppressObserver) return;
             var best = null;
             entries.forEach(function (e) {
                 if (e.isIntersecting && (!best || e.intersectionRatio > best.intersectionRatio)) {
@@ -116,7 +153,7 @@
             });
             if (best) {
                 var idx = parseInt(best.target.getAttribute('data-rival'), 10);
-                if (!isNaN(idx)) setActive(idx);
+                if (!isNaN(idx)) setActive(idx, true);
             }
         }, { root: scroll, threshold: [0.55, 0.75, 1] });
         scroll.querySelectorAll('.cmp-col--rival').forEach(function (c) { io.observe(c); });
@@ -125,10 +162,12 @@
     /* --- Switcher arrows scroll the rival strip --- */
     function scrollToRival(i) {
         var card = document.getElementById('cmp-rival-' + i);
-        if (card) {
-            scroll.scrollTo({ left: card.offsetLeft - scroll.offsetLeft, behavior: 'smooth' });
-            setActive(i);
-        }
+        if (!card) return;
+        suppressObserver = true;
+        clearTimeout(settleTimer);
+        settleTimer = setTimeout(function () { suppressObserver = false; }, 700);
+        scroll.scrollTo({ left: card.offsetLeft - scroll.offsetLeft, behavior: 'smooth' });
+        setActive(i, true);
     }
 
     if (els.prev) els.prev.addEventListener('click', function () {

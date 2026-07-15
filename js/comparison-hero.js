@@ -124,11 +124,6 @@
         }, 200);
     });
 
-    // Headline blur reveal animation
-    var headline = document.getElementById('cmp-hero-headline');
-    if (headline) {
-        setTimeout(function () {
-            headline.classList.add('is-revealed');
-        }, 1400);
-    }
+    // Headline reveal is handled purely in CSS (staggered keyframes) so the
+    // text is readable immediately — no JS-timed delay.
 })();
