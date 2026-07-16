@@ -118,6 +118,11 @@
         </div>
     </div>
 
+    <!-- Reading Progress -->
+    <div class="ba-progress" aria-hidden="true">
+        <div class="ba-progress-fill" id="ba-progress-fill"></div>
+    </div>
+
     <!-- ========================================
          ARTICLE HEADER
     ======================================== -->
@@ -131,11 +136,23 @@
                 All articles
             </a>
             <span class="ba-tag">Health &amp; Wellness</span>
-            <h1 class="ba-title">How Indoor Air Quality Affects Your Sleep</h1>
+            <h1 class="ba-title">How Indoor Air Quality Affects <em>Your Sleep</em></h1>
             <div class="ba-meta">
                 <span>January 15, 2026</span>
                 <span class="ba-meta-dot"></span>
                 <span>5 min read</span>
+                <span class="ba-meta-dot"></span>
+                <span>Hawaa Team</span>
+            </div>
+            <div class="ba-share">
+                <button class="ba-share-btn" id="ba-share-native" type="button">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+                    Share
+                </button>
+                <button class="ba-share-btn" id="ba-share-copy" type="button">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                    <span id="ba-share-copy-label">Copy link</span>
+                </button>
             </div>
         </div>
     </section>
@@ -199,6 +216,18 @@
 
                 <p>Sleep is one of the most important investments you make in your health every single day. By taking control of the air in your bedroom, you are not just breathing cleaner air but setting the foundation for deeper, more restorative rest that powers everything you do while awake.</p>
             </div>
+
+            <!-- Article Endcap -->
+            <div class="ba-endcap">
+                <div class="ba-endcap-rule" aria-hidden="true"></div>
+                <div class="ba-endcap-row">
+                    <a href="blogs.html" class="ba-endcap-chip">Health &amp; Wellness</a>
+                    <a href="blogs.html" class="ba-endcap-back">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+                        Back to all articles
+                    </a>
+                </div>
+            </div>
         </div>
     </article>
 
@@ -208,38 +237,83 @@
     <section class="ba-related">
         <div class="ba-related-wrap">
             <div class="ba-related-header">
-                <h2 class="ba-related-title">Related posts</h2>
-                <p class="ba-related-desc">Expert insights on air quality, wellness, and modern living.</p>
-                <a href="blogs.html" class="ba-related-viewall">&#8594; View all</a>
+                <div class="ba-related-heading">
+                    <span class="ba-related-eyebrow">Keep reading</span>
+                    <h2 class="ba-related-title">Related <em>articles</em></h2>
+                </div>
+                <a href="blogs.html" class="ba-related-viewall">
+                    View all
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+                </a>
             </div>
 
             <div class="ba-related-slider" id="ba-related-slider">
                 <!-- Related Card 1 -->
                 <a href="blog-post.html" class="ba-rel-card">
-                    <div class="ba-rel-card-img" style="background-image: url('public/images/blog_06.webp')"></div>
-                    <h3 class="ba-rel-card-title">Air Purifiers and Allergies: What You Need to Know</h3>
-                    <span class="ba-rel-card-cta">&#8594; Read article</span>
+                    <div class="ba-rel-card-media">
+                        <div class="ba-rel-card-img" style="background-image: url('public/images/blog_06.webp')"></div>
+                        <span class="ba-rel-card-tag">Health &amp; Wellness</span>
+                    </div>
+                    <div class="ba-rel-card-body">
+                        <h3 class="ba-rel-card-title">Air Purifiers and Allergies: What You Need to Know</h3>
+                        <div class="ba-rel-card-meta">
+                            <span>6 min read</span>
+                            <span class="ba-rel-card-arrow" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+                            </span>
+                        </div>
+                    </div>
                 </a>
 
                 <!-- Related Card 2 -->
                 <a href="blog-post.html" class="ba-rel-card">
-                    <div class="ba-rel-card-img" style="background-image: url('public/images/blog_01.webp')"></div>
-                    <h3 class="ba-rel-card-title">Is Your Air Purifier Actually Working? Signs to Look For</h3>
-                    <span class="ba-rel-card-cta">&#8594; Read article</span>
+                    <div class="ba-rel-card-media">
+                        <div class="ba-rel-card-img" style="background-image: url('public/images/blog_01.webp')"></div>
+                        <span class="ba-rel-card-tag">Air Quality</span>
+                    </div>
+                    <div class="ba-rel-card-body">
+                        <h3 class="ba-rel-card-title">Is Your Air Purifier Actually Working? Signs to Look For</h3>
+                        <div class="ba-rel-card-meta">
+                            <span>5 min read</span>
+                            <span class="ba-rel-card-arrow" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+                            </span>
+                        </div>
+                    </div>
                 </a>
 
                 <!-- Related Card 3 -->
                 <a href="blog-post.html" class="ba-rel-card">
-                    <div class="ba-rel-card-img" style="background-image: url('public/images/blog_07.webp')"></div>
-                    <h3 class="ba-rel-card-title">5 Simple Ways to Improve Air Quality at Home</h3>
-                    <span class="ba-rel-card-cta">&#8594; Read article</span>
+                    <div class="ba-rel-card-media">
+                        <div class="ba-rel-card-img" style="background-image: url('public/images/blog_07.webp')"></div>
+                        <span class="ba-rel-card-tag">Home &amp; Living</span>
+                    </div>
+                    <div class="ba-rel-card-body">
+                        <h3 class="ba-rel-card-title">5 Simple Ways to Improve Air Quality at Home</h3>
+                        <div class="ba-rel-card-meta">
+                            <span>4 min read</span>
+                            <span class="ba-rel-card-arrow" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+                            </span>
+                        </div>
+                    </div>
                 </a>
 
                 <!-- Related Card 4 -->
                 <a href="blog-post.html" class="ba-rel-card">
-                    <div class="ba-rel-card-img" style="background-image: url('public/images/blog_03.webp')"></div>
-                    <h3 class="ba-rel-card-title">When to Replace Your HEPA Filter: A Complete Guide</h3>
-                    <span class="ba-rel-card-cta">&#8594; Read article</span>
+                    <div class="ba-rel-card-media">
+                        <div class="ba-rel-card-img" style="background-image: url('public/images/blog_03.webp')"></div>
+                        <span class="ba-rel-card-tag">Filter Care</span>
+                    </div>
+                    <div class="ba-rel-card-body">
+                        <h3 class="ba-rel-card-title">When to Replace Your HEPA Filter: A Complete Guide</h3>
+                        <div class="ba-rel-card-meta">
+                            <span>7 min read</span>
+                            <span class="ba-rel-card-arrow" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+                            </span>
+                        </div>
+                    </div>
                 </a>
             </div>
 
