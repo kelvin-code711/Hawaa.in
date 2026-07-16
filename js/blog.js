@@ -127,22 +127,141 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ========================================
-    // READING PROGRESS BAR (blog-post.html)
+    // BOOK READER — chapter pager (blog-post.html)
+    // Full text stays in the DOM; JS paginates it.
     // ========================================
+    const book = document.getElementById('ba-book');
     const progressFill = document.getElementById('ba-progress-fill');
-    const articleBody = document.querySelector('.ba-body');
 
-    if (progressFill && articleBody) {
-        const updateProgress = () => {
-            const start = articleBody.offsetTop;
-            const total = articleBody.offsetHeight - window.innerHeight;
-            const progress = total > 0 ? (window.scrollY - start) / total : 1;
-            const pct = Math.min(100, Math.max(0, progress * 100));
-            progressFill.style.width = pct + '%';
+    if (book) {
+        const bookPages = Array.from(book.querySelectorAll('.ba-page'));
+        const dotsWrap = document.getElementById('ba-book-dots');
+        const countEl = document.getElementById('ba-book-count');
+        const leftEl = document.getElementById('ba-book-left');
+        const prevBtn = document.getElementById('ba-turn-prev');
+        const nextBtn = document.getElementById('ba-turn-next');
+        const hintEl = document.getElementById('ba-book-hint');
+        let pageIdx = 0;
+
+        book.classList.add('js');
+        if (hintEl) hintEl.classList.add('js');
+
+        // Build progress dots
+        if (dotsWrap) {
+            bookPages.forEach(() => dotsWrap.appendChild(document.createElement('i')));
+        }
+        const dots = dotsWrap ? dotsWrap.querySelectorAll('i') : [];
+
+        const minutesLeft = (fromIdx) => {
+            let mins = 0;
+            for (let i = fromIdx; i < bookPages.length; i++) {
+                mins += parseInt(bookPages[i].dataset.minutes || '0', 10);
+            }
+            return mins;
         };
-        window.addEventListener('scroll', updateProgress, { passive: true });
-        window.addEventListener('resize', updateProgress, { passive: true });
-        updateProgress();
+        const totalMinutes = minutesLeft(0);
+
+        const keepBookInView = () => {
+            const top = book.getBoundingClientRect().top;
+            if (top < 60 || top > window.innerHeight * 0.5) {
+                const y = window.scrollY + top - 96;
+                window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+            }
+        };
+
+        const goTo = (n, back, skipScroll) => {
+            if (n < 0 || n >= bookPages.length) return;
+            bookPages[pageIdx].classList.remove('current', 'turn-back');
+            pageIdx = n;
+            const page = bookPages[pageIdx];
+            page.classList.add('current');
+            if (back) page.classList.add('turn-back');
+
+            dots.forEach((d, i) => d.classList.toggle('here', i === pageIdx));
+            if (prevBtn) prevBtn.disabled = pageIdx === 0;
+            if (nextBtn) nextBtn.disabled = pageIdx === bookPages.length - 1;
+            if (countEl) countEl.textContent = page.dataset.label || '';
+            if (leftEl) {
+                const left = minutesLeft(pageIdx);
+                if (pageIdx === bookPages.length - 1) {
+                    leftEl.textContent = 'Done ✓';
+                } else if (pageIdx === 0) {
+                    leftEl.textContent = totalMinutes + ' min';
+                } else {
+                    leftEl.textContent = '~' + left + ' min left';
+                }
+            }
+            if (progressFill) {
+                progressFill.style.width = ((pageIdx / (bookPages.length - 1)) * 100) + '%';
+            }
+            // Deep-linkable chapters without polluting history
+            if (page.id && history.replaceState) {
+                history.replaceState(null, '', pageIdx === 0
+                    ? window.location.pathname + window.location.search
+                    : '#' + page.id);
+            }
+            if (!skipScroll) keepBookInView();
+        };
+
+        // Prev / next controls
+        if (prevBtn) prevBtn.addEventListener('click', () => goTo(pageIdx - 1, true));
+        if (nextBtn) nextBtn.addEventListener('click', () => goTo(pageIdx + 1, false));
+
+        // TOC entries, start button, "read again"
+        book.querySelectorAll('[data-goto]').forEach(el => {
+            el.addEventListener('click', (e) => {
+                e.preventDefault();
+                const target = parseInt(el.dataset.goto, 10);
+                goTo(target, target < pageIdx);
+            });
+        });
+
+        // Keyboard paging
+        document.addEventListener('keydown', (e) => {
+            if (e.target.matches('input, textarea, select')) return;
+            if (e.key === 'ArrowRight') goTo(pageIdx + 1, false);
+            if (e.key === 'ArrowLeft') goTo(pageIdx - 1, true);
+        });
+
+        // Swipe paging (horizontal only, so vertical scroll stays natural)
+        let touchX = null;
+        let touchY = null;
+        book.addEventListener('touchstart', (e) => {
+            touchX = e.touches[0].clientX;
+            touchY = e.touches[0].clientY;
+        }, { passive: true });
+        book.addEventListener('touchend', (e) => {
+            if (touchX === null) return;
+            const dx = e.changedTouches[0].clientX - touchX;
+            const dy = e.changedTouches[0].clientY - touchY;
+            if (Math.abs(dx) > 48 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+                if (dx < 0) goTo(pageIdx + 1, false);
+                else goTo(pageIdx - 1, true);
+            }
+            touchX = null;
+            touchY = null;
+        }, { passive: true });
+
+        // Open on the chapter from the URL hash, if any
+        let startIdx = 0;
+        if (window.location.hash) {
+            const hashIdx = bookPages.findIndex(p => '#' + p.id === window.location.hash);
+            if (hashIdx > 0) startIdx = hashIdx;
+        }
+        goTo(startIdx, false, true);
+    } else if (progressFill) {
+        // Fallback: scroll-based progress for non-book articles
+        const articleBody = document.querySelector('.ba-body');
+        if (articleBody) {
+            const updateProgress = () => {
+                const start = articleBody.offsetTop;
+                const total = articleBody.offsetHeight - window.innerHeight;
+                const progress = total > 0 ? (window.scrollY - start) / total : 1;
+                progressFill.style.width = Math.min(100, Math.max(0, progress * 100)) + '%';
+            };
+            window.addEventListener('scroll', updateProgress, { passive: true });
+            updateProgress();
+        }
     }
 
     // ========================================
