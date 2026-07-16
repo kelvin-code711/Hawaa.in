@@ -140,7 +140,7 @@
             <div class="ba-meta">
                 <span>January 15, 2026</span>
                 <span class="ba-meta-dot"></span>
-                <span>5 min read</span>
+                <span>5 chapters &middot; 5 min</span>
                 <span class="ba-meta-dot"></span>
                 <span>Hawaa Team</span>
             </div>
@@ -158,76 +158,141 @@
     </section>
 
     <!-- ========================================
-         ARTICLE CONTENT
+         ARTICLE CONTENT — book reader
+         Full text lives in the HTML; JS paginates
+         it into chapters (graceful no-JS fallback).
     ======================================== -->
     <article class="ba-body">
         <div class="ba-body-wrap">
-            <!-- Featured Image -->
-            <div class="ba-featured-img" style="background-image: url('public/images/blog_05.webp')"></div>
+            <div class="ba-book-wrap">
+                <div class="ba-book" id="ba-book">
 
-            <!-- Article Text -->
-            <div class="ba-content">
-                <p>You close the windows, draw the curtains, switch off the lights, and settle into bed. Everything seems perfect for a good night's rest. But there is an invisible factor that might be undermining your sleep quality every single night: the air you breathe.</p>
+                    <!-- Page · Cover -->
+                    <section class="ba-page ba-page-cover" id="overview" data-label="Overview" data-minutes="0">
+                        <div class="ba-cover-img" style="background-image: url('public/images/blog_05.webp')"></div>
+                        <div class="ba-toc">
+                            <span class="ba-toc-label">In this guide</span>
+                            <ol class="ba-toc-list">
+                                <li><a href="#chapter-1" class="ba-toc-item" data-goto="1"><span class="ba-toc-num">I</span><span class="ba-toc-title">An invisible factor in your rest</span><span class="ba-toc-time">1 min</span></a></li>
+                                <li><a href="#chapter-2" class="ba-toc-item" data-goto="2"><span class="ba-toc-num">II</span><span class="ba-toc-title">The problem in your bedroom</span><span class="ba-toc-time">1 min</span></a></li>
+                                <li><a href="#chapter-3" class="ba-toc-item" data-goto="3"><span class="ba-toc-num">III</span><span class="ba-toc-title">How it disrupts sleep</span><span class="ba-toc-time">1 min</span></a></li>
+                                <li><a href="#chapter-4" class="ba-toc-item" data-goto="4"><span class="ba-toc-num">IV</span><span class="ba-toc-title">Signs to watch for</span><span class="ba-toc-time">1 min</span></a></li>
+                                <li><a href="#chapter-5" class="ba-toc-item" data-goto="5"><span class="ba-toc-num">V</span><span class="ba-toc-title">Practical steps that work</span><span class="ba-toc-time">1 min</span></a></li>
+                            </ol>
+                        </div>
+                        <a href="#chapter-1" class="ba-start" data-goto="1">
+                            Start reading
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+                        </a>
+                    </section>
 
-                <p>Research increasingly shows that indoor air quality plays a significant role in how well we sleep, how quickly we fall asleep, and how refreshed we feel in the morning. For millions of people living in Indian cities where outdoor AQI regularly crosses hazardous levels, this connection is more relevant than ever.</p>
+                    <!-- Page · Chapter 1 -->
+                    <section class="ba-page" id="chapter-1" data-label="Chapter 1 of 5" data-minutes="1">
+                        <span class="ba-page-eyebrow">Chapter 1 &middot; The invisible factor</span>
+                        <h2 class="ba-page-title">An invisible factor in your rest</h2>
+                        <div class="ba-page-prose">
+                            <p>You close the windows, draw the curtains, switch off the lights, and settle into bed. Everything seems perfect for a good night's rest. But there is an invisible factor that might be undermining your sleep quality every single night: the air you breathe.</p>
+                            <p>Research increasingly shows that indoor air quality plays a significant role in how well we sleep, how quickly we fall asleep, and how refreshed we feel in the morning. For millions of people living in Indian cities where outdoor AQI regularly crosses hazardous levels, this connection is more relevant than ever.</p>
+                        </div>
+                    </section>
 
-                <h2>The Invisible Problem in Your Bedroom</h2>
+                    <!-- Page · Chapter 2 -->
+                    <section class="ba-page" id="chapter-2" data-label="Chapter 2 of 5" data-minutes="1">
+                        <span class="ba-page-eyebrow">Chapter 2 &middot; The problem</span>
+                        <h2 class="ba-page-title">The invisible problem in your bedroom</h2>
+                        <div class="ba-page-prose">
+                            <p>Indoor air contains a mix of pollutants that most people never think about. Fine particulate matter (PM2.5) seeps in from outside through gaps in windows and doors. Volatile organic compounds (VOCs) off-gas from furniture, paint, and cleaning products. Carbon dioxide levels rise steadily in closed bedrooms overnight as you breathe. Dust mites, pet dander, and mould spores circulate through the air.</p>
+                            <div class="ba-page-stat">
+                                <b>+20%</b>
+                                <span>more nighttime awakenings in bedrooms with PM2.5 above 35 &micro;g/m&sup3;, according to a 2023 study in <em>Environmental Health Perspectives</em>. In many Indian cities, indoor levels regularly exceed 60 &micro;g/m&sup3; in winter &mdash; even with windows closed.</span>
+                            </div>
+                        </div>
+                    </section>
 
-                <p>Indoor air contains a mix of pollutants that most people never think about. Fine particulate matter (PM2.5) seeps in from outside through gaps in windows and doors. Volatile organic compounds (VOCs) off-gas from furniture, paint, and cleaning products. Carbon dioxide levels rise steadily in closed bedrooms overnight as you breathe. Dust mites, pet dander, and mould spores circulate through the air.</p>
+                    <!-- Page · Chapter 3 -->
+                    <section class="ba-page" id="chapter-3" data-label="Chapter 3 of 5" data-minutes="1">
+                        <span class="ba-page-eyebrow">Chapter 3 &middot; The disruption</span>
+                        <h2 class="ba-page-title">Micro-arousals you never remember</h2>
+                        <div class="ba-page-prose">
+                            <p>When you breathe polluted air during sleep, your body does not simply ignore it. Your respiratory system works harder to filter out particles, leading to subtle inflammation in your airways. This triggers micro-arousals &mdash; brief awakenings that you may not even remember, but that prevent you from reaching deep, restorative sleep stages.</p>
+                            <div class="ba-inline-img" style="background-image: url('public/images/blog_05_inline.webp')"></div>
+                            <p class="ba-img-caption">Poor air quality can lead to restless nights and morning fatigue, even when you think you slept well.</p>
+                            <div class="ba-page-stat">
+                                <b>2,400 &rarr; 800</b>
+                                <span>ppm CO&#8322;. Reducing bedroom CO&#8322; to this range significantly improved next-day cognitive performance and self-reported sleep quality (Technical University of Denmark). A closed bedroom with two sleepers can exceed 2,000 ppm by morning.</span>
+                            </div>
+                            <p>The effects compound over time. Chronic exposure to indoor air pollution during sleep has been linked to increased rates of sleep apnea, snoring, and overall sleep fragmentation. Morning symptoms like a dry throat, nasal congestion, headaches, and persistent fatigue are often attributed to poor sleep habits when the real culprit is the air itself.</p>
+                        </div>
+                    </section>
 
-                <p>A 2023 study published in the journal <em>Environmental Health Perspectives</em> found that bedrooms with PM2.5 levels above 35 &micro;g/m&sup3; were associated with a 20% increase in nighttime awakenings compared to rooms with cleaner air. In many Indian cities, indoor PM2.5 levels regularly exceed 60 &micro;g/m&sup3; during winter months, even with windows closed.</p>
+                    <!-- Page · Chapter 4 -->
+                    <section class="ba-page" id="chapter-4" data-label="Chapter 4 of 5" data-minutes="1">
+                        <span class="ba-page-eyebrow">Chapter 4 &middot; The signals</span>
+                        <h2 class="ba-page-title">Signs your bedroom air needs attention</h2>
+                        <div class="ba-page-prose">
+                            <p>Pay attention to these signals that your bedroom air quality might be affecting your rest:</p>
+                            <ul class="ba-page-list">
+                                <li>Waking up with a dry or scratchy throat despite staying hydrated</li>
+                                <li>Morning nasal congestion that clears up after leaving the bedroom</li>
+                                <li>Feeling unrested despite sleeping 7-8 hours</li>
+                                <li>Increased snoring or breathing difficulties at night</li>
+                                <li>Worsening allergy symptoms that peak in the morning</li>
+                                <li>A stale or stuffy feeling in the room when you wake up</li>
+                            </ul>
+                        </div>
+                    </section>
 
-                <h2>How Poor Air Quality Disrupts Sleep</h2>
+                    <!-- Page · Chapter 5 -->
+                    <section class="ba-page" id="chapter-5" data-label="Chapter 5 of 5" data-minutes="1">
+                        <span class="ba-page-eyebrow">Chapter 5 &middot; The fix</span>
+                        <h2 class="ba-page-title">Practical steps for cleaner bedroom air</h2>
+                        <div class="ba-page-prose">
+                            <p>The good news is that improving your bedroom air quality is entirely within your control, and the impact on sleep can be felt within days.</p>
+                            <ol class="ba-page-steps">
+                                <li><b>Use a HEPA air purifier.</b> A true H13 HEPA filter captures 99.97% of particles down to 0.3 microns, including PM2.5, allergens, and many bacteria. Place it near your bed and run it through the night &mdash; the gentle white noise can actually aid sleep.</li>
+                                <li><b>Monitor your indoor air.</b> You cannot improve what you do not measure. Smart purifiers with built-in sensors give you real-time PM2.5 readings, so you see exactly what you breathe while you sleep.</li>
+                                <li><b>Manage ventilation wisely.</b> Open windows during low-AQI hours (typically early morning) to flush out CO&#8322;, but keep them closed when outdoor pollution spikes.</li>
+                                <li><b>Replace filters on schedule.</b> A clogged HEPA filter can recirculate trapped particles back into your air. Follow the recommended schedule, typically every 6-12 months.</li>
+                            </ol>
+                        </div>
+                    </section>
 
-                <p>When you breathe polluted air during sleep, your body does not simply ignore it. Your respiratory system works harder to filter out particles, leading to subtle inflammation in your airways. This triggers micro-arousals, brief awakenings that you may not even remember, but that prevent you from reaching deep, restorative sleep stages.</p>
+                    <!-- Page · The End -->
+                    <section class="ba-page ba-page-end" id="takeaway" data-label="The end" data-minutes="0">
+                        <span class="ba-page-eyebrow">The takeaway</span>
+                        <h2 class="ba-page-title">Clean air is the quietest sleep <em>upgrade there is</em></h2>
+                        <div class="ba-page-prose">
+                            <p>Sleep is one of the most important investments you make in your health every single day. By taking control of the air in your bedroom, you are setting the foundation for deeper, more restorative rest that powers everything you do while awake.</p>
+                        </div>
+                        <div class="ba-end-actions">
+                            <button type="button" class="ba-end-restart" data-goto="0">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>
+                                Read again
+                            </button>
+                            <a href="blogs.html" class="ba-end-all">
+                                More articles
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+                            </a>
+                        </div>
+                    </section>
 
-                <!-- Inline Image -->
-                <div class="ba-inline-img" style="background-image: url('public/images/blog_05_inline.webp')"></div>
-                <p class="ba-img-caption">Poor air quality can lead to restless nights and morning fatigue, even when you think you slept well.</p>
-
-                <p>Elevated CO2 levels, which commonly occur in sealed bedrooms, compound the problem. Research from Denmark's Technical University showed that reducing CO2 from 2,400 ppm to 800 ppm in sleeping environments significantly improved next-day cognitive performance and self-reported sleep quality. In a typical closed bedroom with one or two occupants, CO2 can easily exceed 2,000 ppm by morning.</p>
-
-                <p>The effects compound over time. Chronic exposure to indoor air pollution during sleep has been linked to increased rates of sleep apnea, snoring, and overall sleep fragmentation. Morning symptoms like a dry throat, nasal congestion, headaches, and persistent fatigue are often attributed to poor sleep habits when the real culprit is the air itself.</p>
-
-                <h2>Signs Your Bedroom Air Needs Attention</h2>
-
-                <p>Pay attention to these signals that your bedroom air quality might be affecting your rest:</p>
-
-                <ul>
-                    <li>Waking up with a dry or scratchy throat despite staying hydrated</li>
-                    <li>Morning nasal congestion that clears up after leaving the bedroom</li>
-                    <li>Feeling unrested despite sleeping 7-8 hours</li>
-                    <li>Increased snoring or breathing difficulties at night</li>
-                    <li>Worsening allergy symptoms that peak in the morning</li>
-                    <li>A stale or stuffy feeling in the room when you wake up</li>
-                </ul>
-
-                <h2>Practical Steps for Cleaner Bedroom Air</h2>
-
-                <p>The good news is that improving your bedroom air quality is entirely within your control, and the impact on sleep can be felt within days.</p>
-
-                <p><strong>Use a HEPA air purifier.</strong> A true H13 HEPA filter captures 99.97% of particles down to 0.3 microns, including PM2.5, allergens, and many bacteria. Place the purifier near your bed and run it continuously through the night. The gentle white noise from quality purifiers can actually aid sleep as well.</p>
-
-                <p><strong>Monitor your indoor air.</strong> You cannot improve what you do not measure. Smart air purifiers with built-in air quality sensors give you real-time readings of PM2.5 and other pollutants, so you can see exactly what you are breathing while you sleep.</p>
-
-                <p><strong>Manage ventilation wisely.</strong> Open windows during low-AQI hours (typically early morning) to flush out accumulated CO2, but keep them closed when outdoor pollution spikes. An air purifier with adequate CADR ensures you get clean air circulation without relying on outdoor air quality.</p>
-
-                <p><strong>Replace filters on schedule.</strong> A clogged HEPA filter does not just stop working, it can actually recirculate trapped particles back into your air. Follow your manufacturer's recommended replacement schedule, typically every 6-12 months depending on your local air quality.</p>
-
-                <p>Sleep is one of the most important investments you make in your health every single day. By taking control of the air in your bedroom, you are not just breathing cleaner air but setting the foundation for deeper, more restorative rest that powers everything you do while awake.</p>
-            </div>
-
-            <!-- Article Endcap -->
-            <div class="ba-endcap">
-                <div class="ba-endcap-rule" aria-hidden="true"></div>
-                <div class="ba-endcap-row">
-                    <a href="blogs.html" class="ba-endcap-chip">Health &amp; Wellness</a>
-                    <a href="blogs.html" class="ba-endcap-back">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
-                        Back to all articles
-                    </a>
+                    <!-- Book navigation (enabled by JS) -->
+                    <div class="ba-book-nav" id="ba-book-nav">
+                        <button type="button" class="ba-turn" id="ba-turn-prev" aria-label="Previous page" disabled>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+                        </button>
+                        <div class="ba-book-dots" id="ba-book-dots" aria-hidden="true"></div>
+                        <div class="ba-book-status" aria-live="polite">
+                            <span class="ba-book-count" id="ba-book-count">Overview</span>
+                            <span class="ba-book-left" id="ba-book-left">5 min</span>
+                        </div>
+                        <button type="button" class="ba-turn" id="ba-turn-next" aria-label="Next page">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+                        </button>
+                    </div>
                 </div>
             </div>
+            <p class="ba-book-hint" id="ba-book-hint">Turn pages with &larr; &rarr; keys, or swipe on mobile</p>
         </div>
     </article>
 
