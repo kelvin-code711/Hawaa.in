@@ -1,7 +1,8 @@
 /* ========================================
    BLOG PAGE JAVASCRIPT
    Handles: header scroll, category filtering,
-   sticky tabs, related posts slider
+   featured card, sticky tabs, reading progress,
+   share actions, related posts slider
 ======================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -28,6 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const catButtons = document.querySelectorAll('.bl-cat');
     const blogCards = document.querySelectorAll('.bl-card');
     const catLabel = document.getElementById('bl-cat-label');
+    const catCount = document.getElementById('bl-count');
     const catsBar = document.getElementById('bl-cats');
 
     if (catButtons.length > 0 && blogCards.length > 0) {
@@ -38,6 +40,24 @@ document.addEventListener('DOMContentLoaded', () => {
             'filter-care': 'Filter Care',
             'health': 'Health & Wellness',
             'home': 'Home & Living'
+        };
+
+        // Promote the first visible card to the featured slot
+        const updateFeatured = () => {
+            let first = null;
+            blogCards.forEach(card => {
+                card.classList.remove('is-feature');
+                if (!first && !card.classList.contains('hidden')) {
+                    first = card;
+                }
+            });
+            if (first) first.classList.add('is-feature');
+        };
+
+        const updateCount = (count) => {
+            if (catCount) {
+                catCount.textContent = count === 1 ? '1 article' : count + ' articles';
+            }
         };
 
         catButtons.forEach(btn => {
@@ -64,6 +84,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 });
 
+                updateFeatured();
+                updateCount(visibleCount);
+
                 // Show empty state if no cards
                 let emptyEl = document.querySelector('.bl-empty');
                 if (visibleCount === 0) {
@@ -79,6 +102,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
         });
+
+        // Initial state
+        updateFeatured();
+        updateCount(document.querySelectorAll('.bl-card:not(.hidden)').length);
 
         // Sticky tabs shadow
         if (catsBar) {
@@ -97,6 +124,72 @@ document.addEventListener('DOMContentLoaded', () => {
                 observer.observe(observerTarget);
             }
         }
+    }
+
+    // ========================================
+    // READING PROGRESS BAR (blog-post.html)
+    // ========================================
+    const progressFill = document.getElementById('ba-progress-fill');
+    const articleBody = document.querySelector('.ba-body');
+
+    if (progressFill && articleBody) {
+        const updateProgress = () => {
+            const start = articleBody.offsetTop;
+            const total = articleBody.offsetHeight - window.innerHeight;
+            const progress = total > 0 ? (window.scrollY - start) / total : 1;
+            const pct = Math.min(100, Math.max(0, progress * 100));
+            progressFill.style.width = pct + '%';
+        };
+        window.addEventListener('scroll', updateProgress, { passive: true });
+        window.addEventListener('resize', updateProgress, { passive: true });
+        updateProgress();
+    }
+
+    // ========================================
+    // SHARE ACTIONS (blog-post.html)
+    // ========================================
+    const shareNativeBtn = document.getElementById('ba-share-native');
+    const shareCopyBtn = document.getElementById('ba-share-copy');
+    const shareCopyLabel = document.getElementById('ba-share-copy-label');
+
+    const copyLink = () => {
+        const done = () => {
+            if (!shareCopyBtn) return;
+            shareCopyBtn.classList.add('copied');
+            if (shareCopyLabel) shareCopyLabel.textContent = 'Link copied!';
+            setTimeout(() => {
+                shareCopyBtn.classList.remove('copied');
+                if (shareCopyLabel) shareCopyLabel.textContent = 'Copy link';
+            }, 2000);
+        };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(window.location.href).then(done).catch(() => {});
+        } else {
+            const input = document.createElement('input');
+            input.value = window.location.href;
+            document.body.appendChild(input);
+            input.select();
+            document.execCommand('copy');
+            document.body.removeChild(input);
+            done();
+        }
+    };
+
+    if (shareCopyBtn) {
+        shareCopyBtn.addEventListener('click', copyLink);
+    }
+
+    if (shareNativeBtn) {
+        shareNativeBtn.addEventListener('click', () => {
+            if (navigator.share) {
+                navigator.share({
+                    title: document.title,
+                    url: window.location.href
+                }).catch(() => {});
+            } else {
+                copyLink();
+            }
+        });
     }
 
     // ========================================
