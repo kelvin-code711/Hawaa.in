@@ -127,141 +127,22 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ========================================
-    // BOOK READER — chapter pager (blog-post.html)
-    // Full text stays in the DOM; JS paginates it.
+    // READING PROGRESS BAR (blog-post.html)
     // ========================================
-    const book = document.getElementById('ba-book');
     const progressFill = document.getElementById('ba-progress-fill');
+    const articleBody = document.querySelector('.ba-body');
 
-    if (book) {
-        const bookPages = Array.from(book.querySelectorAll('.ba-page'));
-        const dotsWrap = document.getElementById('ba-book-dots');
-        const countEl = document.getElementById('ba-book-count');
-        const leftEl = document.getElementById('ba-book-left');
-        const prevBtn = document.getElementById('ba-turn-prev');
-        const nextBtn = document.getElementById('ba-turn-next');
-        const hintEl = document.getElementById('ba-book-hint');
-        let pageIdx = 0;
-
-        book.classList.add('js');
-        if (hintEl) hintEl.classList.add('js');
-
-        // Build progress dots
-        if (dotsWrap) {
-            bookPages.forEach(() => dotsWrap.appendChild(document.createElement('i')));
-        }
-        const dots = dotsWrap ? dotsWrap.querySelectorAll('i') : [];
-
-        const minutesLeft = (fromIdx) => {
-            let mins = 0;
-            for (let i = fromIdx; i < bookPages.length; i++) {
-                mins += parseInt(bookPages[i].dataset.minutes || '0', 10);
-            }
-            return mins;
+    if (progressFill && articleBody) {
+        const updateProgress = () => {
+            const start = articleBody.offsetTop;
+            const total = articleBody.offsetHeight - window.innerHeight;
+            const progress = total > 0 ? (window.scrollY - start) / total : 1;
+            const pct = Math.min(100, Math.max(0, progress * 100));
+            progressFill.style.width = pct + '%';
         };
-        const totalMinutes = minutesLeft(0);
-
-        const keepBookInView = () => {
-            const top = book.getBoundingClientRect().top;
-            if (top < 60 || top > window.innerHeight * 0.5) {
-                const y = window.scrollY + top - 96;
-                window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
-            }
-        };
-
-        const goTo = (n, back, skipScroll) => {
-            if (n < 0 || n >= bookPages.length) return;
-            bookPages[pageIdx].classList.remove('current', 'turn-back');
-            pageIdx = n;
-            const page = bookPages[pageIdx];
-            page.classList.add('current');
-            if (back) page.classList.add('turn-back');
-
-            dots.forEach((d, i) => d.classList.toggle('here', i === pageIdx));
-            if (prevBtn) prevBtn.disabled = pageIdx === 0;
-            if (nextBtn) nextBtn.disabled = pageIdx === bookPages.length - 1;
-            if (countEl) countEl.textContent = page.dataset.label || '';
-            if (leftEl) {
-                const left = minutesLeft(pageIdx);
-                if (pageIdx === bookPages.length - 1) {
-                    leftEl.textContent = 'Done ✓';
-                } else if (pageIdx === 0) {
-                    leftEl.textContent = totalMinutes + ' min';
-                } else {
-                    leftEl.textContent = '~' + left + ' min left';
-                }
-            }
-            if (progressFill) {
-                progressFill.style.width = ((pageIdx / (bookPages.length - 1)) * 100) + '%';
-            }
-            // Deep-linkable chapters without polluting history
-            if (page.id && history.replaceState) {
-                history.replaceState(null, '', pageIdx === 0
-                    ? window.location.pathname + window.location.search
-                    : '#' + page.id);
-            }
-            if (!skipScroll) keepBookInView();
-        };
-
-        // Prev / next controls
-        if (prevBtn) prevBtn.addEventListener('click', () => goTo(pageIdx - 1, true));
-        if (nextBtn) nextBtn.addEventListener('click', () => goTo(pageIdx + 1, false));
-
-        // TOC entries, start button, "read again"
-        book.querySelectorAll('[data-goto]').forEach(el => {
-            el.addEventListener('click', (e) => {
-                e.preventDefault();
-                const target = parseInt(el.dataset.goto, 10);
-                goTo(target, target < pageIdx);
-            });
-        });
-
-        // Keyboard paging
-        document.addEventListener('keydown', (e) => {
-            if (e.target.matches('input, textarea, select')) return;
-            if (e.key === 'ArrowRight') goTo(pageIdx + 1, false);
-            if (e.key === 'ArrowLeft') goTo(pageIdx - 1, true);
-        });
-
-        // Swipe paging (horizontal only, so vertical scroll stays natural)
-        let touchX = null;
-        let touchY = null;
-        book.addEventListener('touchstart', (e) => {
-            touchX = e.touches[0].clientX;
-            touchY = e.touches[0].clientY;
-        }, { passive: true });
-        book.addEventListener('touchend', (e) => {
-            if (touchX === null) return;
-            const dx = e.changedTouches[0].clientX - touchX;
-            const dy = e.changedTouches[0].clientY - touchY;
-            if (Math.abs(dx) > 48 && Math.abs(dx) > Math.abs(dy) * 1.5) {
-                if (dx < 0) goTo(pageIdx + 1, false);
-                else goTo(pageIdx - 1, true);
-            }
-            touchX = null;
-            touchY = null;
-        }, { passive: true });
-
-        // Open on the chapter from the URL hash, if any
-        let startIdx = 0;
-        if (window.location.hash) {
-            const hashIdx = bookPages.findIndex(p => '#' + p.id === window.location.hash);
-            if (hashIdx > 0) startIdx = hashIdx;
-        }
-        goTo(startIdx, false, true);
-    } else if (progressFill) {
-        // Fallback: scroll-based progress for non-book articles
-        const articleBody = document.querySelector('.ba-body');
-        if (articleBody) {
-            const updateProgress = () => {
-                const start = articleBody.offsetTop;
-                const total = articleBody.offsetHeight - window.innerHeight;
-                const progress = total > 0 ? (window.scrollY - start) / total : 1;
-                progressFill.style.width = Math.min(100, Math.max(0, progress * 100)) + '%';
-            };
-            window.addEventListener('scroll', updateProgress, { passive: true });
-            updateProgress();
-        }
+        window.addEventListener('scroll', updateProgress, { passive: true });
+        window.addEventListener('resize', updateProgress, { passive: true });
+        updateProgress();
     }
 
     // ========================================
@@ -309,6 +190,141 @@ document.addEventListener('DOMContentLoaded', () => {
                 copyLink();
             }
         });
+    }
+
+    // ========================================
+    // IN-ARTICLE WIDGET 1 — PM2.5 SLIDER
+    // ========================================
+    const aqiWidget = document.getElementById('ba-aqi-widget');
+    const aqiRange = document.getElementById('ba-aqi-range');
+    const aqiNum = document.getElementById('ba-aqi-num');
+    const aqiBadge = document.getElementById('ba-aqi-badge');
+    const aqiText = document.getElementById('ba-aqi-text');
+
+    if (aqiWidget && aqiRange && aqiNum && aqiBadge && aqiText) {
+        aqiWidget.hidden = false;
+
+        const bands = [
+            { max: 30,  cls: 'ok',  label: 'Good',      text: 'Ideal for deep, uninterrupted sleep. This is what your bedroom should feel like all night.' },
+            { max: 60,  cls: 'mid', label: 'Moderate',  text: 'Light sleepers may notice more tossing and turning. Worth keeping an eye on.' },
+            { max: 90,  cls: 'mid', label: 'Poor',      text: 'Around 20% more nighttime awakenings at this level — typical of Indian city winters.' },
+            { max: 140, cls: 'bad', label: 'Very poor', text: 'Restless nights are likely. Your airways are working overtime while you sleep.' },
+            { max: 999, cls: 'bad', label: 'Hazardous', text: 'Serious sleep disruption territory. A HEPA purifier makes the biggest difference here.' }
+        ];
+
+        const updateAqi = () => {
+            const val = parseInt(aqiRange.value, 10);
+            const band = bands.find(b => val <= b.max);
+            aqiNum.textContent = val;
+            aqiBadge.textContent = band.label;
+            aqiBadge.className = 'ba-aqi-badge ' + band.cls;
+            aqiText.textContent = band.text;
+        };
+
+        aqiRange.addEventListener('input', updateAqi);
+        updateAqi();
+    }
+
+    // ========================================
+    // IN-ARTICLE WIDGET 2 — BREATHING BREAK
+    // ========================================
+    const breathWidget = document.getElementById('ba-breath');
+    const breathCircle = document.getElementById('ba-breath-circle');
+    const breathLabel = document.getElementById('ba-breath-label');
+    const breathSub = document.getElementById('ba-breath-sub');
+
+    if (breathWidget && breathCircle && breathLabel) {
+        breathWidget.hidden = false;
+
+        const PHASE_MS = 4000;
+        const CYCLES = 3;
+        let breathing = false;
+        const timers = [];
+
+        const setPhase = (grow, text) => {
+            breathCircle.classList.toggle('grow', grow);
+            breathLabel.style.opacity = '0';
+            timers.push(setTimeout(() => {
+                breathLabel.textContent = text;
+                breathLabel.style.opacity = '1';
+            }, 350));
+        };
+
+        breathCircle.addEventListener('click', () => {
+            if (breathing) return;
+            breathing = true;
+            breathCircle.classList.add('running');
+
+            for (let i = 0; i < CYCLES; i++) {
+                timers.push(setTimeout(() => setPhase(true, 'Inhale…'), i * PHASE_MS * 2));
+                timers.push(setTimeout(() => setPhase(false, 'Exhale…'), i * PHASE_MS * 2 + PHASE_MS));
+            }
+
+            timers.push(setTimeout(() => {
+                setPhase(false, 'Nicely done');
+                if (breathSub) {
+                    breathSub.textContent = 'That calm? Clean air makes every breath feel this easy. Now — back to the good part.';
+                }
+                breathing = false;
+                breathCircle.classList.remove('running');
+                timers.push(setTimeout(() => {
+                    breathLabel.style.opacity = '0';
+                    timers.push(setTimeout(() => {
+                        breathLabel.textContent = 'Go again';
+                        breathLabel.style.opacity = '1';
+                    }, 350));
+                }, 2600));
+            }, CYCLES * PHASE_MS * 2));
+        });
+    }
+
+    // ========================================
+    // IN-ARTICLE WIDGET 3 — SYMPTOM SELF-CHECK
+    // ========================================
+    const signsList = document.getElementById('ba-signs');
+    const signsResult = document.getElementById('ba-signs-result');
+
+    if (signsList && signsResult) {
+        signsList.classList.add('ba-signs-live');
+        signsResult.hidden = false;
+        const signItems = signsList.querySelectorAll('li');
+        const total = signItems.length;
+
+        const verdicts = (n) => {
+            if (n === 0) return { cls: '', text: 'Tap any that feel familiar — we’ll tell you what it means.' };
+            if (n <= 2) return { cls: '', text: n + ' of ' + total + ' — could be coincidence, but your bedroom air is worth watching.' };
+            if (n <= 4) return { cls: 'warn', text: n + ' of ' + total + ' — your bedroom air likely needs attention. The next section has the fix.' };
+            return { cls: 'warn', text: n + ' of ' + total + ' — your mornings are practically begging for cleaner air. Keep reading.' };
+        };
+
+        const updateSigns = () => {
+            const n = signsList.querySelectorAll('li.on').length;
+            const v = verdicts(n);
+            signsResult.textContent = v.text;
+            signsResult.className = 'ba-signs-result' + (v.cls ? ' ' + v.cls : '');
+        };
+
+        signItems.forEach(li => {
+            li.setAttribute('role', 'checkbox');
+            li.setAttribute('aria-checked', 'false');
+            li.setAttribute('tabindex', '0');
+
+            const toggle = () => {
+                li.classList.toggle('on');
+                li.setAttribute('aria-checked', li.classList.contains('on') ? 'true' : 'false');
+                updateSigns();
+            };
+
+            li.addEventListener('click', toggle);
+            li.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    toggle();
+                }
+            });
+        });
+
+        updateSigns();
     }
 
     // ========================================
