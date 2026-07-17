@@ -321,15 +321,6 @@ body.menu-open .header-buy-pill:hover {
     border-bottom: none;
 }
 
-.menu-item-num {
-    font-family: 'Playfair Display', serif;
-    font-style: italic;
-    font-size: 0.8rem;
-    color: var(--teal-deep);
-    min-width: 24px;
-    transform: translateY(-0.35em);
-}
-
 .menu-item-label {
     flex: 1;
     transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
