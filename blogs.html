@@ -34,6 +34,7 @@
             </picture>
             </a>
             <div class="header-actions">
+                <a href="buy.html" class="header-buy-pill">Buy Now</a>
                 <button class="hamburger" id="hamburger" aria-label="Toggle menu">
                     <span class="hamburger-line"></span>
                     <span class="hamburger-line"></span>
@@ -47,26 +48,56 @@
     <div class="menu-overlay" id="menu-overlay"></div>
     <div class="menu-panel" id="menu-panel">
         <div class="menu-panel-inner">
+            <p class="menu-eyebrow">Menu</p>
             <nav class="menu-nav">
-                <a href="edge.html" class="menu-nav-item">Hawaa Edge</a>
-                <a href="blogs.html" class="menu-nav-item">Blog</a>
-                <a href="about.html" class="menu-nav-item">About Us</a>
-                <button type="button" class="menu-nav-item" id="profile-btn">
-                    <span>Account</span>
+                <a href="edge.html" class="menu-nav-item">
+                    <span class="menu-item-label">Hawaa Edge</span>
+                    <svg class="menu-item-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg>
+                </a>
+                <a href="comparison.html" class="menu-nav-item">
+                    <span class="menu-item-label">Compare</span>
+                    <svg class="menu-item-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg>
+                </a>
+                <a href="reviews.html" class="menu-nav-item">
+                    <span class="menu-item-label">Reviews</span>
+                    <svg class="menu-item-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg>
+                </a>
+                <a href="blogs.html" class="menu-nav-item">
+                    <span class="menu-item-label">Blog</span>
+                    <svg class="menu-item-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg>
+                </a>
+                <a href="about.html" class="menu-nav-item">
+                    <span class="menu-item-label">About Us</span>
+                    <svg class="menu-item-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg>
+                </a>
+            </nav>
+            <div class="menu-utility">
+                <button type="button" class="menu-utility-item" id="profile-btn">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                         <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
                         <circle cx="12" cy="7" r="4"/>
                     </svg>
+                    <span>Account</span>
                 </button>
-                <a href="buy.html" class="menu-nav-item" id="cart-btn">
-                    <span>Cart<span class="cart-badge" id="cart-badge"></span></span>
+                <a href="buy.html" class="menu-utility-item" id="cart-btn">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                         <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/>
                         <path d="M3 6h18"/>
                         <path d="M16 10a4 4 0 0 1-8 0"/>
                     </svg>
+                    <span>Cart</span>
+                    <span class="cart-badge" id="cart-badge" aria-live="polite">0 items</span>
                 </a>
-            </nav>
+            </div>
+            <a href="buy.html" class="menu-cta">
+                <span class="menu-cta-text">
+                    <span class="menu-cta-label">Buy Hawaa Edge</span>
+                    <span class="menu-cta-sub">Free delivery &middot; From &#8377;5,499</span>
+                </span>
+                <span class="menu-cta-arrow" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+                </span>
+            </a>
         </div>
     </div>
 
@@ -343,7 +374,7 @@
                     <ul class="footer-links-list">
                         <li><a href="edge.html">Hawaa Edge</a></li>
                         <li><a href="buy.html">Buy Now</a></li>
-                        <li><a href="buy.html">Replacement Filters</a></li>
+                        <li><a href="buy.html#accessories">Replacement Filters</a></li>
                         <li><a href="comparison.html">Compare Purifiers</a></li>
                     </ul>
                 </div>
@@ -418,6 +449,7 @@
 
     <script type="module" src="js/firebase.js"></script>
     <script src="js/nav.js"></script>
+    <script src="js/cart.js"></script>
     <script src="js/blog.js"></script>
 </body>
 </html>
