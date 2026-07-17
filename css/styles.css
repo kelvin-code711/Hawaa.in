@@ -142,55 +142,6 @@ body.menu-open .logo-img {
     }
 }
 
-/* Always-available Buy CTA in the header.
-   Frosted glass over dark heroes; solid teal once the header
-   gains a light background (scrolled / static pages / open menu). */
-.header-buy-pill {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 8px 16px;
-    border-radius: 9999px;
-    font-family: 'Outfit', sans-serif;
-    font-size: 0.78rem;
-    font-weight: 600;
-    letter-spacing: 0.03em;
-    color: #fff;
-    background: rgba(255, 255, 255, 0.14);
-    border: 1px solid rgba(255, 255, 255, 0.35);
-    -webkit-backdrop-filter: blur(10px);
-    backdrop-filter: blur(10px);
-    text-decoration: none;
-    transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease, transform 0.2s ease;
-}
-
-.header-buy-pill:hover {
-    background: rgba(255, 255, 255, 0.24);
-    transform: translateY(-1px);
-}
-
-.header.scrolled .header-buy-pill,
-body.menu-open .header-buy-pill {
-    background: var(--teal-deep);
-    border-color: var(--teal-deep);
-    color: var(--on-teal);
-    box-shadow: 0 2px 12px var(--shadow-cta);
-}
-
-.header.scrolled .header-buy-pill:hover,
-body.menu-open .header-buy-pill:hover {
-    background: var(--teal-deep-hover);
-    border-color: var(--teal-deep-hover);
-    box-shadow: 0 4px 16px var(--shadow-cta);
-}
-
-@media (min-width: 640px) {
-    .header-buy-pill {
-        padding: 9px 20px;
-        font-size: 0.82rem;
-    }
-}
-
 /* Hamburger Menu - visible on all screen sizes */
 .hamburger {
     display: flex;
@@ -929,35 +880,26 @@ body.menu-open .header-buy-pill:hover {
 }
 
 /* Conversion CTA — deliberately the loudest element on the bar:
-   gradient fill, breathing glow, shine sweep and an arrow nudge. */
+   gradient fill, breathing glow and a shine sweep, at the original
+   compact pill size. */
 .sticky-buy-btn {
     position: relative;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
-    padding: 12px 26px;
+    padding: 8px 18px;
     background: linear-gradient(135deg, #2A9D8F 0%, var(--teal-deep) 55%, var(--teal-deep-press) 100%);
     border: 1px solid rgba(255, 255, 255, 0.22);
     border-radius: 9999px;
     color: #fff;
     font-family: 'Outfit', sans-serif;
-    font-size: 0.85rem;
-    font-weight: 700;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
+    font-size: 0.75rem;
+    font-weight: 600;
     text-decoration: none;
     overflow: hidden;
     transition: transform 0.25s ease, box-shadow 0.3s ease, filter 0.25s ease;
     box-shadow: 0 4px 18px rgba(63, 183, 172, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.25);
     animation: stickyBuyPulse 2.6s ease-in-out infinite;
-}
-
-.sticky-buy-btn svg {
-    width: 15px;
-    height: 15px;
-    flex-shrink: 0;
-    transition: transform 0.25s ease;
 }
 
 /* Shine sweep across the button */
@@ -978,10 +920,6 @@ body.menu-open .header-buy-pill:hover {
     transform: scale(1.05);
     filter: brightness(1.06);
     box-shadow: 0 6px 26px rgba(63, 183, 172, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3);
-}
-
-.sticky-buy-btn:hover svg {
-    transform: translateX(3px);
 }
 
 @keyframes stickyBuyPulse {
