@@ -169,6 +169,7 @@
 
             <!-- Product render image -->
             <div class="ig-hero-image-wrap">
+                <div class="ig-hero-halo" aria-hidden="true"></div>
                 <img
                     class="ig-hero-image"
                     src="public/images/product.webp"
@@ -181,19 +182,19 @@
             </div>
 
             <!-- 3-step setup indicator -->
-            <div class="ig-hero-steps" aria-label="Setup steps">
-                <div class="ig-step">
-                    <span class="ig-step-num" aria-hidden="true">①</span>
+            <div class="ig-hero-steps" role="list" aria-label="Setup steps">
+                <div class="ig-step" role="listitem">
+                    <span class="ig-step-num" aria-hidden="true">01</span>
                     <span class="ig-step-label">Unbox</span>
                 </div>
                 <div class="ig-step-divider" aria-hidden="true"></div>
-                <div class="ig-step">
-                    <span class="ig-step-num" aria-hidden="true">②</span>
+                <div class="ig-step" role="listitem">
+                    <span class="ig-step-num" aria-hidden="true">02</span>
                     <span class="ig-step-label">Remove filter wrap</span>
                 </div>
                 <div class="ig-step-divider" aria-hidden="true"></div>
-                <div class="ig-step">
-                    <span class="ig-step-num" aria-hidden="true">③</span>
+                <div class="ig-step" role="listitem">
+                    <span class="ig-step-num" aria-hidden="true">03</span>
                     <span class="ig-step-label">Power on</span>
                 </div>
             </div>
@@ -201,7 +202,8 @@
             <!-- CTA + helper text -->
             <div class="ig-hero-cta">
                 <button class="ig-hero-btn" id="ig-start-btn" aria-label="Start setup guide">
-                    Start Setup &rarr;
+                    Start setup
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>
                 </button>
                 <p class="ig-hero-helper">Takes less than a minute</p>
             </div>
@@ -210,11 +212,121 @@
     </section>
 
     <!-- ========================================
-         SECTION: SETUP STEPS (scroll target)
-         Full step-by-step content to be added here
+         SECTION: SETUP STEPS
+         Three-step editorial walkthrough
     ======================================== -->
-    <section id="setup-steps" aria-label="Step-by-step setup guide">
-        <!-- Step content will be added in a future update -->
+    <section class="st-section" id="setup-steps" aria-label="Step-by-step setup guide">
+        <div class="st-container">
+
+            <header class="st-header" data-reveal>
+                <p class="st-eyebrow">The Setup</p>
+                <h2 class="st-headline">From box to <span class="italic">breathing</span></h2>
+                <p class="st-desc">No tools. No manual marathon. This is the entire process, start to finish.</p>
+            </header>
+
+            <ol class="st-list">
+
+                <!-- STEP 1: UNBOX -->
+                <li class="st-step" data-reveal>
+                    <span class="st-watermark" aria-hidden="true">1</span>
+                    <div class="st-step-media" aria-hidden="true">
+                        <svg class="st-illus" viewBox="0 0 140 140" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+                            <!-- rising device -->
+                            <rect x="50" y="26" width="40" height="58" rx="11"/>
+                            <circle class="st-illus-accent" cx="70" cy="40" r="3.5"/>
+                            <!-- motion dashes -->
+                            <line x1="38" y1="44" x2="38" y2="60" stroke-dasharray="3 5" opacity="0.55"/>
+                            <line x1="102" y1="44" x2="102" y2="60" stroke-dasharray="3 5" opacity="0.55"/>
+                            <!-- carton -->
+                            <rect x="28" y="80" width="84" height="38" rx="4"/>
+                            <line x1="28" y1="80" x2="13" y2="65"/>
+                            <line x1="112" y1="80" x2="127" y2="65"/>
+                            <!-- up arrow -->
+                            <path class="st-illus-accent" d="M70 16V6"/>
+                            <path class="st-illus-accent" d="m65 10 5-5 5 5"/>
+                        </svg>
+                    </div>
+                    <div class="st-step-text">
+                        <div class="st-step-meta">
+                            <span class="st-step-num">Step 01</span>
+                            <span class="st-step-time">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+                                About 20 seconds
+                            </span>
+                        </div>
+                        <h3 class="st-step-title">Unbox</h3>
+                        <p class="st-step-desc">Lift your Hawaa Edge out of the box and remove the protective packaging. Everything you need is already inside &mdash; there is nothing to assemble.</p>
+                    </div>
+                </li>
+
+                <!-- STEP 2: REMOVE FILTER WRAP -->
+                <li class="st-step" data-reveal>
+                    <span class="st-watermark" aria-hidden="true">2</span>
+                    <div class="st-step-media" aria-hidden="true">
+                        <svg class="st-illus" viewBox="0 0 140 140" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+                            <!-- filter cylinder -->
+                            <ellipse cx="66" cy="46" rx="32" ry="11"/>
+                            <path d="M34 46v52"/>
+                            <path d="M98 46v52"/>
+                            <path d="M34 98a32 11 0 0 0 64 0"/>
+                            <!-- pleat marks -->
+                            <line x1="48" y1="62" x2="48" y2="92" stroke-dasharray="2 5" opacity="0.55"/>
+                            <line x1="66" y1="64" x2="66" y2="94" stroke-dasharray="2 5" opacity="0.55"/>
+                            <line x1="84" y1="62" x2="84" y2="92" stroke-dasharray="2 5" opacity="0.55"/>
+                            <!-- wrap being peeled -->
+                            <path class="st-illus-accent" d="M98 40c12-9 22-2 16 8" stroke-dasharray="4 4"/>
+                            <path class="st-illus-accent" d="M118 42v8l-7-2"/>
+                        </svg>
+                    </div>
+                    <div class="st-step-text">
+                        <div class="st-step-meta">
+                            <span class="st-step-num">Step 02</span>
+                            <span class="st-step-time">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+                                About 25 seconds
+                            </span>
+                        </div>
+                        <h3 class="st-step-title">Remove the filter wrap</h3>
+                        <p class="st-step-desc">Open the filter compartment, take out the filter, and peel off its plastic wrapping. Place the filter back in and close the compartment.</p>
+                    </div>
+                </li>
+
+                <!-- STEP 3: POWER ON -->
+                <li class="st-step" data-reveal>
+                    <span class="st-watermark" aria-hidden="true">3</span>
+                    <div class="st-step-media" aria-hidden="true">
+                        <svg class="st-illus" viewBox="0 0 140 140" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+                            <!-- device -->
+                            <rect x="48" y="32" width="44" height="78" rx="13"/>
+                            <!-- power glyph -->
+                            <path d="M70 50v10"/>
+                            <path d="M62.5 54a10 10 0 1 0 15 0"/>
+                            <!-- LED -->
+                            <circle class="st-illus-accent-fill" cx="70" cy="96" r="3"/>
+                            <!-- clean air waves -->
+                            <path class="st-illus-accent" d="M36 88c-7-10-7-26 0-36" stroke-dasharray="4 5" opacity="0.85"/>
+                            <path class="st-illus-accent" d="M104 88c7-10 7-26 0-36" stroke-dasharray="4 5" opacity="0.85"/>
+                        </svg>
+                    </div>
+                    <div class="st-step-text">
+                        <div class="st-step-meta">
+                            <span class="st-step-num">Step 03</span>
+                            <span class="st-step-time">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+                                About 10 seconds
+                            </span>
+                        </div>
+                        <h3 class="st-step-title">Power on</h3>
+                        <p class="st-step-desc">Plug it in and tap the power icon on the touch panel. That's it &mdash; you're already breathing cleaner air.</p>
+                    </div>
+                </li>
+
+            </ol>
+
+            <!-- Closing line -->
+            <p class="st-closing" data-reveal>Done in <span class="italic">under a minute.</span> The rest of this page helps you get the most out of it.</p>
+
+        </div>
     </section>
 
     <!-- ========================================
@@ -224,14 +336,14 @@
         <div class="bp-container">
 
             <!-- Section header -->
-            <div class="bp-header">
+            <div class="bp-header" data-reveal>
                 <p class="bp-eyebrow">Placement Guide</p>
                 <h2 class="bp-headline">Where to place it in your <span class="italic">bedroom</span></h2>
-                <p class="bp-desc">Position your Hawaa Edge correctly to get the most out of every breath.</p>
+                <p class="bp-desc">Position your Hawaa Edge correctly to get the most out of every breath. Hover over each rule to see it on the floor plan.</p>
             </div>
 
             <!-- Main content -->
-            <div class="bp-content">
+            <div class="bp-content" data-reveal>
 
                 <!-- SVG Diagram -->
                 <div class="bp-diagram-wrap" aria-hidden="true">
@@ -243,52 +355,52 @@
                         </defs>
 
                         <!-- Floor -->
-                        <rect x="24" y="24" width="392" height="368" fill="#f7f8fa"/>
+                        <rect x="24" y="24" width="392" height="368" fill="#F3F8F4"/>
 
                         <!-- ── WALLS ── -->
                         <!-- Top wall: left of window -->
-                        <line x1="30" y1="30" x2="122" y2="30" stroke="#bdc3ca" stroke-width="12" stroke-linecap="square"/>
+                        <line x1="30" y1="30" x2="122" y2="30" stroke="#A9BDB3" stroke-width="12" stroke-linecap="square"/>
                         <!-- Top wall: right of window -->
-                        <line x1="292" y1="30" x2="410" y2="30" stroke="#bdc3ca" stroke-width="12" stroke-linecap="square"/>
+                        <line x1="292" y1="30" x2="410" y2="30" stroke="#A9BDB3" stroke-width="12" stroke-linecap="square"/>
                         <!-- Window gap (double thin lines) -->
-                        <line x1="122" y1="25.5" x2="292" y2="25.5" stroke="#d1d5db" stroke-width="1.5"/>
-                        <line x1="122" y1="34.5" x2="292" y2="34.5" stroke="#d1d5db" stroke-width="1.5"/>
+                        <line x1="122" y1="25.5" x2="292" y2="25.5" stroke="#C2D2C9" stroke-width="1.5"/>
+                        <line x1="122" y1="34.5" x2="292" y2="34.5" stroke="#C2D2C9" stroke-width="1.5"/>
                         <!-- Window end caps -->
-                        <line x1="122" y1="25.5" x2="122" y2="34.5" stroke="#d1d5db" stroke-width="1.5"/>
-                        <line x1="292" y1="25.5" x2="292" y2="34.5" stroke="#d1d5db" stroke-width="1.5"/>
+                        <line x1="122" y1="25.5" x2="122" y2="34.5" stroke="#C2D2C9" stroke-width="1.5"/>
+                        <line x1="292" y1="25.5" x2="292" y2="34.5" stroke="#C2D2C9" stroke-width="1.5"/>
                         <!-- Left wall (full) -->
-                        <line x1="30" y1="30" x2="30" y2="392" stroke="#bdc3ca" stroke-width="12" stroke-linecap="square"/>
+                        <line x1="30" y1="30" x2="30" y2="392" stroke="#A9BDB3" stroke-width="12" stroke-linecap="square"/>
                         <!-- Right wall (full) -->
-                        <line x1="410" y1="30" x2="410" y2="392" stroke="#bdc3ca" stroke-width="12" stroke-linecap="square"/>
+                        <line x1="410" y1="30" x2="410" y2="392" stroke="#A9BDB3" stroke-width="12" stroke-linecap="square"/>
                         <!-- Bottom wall: left of door -->
-                        <line x1="30" y1="392" x2="150" y2="392" stroke="#bdc3ca" stroke-width="12" stroke-linecap="square"/>
+                        <line x1="30" y1="392" x2="150" y2="392" stroke="#A9BDB3" stroke-width="12" stroke-linecap="square"/>
                         <!-- Bottom wall: right of door -->
-                        <line x1="264" y1="392" x2="410" y2="392" stroke="#bdc3ca" stroke-width="12" stroke-linecap="square"/>
+                        <line x1="264" y1="392" x2="410" y2="392" stroke="#A9BDB3" stroke-width="12" stroke-linecap="square"/>
 
                         <!-- Door swing arc (opens inward) — pivot at (150,392), width 114 -->
-                        <line x1="150" y1="386" x2="150" y2="278" stroke="#c4c9cf" stroke-width="1.5" stroke-linecap="round"/>
-                        <path d="M 150 278 A 114 114 0 0 1 264 392" stroke="#c4c9cf" stroke-width="1.5" fill="none"/>
+                        <line x1="150" y1="386" x2="150" y2="278" stroke="#B7C8BF" stroke-width="1.5" stroke-linecap="round"/>
+                        <path d="M 150 278 A 114 114 0 0 1 264 392" stroke="#B7C8BF" stroke-width="1.5" fill="none"/>
 
                         <!-- Window label -->
-                        <text x="207" y="13" font-family="Outfit, sans-serif" font-size="9" font-weight="500" fill="#adb5bd" text-anchor="middle" letter-spacing="0.14em">WINDOW</text>
-                        <line x1="128" y1="10" x2="168" y2="10" stroke="#c4c9cf" stroke-width="1"/>
-                        <line x1="246" y1="10" x2="286" y2="10" stroke="#c4c9cf" stroke-width="1"/>
+                        <text x="207" y="13" font-family="Outfit, sans-serif" font-size="9" font-weight="500" fill="#8CA298" text-anchor="middle" letter-spacing="0.14em">WINDOW</text>
+                        <line x1="128" y1="10" x2="168" y2="10" stroke="#B7C8BF" stroke-width="1"/>
+                        <line x1="246" y1="10" x2="286" y2="10" stroke="#B7C8BF" stroke-width="1"/>
 
                         <!-- ── BED (upper-left, against walls) ── -->
                         <!-- Bed frame -->
-                        <rect x="38" y="38" width="168" height="200" fill="#e3e7ec" stroke="#bdc4cc" stroke-width="1.5" rx="3"/>
+                        <rect x="38" y="38" width="168" height="200" fill="#DFE9E2" stroke="#B7C8BF" stroke-width="1.5" rx="3"/>
                         <!-- Mattress -->
-                        <rect x="44" y="82" width="156" height="152" fill="#eceff2" stroke="#c8cdd4" stroke-width="1" rx="2"/>
+                        <rect x="44" y="82" width="156" height="152" fill="#EAF1EC" stroke="#C2D2C9" stroke-width="1" rx="2"/>
                         <!-- Left pillow -->
-                        <rect x="50" y="48" width="64" height="28" fill="#f3f5f7" stroke="#c8cdd4" stroke-width="1" rx="5"/>
+                        <rect x="50" y="48" width="64" height="28" fill="#F3F8F4" stroke="#C2D2C9" stroke-width="1" rx="5"/>
                         <!-- Right pillow -->
-                        <rect x="122" y="48" width="64" height="28" fill="#f3f5f7" stroke="#c8cdd4" stroke-width="1" rx="5"/>
+                        <rect x="122" y="48" width="64" height="28" fill="#F3F8F4" stroke="#C2D2C9" stroke-width="1" rx="5"/>
 
                         <!-- ── SIDE TABLE (top-right corner) ── -->
-                        <rect x="334" y="38" width="62" height="62" fill="#e3e7ec" stroke="#bdc4cc" stroke-width="1.5" rx="3"/>
+                        <rect x="334" y="38" width="62" height="62" fill="#DFE9E2" stroke="#B7C8BF" stroke-width="1.5" rx="3"/>
                         <!-- Lamp -->
-                        <circle cx="365" cy="69" r="16" fill="#eceff2" stroke="#c8cdd4" stroke-width="1"/>
-                        <circle cx="365" cy="69" r="5" fill="#c8cdd4"/>
+                        <circle cx="365" cy="69" r="16" fill="#EAF1EC" stroke="#C2D2C9" stroke-width="1"/>
+                        <circle cx="365" cy="69" r="5" fill="#C2D2C9"/>
 
                         <!-- ── CLEARANCE ZONE ── -->
                         <circle cx="314" cy="308" r="62" fill="rgba(30,124,113,0.07)" stroke="#1E7C71" stroke-width="1.5" stroke-dasharray="5 4"/>
@@ -307,86 +419,86 @@
                         <!-- Glow ring -->
                         <circle cx="314" cy="308" r="22" fill="rgba(30,124,113,0.14)"/>
                         <!-- Body -->
-                        <circle cx="314" cy="308" r="17" fill="#2A2C2E"/>
+                        <circle cx="314" cy="308" r="17" fill="#12312C"/>
                         <!-- Accent top ring -->
                         <circle cx="314" cy="308" r="10" fill="#1E7C71"/>
                         <!-- Center dot -->
-                        <circle cx="314" cy="308" r="3" fill="#ffffff"/>
+                        <circle cx="314" cy="308" r="3" fill="#F7FAF8"/>
 
                         <!-- ── CLEARANCE MEASUREMENTS ── -->
                         <!-- Right: purifier to right wall -->
-                        <line x1="331" y1="308" x2="400" y2="308" stroke="#b0b8c2" stroke-width="1" stroke-dasharray="3 2.5"/>
-                        <line x1="331" y1="304" x2="331" y2="312" stroke="#b0b8c2" stroke-width="1"/>
-                        <line x1="400" y1="304" x2="400" y2="312" stroke="#b0b8c2" stroke-width="1"/>
-                        <text x="366" y="302" font-family="Outfit, sans-serif" font-size="8.5" fill="#9ca3af" text-anchor="middle">30 cm</text>
+                        <line x1="331" y1="308" x2="400" y2="308" stroke="#A9BDB3" stroke-width="1" stroke-dasharray="3 2.5"/>
+                        <line x1="331" y1="304" x2="331" y2="312" stroke="#A9BDB3" stroke-width="1"/>
+                        <line x1="400" y1="304" x2="400" y2="312" stroke="#A9BDB3" stroke-width="1"/>
+                        <text x="366" y="302" font-family="Outfit, sans-serif" font-size="8.5" fill="#8CA298" text-anchor="middle">30 cm</text>
                         <!-- Bottom: purifier to bottom wall -->
-                        <line x1="314" y1="325" x2="314" y2="382" stroke="#b0b8c2" stroke-width="1" stroke-dasharray="3 2.5"/>
-                        <line x1="310" y1="325" x2="318" y2="325" stroke="#b0b8c2" stroke-width="1"/>
-                        <line x1="310" y1="382" x2="318" y2="382" stroke="#b0b8c2" stroke-width="1"/>
-                        <text x="348" y="360" font-family="Outfit, sans-serif" font-size="8.5" fill="#9ca3af" text-anchor="middle">30 cm</text>
+                        <line x1="314" y1="325" x2="314" y2="382" stroke="#A9BDB3" stroke-width="1" stroke-dasharray="3 2.5"/>
+                        <line x1="310" y1="325" x2="318" y2="325" stroke="#A9BDB3" stroke-width="1"/>
+                        <line x1="310" y1="382" x2="318" y2="382" stroke="#A9BDB3" stroke-width="1"/>
+                        <text x="348" y="360" font-family="Outfit, sans-serif" font-size="8.5" fill="#8CA298" text-anchor="middle">30 cm</text>
 
                         <!-- Clearance label -->
-                        <text x="314" y="414" font-family="Outfit, sans-serif" font-size="9" fill="#9ca3af" text-anchor="middle">Minimum clearance 20–30 cm</text>
+                        <text x="314" y="414" font-family="Outfit, sans-serif" font-size="9" fill="#8CA298" text-anchor="middle">Minimum clearance 20&ndash;30 cm</text>
 
                         <!-- ── NUMBERED MARKERS ── -->
                         <!-- 1 — Wall clearance (near purifier, toward right wall) -->
-                        <g class="bp-marker" data-marker="1" style="cursor:default">
-                            <circle cx="388" cy="338" r="12" fill="#111827"/>
-                            <text x="388" y="342.5" font-family="Outfit, sans-serif" font-size="10" font-weight="600" fill="#ffffff" text-anchor="middle">1</text>
+                        <g class="bp-marker" data-marker="1">
+                            <circle cx="388" cy="338" r="12" fill="#12312C"/>
+                            <text x="388" y="342.5" font-family="Outfit, sans-serif" font-size="10" font-weight="600" fill="#F7FAF8" text-anchor="middle">1</text>
                         </g>
 
                         <!-- 2 — Avoid blocked corners (upper-left, inside corner behind bed) -->
-                        <g class="bp-marker" data-marker="2" style="cursor:default">
-                            <circle cx="60" cy="60" r="12" fill="#111827"/>
-                            <text x="60" y="64.5" font-family="Outfit, sans-serif" font-size="10" font-weight="600" fill="#ffffff" text-anchor="middle">2</text>
+                        <g class="bp-marker" data-marker="2">
+                            <circle cx="60" cy="60" r="12" fill="#12312C"/>
+                            <text x="60" y="64.5" font-family="Outfit, sans-serif" font-size="10" font-weight="600" fill="#F7FAF8" text-anchor="middle">2</text>
                         </g>
 
                         <!-- 3 — Near breathing zone (near head of bed / side of room) -->
-                        <g class="bp-marker" data-marker="3" style="cursor:default">
-                            <circle cx="310" cy="62" r="12" fill="#111827"/>
-                            <text x="310" y="66.5" font-family="Outfit, sans-serif" font-size="10" font-weight="600" fill="#ffffff" text-anchor="middle">3</text>
+                        <g class="bp-marker" data-marker="3">
+                            <circle cx="310" cy="62" r="12" fill="#12312C"/>
+                            <text x="310" y="66.5" font-family="Outfit, sans-serif" font-size="10" font-weight="600" fill="#F7FAF8" text-anchor="middle">3</text>
                         </g>
 
                         <!-- 4 — Room airflow (open center-floor area) -->
-                        <g class="bp-marker" data-marker="4" style="cursor:default">
-                            <circle cx="198" cy="308" r="12" fill="#111827"/>
-                            <text x="198" y="312.5" font-family="Outfit, sans-serif" font-size="10" font-weight="600" fill="#ffffff" text-anchor="middle">4</text>
+                        <g class="bp-marker" data-marker="4">
+                            <circle cx="198" cy="308" r="12" fill="#12312C"/>
+                            <text x="198" y="312.5" font-family="Outfit, sans-serif" font-size="10" font-weight="600" fill="#F7FAF8" text-anchor="middle">4</text>
                         </g>
                     </svg>
                 </div>
 
-                <!-- Rule cards -->
-                <div class="bp-cards">
+                <!-- Placement rules — open editorial list -->
+                <div class="bp-rules">
 
-                    <div class="bp-card" data-card="1" tabindex="0">
-                        <span class="bp-card-num">01</span>
-                        <div class="bp-card-body">
-                            <p class="bp-card-title">Leave space from the wall</p>
-                            <p class="bp-card-desc">Keep 20–30 cm clearance so airflow is not restricted.</p>
+                    <div class="bp-rule" data-card="1" tabindex="0">
+                        <span class="bp-rule-num" aria-hidden="true">01</span>
+                        <div class="bp-rule-body">
+                            <p class="bp-rule-title">Leave space from the wall</p>
+                            <p class="bp-rule-desc">Keep 20&ndash;30 cm clearance so airflow is not restricted.</p>
                         </div>
                     </div>
 
-                    <div class="bp-card" data-card="2" tabindex="0">
-                        <span class="bp-card-num">02</span>
-                        <div class="bp-card-body">
-                            <p class="bp-card-title">Avoid blocked corners</p>
-                            <p class="bp-card-desc">Do not place behind furniture, curtains, or tight spaces.</p>
+                    <div class="bp-rule" data-card="2" tabindex="0">
+                        <span class="bp-rule-num" aria-hidden="true">02</span>
+                        <div class="bp-rule-body">
+                            <p class="bp-rule-title">Avoid blocked corners</p>
+                            <p class="bp-rule-desc">Do not place behind furniture, curtains, or tight spaces.</p>
                         </div>
                     </div>
 
-                    <div class="bp-card" data-card="3" tabindex="0">
-                        <span class="bp-card-num">03</span>
-                        <div class="bp-card-body">
-                            <p class="bp-card-title">Place near breathing zone</p>
-                            <p class="bp-card-desc">Side placement near the bed improves nighttime purification.</p>
+                    <div class="bp-rule" data-card="3" tabindex="0">
+                        <span class="bp-rule-num" aria-hidden="true">03</span>
+                        <div class="bp-rule-body">
+                            <p class="bp-rule-title">Place near breathing zone</p>
+                            <p class="bp-rule-desc">Side placement near the bed improves nighttime purification.</p>
                         </div>
                     </div>
 
-                    <div class="bp-card" data-card="4" tabindex="0">
-                        <span class="bp-card-num">04</span>
-                        <div class="bp-card-body">
-                            <p class="bp-card-title">Allow room circulation</p>
-                            <p class="bp-card-desc">Position the purifier where air can circulate across the room.</p>
+                    <div class="bp-rule" data-card="4" tabindex="0">
+                        <span class="bp-rule-num" aria-hidden="true">04</span>
+                        <div class="bp-rule-body">
+                            <p class="bp-rule-title">Allow room circulation</p>
+                            <p class="bp-rule-desc">Position the purifier where air can circulate across the room.</p>
                         </div>
                     </div>
 
@@ -397,398 +509,294 @@
     </section>
 
     <!-- ========================================
-         SECTION 3: TOUCH CONTROLS VIDEO
+         SECTION: TOUCH CONTROLS
     ======================================== -->
     <section class="tc-section" id="touch-controls" aria-label="Touch Controls Guide">
         <div class="tc-container">
 
-            <div class="tc-body">
+            <div class="tc-header" data-reveal>
+                <p class="tc-eyebrow">Touch Controls</p>
+                <h2 class="tc-headline">Everything you need,<br>at a <span class="italic">touch</span></h2>
+                <p class="tc-desc">Six controls cover everything you'll use day to day. Hover over one to find it on the panel.</p>
+            </div>
 
-                <!-- Left col: heading + description -->
-                <div class="tc-text">
-                    <p class="tc-eyebrow">Touch Controls</p>
-                    <h2 class="tc-headline">Everything you need,<br>at a <span class="italic">touch</span></h2>
-                    <p class="tc-desc">A quick look at the essential controls you'll use every day.</p>
+            <!-- Device touch panel illustration -->
+            <div class="tc-panel-wrap" data-reveal>
+                <div class="tc-panel" aria-hidden="true">
+                    <span class="tc-panel-key" data-key="power">
+                        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="7"/><line x1="10" y1="3" x2="10" y2="6"/></svg>
+                    </span>
+                    <span class="tc-panel-key" data-key="fan">
+                        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10h12M4 6h8M4 14h6"/></svg>
+                    </span>
+                    <span class="tc-panel-key" data-key="sleep">
+                        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3C6.13 3 3 6.13 3 10s3.13 7 7 7 7-3.13 7-7"/><path d="M13 3c0 1.66-1.34 3-3 3"/></svg>
+                    </span>
+                    <span class="tc-panel-key" data-key="timer">
+                        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="7"/><polyline points="10,6 10,10 13,12"/></svg>
+                    </span>
+                    <span class="tc-panel-key" data-key="wifi">
+                        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5C5 9.46 7.46 7 10.5 7S16 9.46 16 12.5"/><path d="M2 15c0-4.42 3.58-8 8-8s8 3.58 8 8"/><circle cx="10" cy="16" r="1" fill="currentColor"/></svg>
+                    </span>
+                    <span class="tc-panel-key" data-key="filter">
+                        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v4M10 14v4M4.22 4.22l2.83 2.83M12.95 12.95l2.83 2.83M2 10h4M14 10h4M4.22 15.78l2.83-2.83M12.95 7.05l2.83-2.83"/></svg>
+                    </span>
+                </div>
+                <p class="tc-panel-caption">The touch panel, as it appears on your Hawaa Edge</p>
+            </div>
+
+            <!-- Control list — self-paced, all visible -->
+            <div class="tc-grid" data-reveal>
+
+                <div class="tc-item" data-key="power" tabindex="0">
+                    <span class="tc-item-num" aria-hidden="true">01</span>
+                    <div class="tc-item-text">
+                        <span class="tc-item-label">Power</span>
+                        <span class="tc-item-sub">Turn the purifier on or off</span>
+                    </div>
                 </div>
 
-                <!-- Right col: video + chip track -->
-                <div class="tc-video-col">
+                <div class="tc-item" data-key="fan" tabindex="0">
+                    <span class="tc-item-num" aria-hidden="true">02</span>
+                    <div class="tc-item-text">
+                        <span class="tc-item-label">Fan Speed</span>
+                        <span class="tc-item-sub">Low, medium, and high airflow</span>
+                    </div>
+                </div>
 
-                    <!-- Video container -->
-                    <div class="tc-video-wrap">
-                        <video
-                            class="tc-video"
-                            id="tc-video"
-                            src="public/videos/touch-controls.mp4"
-                            muted
-                            autoplay
-                            loop
-                            playsinline
-                            preload="metadata"
-                            aria-label="Demonstration of air purifier touch controls"
-                        ></video>
+                <div class="tc-item" data-key="sleep" tabindex="0">
+                    <span class="tc-item-num" aria-hidden="true">03</span>
+                    <div class="tc-item-text">
+                        <span class="tc-item-label">Sleep Mode</span>
+                        <span class="tc-item-sub">Runs quietly at low fan speed</span>
+                    </div>
+                </div>
 
-                        <!-- Placeholder shown when video is unavailable -->
-                        <div class="tc-video-placeholder" id="tc-placeholder" aria-hidden="true">
-                            <div class="tc-placeholder-inner">
-                                <svg class="tc-placeholder-icon" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                    <circle cx="28" cy="28" r="20" fill="#2A2C2E"/>
-                                    <circle cx="28" cy="28" r="12" fill="#1E7C71" opacity="0.85"/>
-                                    <circle cx="28" cy="28" r="4" fill="#ffffff"/>
-                                    <circle cx="28" cy="28" r="26" stroke="#e5e7eb" stroke-width="1" fill="none"/>
-                                </svg>
-                                <p class="tc-placeholder-label">Touch controls demo</p>
-                            </div>
-                        </div>
-                    </div><!-- /.tc-video-wrap -->
+                <div class="tc-item" data-key="timer" tabindex="0">
+                    <span class="tc-item-num" aria-hidden="true">04</span>
+                    <div class="tc-item-text">
+                        <span class="tc-item-label">Timer</span>
+                        <span class="tc-item-sub">Set 2h, 4h, or 8h runtime</span>
+                    </div>
+                </div>
 
-                    <!-- Control chip track — one chip visible at a time -->
-                    <div class="tc-chip-area" id="tc-chip-area" aria-live="polite" aria-atomic="true">
+                <div class="tc-item" data-key="wifi" tabindex="0">
+                    <span class="tc-item-num" aria-hidden="true">05</span>
+                    <div class="tc-item-text">
+                        <span class="tc-item-label">Wi-Fi Pairing</span>
+                        <span class="tc-item-sub">Connect the purifier to the app</span>
+                    </div>
+                </div>
 
-                        <!-- Step progress dots -->
-                        <div class="tc-dots" id="tc-dots" aria-hidden="true">
-                            <span class="tc-dot" data-dot="0"></span>
-                            <span class="tc-dot" data-dot="1"></span>
-                            <span class="tc-dot" data-dot="2"></span>
-                            <span class="tc-dot" data-dot="3"></span>
-                            <span class="tc-dot" data-dot="4"></span>
-                            <span class="tc-dot" data-dot="5"></span>
-                        </div>
+                <div class="tc-item" data-key="filter" tabindex="0">
+                    <span class="tc-item-num" aria-hidden="true">06</span>
+                    <div class="tc-item-text">
+                        <span class="tc-item-label">Filter Reminder</span>
+                        <span class="tc-item-sub">A gentle reminder every 4&ndash;5 months</span>
+                    </div>
+                </div>
 
-                        <!-- Chips -->
-                        <div class="tc-chip-track">
-
-                            <div class="tc-chip" data-index="0" data-start="0">
-                                <span class="tc-chip-icon" aria-hidden="true">
-                                    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                                        <circle cx="10" cy="10" r="7"/>
-                                        <line x1="10" y1="3" x2="10" y2="6"/>
-                                    </svg>
-                                </span>
-                                <div class="tc-chip-text">
-                                    <span class="tc-chip-label">Power</span>
-                                    <span class="tc-chip-sub">Turn the purifier on or off</span>
-                                </div>
-                            </div>
-
-                            <div class="tc-chip" data-index="1" data-start="3">
-                                <span class="tc-chip-icon" aria-hidden="true">
-                                    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M4 10h12M4 6h8M4 14h6"/>
-                                    </svg>
-                                </span>
-                                <div class="tc-chip-text">
-                                    <span class="tc-chip-label">Fan Speed</span>
-                                    <span class="tc-chip-sub">Low, medium, and high airflow</span>
-                                </div>
-                            </div>
-
-                            <div class="tc-chip" data-index="2" data-start="6">
-                                <span class="tc-chip-icon" aria-hidden="true">
-                                    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M10 3C6.13 3 3 6.13 3 10s3.13 7 7 7 7-3.13 7-7"/>
-                                        <path d="M13 3c0 1.66-1.34 3-3 3"/>
-                                    </svg>
-                                </span>
-                                <div class="tc-chip-text">
-                                    <span class="tc-chip-label">Sleep Mode</span>
-                                    <span class="tc-chip-sub">Runs quietly at low fan speed</span>
-                                </div>
-                            </div>
-
-                            <div class="tc-chip" data-index="3" data-start="9">
-                                <span class="tc-chip-icon" aria-hidden="true">
-                                    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                                        <circle cx="10" cy="10" r="7"/>
-                                        <polyline points="10,6 10,10 13,12"/>
-                                    </svg>
-                                </span>
-                                <div class="tc-chip-text">
-                                    <span class="tc-chip-label">Timer</span>
-                                    <span class="tc-chip-sub">Set 2h, 4h, or 8h runtime</span>
-                                </div>
-                            </div>
-
-                            <div class="tc-chip" data-index="4" data-start="12">
-                                <span class="tc-chip-icon" aria-hidden="true">
-                                    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M5 12.5C5 9.46 7.46 7 10.5 7S16 9.46 16 12.5"/>
-                                        <path d="M2 15c0-4.42 3.58-8 8-8s8 3.58 8 8"/>
-                                        <circle cx="10" cy="16" r="1" fill="currentColor"/>
-                                    </svg>
-                                </span>
-                                <div class="tc-chip-text">
-                                    <span class="tc-chip-label">Wi-Fi Pairing</span>
-                                    <span class="tc-chip-sub">Connect the purifier to the app</span>
-                                </div>
-                            </div>
-
-                            <div class="tc-chip" data-index="5" data-start="15">
-                                <span class="tc-chip-icon" aria-hidden="true">
-                                    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M10 2v4M10 14v4M4.22 4.22l2.83 2.83M12.95 12.95l2.83 2.83M2 10h4M14 10h4M4.22 15.78l2.83-2.83M12.95 7.05l2.83-2.83"/>
-                                    </svg>
-                                </span>
-                                <div class="tc-chip-text">
-                                    <span class="tc-chip-label">Filter Reminder</span>
-                                    <span class="tc-chip-sub">A gentle reminder every 4–5 months</span>
-                                </div>
-                            </div>
-
-                        </div><!-- /.tc-chip-track -->
-                    </div><!-- /.tc-chip-area -->
-
-                </div><!-- /.tc-video-col -->
-
-            </div><!-- /.tc-body -->
+            </div><!-- /.tc-grid -->
 
         </div><!-- /.tc-container -->
     </section>
 
     <!-- ========================================
-         SECTION 4: GOOGLE HOME ONBOARDING
+         SECTION: GOOGLE HOME ONBOARDING
     ======================================== -->
     <section class="gh-section" id="google-home" aria-label="Google Home Smart Control Setup">
+        <div class="gh-container">
 
-        <!-- Outer scroll container: height drives scroll progress -->
-        <div class="gh-scroll-outer" id="gh-scroll-outer">
+            <div class="gh-head" data-reveal>
+                <p class="gh-eyebrow">Smart Control</p>
+                <h2 class="gh-headline">Connect Hawaa to <span class="italic">Google&nbsp;Home</span></h2>
+                <p class="gh-desc">Control your purifier from anywhere using the Google Home app. Four steps, one-time setup.</p>
+            </div>
 
-            <!-- Sticky viewport: stays fixed while user scrolls -->
-            <div class="gh-sticky" id="gh-sticky">
-                <div class="gh-viewport">
+            <ol class="gh-steps" data-reveal>
 
-                    <!-- LAYER 1: Intro / context -->
-                    <div class="gh-intro">
-                        <p class="gh-eyebrow">Smart Control</p>
-                        <h2 class="gh-headline">Connect Hawaa to <span class="italic">Google&nbsp;Home</span></h2>
-                        <p class="gh-desc">Control your purifier from anywhere using the Google Home app.</p>
-                    </div>
+                <li class="gh-step">
+                    <span class="gh-step-num" aria-hidden="true">01</span>
+                    <h3 class="gh-step-title">Turn on Wi-Fi pairing</h3>
+                    <p class="gh-step-desc">Turn on the purifier and tap the Wi-Fi icon on the control panel.</p>
+                </li>
 
-                    <!-- LAYER 2: Horizontal step storytelling -->
-                    <div class="gh-story" aria-label="Setup steps">
+                <li class="gh-step">
+                    <span class="gh-step-num" aria-hidden="true">02</span>
+                    <h3 class="gh-step-title">Connect to the setup network</h3>
+                    <p class="gh-step-desc">Open your phone's Wi-Fi list and select <span class="gh-network-name">hawaa-setup</span>.</p>
+                </li>
 
-                        <!-- Progress indicator -->
-                        <div class="gh-progress" aria-hidden="true">
-                            <span class="gh-progress-current" id="gh-progress-current">01</span>
-                            <span class="gh-progress-sep">/</span>
-                            <span class="gh-progress-total">04</span>
-                            <div class="gh-progress-bar">
-                                <div class="gh-progress-fill" id="gh-progress-fill"></div>
-                            </div>
+                <li class="gh-step">
+                    <span class="gh-step-num" aria-hidden="true">03</span>
+                    <h3 class="gh-step-title">Configure your Wi-Fi</h3>
+                    <p class="gh-step-desc">A setup page opens automatically. Enter your home Wi-Fi name and password.</p>
+                </li>
+
+                <li class="gh-step">
+                    <span class="gh-step-num" aria-hidden="true">04</span>
+                    <h3 class="gh-step-title">Link with Google Home</h3>
+                    <p class="gh-step-desc">In the Google Home app, add a device, search for Hawaa, and enter the device code.</p>
+                </li>
+
+            </ol>
+
+            <!-- App download row -->
+            <div class="gh-footer" data-reveal>
+                <p class="gh-footer-label">Get the Google Home app</p>
+                <div class="gh-app-btns">
+                    <a class="gh-app-btn" href="https://play.google.com/store/apps/details?id=com.google.android.apps.chromecast.app" target="_blank" rel="noopener noreferrer" aria-label="Get Google Home on Google Play">
+                        <svg class="gh-store-icon" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                            <path d="M5.01 3.37c-.42-.24-.9-.2-1.27.05L13.5 12l-9.76 8.58c.37.25.85.29 1.27.05l12.04-6.96a1.5 1.5 0 000-2.62L5.01 3.37z"/>
+                        </svg>
+                        <div class="gh-store-text">
+                            <span class="gh-store-sub">Get it on</span>
+                            <span class="gh-store-name">Google Play</span>
                         </div>
-
-                        <!-- Horizontal card track -->
-                        <div class="gh-track-wrap">
-                            <div class="gh-track" id="gh-track" role="list">
-
-                                <article class="gh-card" role="listitem" tabindex="0">
-                                    <span class="gh-card-num">01</span>
-                                    <h3 class="gh-card-title">Turn on Wi-Fi pairing</h3>
-                                    <p class="gh-card-desc">Turn on the purifier and tap the Wi-Fi icon on the control panel.</p>
-                                    <div class="gh-card-icon" aria-hidden="true">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.55a11 11 0 0114 0"/><path d="M8.53 16.11a6 6 0 016.95 0"/><circle cx="12" cy="20" r="1"/></svg>
-                                    </div>
-                                </article>
-
-                                <article class="gh-card" role="listitem" tabindex="0">
-                                    <span class="gh-card-num">02</span>
-                                    <h3 class="gh-card-title">Connect to Hawaa setup network</h3>
-                                    <p class="gh-card-desc">Open your phone's Wi-Fi list and select <span class="gh-network-name">hawaa-setup</span>.</p>
-                                    <div class="gh-card-icon" aria-hidden="true">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
-                                    </div>
-                                </article>
-
-                                <article class="gh-card" role="listitem" tabindex="0">
-                                    <span class="gh-card-num">03</span>
-                                    <h3 class="gh-card-title">Configure your Wi-Fi</h3>
-                                    <p class="gh-card-desc">A setup page will open automatically. Enter your home Wi-Fi SSID and password.</p>
-                                    <div class="gh-card-icon" aria-hidden="true">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
-                                    </div>
-                                </article>
-
-                                <article class="gh-card" role="listitem" tabindex="0">
-                                    <span class="gh-card-num">04</span>
-                                    <h3 class="gh-card-title">Link with Google Home</h3>
-                                    <p class="gh-card-desc">Open the Google Home app, add device, search Hawaa, and enter the device code to complete setup.</p>
-                                    <div class="gh-card-icon" aria-hidden="true">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-                                    </div>
-                                </article>
-
-                            </div>
+                    </a>
+                    <a class="gh-app-btn" href="https://apps.apple.com/app/google-home/id680819774" target="_blank" rel="noopener noreferrer" aria-label="Download Google Home on the App Store">
+                        <svg class="gh-store-icon" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                            <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.7 9.05 7.4c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.39-1.32 2.76-2.53 3.99zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
+                        </svg>
+                        <div class="gh-store-text">
+                            <span class="gh-store-sub">Download on the</span>
+                            <span class="gh-store-name">App Store</span>
                         </div>
+                    </a>
+                </div>
+            </div>
 
-                        <!-- App download buttons -->
-                        <div class="gh-app-btns">
-                            <a class="gh-app-btn" href="https://play.google.com/store/apps/details?id=com.google.android.apps.chromecast.app" target="_blank" rel="noopener noreferrer" aria-label="Get Google Home on Google Play">
-                                <svg class="gh-store-icon" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                    <path d="M5.01 3.37c-.42-.24-.9-.2-1.27.05L13.5 12l-9.76 8.58c.37.25.85.29 1.27.05l12.04-6.96a1.5 1.5 0 000-2.62L5.01 3.37z"/>
-                                </svg>
-                                <div class="gh-store-text">
-                                    <span class="gh-store-sub">Get it on</span>
-                                    <span class="gh-store-name">Google Play</span>
-                                </div>
-                            </a>
-                            <a class="gh-app-btn" href="https://apps.apple.com/app/google-home/id680819774" target="_blank" rel="noopener noreferrer" aria-label="Download Google Home on the App Store">
-                                <svg class="gh-store-icon" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                    <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.7 9.05 7.4c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.39-1.32 2.76-2.53 3.99zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
-                                </svg>
-                                <div class="gh-store-text">
-                                    <span class="gh-store-sub">Download on the</span>
-                                    <span class="gh-store-name">App Store</span>
-                                </div>
-                            </a>
-                        </div>
-
-                    </div><!-- /.gh-story -->
-
-                </div><!-- /.gh-viewport -->
-            </div><!-- /.gh-sticky -->
-
-        </div><!-- /.gh-scroll-outer -->
-
+        </div><!-- /.gh-container -->
     </section>
 
 
     <!-- ========================================
-         FILTER CARE SECTION
+         SECTION: FILTER CARE
     ======================================== -->
     <section class="fc-section" id="filter-care" aria-label="Filter Care Guide">
         <div class="fc-container">
 
             <!-- Section header -->
-            <header class="fc-header">
+            <header class="fc-header" data-reveal>
                 <p class="fc-eyebrow">Filter Care</p>
                 <h2 class="fc-headline">Keep your filtration<br>performing at its <span class="italic">best</span></h2>
                 <p class="fc-subtext">A few simple care rules help your purifier maintain optimal performance.</p>
             </header>
 
-            <!-- Body: illustration + cards -->
-            <div class="fc-body">
+            <!-- Body: illustration + rules -->
+            <div class="fc-body" data-reveal>
 
                 <!-- Minimal cylindrical filter illustration -->
                 <div class="fc-illustration" aria-hidden="true">
                     <svg class="fc-filter-svg" viewBox="-15 -38 360 300" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <!-- Outer pre-filter ring -->
-                        <circle cx="110" cy="110" r="100" fill="#f3f4f6" stroke="#e5e7eb" stroke-width="1.5"/>
+                        <circle cx="110" cy="110" r="100" fill="#E4EDE6" stroke="#CFDCD4" stroke-width="1.5"/>
                         <!-- HEPA pleated layer background -->
-                        <circle cx="110" cy="110" r="76" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+                        <circle cx="110" cy="110" r="76" fill="#F7FAF8" stroke="#CFDCD4" stroke-width="1.5"/>
                         <!-- Subtle pleating marks on HEPA layer -->
-                        <circle cx="110" cy="110" r="76" fill="none" stroke="#f3f4f6" stroke-width="6" stroke-dasharray="4 4"/>
-                        <circle cx="110" cy="110" r="68" fill="none" stroke="#eff0f1" stroke-width="4" stroke-dasharray="3 5"/>
+                        <circle cx="110" cy="110" r="76" fill="none" stroke="#E9F0EB" stroke-width="6" stroke-dasharray="4 4"/>
+                        <circle cx="110" cy="110" r="68" fill="none" stroke="#EDF3EE" stroke-width="4" stroke-dasharray="3 5"/>
                         <!-- HEPA inner boundary -->
-                        <circle cx="110" cy="110" r="56" fill="#f9fafb" stroke="#d1d5db" stroke-width="1.5"/>
+                        <circle cx="110" cy="110" r="56" fill="#EFF5F1" stroke="#C2D2C9" stroke-width="1.5"/>
                         <!-- Carbon core -->
-                        <circle cx="110" cy="110" r="42" fill="#2A2C2E" stroke="#374151" stroke-width="1.5"/>
+                        <circle cx="110" cy="110" r="42" fill="#2A2C2E" stroke="#3A423F" stroke-width="1.5"/>
                         <!-- Airflow channel -->
                         <circle cx="110" cy="110" r="18" fill="#1B1D1F" stroke="none"/>
                         <!-- Center highlight -->
                         <circle cx="110" cy="110" r="5" fill="rgba(255,255,255,0.12)"/>
 
                         <!-- Pre-filter callout (top) -->
-                        <line x1="110" y1="-18" x2="110" y2="10" stroke="#d1d5db" stroke-width="1" stroke-dasharray="2 3"/>
-                        <circle cx="110" cy="10" r="2.5" fill="#d1d5db"/>
-                        <text x="110" y="-24" text-anchor="middle" font-family="Outfit, sans-serif" font-size="11" font-weight="500" fill="#6b7280">Pre-filter</text>
+                        <line x1="110" y1="-18" x2="110" y2="10" stroke="#B7C8BF" stroke-width="1" stroke-dasharray="2 3"/>
+                        <circle cx="110" cy="10" r="2.5" fill="#B7C8BF"/>
+                        <text x="110" y="-24" text-anchor="middle" font-family="Outfit, sans-serif" font-size="11" font-weight="500" fill="#5C726C">Pre-filter</text>
 
                         <!-- HEPA Layer callout (upper right) -->
-                        <line x1="164" y1="56" x2="226" y2="48" stroke="#d1d5db" stroke-width="1" stroke-dasharray="2 3"/>
-                        <circle cx="164" cy="56" r="2.5" fill="#9ca3af"/>
-                        <text x="230" y="52" text-anchor="start" font-family="Outfit, sans-serif" font-size="11" font-weight="500" fill="#6b7280">HEPA Layer</text>
+                        <line x1="164" y1="56" x2="226" y2="48" stroke="#B7C8BF" stroke-width="1" stroke-dasharray="2 3"/>
+                        <circle cx="164" cy="56" r="2.5" fill="#8CA298"/>
+                        <text x="230" y="52" text-anchor="start" font-family="Outfit, sans-serif" font-size="11" font-weight="500" fill="#5C726C">HEPA Layer</text>
 
                         <!-- Carbon Core callout (right) -->
-                        <line x1="152" y1="110" x2="226" y2="118" stroke="#d1d5db" stroke-width="1" stroke-dasharray="2 3"/>
-                        <circle cx="152" cy="110" r="2.5" fill="#374151"/>
-                        <text x="230" y="122" text-anchor="start" font-family="Outfit, sans-serif" font-size="11" font-weight="500" fill="#6b7280">Carbon Core</text>
+                        <line x1="152" y1="110" x2="226" y2="118" stroke="#B7C8BF" stroke-width="1" stroke-dasharray="2 3"/>
+                        <circle cx="152" cy="110" r="2.5" fill="#3A423F"/>
+                        <text x="230" y="122" text-anchor="start" font-family="Outfit, sans-serif" font-size="11" font-weight="500" fill="#5C726C">Carbon Core</text>
                     </svg>
                 </div><!-- /.fc-illustration -->
 
-                <!-- Care cards grid -->
-                <div class="fc-cards">
+                <!-- Care rules — open do/don't list -->
+                <div class="fc-rules">
 
-                    <!-- Card 1: Vacuum the outer pre-filter -->
-                    <article class="fc-card">
-                        <div class="fc-card-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M9.59 4.59A2 2 0 1111 8H2m10.59 11.41A2 2 0 1010 16H2m15.73-8.27A2.5 2.5 0 1119.5 12H2"/>
-                            </svg>
-                        </div>
-                        <div class="fc-card-body">
-                            <div class="fc-card-top">
-                                <h3 class="fc-card-title">Vacuum the outer pre-filter</h3>
-                                <span class="fc-badge fc-badge--allowed">Allowed</span>
-                            </div>
-                            <p class="fc-card-desc">Use a soft brush or vacuum gently to remove visible dust buildup.</p>
+                    <!-- Rule 1: Vacuum the outer pre-filter -->
+                    <article class="fc-rule">
+                        <span class="fc-rule-mark fc-mark--do" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                        </span>
+                        <div class="fc-rule-body">
+                            <h3 class="fc-rule-title">Vacuum the outer pre-filter</h3>
+                            <p class="fc-rule-desc">Use a soft brush or vacuum gently to remove visible dust buildup.</p>
                         </div>
                     </article>
 
-                    <!-- Card 2: Do not wash the filter -->
-                    <article class="fc-card">
-                        <div class="fc-card-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M12 2.69l5.66 5.66a8 8 0 11-11.31 0z"/>
-                                <line x1="4" y1="4" x2="20" y2="20"/>
-                            </svg>
-                        </div>
-                        <div class="fc-card-body">
-                            <div class="fc-card-top">
-                                <h3 class="fc-card-title">Do not wash the filter</h3>
-                                <span class="fc-badge fc-badge--no-wash">Do not wash</span>
-                            </div>
-                            <p class="fc-card-desc">The filter is not washable. Water can damage the HEPA and carbon layers.</p>
+                    <!-- Rule 2: Do not wash the filter -->
+                    <article class="fc-rule">
+                        <span class="fc-rule-mark fc-mark--dont" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                        </span>
+                        <div class="fc-rule-body">
+                            <h3 class="fc-rule-title">Never wash the filter</h3>
+                            <p class="fc-rule-desc">The filter is not washable. Water can damage the HEPA and carbon layers.</p>
                         </div>
                     </article>
 
-                    <!-- Card 3: Replace when reminded -->
-                    <article class="fc-card">
-                        <div class="fc-card-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-                                <polyline points="23 4 23 10 17 10"/>
-                                <path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/>
-                            </svg>
-                        </div>
-                        <div class="fc-card-body">
-                            <div class="fc-card-top">
-                                <h3 class="fc-card-title">Replace when reminded</h3>
-                                <span class="fc-badge fc-badge--replace">Replace</span>
-                            </div>
-                            <p class="fc-card-desc">Hawaa will notify you when it's time to replace the filter, typically after several months of regular use.</p>
+                    <!-- Rule 3: Replace when reminded -->
+                    <article class="fc-rule">
+                        <span class="fc-rule-mark fc-mark--replace" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
+                        </span>
+                        <div class="fc-rule-body">
+                            <h3 class="fc-rule-title">Replace when reminded</h3>
+                            <p class="fc-rule-desc">Hawaa will notify you when it's time to replace the filter, typically after several months of regular use.</p>
                         </div>
                     </article>
 
-                    <!-- Card 4: Switch off before handling -->
-                    <article class="fc-card">
-                        <div class="fc-card-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M18.36 6.64a9 9 0 11-12.73 0"/>
-                                <line x1="12" y1="2" x2="12" y2="12"/>
-                            </svg>
-                        </div>
-                        <div class="fc-card-body">
-                            <div class="fc-card-top">
-                                <h3 class="fc-card-title">Switch off before handling</h3>
-                                <span class="fc-badge fc-badge--important">Important</span>
-                            </div>
-                            <p class="fc-card-desc">Always turn the purifier off before removing, cleaning, or replacing the filter.</p>
+                    <!-- Rule 4: Switch off before handling -->
+                    <article class="fc-rule">
+                        <span class="fc-rule-mark fc-mark--care" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18.36 6.64a9 9 0 11-12.73 0"/><line x1="12" y1="2" x2="12" y2="12"/></svg>
+                        </span>
+                        <div class="fc-rule-body">
+                            <h3 class="fc-rule-title">Switch off before handling</h3>
+                            <p class="fc-rule-desc">Always turn the purifier off before removing, cleaning, or replacing the filter.</p>
                         </div>
                     </article>
 
-                </div><!-- /.fc-cards -->
+                    <!-- Replacement filter link -->
+                    <a class="fc-replace-link" href="buy.html#accessories">
+                        Order replacement filters
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+                    </a>
+
+                </div><!-- /.fc-rules -->
 
             </div><!-- /.fc-body -->
 
-            <!-- Info note panel -->
-            <div class="fc-note" role="note">
-                <svg class="fc-note-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <circle cx="12" cy="12" r="10"/>
-                    <line x1="12" y1="8" x2="12" y2="12"/>
-                    <line x1="12" y1="16" x2="12.01" y2="16"/>
-                </svg>
-                <p class="fc-note-text">Before cleaning or replacing the filter, always turn the purifier off and remove the filter carefully.</p>
-            </div>
-
         </div><!-- /.fc-container -->
+    </section>
+
+    <!-- ========================================
+         SECTION: NEED HELP
+    ======================================== -->
+    <section class="ih-section" aria-label="Installation help">
+        <div class="ih-container" data-reveal>
+            <h2 class="ih-headline">Stuck somewhere? <span class="italic">We're here.</span></h2>
+            <p class="ih-desc">Our support team can walk you through any step.</p>
+            <div class="ih-links">
+                <a class="ih-btn" href="support.html">Visit support</a>
+                <a class="ih-link" href="faq.html">
+                    Read the FAQ
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+                </a>
+            </div>
+        </div>
     </section>
 
 
@@ -894,165 +902,51 @@
     <script src="js/nav.js"></script>
     <script src="js/cart.js"></script>
     <script>
-        // ── Smart Control: Scroll-driven horizontal storytelling ──────
+        // Smooth scroll: Start Setup button → #setup-steps
         (function () {
-            var outer     = document.getElementById('gh-scroll-outer');
-            var track     = document.getElementById('gh-track');
-            var fill      = document.getElementById('gh-progress-fill');
-            var counter   = document.getElementById('gh-progress-current');
-            if (!outer || !track) return;
+            var btn = document.getElementById('ig-start-btn');
+            var target = document.getElementById('setup-steps');
+            if (!btn || !target) return;
+            btn.addEventListener('click', function () {
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        }());
 
-            var cards     = Array.prototype.slice.call(track.querySelectorAll('.gh-card'));
-            var total     = cards.length;
-            var ticking   = false;
+
+        // Scroll reveal — subtle fade/rise on section content
+        (function () {
+            var els = Array.prototype.slice.call(document.querySelectorAll('[data-reveal]'));
+            if (!els.length) return;
+
             var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            if (prefersReducedMotion || !('IntersectionObserver' in window)) {
+                els.forEach(function (el) { el.classList.add('is-revealed'); });
+                return;
+            }
 
-            function update() {
-                var rect      = outer.getBoundingClientRect();
-                var stickyH   = window.innerHeight;
-                var scrollLen = outer.offsetHeight - stickyH;
-                if (scrollLen <= 0) return;
+            els.forEach(function (el) { el.classList.add('will-reveal'); });
 
-                // How far into the sticky scroll range (0 → 1)
-                var progress  = Math.max(0, Math.min(1, -rect.top / scrollLen));
-
-                // Map progress to horizontal translation
-                var trackW    = track.scrollWidth;
-                var viewW     = track.parentElement.offsetWidth;
-                var maxShift  = trackW - viewW;
-                if (maxShift < 0) maxShift = 0;
-
-                if (prefersReducedMotion) {
-                    track.style.transform = 'none';
-                } else {
-                    track.style.transform = 'translateX(' + (-progress * maxShift) + 'px)';
-                }
-
-                // Progress bar
-                if (fill) fill.style.width = (progress * 100) + '%';
-
-                // Active card index
-                var idx = Math.min(total - 1, Math.floor(progress * total));
-                if (progress >= 1) idx = total - 1;
-                if (counter) counter.textContent = ('0' + (idx + 1)).slice(-2);
-
-                // Card emphasis
-                cards.forEach(function (card, i) {
-                    if (i === idx) {
-                        card.classList.add('is-active');
-                    } else {
-                        card.classList.remove('is-active');
+            var observer = new IntersectionObserver(function (entries) {
+                entries.forEach(function (entry) {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-revealed');
+                        observer.unobserve(entry.target);
                     }
                 });
+            }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
 
-                ticking = false;
-            }
-
-            function onScroll() {
-                if (!ticking) {
-                    ticking = true;
-                    requestAnimationFrame(update);
-                }
-            }
-
-            window.addEventListener('scroll', onScroll, { passive: true });
-            window.addEventListener('resize', function () {
-                requestAnimationFrame(update);
-            });
-
-            // Initial state
-            update();
-            if (cards.length) cards[0].classList.add('is-active');
+            els.forEach(function (el) { observer.observe(el); });
         }());
-    </script>
-    <script>
-        // ── Touch Controls: Progressive chip reveal ──────────────────────
+
+
+        // Bedroom placement: linked callouts — hover/focus a rule to highlight its marker
         (function () {
-            var video      = document.getElementById('tc-video');
-            var placeholder = document.getElementById('tc-placeholder');
-            var chips      = Array.prototype.slice.call(document.querySelectorAll('.tc-chip'));
-            var dots       = Array.prototype.slice.call(document.querySelectorAll('.tc-dot'));
-            var intervals  = chips.map(function (c) { return parseFloat(c.dataset.start); });
-            var cycleDuration = 18; // seconds for one full chip cycle
-            var currentIndex  = -1;
-            var fallbackTimer = null;
-
-            // Show a specific chip by index
-            function showChip(index) {
-                if (index === currentIndex) return;
-                currentIndex = index;
-
-                chips.forEach(function (chip, i) {
-                    chip.classList.toggle('is-active', i === index);
-                });
-                dots.forEach(function (dot, i) {
-                    dot.classList.toggle('is-active', i === index);
-                });
-            }
-
-            // Determine chip from video timestamp (wraps on loop)
-            function getActiveIndex(time) {
-                var t = time % cycleDuration;
-                var active = 0;
-                for (var i = 0; i < intervals.length; i++) {
-                    if (t >= intervals[i]) { active = i; }
-                }
-                return active;
-            }
-
-            // Hook into video timeupdate
-            function onTimeUpdate() {
-                showChip(getActiveIndex(video.currentTime));
-            }
-
-            // Fallback: auto-cycle when video is unavailable
-            function startFallbackCycle() {
-                var step = 0;
-                showChip(0);
-                fallbackTimer = setInterval(function () {
-                    step = (step + 1) % chips.length;
-                    showChip(step);
-                }, 2400);
-            }
-
-            if (video) {
-                // Show placeholder only if video fails to load
-                video.addEventListener('canplay', function () {
-                    if (placeholder) placeholder.style.display = 'none';
-                    if (fallbackTimer) { clearInterval(fallbackTimer); fallbackTimer = null; }
-                    video.addEventListener('timeupdate', onTimeUpdate);
-                });
-
-                video.addEventListener('error', startFallbackCycle);
-
-                // If video stalls or won't play after a short delay, use fallback
-                setTimeout(function () {
-                    if (video.readyState < 2) { startFallbackCycle(); }
-                }, 1200);
-            }
-
-            // Start first chip immediately
-            showChip(0);
-        }());
-    </script>
-    <script>
-        // Smooth scroll: Start Setup button → #setup-steps
-        document.getElementById('ig-start-btn').addEventListener('click', function () {
-            var target = document.getElementById('setup-steps');
-            if (target) {
-                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
-        });
-
-
-        // Bedroom placement: linked callouts — hover/focus a card to highlight its marker
-        (function () {
-            var cards = document.querySelectorAll('.bp-card[data-card]');
+            var rules = document.querySelectorAll('.bp-rule[data-card]');
             var markers = document.querySelectorAll('.bp-marker[data-marker]');
 
             function activate(num) {
-                cards.forEach(function (c) {
-                    c.classList.toggle('is-active', c.dataset.card === num);
+                rules.forEach(function (r) {
+                    r.classList.toggle('is-active', r.dataset.card === num);
                 });
                 markers.forEach(function (m) {
                     m.classList.toggle('is-active', m.dataset.marker === num);
@@ -1060,15 +954,43 @@
             }
 
             function deactivate() {
-                cards.forEach(function (c) { c.classList.remove('is-active'); });
+                rules.forEach(function (r) { r.classList.remove('is-active'); });
                 markers.forEach(function (m) { m.classList.remove('is-active'); });
             }
 
-            cards.forEach(function (card) {
-                card.addEventListener('mouseenter', function () { activate(card.dataset.card); });
-                card.addEventListener('mouseleave', deactivate);
-                card.addEventListener('focusin', function () { activate(card.dataset.card); });
-                card.addEventListener('focusout', deactivate);
+            rules.forEach(function (rule) {
+                rule.addEventListener('mouseenter', function () { activate(rule.dataset.card); });
+                rule.addEventListener('mouseleave', deactivate);
+                rule.addEventListener('focusin', function () { activate(rule.dataset.card); });
+                rule.addEventListener('focusout', deactivate);
+            });
+        }());
+
+
+        // Touch controls: linked panel — hover/focus a control to light up its key
+        (function () {
+            var items = document.querySelectorAll('.tc-item[data-key]');
+            var keys = document.querySelectorAll('.tc-panel-key[data-key]');
+
+            function activate(key) {
+                items.forEach(function (it) {
+                    it.classList.toggle('is-active', it.dataset.key === key);
+                });
+                keys.forEach(function (k) {
+                    k.classList.toggle('is-active', k.dataset.key === key);
+                });
+            }
+
+            function deactivate() {
+                items.forEach(function (it) { it.classList.remove('is-active'); });
+                keys.forEach(function (k) { k.classList.remove('is-active'); });
+            }
+
+            items.forEach(function (item) {
+                item.addEventListener('mouseenter', function () { activate(item.dataset.key); });
+                item.addEventListener('mouseleave', deactivate);
+                item.addEventListener('focusin', function () { activate(item.dataset.key); });
+                item.addEventListener('focusout', deactivate);
             });
         }());
     </script>
