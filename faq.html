@@ -20,6 +20,7 @@
 
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/monsoon-mist.theme.css">
+    <link rel="stylesheet" href="css/help.css">
     <link rel="icon" href="public/images/favicon.ico" type="image/x-icon">
 </head>
 <body class="faq-page">
@@ -148,309 +149,343 @@
     </div>
 
     <!-- FAQ Content -->
-    <main class="faqpage-main">
-        <div class="faqpage-container">
-            <h1 class="faqpage-title">FAQs</h1>
+    <main class="fq-main">
 
-            <!-- Category: Hawaa Edge Details & Specs -->
-            <div class="faqpage-category">
-                <h2 class="faqpage-category-title">Hawaa Edge Details & Specs</h2>
+        <!-- Hero: title + search -->
+        <section class="fq-hero">
+            <div class="hx-hero-bg" aria-hidden="true">
+                <div class="hx-orb hx-orb-1"></div>
+                <div class="hx-orb hx-orb-2"></div>
+            </div>
+            <div class="fq-hero-content">
+                <p class="hx-eyebrow">Help Center</p>
+                <h1 class="hx-title fq-title">Answers to help you <em>breathe easy</em></h1>
+                <p class="hx-sub">Everything you need to know about Hawaa Edge &mdash; searchable, scannable, and straight to the point.</p>
+                <div class="fq-search">
+                    <svg class="fq-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="11" cy="11" r="8"/>
+                        <path d="m21 21-4.3-4.3"/>
+                    </svg>
+                    <input type="search" class="fq-search-input" id="fq-search" placeholder="Search questions&hellip; e.g. filter, warranty, app" aria-label="Search frequently asked questions" autocomplete="off">
+                    <button type="button" class="fq-search-clear" id="fq-search-clear" aria-label="Clear search">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <line x1="18" y1="6" x2="6" y2="18"/>
+                            <line x1="6" y1="6" x2="18" y2="18"/>
+                        </svg>
+                    </button>
+                </div>
+                <p class="fq-search-hint">22 answers across 5 topics</p>
+            </div>
+        </section>
 
-                <div class="faqpage-list">
-                    <div class="faqpage-item">
-                        <button class="faqpage-question">
+        <!-- Sticky category chips -->
+        <nav class="fq-chipbar" aria-label="FAQ categories">
+            <div class="fq-chipbar-inner">
+                <button type="button" class="fq-chip active" data-filter="all">All topics</button>
+                <button type="button" class="fq-chip" data-filter="specs">Product &amp; Specs</button>
+                <button type="button" class="fq-chip" data-filter="filters">Filters &amp; Care</button>
+                <button type="button" class="fq-chip" data-filter="smart">Smart Features</button>
+                <button type="button" class="fq-chip" data-filter="service">Service &amp; Warranty</button>
+                <button type="button" class="fq-chip" data-filter="orders">Orders &amp; Delivery</button>
+            </div>
+        </nav>
+
+        <!-- FAQ list -->
+        <div class="fq-body">
+
+            <!-- Empty state (shown when search has no matches) -->
+            <div class="fq-empty" id="fq-empty">
+                <div class="fq-empty-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="11" cy="11" r="8"/>
+                        <path d="m21 21-4.3-4.3"/>
+                    </svg>
+                </div>
+                <h2 class="fq-empty-title">No matches found</h2>
+                <p class="fq-empty-text">Try a different keyword, or <a href="support.html#contact-us">ask our support team</a> directly &mdash; we reply within 24 hours.</p>
+            </div>
+
+            <!-- Category: Product & Specs -->
+            <section class="fq-category" data-category="specs">
+                <div class="fq-category-head">
+                    <h2 class="fq-category-title">Product &amp; Specs</h2>
+                    <span class="fq-category-count">5 questions</span>
+                </div>
+                <div class="fq-list">
+                    <div class="fq-item">
+                        <button class="fq-q" aria-expanded="false">
                             <span>What room size does Hawaa Edge cover?</span>
-                            <span class="faqpage-icon">+</span>
+                            <span class="fq-q-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg></span>
                         </button>
-                        <div class="faqpage-answer">
-                            <div class="faqpage-answer-content">
-                                <p>Hawaa Edge effectively purifies rooms up to 300 sq ft (28 sq meters). With a CADR of 250 m&sup3;/h, it can clean the air in a standard bedroom or living room in under 12 minutes. For larger spaces, we recommend placing the unit centrally for optimal air circulation.</p>
-                            </div>
-                        </div>
+                        <div class="fq-a"><div class="fq-a-inner">
+                            <p>Hawaa Edge effectively purifies rooms up to 300 sq ft (28 sq meters). With a CADR of 250 m&sup3;/h, it can clean the air in a standard bedroom or living room in under 12 minutes. For larger spaces, we recommend placing the unit centrally for optimal air circulation.</p>
+                        </div></div>
                     </div>
-
-                    <div class="faqpage-item">
-                        <button class="faqpage-question">
+                    <div class="fq-item">
+                        <button class="fq-q" aria-expanded="false">
                             <span>What type of filter does Hawaa Edge use?</span>
-                            <span class="faqpage-icon">+</span>
+                            <span class="fq-q-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg></span>
                         </button>
-                        <div class="faqpage-answer">
-                            <div class="faqpage-answer-content">
-                                <p>Hawaa Edge uses a medical-grade H13 HEPA filter that captures 99.97% of particles as small as 0.3 microns. This includes dust, pollen, pet dander, mould spores, bacteria, and some viruses. The multi-layer filtration system also includes a pre-filter for larger particles and an activated carbon layer for odours and volatile organic compounds (VOCs).</p>
-                            </div>
-                        </div>
+                        <div class="fq-a"><div class="fq-a-inner">
+                            <p>Hawaa Edge uses a medical-grade H13 HEPA filter that captures 99.97% of particles as small as 0.3 microns. This includes dust, pollen, pet dander, mould spores, bacteria, and some viruses. The multi-layer filtration system also includes a pre-filter for larger particles and an activated carbon layer for odours and volatile organic compounds (VOCs).</p>
+                        </div></div>
                     </div>
-
-                    <div class="faqpage-item">
-                        <button class="faqpage-question">
+                    <div class="fq-item">
+                        <button class="fq-q" aria-expanded="false">
                             <span>How loud is Hawaa Edge during operation?</span>
-                            <span class="faqpage-icon">+</span>
+                            <span class="fq-q-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg></span>
                         </button>
-                        <div class="faqpage-answer">
-                            <div class="faqpage-answer-content">
-                                <p>Hawaa Edge operates at whisper-quiet noise levels. On the lowest fan speed, it runs at approximately 25 dB &mdash; quieter than a library. Even at the highest setting, it stays below 50 dB, making it suitable for bedrooms, nurseries, and workspaces without disrupting sleep or concentration.</p>
-                            </div>
-                        </div>
+                        <div class="fq-a"><div class="fq-a-inner">
+                            <p>Hawaa Edge operates at whisper-quiet noise levels. On the lowest fan speed, it runs at approximately 25 dB &mdash; quieter than a library. Even at the highest setting, it stays below 50 dB, making it suitable for bedrooms, nurseries, and workspaces without disrupting sleep or concentration.</p>
+                        </div></div>
                     </div>
-
-                    <div class="faqpage-item">
-                        <button class="faqpage-question">
+                    <div class="fq-item">
+                        <button class="fq-q" aria-expanded="false">
                             <span>What are the dimensions and weight of the unit?</span>
-                            <span class="faqpage-icon">+</span>
+                            <span class="fq-q-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg></span>
                         </button>
-                        <div class="faqpage-answer">
-                            <div class="faqpage-answer-content">
-                                <p>Hawaa Edge features a compact, modern design that fits seamlessly into any room. It weighs approximately 3.5 kg and has a small footprint, allowing you to place it on a desk, shelf, or floor without taking up much space. The minimal aesthetic with premium materials complements any interior.</p>
-                            </div>
-                        </div>
+                        <div class="fq-a"><div class="fq-a-inner">
+                            <p>Hawaa Edge features a compact, modern design that fits seamlessly into any room. It weighs approximately 3.5 kg and has a small footprint, allowing you to place it on a desk, shelf, or floor without taking up much space. The minimal aesthetic with premium materials complements any interior.</p>
+                        </div></div>
                     </div>
-
-                    <div class="faqpage-item">
-                        <button class="faqpage-question">
+                    <div class="fq-item">
+                        <button class="fq-q" aria-expanded="false">
                             <span>Does Hawaa Edge have a built-in air quality sensor?</span>
-                            <span class="faqpage-icon">+</span>
+                            <span class="fq-q-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg></span>
                         </button>
-                        <div class="faqpage-answer">
-                            <div class="faqpage-answer-content">
-                                <p>Yes, Hawaa Edge includes a precision air quality sensor that continuously monitors PM2.5 levels in your room. The real-time AQI reading is displayed on the device and synced to the Hawaa app, so you always know the quality of air you're breathing. In auto mode, the fan speed adjusts automatically based on these readings.</p>
-                            </div>
-                        </div>
+                        <div class="fq-a"><div class="fq-a-inner">
+                            <p>Yes, Hawaa Edge includes a precision air quality sensor that continuously monitors PM2.5 levels in your room. The real-time AQI reading is displayed on the device and synced to the Hawaa app, so you always know the quality of air you're breathing. In auto mode, the fan speed adjusts automatically based on these readings.</p>
+                        </div></div>
                     </div>
                 </div>
-            </div>
+            </section>
 
-            <!-- Category: Filtration & Maintenance -->
-            <div class="faqpage-category">
-                <h2 class="faqpage-category-title">Filtration & Maintenance</h2>
-
-                <div class="faqpage-list">
-                    <div class="faqpage-item">
-                        <button class="faqpage-question">
+            <!-- Category: Filters & Care -->
+            <section class="fq-category" data-category="filters">
+                <div class="fq-category-head">
+                    <h2 class="fq-category-title">Filters &amp; Care</h2>
+                    <span class="fq-category-count">4 questions</span>
+                </div>
+                <div class="fq-list">
+                    <div class="fq-item">
+                        <button class="fq-q" aria-expanded="false">
                             <span>How often should I replace the HEPA filter?</span>
-                            <span class="faqpage-icon">+</span>
+                            <span class="fq-q-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg></span>
                         </button>
-                        <div class="faqpage-answer">
-                            <div class="faqpage-answer-content">
-                                <p>We recommend replacing the H13 HEPA filter every 6&ndash;12 months, depending on usage and air quality in your area. The Hawaa app will notify you when it's time for a replacement based on actual usage data. Homes in high-pollution areas or with pets may need more frequent replacements.</p>
-                            </div>
-                        </div>
+                        <div class="fq-a"><div class="fq-a-inner">
+                            <p>We recommend replacing the H13 HEPA filter every 6&ndash;12 months, depending on usage and air quality in your area. The Hawaa app will notify you when it's time for a replacement based on actual usage data. Homes in high-pollution areas or with pets may need more frequent replacements.</p>
+                        </div></div>
                     </div>
-
-                    <div class="faqpage-item">
-                        <button class="faqpage-question">
+                    <div class="fq-item">
+                        <button class="fq-q" aria-expanded="false">
                             <span>Can I wash and reuse the HEPA filter?</span>
-                            <span class="faqpage-icon">+</span>
+                            <span class="fq-q-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg></span>
                         </button>
-                        <div class="faqpage-answer">
-                            <div class="faqpage-answer-content">
-                                <p>The H13 HEPA filter is not washable and should be replaced when it reaches end of life. Washing can damage the fine filter fibres and compromise filtration efficiency. However, the pre-filter (the outer mesh layer) can be gently vacuumed or wiped with a damp cloth every 2&ndash;4 weeks to extend the main filter's life.</p>
-                            </div>
-                        </div>
+                        <div class="fq-a"><div class="fq-a-inner">
+                            <p>The H13 HEPA filter is not washable and should be replaced when it reaches end of life. Washing can damage the fine filter fibres and compromise filtration efficiency. However, the pre-filter (the outer mesh layer) can be gently vacuumed or wiped with a damp cloth every 2&ndash;4 weeks to extend the main filter's life.</p>
+                        </div></div>
                     </div>
-
-                    <div class="faqpage-item">
-                        <button class="faqpage-question">
+                    <div class="fq-item">
+                        <button class="fq-q" aria-expanded="false">
                             <span>How do I replace the filter?</span>
-                            <span class="faqpage-icon">+</span>
+                            <span class="fq-q-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg></span>
                         </button>
-                        <div class="faqpage-answer">
-                            <div class="faqpage-answer-content">
-                                <p>Replacing the filter is simple and tool-free. Turn off the device, remove the back panel, slide out the old filter, and insert the new one with the airflow arrow pointing inward. The entire process takes under a minute. A step-by-step guide is included with every replacement filter and also available in the Hawaa app.</p>
-                            </div>
-                        </div>
+                        <div class="fq-a"><div class="fq-a-inner">
+                            <p>Replacing the filter is simple and tool-free. Turn off the device, remove the back panel, slide out the old filter, and insert the new one with the airflow arrow pointing inward. The entire process takes under a minute. A step-by-step guide is included with every replacement filter and also available in the Hawaa app.</p>
+                        </div></div>
                     </div>
-
-                    <div class="faqpage-item">
-                        <button class="faqpage-question">
+                    <div class="fq-item">
+                        <button class="fq-q" aria-expanded="false">
                             <span>Does Hawaa Edge remove odours and gases?</span>
-                            <span class="faqpage-icon">+</span>
+                            <span class="fq-q-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg></span>
                         </button>
-                        <div class="faqpage-answer">
-                            <div class="faqpage-answer-content">
-                                <p>Yes. The activated carbon layer in the filtration system effectively absorbs household odours from cooking, pets, and smoke, as well as harmful volatile organic compounds (VOCs) released by paint, furniture, and cleaning products. For best results, run the purifier on a higher fan speed when dealing with strong odours.</p>
-                            </div>
-                        </div>
+                        <div class="fq-a"><div class="fq-a-inner">
+                            <p>Yes. The activated carbon layer in the filtration system effectively absorbs household odours from cooking, pets, and smoke, as well as harmful volatile organic compounds (VOCs) released by paint, furniture, and cleaning products. For best results, run the purifier on a higher fan speed when dealing with strong odours.</p>
+                        </div></div>
                     </div>
                 </div>
-            </div>
+            </section>
 
-            <!-- Category: Smart Features & Connectivity -->
-            <div class="faqpage-category">
-                <h2 class="faqpage-category-title">Smart Features & Connectivity</h2>
-
-                <div class="faqpage-list">
-                    <div class="faqpage-item">
-                        <button class="faqpage-question">
+            <!-- Category: Smart Features -->
+            <section class="fq-category" data-category="smart">
+                <div class="fq-category-head">
+                    <h2 class="fq-category-title">Smart Features</h2>
+                    <span class="fq-category-count">4 questions</span>
+                </div>
+                <div class="fq-list">
+                    <div class="fq-item">
+                        <button class="fq-q" aria-expanded="false">
                             <span>Does Hawaa Edge work with Google Home and Alexa?</span>
-                            <span class="faqpage-icon">+</span>
+                            <span class="fq-q-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg></span>
                         </button>
-                        <div class="faqpage-answer">
-                            <div class="faqpage-answer-content">
-                                <p>Yes, Hawaa Edge integrates seamlessly with both Google Home and Amazon Alexa. You can control it with voice commands like &ldquo;Hey Google, turn on the air purifier&rdquo; or schedule it through the Hawaa app. Setup is quick &mdash; just link your Hawaa account in the Google Home or Alexa app.</p>
-                            </div>
-                        </div>
+                        <div class="fq-a"><div class="fq-a-inner">
+                            <p>Yes, Hawaa Edge integrates seamlessly with both Google Home and Amazon Alexa. You can control it with voice commands like &ldquo;Hey Google, turn on the air purifier&rdquo; or schedule it through the Hawaa app. Setup is quick &mdash; just link your Hawaa account in the Google Home or Alexa app.</p>
+                        </div></div>
                     </div>
-
-                    <div class="faqpage-item">
-                        <button class="faqpage-question">
+                    <div class="fq-item">
+                        <button class="fq-q" aria-expanded="false">
                             <span>Is the gesture control easy to use?</span>
-                            <span class="faqpage-icon">+</span>
+                            <span class="fq-q-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg></span>
                         </button>
-                        <div class="faqpage-answer">
-                            <div class="faqpage-answer-content">
-                                <p>Yes, the gesture sensor is intuitive and responsive. Simply wave your hand within 10 cm of the sensor to turn the device on/off or cycle through fan speeds. No learning curve required &mdash; it works the first time. It's especially useful when your hands are occupied or you want a touch-free experience.</p>
-                            </div>
-                        </div>
+                        <div class="fq-a"><div class="fq-a-inner">
+                            <p>Yes, the gesture sensor is intuitive and responsive. Simply wave your hand within 10 cm of the sensor to turn the device on/off or cycle through fan speeds. No learning curve required &mdash; it works the first time. It's especially useful when your hands are occupied or you want a touch-free experience.</p>
+                        </div></div>
                     </div>
-
-                    <div class="faqpage-item">
-                        <button class="faqpage-question">
+                    <div class="fq-item">
+                        <button class="fq-q" aria-expanded="false">
                             <span>What can I do with the Hawaa app?</span>
-                            <span class="faqpage-icon">+</span>
+                            <span class="fq-q-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg></span>
                         </button>
-                        <div class="faqpage-answer">
-                            <div class="faqpage-answer-content">
-                                <p>The Hawaa app gives you full remote control over your air purifier, including adjusting fan speed, setting schedules, and monitoring real-time indoor air quality. You can also view historical AQI data, receive filter replacement alerts, and check outdoor air quality for your city &mdash; all from your phone.</p>
-                            </div>
-                        </div>
+                        <div class="fq-a"><div class="fq-a-inner">
+                            <p>The Hawaa app gives you full remote control over your air purifier, including adjusting fan speed, setting schedules, and monitoring real-time indoor air quality. You can also view historical AQI data, receive filter replacement alerts, and check outdoor air quality for your city &mdash; all from your phone.</p>
+                        </div></div>
                     </div>
-
-                    <div class="faqpage-item">
-                        <button class="faqpage-question">
+                    <div class="fq-item">
+                        <button class="fq-q" aria-expanded="false">
                             <span>Does Hawaa Edge require Wi-Fi to operate?</span>
-                            <span class="faqpage-icon">+</span>
+                            <span class="fq-q-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg></span>
                         </button>
-                        <div class="faqpage-answer">
-                            <div class="faqpage-answer-content">
-                                <p>No. Hawaa Edge works perfectly as a standalone air purifier without Wi-Fi. You can control it using the touch panel or gesture sensor. Wi-Fi is only needed for smart features like app control, voice assistant integration, and remote air quality monitoring. The core purification works independently.</p>
-                            </div>
-                        </div>
+                        <div class="fq-a"><div class="fq-a-inner">
+                            <p>No. Hawaa Edge works perfectly as a standalone air purifier without Wi-Fi. You can control it using the touch panel or gesture sensor. Wi-Fi is only needed for smart features like app control, voice assistant integration, and remote air quality monitoring. The core purification works independently.</p>
+                        </div></div>
                     </div>
                 </div>
-            </div>
+            </section>
 
-            <!-- Category: Ownership & Service -->
-            <div class="faqpage-category">
-                <h2 class="faqpage-category-title">Ownership & Service</h2>
-
-                <div class="faqpage-list">
-                    <div class="faqpage-item">
-                        <button class="faqpage-question">
+            <!-- Category: Service & Warranty -->
+            <section class="fq-category" data-category="service">
+                <div class="fq-category-head">
+                    <h2 class="fq-category-title">Service &amp; Warranty</h2>
+                    <span class="fq-category-count">4 questions</span>
+                </div>
+                <div class="fq-list">
+                    <div class="fq-item">
+                        <button class="fq-q" aria-expanded="false">
                             <span>What warranty is included with Hawaa Edge?</span>
-                            <span class="faqpage-icon">+</span>
+                            <span class="fq-q-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg></span>
                         </button>
-                        <div class="faqpage-answer">
-                            <div class="faqpage-answer-content">
-                                <p>Hawaa Edge comes with a 1-year PAN India warranty covering manufacturing defects in the motor, electronics, and body. The warranty does not cover consumables like filters or damage from misuse. Our support team is available to assist with any issues, and we offer doorstep service in major metros.</p>
-                            </div>
-                        </div>
+                        <div class="fq-a"><div class="fq-a-inner">
+                            <p>Hawaa Edge comes with a 1-year PAN India warranty covering manufacturing defects in the motor, electronics, and body. The warranty does not cover consumables like filters or damage from misuse. Our support team is available to assist with any issues, and we offer doorstep service in major metros.</p>
+                        </div></div>
                     </div>
-
-                    <div class="faqpage-item">
-                        <button class="faqpage-question">
+                    <div class="fq-item">
+                        <button class="fq-q" aria-expanded="false">
                             <span>Where can I get my Hawaa Edge serviced?</span>
-                            <span class="faqpage-icon">+</span>
+                            <span class="fq-q-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg></span>
                         </button>
-                        <div class="faqpage-answer">
-                            <div class="faqpage-answer-content">
-                                <p>For warranty and out-of-warranty service, you can reach our support team at support@hawaa.in or through the Hawaa app. We offer doorstep service in select metro cities and courier-based repair for other locations. Most issues can be diagnosed remotely through the app's diagnostic tools.</p>
-                            </div>
-                        </div>
+                        <div class="fq-a"><div class="fq-a-inner">
+                            <p>For warranty and out-of-warranty service, you can reach our support team at support@hawaa.in or through the Hawaa app. We offer doorstep service in select metro cities and courier-based repair for other locations. Most issues can be diagnosed remotely through the app's diagnostic tools.</p>
+                        </div></div>
                     </div>
-
-                    <div class="faqpage-item">
-                        <button class="faqpage-question">
+                    <div class="fq-item">
+                        <button class="fq-q" aria-expanded="false">
                             <span>How much electricity does Hawaa Edge consume?</span>
-                            <span class="faqpage-icon">+</span>
+                            <span class="fq-q-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg></span>
                         </button>
-                        <div class="faqpage-answer">
-                            <div class="faqpage-answer-content">
-                                <p>Hawaa Edge is designed to be energy efficient. It consumes as little as 5W on the lowest setting and up to 45W on the highest fan speed. Running it 24/7 on medium speed costs roughly the same as a standard LED bulb &mdash; making it affordable to keep your air clean around the clock.</p>
-                            </div>
-                        </div>
+                        <div class="fq-a"><div class="fq-a-inner">
+                            <p>Hawaa Edge is designed to be energy efficient. It consumes as little as 5W on the lowest setting and up to 45W on the highest fan speed. Running it 24/7 on medium speed costs roughly the same as a standard LED bulb &mdash; making it affordable to keep your air clean around the clock.</p>
+                        </div></div>
                     </div>
-
-                    <div class="faqpage-item">
-                        <button class="faqpage-question">
+                    <div class="fq-item">
+                        <button class="fq-q" aria-expanded="false">
                             <span>Is the subscription plan for filters worth it?</span>
-                            <span class="faqpage-icon">+</span>
+                            <span class="fq-q-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg></span>
                         </button>
-                        <div class="faqpage-answer">
-                            <div class="faqpage-answer-content">
-                                <p>The filter subscription saves you up to 20% compared to one-time purchases and ensures you never run your purifier on an expired filter. Filters are shipped automatically based on your usage data from the Hawaa app, so they arrive right when you need them. You can pause or cancel anytime.</p>
-                            </div>
-                        </div>
+                        <div class="fq-a"><div class="fq-a-inner">
+                            <p>The filter subscription saves you up to 20% compared to one-time purchases and ensures you never run your purifier on an expired filter. Filters are shipped automatically based on your usage data from the Hawaa app, so they arrive right when you need them. You can pause or cancel anytime.</p>
+                        </div></div>
                     </div>
                 </div>
-            </div>
+            </section>
 
-            <!-- Category: Purchasing & Delivery -->
-            <div class="faqpage-category">
-                <h2 class="faqpage-category-title">Purchasing & Delivery</h2>
-
-                <div class="faqpage-list">
-                    <div class="faqpage-item">
-                        <button class="faqpage-question">
+            <!-- Category: Orders & Delivery -->
+            <section class="fq-category" data-category="orders">
+                <div class="fq-category-head">
+                    <h2 class="fq-category-title">Orders &amp; Delivery</h2>
+                    <span class="fq-category-count">5 questions</span>
+                </div>
+                <div class="fq-list">
+                    <div class="fq-item">
+                        <button class="fq-q" aria-expanded="false">
                             <span>Where can I buy Hawaa Edge?</span>
-                            <span class="faqpage-icon">+</span>
+                            <span class="fq-q-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg></span>
                         </button>
-                        <div class="faqpage-answer">
-                            <div class="faqpage-answer-content">
-                                <p>Hawaa Edge is available exclusively on our website at hawaa.in. Buying directly ensures you get the best price, genuine product warranty, and access to subscriber-only benefits. We currently do not sell through third-party marketplaces.</p>
-                            </div>
-                        </div>
+                        <div class="fq-a"><div class="fq-a-inner">
+                            <p>Hawaa Edge is available exclusively on our website at hawaa.in. Buying directly ensures you get the best price, genuine product warranty, and access to subscriber-only benefits. We currently do not sell through third-party marketplaces.</p>
+                        </div></div>
                     </div>
-
-                    <div class="faqpage-item">
-                        <button class="faqpage-question">
+                    <div class="fq-item">
+                        <button class="fq-q" aria-expanded="false">
                             <span>How long does delivery take?</span>
-                            <span class="faqpage-icon">+</span>
+                            <span class="fq-q-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg></span>
                         </button>
-                        <div class="faqpage-answer">
-                            <div class="faqpage-answer-content">
-                                <p>Orders typically ship within 2&ndash;3 business days. Delivery across India takes 5&ndash;7 business days depending on your location. Metro cities may receive orders faster. You'll receive tracking details via SMS and email once your order ships.</p>
-                            </div>
-                        </div>
+                        <div class="fq-a"><div class="fq-a-inner">
+                            <p>Orders typically ship within 2&ndash;3 business days. Delivery across India takes 5&ndash;7 business days depending on your location. Metro cities may receive orders faster. You'll receive tracking details via SMS and email once your order ships.</p>
+                        </div></div>
                     </div>
-
-                    <div class="faqpage-item">
-                        <button class="faqpage-question">
+                    <div class="fq-item">
+                        <button class="fq-q" aria-expanded="false">
                             <span>What is the return and refund policy?</span>
-                            <span class="faqpage-icon">+</span>
+                            <span class="fq-q-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg></span>
                         </button>
-                        <div class="faqpage-answer">
-                            <div class="faqpage-answer-content">
-                                <p>We offer a 7-day return window from the date of delivery for unused and unopened products in their original packaging. If you receive a defective unit, we'll arrange a free replacement or full refund. Refunds are processed within 7&ndash;10 business days to your original payment method. Contact support@hawaa.in to initiate a return.</p>
-                            </div>
-                        </div>
+                        <div class="fq-a"><div class="fq-a-inner">
+                            <p>We offer a 7-day return window from the date of delivery for unused and unopened products in their original packaging. If you receive a defective unit, we'll arrange a free replacement or full refund. Refunds are processed within 7&ndash;10 business days to your original payment method. Contact support@hawaa.in to initiate a return.</p>
+                        </div></div>
                     </div>
-
-                    <div class="faqpage-item">
-                        <button class="faqpage-question">
+                    <div class="fq-item">
+                        <button class="fq-q" aria-expanded="false">
                             <span>What payment methods are accepted?</span>
-                            <span class="faqpage-icon">+</span>
+                            <span class="fq-q-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg></span>
                         </button>
-                        <div class="faqpage-answer">
-                            <div class="faqpage-answer-content">
-                                <p>We accept all major payment methods including UPI, credit and debit cards (Visa, Mastercard, RuPay), net banking, and popular wallets. EMI options are available on select credit cards. All transactions are secured with industry-standard encryption.</p>
-                            </div>
-                        </div>
+                        <div class="fq-a"><div class="fq-a-inner">
+                            <p>We accept all major payment methods including UPI, credit and debit cards (Visa, Mastercard, RuPay), net banking, and popular wallets. EMI options are available on select credit cards. All transactions are secured with industry-standard encryption.</p>
+                        </div></div>
                     </div>
-
-                    <div class="faqpage-item">
-                        <button class="faqpage-question">
+                    <div class="fq-item">
+                        <button class="fq-q" aria-expanded="false">
                             <span>Do you ship outside India?</span>
-                            <span class="faqpage-icon">+</span>
+                            <span class="fq-q-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg></span>
                         </button>
-                        <div class="faqpage-answer">
-                            <div class="faqpage-answer-content">
-                                <p>Currently, Hawaa Edge is available for delivery within India only. We're working on expanding to international markets and will announce availability on our website and social media channels. Sign up for our newsletter to stay updated.</p>
-                            </div>
-                        </div>
+                        <div class="fq-a"><div class="fq-a-inner">
+                            <p>Currently, Hawaa Edge is available for delivery within India only. We're working on expanding to international markets and will announce availability on our website and social media channels. Sign up for our newsletter to stay updated.</p>
+                        </div></div>
                     </div>
                 </div>
-            </div>
+            </section>
         </div>
+
+        <!-- Still need help band -->
+        <section class="hx-helpband">
+            <div class="hx-helpband-inner" data-reveal>
+                <p class="hx-eyebrow">Still stuck?</p>
+                <h2 class="hx-title hx-helpband-title">Didn&rsquo;t find your <em>answer?</em></h2>
+                <p class="hx-sub hx-helpband-sub">Real humans, real answers. Our team replies within 24 hours, Monday to Saturday.</p>
+                <div class="hx-helpband-grid">
+                    <a href="support.html#contact-us" class="hx-helpcard">
+                        <span class="hx-helpcard-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                            </svg>
+                        </span>
+                        <span class="hx-helpcard-title">Talk to our team
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg>
+                        </span>
+                        <span class="hx-helpcard-text">Send us a message and we&rsquo;ll get back to you within one business day.</span>
+                    </a>
+                    <a href="support.html" class="hx-helpcard">
+                        <span class="hx-helpcard-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                            </svg>
+                        </span>
+                        <span class="hx-helpcard-title">Warranty, returns &amp; shipping
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg>
+                        </span>
+                        <span class="hx-helpcard-text">Full policy details on product support &mdash; coverage, claims, refunds, and delivery timelines.</span>
+                    </a>
+                </div>
+            </div>
+        </section>
     </main>
 
     <!-- Footer -->
@@ -493,7 +528,7 @@
                         <li><a href="installation-guide.html">Installation Guide</a></li>
                         <li><a href="faq.html">FAQ</a></li>
                         <li><a href="support.html">Product Support</a></li>
-                        <li><a href="support.html">Contact Us</a></li>
+                        <li><a href="support.html#contact-us">Contact Us</a></li>
                     </ul>
                 </div>
                 <div class="footer-links-column" data-footer-section>
@@ -554,54 +589,6 @@
     <script type="module" src="js/firebase.js"></script>
     <script src="js/nav.js"></script>
     <script src="js/cart.js"></script>
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // FAQ Page Accordion - one open item per category
-        var categories = document.querySelectorAll('.faqpage-category');
-        for (var c = 0; c < categories.length; c++) {
-            (function(category) {
-                var items = category.querySelectorAll('.faqpage-item');
-                for (var i = 0; i < items.length; i++) {
-                    (function(item) {
-                        var btn = item.querySelector('.faqpage-question');
-                        if (btn) {
-                            btn.addEventListener('click', function(e) {
-                                e.preventDefault();
-                                var isActive = item.classList.contains('active');
-                                // Close all items in this category
-                                for (var j = 0; j < items.length; j++) {
-                                    items[j].classList.remove('active');
-                                }
-                                // Toggle current
-                                if (!isActive) {
-                                    item.classList.add('active');
-                                }
-                            });
-                        }
-                    })(items[i]);
-                }
-            })(categories[c]);
-        }
-
-        // Footer mobile collapsible sections
-        var sections = document.querySelectorAll('[data-footer-section]');
-        for (var s = 0; s < sections.length; s++) {
-            (function(section) {
-                var header = section.querySelector('.footer-links-header');
-                if (header) {
-                    header.addEventListener('click', function() {
-                        if (window.innerWidth < 768) {
-                            var isActive = section.classList.contains('active');
-                            for (var k = 0; k < sections.length; k++) {
-                                sections[k].classList.remove('active');
-                            }
-                            if (!isActive) section.classList.add('active');
-                        }
-                    });
-                }
-            })(sections[s]);
-        }
-    });
-    </script>
+    <script src="js/help.js"></script>
 </body>
 </html>

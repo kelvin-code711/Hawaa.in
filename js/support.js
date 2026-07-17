@@ -1,38 +1,81 @@
-document.addEventListener('DOMContentLoaded', function() {
+/* ============================================================
+   HAWAA — PRODUCT SUPPORT PAGE
+   Segmented policy tabs with URL-hash deep links
+   (support.html#warranty / #returns / #shipping), quick-topic
+   cards, scroll reveal, contact form, footer collapsibles.
+   ============================================================ */
+document.addEventListener('DOMContentLoaded', function () {
+
+    document.documentElement.classList.add('hx-js');
 
     // ========================================
-    // POLICY TABS
+    // SCROLL REVEAL
     // ========================================
-    var tabs = document.querySelectorAll('.sp-tab');
-    var tabContents = {
-        'warranty': document.getElementById('tab-warranty'),
-        'returns': document.getElementById('tab-returns'),
-        'shipping': document.getElementById('tab-shipping')
-    };
-
-    for (var t = 0; t < tabs.length; t++) {
-        (function(tab) {
-            tab.addEventListener('click', function() {
-                var target = tab.getAttribute('data-tab');
-
-                // Update tab active state
-                for (var i = 0; i < tabs.length; i++) {
-                    tabs[i].classList.remove('active');
-                }
-                tab.classList.add('active');
-
-                // Show target content
-                for (var key in tabContents) {
-                    if (tabContents[key]) {
-                        tabContents[key].classList.remove('active');
-                    }
-                }
-                if (tabContents[target]) {
-                    tabContents[target].classList.add('active');
+    var revealEls = document.querySelectorAll('[data-reveal]');
+    if (revealEls.length && 'IntersectionObserver' in window) {
+        var revealObserver = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-in');
+                    revealObserver.unobserve(entry.target);
                 }
             });
-        })(tabs[t]);
+        }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+        revealEls.forEach(function (el) { revealObserver.observe(el); });
+    } else {
+        revealEls.forEach(function (el) { el.classList.add('is-in'); });
     }
+
+    // ========================================
+    // POLICY TABS (hash deep-linkable)
+    // ========================================
+    var tabs = Array.prototype.slice.call(document.querySelectorAll('.su-tab'));
+    var panels = {
+        warranty: document.getElementById('panel-warranty'),
+        returns: document.getElementById('panel-returns'),
+        shipping: document.getElementById('panel-shipping')
+    };
+
+    function activateTab(name, updateHash) {
+        if (!panels[name]) return;
+        tabs.forEach(function (tab) {
+            var isActive = tab.dataset.tab === name;
+            tab.classList.toggle('active', isActive);
+            tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
+        });
+        for (var key in panels) {
+            if (panels[key]) panels[key].classList.toggle('active', key === name);
+        }
+        if (updateHash && history.replaceState) {
+            history.replaceState(null, '', '#' + name);
+        }
+    }
+
+    tabs.forEach(function (tab) {
+        tab.addEventListener('click', function () {
+            activateTab(tab.dataset.tab, true);
+        });
+    });
+
+    // Quick-topic cards jump to (and activate) a tab
+    var quickCards = document.querySelectorAll('[data-goto-tab]');
+    Array.prototype.forEach.call(quickCards, function (card) {
+        card.addEventListener('click', function () {
+            var name = card.dataset.gotoTab;
+            activateTab(name, true);
+            var policies = document.querySelector('.su-policies');
+            if (policies) policies.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+    });
+
+    // Open the right tab when arriving with a hash
+    function syncFromHash() {
+        var hash = (location.hash || '').replace('#', '');
+        if (panels[hash]) activateTab(hash, false);
+    }
+    syncFromHash();
+    window.addEventListener('hashchange', syncFromHash);
 
     // ========================================
     // CONTACT FORM
@@ -52,7 +95,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     if (form) {
-        form.addEventListener('submit', function(e) {
+        form.addEventListener('submit', function (e) {
             e.preventDefault();
             clearErrors();
 
@@ -94,11 +137,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 name: nameVal,
                 email: emailVal,
                 message: messageVal
-            }).then(function() {
+            }).then(function () {
                 form.style.display = 'none';
                 successEl.classList.remove('hidden');
                 restoreButton();
-            }).catch(function(err) {
+            }).catch(function (err) {
                 console.error('Support ticket submit failed:', err);
                 restoreButton();
                 alert('Something went wrong. Please try again in a moment.');
@@ -107,7 +150,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     if (anotherBtn) {
-        anotherBtn.addEventListener('click', function() {
+        anotherBtn.addEventListener('click', function () {
             successEl.classList.add('hidden');
             form.style.display = '';
             nameInput.value = '';
@@ -118,36 +161,26 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Remove error on focus
-    var inputs = [nameInput, emailInput, messageInput];
-    for (var j = 0; j < inputs.length; j++) {
-        (function(input) {
-            if (input) {
-                input.addEventListener('focus', function() {
-                    input.classList.remove('error');
-                });
-            }
-        })(inputs[j]);
-    }
+    [nameInput, emailInput, messageInput].forEach(function (input) {
+        if (!input) return;
+        input.addEventListener('focus', function () {
+            input.classList.remove('error');
+        });
+    });
 
     // ========================================
     // FOOTER MOBILE COLLAPSIBLE
     // ========================================
-    var sections = document.querySelectorAll('[data-footer-section]');
-    for (var s = 0; s < sections.length; s++) {
-        (function(section) {
-            var header = section.querySelector('.footer-links-header');
-            if (header) {
-                header.addEventListener('click', function() {
-                    if (window.innerWidth < 768) {
-                        var isActive = section.classList.contains('active');
-                        for (var k = 0; k < sections.length; k++) {
-                            sections[k].classList.remove('active');
-                        }
-                        if (!isActive) section.classList.add('active');
-                    }
-                });
-            }
-        })(sections[s]);
-    }
+    var sections = Array.prototype.slice.call(document.querySelectorAll('[data-footer-section]'));
+    sections.forEach(function (section) {
+        var header = section.querySelector('.footer-links-header');
+        if (!header) return;
+        header.addEventListener('click', function () {
+            if (window.innerWidth >= 768) return;
+            var isActive = section.classList.contains('active');
+            sections.forEach(function (s) { s.classList.remove('active'); });
+            if (!isActive) section.classList.add('active');
+        });
+    });
 
 });

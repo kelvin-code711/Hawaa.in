@@ -19,8 +19,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="css/support.css">
     <link rel="stylesheet" href="css/monsoon-mist.theme.css">
+    <link rel="stylesheet" href="css/help.css">
     <link rel="icon" href="public/images/favicon.ico" type="image/x-icon">
 </head>
 <body class="support-page">
@@ -149,60 +149,127 @@
     </div>
 
     <!-- Support Page Content -->
-    <main class="sp-main">
-        <div class="sp-container">
+    <main class="su-main">
 
-            <!-- Hero -->
-            <div class="sp-hero">
-                <h1 class="sp-title">Product support.</h1>
-                <p class="sp-subtitle">Warranty details, return policies, and ways to reach us &mdash; everything in one place.</p>
+        <!-- Hero + quick topics -->
+        <section class="su-hero">
+            <div class="hx-hero-bg" aria-hidden="true">
+                <div class="hx-orb hx-orb-1"></div>
+                <div class="hx-orb hx-orb-2"></div>
+            </div>
+            <div class="su-hero-content">
+                <p class="hx-eyebrow">Product Support</p>
+                <h1 class="hx-title su-title">How can we <em>help?</em></h1>
+                <p class="hx-sub">Warranty, returns, shipping, and a direct line to our team &mdash; everything in one place.</p>
+            </div>
+            <div class="su-quick" data-reveal>
+                <button type="button" class="su-quick-card" data-goto-tab="warranty">
+                    <span class="su-quick-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        </svg>
+                    </span>
+                    <span class="su-quick-label">Warranty</span>
+                    <span class="su-quick-sub">1-year coverage &amp; how to claim</span>
+                </button>
+                <button type="button" class="su-quick-card" data-goto-tab="returns">
+                    <span class="su-quick-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M9 14 4 9l5-5"/>
+                            <path d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5 5.5 5.5 0 0 1-5.5 5.5H11"/>
+                        </svg>
+                    </span>
+                    <span class="su-quick-label">Returns &amp; Refund</span>
+                    <span class="su-quick-sub">7-day window &amp; refund steps</span>
+                </button>
+                <button type="button" class="su-quick-card" data-goto-tab="shipping">
+                    <span class="su-quick-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M5 18H3c-.6 0-1-.4-1-1V7c0-.6.4-1 1-1h10c.6 0 1 .4 1 1v11"/>
+                            <path d="M14 9h4l4 4v4c0 .6-.4 1-1 1h-2"/>
+                            <circle cx="7" cy="18" r="2"/>
+                            <circle cx="17" cy="18" r="2"/>
+                        </svg>
+                    </span>
+                    <span class="su-quick-label">Shipping</span>
+                    <span class="su-quick-sub">Timelines, charges &amp; tracking</span>
+                </button>
+                <a href="#contact-us" class="su-quick-card">
+                    <span class="su-quick-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                        </svg>
+                    </span>
+                    <span class="su-quick-label">Talk to us</span>
+                    <span class="su-quick-sub">Replies within 24 hours</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- Policies -->
+        <section class="su-policies">
+            <div class="su-tabs" role="tablist" aria-label="Support policies">
+                <button class="su-tab active" id="su-tab-warranty" data-tab="warranty" role="tab" aria-selected="true" aria-controls="panel-warranty">Warranty</button>
+                <button class="su-tab" id="su-tab-returns" data-tab="returns" role="tab" aria-selected="false" aria-controls="panel-returns">Returns &amp; Refund</button>
+                <button class="su-tab" id="su-tab-shipping" data-tab="shipping" role="tab" aria-selected="false" aria-controls="panel-shipping">Shipping</button>
             </div>
 
-            <!-- Policy Tabs -->
-            <div class="sp-tabs">
-                <button class="sp-tab active" data-tab="warranty">Warranty Policy</button>
-                <button class="sp-tab" data-tab="returns">Return &amp; Refund</button>
-                <button class="sp-tab" data-tab="shipping">Shipping &amp; Delivery</button>
-            </div>
-
-            <!-- Tab Content: Warranty Policy -->
-            <div class="sp-tab-content active" id="tab-warranty">
-                <div class="sp-policy-section">
-                    <h2 class="sp-policy-heading">Warranty coverage</h2>
-                    <p class="sp-policy-text">Every Hawaa Edge air purifier comes with a <strong>1-year PAN India warranty</strong> from the date of purchase. This warranty covers manufacturing defects in the motor, electronics, sensors, and body of the unit.</p>
+            <!-- Panel: Warranty -->
+            <div class="su-panel active" id="panel-warranty" role="tabpanel" aria-labelledby="su-tab-warranty">
+                <div class="su-glance">
+                    <div class="su-glance-item">
+                        <span class="su-glance-value">1 year</span>
+                        <span class="su-glance-label">PAN India warranty from date of purchase</span>
+                    </div>
+                    <div class="su-glance-item">
+                        <span class="su-glance-value">Doorstep</span>
+                        <span class="su-glance-label">Service in major metros, courier elsewhere</span>
+                    </div>
+                    <div class="su-glance-item">
+                        <span class="su-glance-value">5&ndash;7 days</span>
+                        <span class="su-glance-label">Typical resolution for warranty claims</span>
+                    </div>
                 </div>
 
-                <div class="sp-policy-divider"></div>
-
-                <div class="sp-policy-section">
-                    <h2 class="sp-policy-heading">What&rsquo;s covered</h2>
-                    <ul class="sp-policy-list">
-                        <li>Defects in the BLDC motor or fan assembly</li>
-                        <li>Malfunctioning air quality sensors or gesture sensor</li>
-                        <li>Electrical or circuit board failures</li>
-                        <li>Wi-Fi or smart connectivity issues caused by hardware</li>
-                        <li>Structural defects in the body or housing</li>
-                    </ul>
+                <div class="su-block">
+                    <h2 class="su-block-title">Warranty coverage</h2>
+                    <p class="su-text">Every Hawaa Edge air purifier comes with a <strong>1-year PAN India warranty</strong> from the date of purchase. This warranty covers manufacturing defects in the motor, electronics, sensors, and body of the unit.</p>
                 </div>
 
-                <div class="sp-policy-divider"></div>
-
-                <div class="sp-policy-section">
-                    <h2 class="sp-policy-heading">What&rsquo;s not covered</h2>
-                    <ul class="sp-policy-list">
-                        <li>Consumables such as HEPA filters and pre-filters</li>
-                        <li>Physical damage from drops, spills, or misuse</li>
-                        <li>Damage caused by voltage fluctuations or power surges</li>
-                        <li>Normal wear and tear or cosmetic damage</li>
-                        <li>Units purchased from unauthorised resellers</li>
-                    </ul>
+                <div class="su-block">
+                    <div class="su-twin">
+                        <div class="su-twin-card is-yes">
+                            <div class="su-twin-head">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>
+                                What&rsquo;s covered
+                            </div>
+                            <ul class="su-twin-list">
+                                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Defects in the BLDC motor or fan assembly</li>
+                                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Malfunctioning air quality sensors or gesture sensor</li>
+                                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Electrical or circuit board failures</li>
+                                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Wi-Fi or smart connectivity issues caused by hardware</li>
+                                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Structural defects in the body or housing</li>
+                            </ul>
+                        </div>
+                        <div class="su-twin-card is-no">
+                            <div class="su-twin-head">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/></svg>
+                                What&rsquo;s not covered
+                            </div>
+                            <ul class="su-twin-list">
+                                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14"/></svg>Consumables such as HEPA filters and pre-filters</li>
+                                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14"/></svg>Physical damage from drops, spills, or misuse</li>
+                                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14"/></svg>Damage caused by voltage fluctuations or power surges</li>
+                                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14"/></svg>Normal wear and tear or cosmetic damage</li>
+                                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14"/></svg>Units purchased from unauthorised resellers</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="sp-policy-divider"></div>
-
-                <div class="sp-policy-section">
-                    <h2 class="sp-policy-heading">How to claim warranty</h2>
-                    <ol class="sp-policy-steps">
+                <div class="su-block">
+                    <h2 class="su-block-title">How to claim warranty</h2>
+                    <ol class="su-steps">
                         <li>Contact our support team at <strong>support@hawaa.in</strong> or call <strong>+91 0000000000</strong> with your order number.</li>
                         <li>Our team will diagnose the issue remotely via the Hawaa app or over a call.</li>
                         <li>If a repair or replacement is needed, we&rsquo;ll arrange doorstep service in major metros or courier-based repair for other locations.</li>
@@ -211,42 +278,60 @@
                 </div>
             </div>
 
-            <!-- Tab Content: Return & Refund Policy -->
-            <div class="sp-tab-content" id="tab-returns">
-                <div class="sp-policy-section">
-                    <h2 class="sp-policy-heading">Return window</h2>
-                    <p class="sp-policy-text">We offer a <strong>7-day return window</strong> from the date of delivery. The product must be unused, unopened, and in its original packaging with all accessories and documentation intact.</p>
+            <!-- Panel: Returns & Refund -->
+            <div class="su-panel" id="panel-returns" role="tabpanel" aria-labelledby="su-tab-returns">
+                <div class="su-glance">
+                    <div class="su-glance-item">
+                        <span class="su-glance-value">7 days</span>
+                        <span class="su-glance-label">Return window from the date of delivery</span>
+                    </div>
+                    <div class="su-glance-item">
+                        <span class="su-glance-value">Free pickup</span>
+                        <span class="su-glance-label">We arrange collection from your address</span>
+                    </div>
+                    <div class="su-glance-item">
+                        <span class="su-glance-value">7&ndash;10 days</span>
+                        <span class="su-glance-label">Refund to your original payment method</span>
+                    </div>
                 </div>
 
-                <div class="sp-policy-divider"></div>
-
-                <div class="sp-policy-section">
-                    <h2 class="sp-policy-heading">Eligible for return</h2>
-                    <ul class="sp-policy-list">
-                        <li>Unused and unopened products in original packaging</li>
-                        <li>Products received with manufacturing defects</li>
-                        <li>Wrong product or model delivered</li>
-                        <li>Products damaged during shipping</li>
-                    </ul>
+                <div class="su-block">
+                    <h2 class="su-block-title">Return window</h2>
+                    <p class="su-text">We offer a <strong>7-day return window</strong> from the date of delivery. The product must be unused, unopened, and in its original packaging with all accessories and documentation intact.</p>
                 </div>
 
-                <div class="sp-policy-divider"></div>
-
-                <div class="sp-policy-section">
-                    <h2 class="sp-policy-heading">Not eligible for return</h2>
-                    <ul class="sp-policy-list">
-                        <li>Products used or opened beyond inspection</li>
-                        <li>Consumables such as replacement HEPA filters (unless defective)</li>
-                        <li>Products with removed or tampered serial numbers</li>
-                        <li>Return requests raised after the 7-day window</li>
-                    </ul>
+                <div class="su-block">
+                    <div class="su-twin">
+                        <div class="su-twin-card is-yes">
+                            <div class="su-twin-head">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>
+                                Eligible for return
+                            </div>
+                            <ul class="su-twin-list">
+                                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Unused and unopened products in original packaging</li>
+                                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Products received with manufacturing defects</li>
+                                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Wrong product or model delivered</li>
+                                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Products damaged during shipping</li>
+                            </ul>
+                        </div>
+                        <div class="su-twin-card is-no">
+                            <div class="su-twin-head">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/></svg>
+                                Not eligible for return
+                            </div>
+                            <ul class="su-twin-list">
+                                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14"/></svg>Products used or opened beyond inspection</li>
+                                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14"/></svg>Consumables such as replacement HEPA filters (unless defective)</li>
+                                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14"/></svg>Products with removed or tampered serial numbers</li>
+                                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14"/></svg>Return requests raised after the 7-day window</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="sp-policy-divider"></div>
-
-                <div class="sp-policy-section">
-                    <h2 class="sp-policy-heading">Refund process</h2>
-                    <ol class="sp-policy-steps">
+                <div class="su-block">
+                    <h2 class="su-block-title">Refund process</h2>
+                    <ol class="su-steps">
                         <li>Email <strong>support@hawaa.in</strong> with your order number and reason for return.</li>
                         <li>Our team will confirm eligibility and arrange a pickup from your address.</li>
                         <li>Once we receive and inspect the product, we&rsquo;ll initiate the refund.</li>
@@ -254,143 +339,161 @@
                     </ol>
                 </div>
 
-                <div class="sp-policy-divider"></div>
-
-                <div class="sp-policy-section">
-                    <h2 class="sp-policy-heading">Replacement</h2>
-                    <p class="sp-policy-text">If you receive a defective unit, we&rsquo;ll arrange a <strong>free replacement</strong> at no additional cost. Replacement units are typically dispatched within 2&ndash;3 business days after pickup of the original unit.</p>
+                <div class="su-block">
+                    <h2 class="su-block-title">Replacement</h2>
+                    <p class="su-text">If you receive a defective unit, we&rsquo;ll arrange a <strong>free replacement</strong> at no additional cost. Replacement units are typically dispatched within 2&ndash;3 business days after pickup of the original unit.</p>
                 </div>
             </div>
 
-            <!-- Tab Content: Shipping & Delivery -->
-            <div class="sp-tab-content" id="tab-shipping">
-                <div class="sp-policy-section">
-                    <h2 class="sp-policy-heading">Shipping coverage</h2>
-                    <p class="sp-policy-text">We currently ship across <strong>India only</strong>. All orders are shipped from our warehouse in Rajkot, Gujarat via trusted logistics partners.</p>
+            <!-- Panel: Shipping -->
+            <div class="su-panel" id="panel-shipping" role="tabpanel" aria-labelledby="su-tab-shipping">
+                <div class="su-glance">
+                    <div class="su-glance-item">
+                        <span class="su-glance-value">Free</span>
+                        <span class="su-glance-label">Shipping on all Hawaa Edge orders</span>
+                    </div>
+                    <div class="su-glance-item">
+                        <span class="su-glance-value">1&ndash;2 days</span>
+                        <span class="su-glance-label">Order processing before dispatch</span>
+                    </div>
+                    <div class="su-glance-item">
+                        <span class="su-glance-value">All India</span>
+                        <span class="su-glance-label">Shipped from Rajkot via trusted partners</span>
+                    </div>
                 </div>
 
-                <div class="sp-policy-divider"></div>
-
-                <div class="sp-policy-section">
-                    <h2 class="sp-policy-heading">Processing time</h2>
-                    <p class="sp-policy-text">Orders are processed within <strong>1&ndash;2 business days</strong> from the date of order confirmation. Orders placed on weekends or public holidays are processed on the next business day.</p>
+                <div class="su-block">
+                    <h2 class="su-block-title">Shipping coverage</h2>
+                    <p class="su-text">We currently ship across <strong>India only</strong>. All orders are shipped from our warehouse in Rajkot, Gujarat via trusted logistics partners. Orders are processed within <strong>1&ndash;2 business days</strong> from confirmation; orders placed on weekends or public holidays are processed on the next business day.</p>
                 </div>
 
-                <div class="sp-policy-divider"></div>
-
-                <div class="sp-policy-section">
-                    <h2 class="sp-policy-heading">Delivery timelines</h2>
-                    <ul class="sp-policy-list">
-                        <li><strong>Metro cities</strong> (Delhi, Mumbai, Bangalore, Chennai, Hyderabad, Kolkata, Pune, Ahmedabad) &mdash; 3&ndash;5 business days</li>
-                        <li><strong>Tier 2 cities</strong> &mdash; 5&ndash;7 business days</li>
-                        <li><strong>Other locations</strong> &mdash; 7&ndash;10 business days</li>
-                    </ul>
-                    <p class="sp-policy-text sp-policy-note">Delivery timelines are estimates and may vary depending on your location and logistics conditions.</p>
+                <div class="su-block">
+                    <h2 class="su-block-title">Delivery timelines</h2>
+                    <div class="su-rows">
+                        <div class="su-row">
+                            <span class="su-row-place">Metro cities<small>Delhi, Mumbai, Bangalore, Chennai, Hyderabad, Kolkata, Pune, Ahmedabad</small></span>
+                            <span class="su-row-days">3&ndash;5 business days</span>
+                        </div>
+                        <div class="su-row">
+                            <span class="su-row-place">Tier 2 cities</span>
+                            <span class="su-row-days">5&ndash;7 business days</span>
+                        </div>
+                        <div class="su-row">
+                            <span class="su-row-place">Other locations</span>
+                            <span class="su-row-days">7&ndash;10 business days</span>
+                        </div>
+                    </div>
+                    <p class="su-text su-note">Delivery timelines are estimates and may vary depending on your location and logistics conditions.</p>
                 </div>
 
-                <div class="sp-policy-divider"></div>
-
-                <div class="sp-policy-section">
-                    <h2 class="sp-policy-heading">Shipping charges</h2>
-                    <p class="sp-policy-text">We offer <strong>free shipping</strong> on all Hawaa Edge air purifier orders. Replacement filter and accessory orders above &#8377;499 also qualify for free shipping. A flat shipping charge of &#8377;49 applies to orders below &#8377;499.</p>
+                <div class="su-block">
+                    <h2 class="su-block-title">Shipping charges</h2>
+                    <p class="su-text">We offer <strong>free shipping</strong> on all Hawaa Edge air purifier orders. Replacement filter and accessory orders above &#8377;499 also qualify for free shipping. A flat shipping charge of &#8377;49 applies to orders below &#8377;499.</p>
                 </div>
 
-                <div class="sp-policy-divider"></div>
-
-                <div class="sp-policy-section">
-                    <h2 class="sp-policy-heading">Order tracking</h2>
-                    <p class="sp-policy-text">Once your order ships, you&rsquo;ll receive tracking details via SMS and email. You can also track your order status through the Hawaa app or by contacting our support team.</p>
+                <div class="su-block">
+                    <h2 class="su-block-title">Order tracking</h2>
+                    <p class="su-text">Once your order ships, you&rsquo;ll receive tracking details via SMS and email. You can also track your order status through the Hawaa app or by contacting our support team.</p>
                 </div>
             </div>
 
-        </div>
-    </main>
+            <!-- FAQ pointer -->
+            <a href="faq.html" class="su-faq-pointer" data-reveal>
+                <span class="su-faq-pointer-text">
+                    <span class="su-faq-pointer-title">Questions about the product itself?</span>
+                    <span class="su-faq-pointer-sub">Filters, noise levels, app features, and more &mdash; answered in our FAQ.</span>
+                </span>
+                <span class="su-faq-pointer-arrow" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+                </span>
+            </a>
+        </section>
 
-    <!-- Get in Touch Section -->
-    <section class="sp-contact">
-        <div class="sp-contact-container">
-            <div class="sp-contact-header">
-                <h2 class="sp-contact-title">Get in touch</h2>
-                <p class="sp-contact-label">Support</p>
-            </div>
+        <!-- Get in Touch -->
+        <section class="su-contact" id="contact-us">
+            <div class="su-contact-inner">
+                <div class="su-contact-info">
+                    <p class="hx-eyebrow">Contact Us</p>
+                    <h2 class="hx-title su-contact-title">Get in <em>touch</em></h2>
+                    <p class="hx-sub su-contact-sub">Questions, issues, or just want to talk air quality? We&rsquo;re here Monday to Saturday, and we reply within 24 hours.</p>
+                    <div class="su-contact-list">
+                        <a href="tel:+910000000000" class="su-contact-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/>
+                            </svg>
+                            <span>
+                                <span class="su-contact-item-label">Phone</span>
+                                <span class="su-contact-item-value">+91 0000000000</span>
+                            </span>
+                        </a>
+                        <a href="mailto:support@hawaa.in" class="su-contact-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                                <polyline points="22,6 12,13 2,6"/>
+                            </svg>
+                            <span>
+                                <span class="su-contact-item-label">Email</span>
+                                <span class="su-contact-item-value">support@hawaa.in</span>
+                            </span>
+                        </a>
+                        <div class="su-contact-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <circle cx="12" cy="12" r="10"/>
+                                <polyline points="12 6 12 12 16 14"/>
+                            </svg>
+                            <span>
+                                <span class="su-contact-item-label">Support hours</span>
+                                <span class="su-contact-item-value">Mon &ndash; Sat, 10 AM &ndash; 6 PM IST</span>
+                            </span>
+                        </div>
+                        <div class="su-contact-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
+                                <circle cx="12" cy="10" r="3"/>
+                            </svg>
+                            <span>
+                                <span class="su-contact-item-label">Address</span>
+                                <span class="su-contact-item-value">Royal Complex, Bhutkhana Chowk, Rajkot 360001, Gujarat, India</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
 
-            <div class="sp-contact-grid">
-                <!-- Contact Form -->
-                <div class="sp-contact-form-wrap">
-                    <form class="sp-contact-form" id="sp-contact-form" novalidate>
-                        <div class="sp-field">
-                            <label class="sp-field-label" for="sp-name">Full Name</label>
-                            <input type="text" class="sp-input" id="sp-name" placeholder="Your full name" autocomplete="name">
+                <div class="su-form-card">
+                    <form class="su-form" id="sp-contact-form" novalidate>
+                        <h3 class="su-form-title">Send us a message</h3>
+                        <p class="su-form-sub">Tell us what&rsquo;s going on and we&rsquo;ll take it from there.</p>
+                        <div class="su-field">
+                            <label class="su-field-label" for="sp-name">Full name</label>
+                            <input type="text" class="su-input" id="sp-name" placeholder="Your full name" autocomplete="name">
                         </div>
-                        <div class="sp-field">
-                            <label class="sp-field-label" for="sp-email">Email</label>
-                            <input type="email" class="sp-input" id="sp-email" placeholder="you@email.com" autocomplete="email">
+                        <div class="su-field">
+                            <label class="su-field-label" for="sp-email">Email</label>
+                            <input type="email" class="su-input" id="sp-email" placeholder="you@email.com" autocomplete="email">
                         </div>
-                        <div class="sp-field">
-                            <label class="sp-field-label" for="sp-message">Message</label>
-                            <textarea class="sp-input sp-textarea" id="sp-message" placeholder="How can we help?" rows="4"></textarea>
+                        <div class="su-field">
+                            <label class="su-field-label" for="sp-message">Message</label>
+                            <textarea class="su-input su-textarea" id="sp-message" placeholder="How can we help?" rows="4"></textarea>
                         </div>
-                        <button type="submit" class="sp-submit" id="sp-submit">Send Message</button>
+                        <button type="submit" class="su-submit" id="sp-submit">Send Message</button>
+                        <p class="su-form-reassure">We reply within 24 hours &middot; Mon&ndash;Sat</p>
                     </form>
 
                     <!-- Success State -->
-                    <div class="sp-form-success hidden" id="sp-form-success">
-                        <div class="sp-success-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <div class="su-form-success hidden" id="sp-form-success">
+                        <div class="su-success-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                                 <path d="M20 6L9 17l-5-5"/>
                             </svg>
                         </div>
-                        <h3 class="sp-success-title">Message sent</h3>
-                        <p class="sp-success-text">Our support team will get back to you within 24 hours.</p>
-                        <button type="button" class="sp-success-another" id="sp-send-another">Send another message</button>
-                    </div>
-                </div>
-
-                <!-- Contact Details -->
-                <div class="sp-contact-details">
-                    <div class="sp-contact-item">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/>
-                        </svg>
-                        <div>
-                            <p class="sp-detail-label">Phone</p>
-                            <p class="sp-detail-value">+91 0000000000</p>
-                        </div>
-                    </div>
-                    <div class="sp-contact-item">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-                            <polyline points="22,6 12,13 2,6"/>
-                        </svg>
-                        <div>
-                            <p class="sp-detail-label">Email</p>
-                            <p class="sp-detail-value">support@hawaa.in</p>
-                        </div>
-                    </div>
-                    <div class="sp-contact-item">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="10"/>
-                            <polyline points="12 6 12 12 16 14"/>
-                        </svg>
-                        <div>
-                            <p class="sp-detail-label">Support hours</p>
-                            <p class="sp-detail-value">Mon &ndash; Sat, 10 AM &ndash; 6 PM IST</p>
-                        </div>
-                    </div>
-                    <div class="sp-contact-item">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
-                            <circle cx="12" cy="10" r="3"/>
-                        </svg>
-                        <div>
-                            <p class="sp-detail-label">Address</p>
-                            <p class="sp-detail-value">Royal Complex, Bhutkhana Chowk, Rajkot, 360001, Gujarat, India</p>
-                        </div>
+                        <h3 class="su-success-title">Message sent</h3>
+                        <p class="su-success-text">Our support team will get back to you within 24 hours.</p>
+                        <button type="button" class="su-success-another" id="sp-send-another">Send another message</button>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+    </main>
 
     <!-- Footer -->
     <footer class="footer" id="contact">
@@ -432,7 +535,7 @@
                         <li><a href="installation-guide.html">Installation Guide</a></li>
                         <li><a href="faq.html">FAQ</a></li>
                         <li><a href="support.html">Product Support</a></li>
-                        <li><a href="support.html">Contact Us</a></li>
+                        <li><a href="support.html#contact-us">Contact Us</a></li>
                     </ul>
                 </div>
                 <div class="footer-links-column" data-footer-section>
