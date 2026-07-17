@@ -19,7 +19,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="css/support.css">
     <link rel="stylesheet" href="css/reviews.css">
     <link rel="stylesheet" href="css/monsoon-mist.theme.css">
     <link rel="icon" href="public/images/favicon.ico" type="image/x-icon">
@@ -154,79 +153,47 @@
         <div class="rv-container">
 
             <!-- Hero -->
-            <div class="rv-hero">
-                <p class="rv-subtitle">CUSTOMER REVIEWS</p>
+            <header class="rv-hero">
+                <p class="rv-eyebrow">Customer Reviews</p>
                 <h1 class="rv-title">What our customers <span class="rv-title-italic">say</span></h1>
-            </div>
+            </header>
 
-            <!-- Summary Bar -->
-            <div class="rv-summary" id="rv-summary">
+            <!-- Rating Summary -->
+            <section class="rv-summary" id="rv-summary" aria-label="Rating summary">
                 <div class="rv-summary-score">
-                    <span class="rv-score-number" id="rv-score-number">4.8</span>
-                    <div class="rv-score-details">
-                        <div class="rv-score-stars" id="rv-score-stars"></div>
-                        <span class="rv-score-count" id="rv-score-count">Based on 24 reviews</span>
-                    </div>
+                    <span class="rv-score-number" id="rv-score-number">&ndash;</span>
+                    <div class="rv-score-stars" id="rv-score-stars" aria-hidden="true"></div>
+                    <span class="rv-score-count" id="rv-score-count">Loading reviews&hellip;</span>
+                    <button class="rv-write-btn" id="rv-write-btn">Write a review</button>
                 </div>
-                <div class="rv-distribution" id="rv-distribution"></div>
-            </div>
+                <div class="rv-distribution" id="rv-distribution" role="group" aria-label="Filter reviews by rating"></div>
+            </section>
 
-            <!-- Controls -->
-            <div class="rv-controls">
-                <div class="rv-controls-left">
-                    <div class="rv-sort">
-                        <label class="rv-sort-label" for="rv-sort-select">Sort by</label>
-                        <select class="rv-sort-select" id="rv-sort-select">
-                            <option value="recent">Most Recent</option>
-                            <option value="highest">Highest Rating</option>
-                            <option value="lowest">Lowest Rating</option>
-                            <option value="helpful">Most Helpful</option>
-                        </select>
-                    </div>
-                    <div class="rv-filter-stars" id="rv-filter-stars">
-                        <button class="rv-filter-btn active" data-filter="all">All</button>
-                        <button class="rv-filter-btn" data-filter="5">5 &#9733;</button>
-                        <button class="rv-filter-btn" data-filter="4">4 &#9733;</button>
-                        <button class="rv-filter-btn" data-filter="3">3 &#9733;</button>
-                        <button class="rv-filter-btn" data-filter="2">2 &#9733;</button>
-                        <button class="rv-filter-btn" data-filter="1">1 &#9733;</button>
-                    </div>
+            <!-- Toolbar -->
+            <div class="rv-toolbar">
+                <p class="rv-result-count" id="rv-result-count" aria-live="polite"></p>
+                <div class="rv-sort">
+                    <label class="rv-sort-label" for="rv-sort-select">Sort by</label>
+                    <select class="rv-sort-select" id="rv-sort-select">
+                        <option value="recent">Most recent</option>
+                        <option value="highest">Highest rating</option>
+                        <option value="lowest">Lowest rating</option>
+                        <option value="helpful">Most helpful</option>
+                    </select>
                 </div>
-                <button class="rv-write-btn" id="rv-write-btn">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M12 5v14M5 12h14"/>
-                    </svg>
-                    Write a Review
-                </button>
             </div>
 
             <!-- Reviews List -->
             <div class="rv-list" id="rv-list"></div>
 
-            <!-- Pagination -->
-            <div class="rv-pagination" id="rv-pagination">
-                <button class="rv-page-btn rv-page-prev" id="rv-prev" aria-label="Previous page" disabled>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M19 12H5M12 19l-7-7 7-7"/>
-                    </svg>
-                </button>
-                <div class="rv-page-numbers" id="rv-page-numbers"></div>
-                <button class="rv-page-btn rv-page-next" id="rv-next" aria-label="Next page">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M5 12h14M12 5l7 7-7 7"/>
-                    </svg>
-                </button>
+            <!-- Load More -->
+            <div class="rv-more" id="rv-more" hidden>
+                <p class="rv-more-note" id="rv-more-note"></p>
+                <button class="rv-more-btn" id="rv-more-btn">Show more reviews</button>
             </div>
 
         </div>
     </main>
-
-    <!-- Floating Action Button (mobile) -->
-    <button class="rv-fab" id="rv-fab" aria-label="Write a Review">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 5v14M5 12h14"/>
-        </svg>
-    </button>
 
     <!-- Write Review Modal -->
     <div class="rv-modal-overlay" id="rv-modal-overlay">
@@ -246,43 +213,43 @@
 
                 <form id="rv-review-form" novalidate>
                     <!-- Star Rating Selector -->
-                    <div class="sp-field">
-                        <label class="sp-field-label">Your Rating <span class="rv-required">*</span></label>
+                    <div class="rv-field">
+                        <label class="rv-field-label">Your rating</label>
                         <div class="rv-star-selector" id="rv-star-selector">
                             <button type="button" class="rv-star-btn" data-value="1" aria-label="1 star">
-                                <svg viewBox="0 0 24 24" fill="#E5E7EB"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                                <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
                             </button>
                             <button type="button" class="rv-star-btn" data-value="2" aria-label="2 stars">
-                                <svg viewBox="0 0 24 24" fill="#E5E7EB"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                                <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
                             </button>
                             <button type="button" class="rv-star-btn" data-value="3" aria-label="3 stars">
-                                <svg viewBox="0 0 24 24" fill="#E5E7EB"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                                <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
                             </button>
                             <button type="button" class="rv-star-btn" data-value="4" aria-label="4 stars">
-                                <svg viewBox="0 0 24 24" fill="#E5E7EB"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                                <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
                             </button>
                             <button type="button" class="rv-star-btn" data-value="5" aria-label="5 stars">
-                                <svg viewBox="0 0 24 24" fill="#E5E7EB"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                                <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
                             </button>
                         </div>
                         <p class="rv-star-label" id="rv-star-label"></p>
                     </div>
 
                     <!-- Title -->
-                    <div class="sp-field">
-                        <label class="sp-field-label" for="rv-review-title">Review Title <span class="rv-required">*</span></label>
-                        <input type="text" class="sp-input" id="rv-review-title" placeholder="Summarise your experience" maxlength="100">
+                    <div class="rv-field">
+                        <label class="rv-field-label" for="rv-review-title">Review title</label>
+                        <input type="text" class="rv-input" id="rv-review-title" placeholder="Summarise your experience" maxlength="100">
                     </div>
 
                     <!-- Content -->
-                    <div class="sp-field">
-                        <label class="sp-field-label" for="rv-review-content">Your Review <span class="rv-required">*</span></label>
-                        <textarea class="sp-input sp-textarea" id="rv-review-content" placeholder="What did you like or dislike? How do you use the product?" rows="5"></textarea>
+                    <div class="rv-field">
+                        <label class="rv-field-label" for="rv-review-content">Your review</label>
+                        <textarea class="rv-input rv-textarea" id="rv-review-content" placeholder="What did you like or dislike? How do you use the product?" rows="5"></textarea>
                     </div>
 
                     <!-- Photo/Video Upload -->
-                    <div class="sp-field">
-                        <label class="sp-field-label">Photos / Videos <span class="rv-optional">(optional)</span></label>
+                    <div class="rv-field">
+                        <label class="rv-field-label">Photos / videos <span class="rv-optional">(optional)</span></label>
                         <div class="rv-upload-area" id="rv-upload-area">
                             <input type="file" class="rv-upload-input" id="rv-upload-input" multiple accept="image/*,video/*" hidden>
                             <div class="rv-upload-placeholder" id="rv-upload-placeholder">
@@ -299,21 +266,21 @@
                     </div>
 
                     <!-- Display Name -->
-                    <div class="sp-field">
-                        <label class="sp-field-label" for="rv-review-name">Display Name <span class="rv-required">*</span></label>
-                        <input type="text" class="sp-input" id="rv-review-name" placeholder="How should we display your name?" maxlength="50" autocomplete="name">
+                    <div class="rv-field">
+                        <label class="rv-field-label" for="rv-review-name">Display name</label>
+                        <input type="text" class="rv-input" id="rv-review-name" placeholder="How should we display your name?" maxlength="50" autocomplete="name">
                     </div>
 
                     <!-- Email -->
-                    <div class="sp-field">
-                        <label class="sp-field-label" for="rv-review-email">Email <span class="rv-required">*</span></label>
-                        <input type="email" class="sp-input" id="rv-review-email" placeholder="your@email.com (won't be published)" autocomplete="email">
+                    <div class="rv-field">
+                        <label class="rv-field-label" for="rv-review-email">Email</label>
+                        <input type="email" class="rv-input" id="rv-review-email" placeholder="your@email.com (won't be published)" autocomplete="email">
                     </div>
 
                     <!-- Buttons -->
                     <div class="rv-modal-actions">
                         <button type="button" class="rv-cancel-btn" id="rv-cancel-btn">Cancel</button>
-                        <button type="submit" class="sp-submit" id="rv-submit-btn">Submit Review</button>
+                        <button type="submit" class="rv-submit" id="rv-submit-btn">Submit review</button>
                     </div>
                 </form>
             </div>
@@ -327,7 +294,7 @@
                 </div>
                 <h3 class="rv-success-title">Thank you for your review!</h3>
                 <p class="rv-success-text">Your review has been submitted and will appear shortly after moderation.</p>
-                <button type="button" class="sp-submit rv-done-btn" id="rv-done-btn">Done</button>
+                <button type="button" class="rv-submit rv-done-btn" id="rv-done-btn">Done</button>
             </div>
         </div>
     </div>
