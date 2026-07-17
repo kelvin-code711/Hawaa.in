@@ -10,6 +10,17 @@
     overflow-x: clip;
 }
 
+/* Header starts transparent over the light mist hero (background is added
+   by .scrolled on scroll, same as index.html) — but unlike the dark video
+   hero on index, the logo and menu icon must stay dark here. */
+.about-page .header:not(.scrolled) .logo-img {
+    filter: none;
+}
+
+.about-page .header:not(.scrolled) .hamburger-line {
+    background: var(--ink);
+}
+
 .ab-container {
     max-width: 1080px;
     margin: 0 auto;
@@ -57,26 +68,6 @@
     height: 1px;
     background: var(--teal-deep);
     opacity: 0.4;
-}
-
-.ab-chapter-index {
-    font-weight: 600;
-}
-
-/* Oversized ghost numeral behind each chapter */
-.ab-chapter-num {
-    position: absolute;
-    top: -0.18em;
-    right: -8px;
-    font-family: 'Outfit', sans-serif;
-    font-size: clamp(7rem, 20vw, 15rem);
-    font-weight: 700;
-    line-height: 1;
-    color: var(--ink-line-soft);
-    letter-spacing: -0.04em;
-    pointer-events: none;
-    user-select: none;
-    z-index: 0;
 }
 
 .ab-section-title {
@@ -694,15 +685,6 @@
     background: var(--teal-tint-soft);
 }
 
-.ab-value-index {
-    font-family: 'Outfit', sans-serif;
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: var(--teal-deep);
-    letter-spacing: 0.08em;
-    padding-top: 4px;
-}
-
 .ab-value-name {
     font-family: 'Outfit', sans-serif;
     font-size: 1.2rem;
@@ -857,7 +839,7 @@
         gap: 64px;
     }
 
-    /* Visual on the left at desktop so the ghost numeral stays visible */
+    /* Visual on the left at desktop, copy on the right */
     .ab-story-visual {
         order: -1;
     }
@@ -872,8 +854,8 @@
     }
 
     .ab-value-row {
-        grid-template-columns: 72px 280px 1fr;
-        gap: 24px;
+        grid-template-columns: 320px 1fr;
+        gap: 32px;
         padding: 34px 12px;
         align-items: start;
     }
@@ -885,7 +867,7 @@
 
 @media (min-width: 1024px) {
     .ab-value-row {
-        grid-template-columns: 88px 340px 1fr;
+        grid-template-columns: 380px 1fr;
     }
 }
 

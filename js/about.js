@@ -8,8 +8,24 @@
 (function() {
     'use strict';
 
-    // The about page sits on a light background, so the header keeps the
-    // static "scrolled" treatment from the markup — no scroll toggle here.
+    // ========================================
+    // HEADER SCROLL EFFECT
+    // Transparent over the hero, background after scrolling
+    // (same behavior as index.html)
+    // ========================================
+    var header = document.getElementById('header');
+
+    if (header) {
+        var handleHeaderScroll = function() {
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        };
+        window.addEventListener('scroll', handleHeaderScroll, { passive: true });
+        handleHeaderScroll();
+    }
 
     var reduceMotion = window.matchMedia &&
         window.matchMedia('(prefers-reduced-motion: reduce)').matches;
