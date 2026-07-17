@@ -41,15 +41,6 @@
     color: var(--teal-deep);
 }
 
-.hx-eyebrow::before {
-    content: '';
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--teal-deep);
-    flex-shrink: 0;
-}
-
 .hx-title {
     font-family: 'Outfit', sans-serif;
     font-weight: 600;
@@ -1193,10 +1184,6 @@
 .su-contact-info .hx-eyebrow {
     color: var(--teal-on-dark);
     margin-bottom: 16px;
-}
-
-.su-contact-info .hx-eyebrow::before {
-    background: var(--teal-on-dark);
 }
 
 .su-contact-title {
