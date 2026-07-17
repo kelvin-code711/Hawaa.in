@@ -14,9 +14,10 @@
     // ========================================
     // STATE
     // ========================================
+    var PER_PAGE = 6;
+
     var state = {
-        currentPage: 1,
-        perPage: 10,
+        visibleCount: PER_PAGE,
         sortBy: 'recent',
         filterRating: 'all',
         modalOpen: false,
@@ -36,14 +37,12 @@
         dom.scoreCount = document.getElementById('rv-score-count');
         dom.distribution = document.getElementById('rv-distribution');
         dom.sortSelect = document.getElementById('rv-sort-select');
-        dom.filterStars = document.getElementById('rv-filter-stars');
+        dom.resultCount = document.getElementById('rv-result-count');
         dom.reviewList = document.getElementById('rv-list');
-        dom.pagination = document.getElementById('rv-pagination');
-        dom.pageNumbers = document.getElementById('rv-page-numbers');
-        dom.prevBtn = document.getElementById('rv-prev');
-        dom.nextBtn = document.getElementById('rv-next');
+        dom.moreWrap = document.getElementById('rv-more');
+        dom.moreNote = document.getElementById('rv-more-note');
+        dom.moreBtn = document.getElementById('rv-more-btn');
         dom.writeBtn = document.getElementById('rv-write-btn');
-        dom.fab = document.getElementById('rv-fab');
         dom.modalOverlay = document.getElementById('rv-modal-overlay');
         dom.modal = document.getElementById('rv-modal');
         dom.modalClose = document.getElementById('rv-modal-close');
@@ -71,11 +70,11 @@
     // Firebase Storage (not set up yet) — hide both fields.
     function hideUnusedFormFields() {
         if (dom.emailInput) {
-            var emailField = dom.emailInput.closest('.sp-field');
+            var emailField = dom.emailInput.closest('.rv-field');
             if (emailField) emailField.style.display = 'none';
         }
         if (dom.uploadArea) {
-            var uploadField = dom.uploadArea.closest('.sp-field');
+            var uploadField = dom.uploadArea.closest('.rv-field');
             if (uploadField) uploadField.style.display = 'none';
         }
     }
@@ -151,13 +150,18 @@
     var MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
     function generateStarsHTML(rating, size) {
-        var s = size || 16;
+        var s = size || 15;
         var html = '';
         for (var i = 1; i <= 5; i++) {
-            var fill = i <= rating ? '#FACC15' : '#E5E7EB';
-            html += '<svg viewBox="0 0 24 24" fill="' + fill + '" width="' + s + '" height="' + s + '"><path d="' + STAR_PATH + '"/></svg>';
+            var cls = i <= rating ? 'rv-star is-filled' : 'rv-star';
+            html += '<svg class="' + cls + '" viewBox="0 0 24 24" width="' + s + '" height="' + s + '"><path d="' + STAR_PATH + '"/></svg>';
         }
         return html;
+    }
+
+    function getInitial(name) {
+        var trimmed = (name || '').trim();
+        return trimmed ? trimmed.charAt(0) : '?';
     }
 
     function formatDate(d) {
@@ -178,7 +182,7 @@
         if (total === 0) {
             dom.scoreNumber.textContent = '–';
             dom.scoreStars.innerHTML = generateStarsHTML(0, 18);
-            dom.scoreCount.textContent = 'No reviews yet';
+            dom.scoreCount.textContent = state.loading ? 'Loading reviews…' : 'No reviews yet';
             dom.distribution.innerHTML = '';
             return;
         }
@@ -198,18 +202,34 @@
         dom.scoreStars.innerHTML = generateStarsHTML(roundedAvg, 18);
         dom.scoreCount.textContent = 'Based on ' + total + ' review' + (total === 1 ? '' : 's');
 
+        // Each row is a filter button: click to see only that rating,
+        // click again to clear.
         var distHTML = '';
         for (var star = 5; star >= 1; star--) {
             var count = dist[star];
-            var pct = total > 0 ? Math.round((count / total) * 100) : 0;
-            distHTML += '<div class="rv-dist-row">' +
+            var pct = Math.round((count / total) * 100);
+            var isActive = state.filterRating === String(star);
+            distHTML += '<button type="button" class="rv-dist-row' + (isActive ? ' active' : '') + '"' +
+                ' data-filter="' + star + '"' +
+                (count === 0 ? ' disabled' : '') +
+                ' aria-pressed="' + isActive + '"' +
+                ' aria-label="Show ' + star + '-star reviews (' + count + ')">' +
                 '<span class="rv-dist-label">' + star + '</span>' +
-                '<svg class="rv-dist-star" viewBox="0 0 24 24" fill="#FACC15"><path d="' + STAR_PATH + '"/></svg>' +
-                '<div class="rv-dist-bar"><div class="rv-dist-fill" style="width:' + pct + '%"></div></div>' +
+                '<svg class="rv-star is-filled" viewBox="0 0 24 24" width="12" height="12"><path d="' + STAR_PATH + '"/></svg>' +
+                '<span class="rv-dist-bar"><span class="rv-dist-fill" style="width:' + pct + '%"></span></span>' +
                 '<span class="rv-dist-count">' + count + '</span>' +
-                '</div>';
+                '</button>';
         }
         dom.distribution.innerHTML = distHTML;
+    }
+
+    function syncDistActive() {
+        var rows = dom.distribution.querySelectorAll('.rv-dist-row');
+        for (var i = 0; i < rows.length; i++) {
+            var isActive = rows[i].getAttribute('data-filter') === state.filterRating;
+            rows[i].classList.toggle('active', isActive);
+            rows[i].setAttribute('aria-pressed', String(isActive));
+        }
     }
 
     // ========================================
@@ -245,21 +265,53 @@
         return sorted;
     }
 
-    function getPageSlice(reviews) {
-        var start = (state.currentPage - 1) * state.perPage;
-        return reviews.slice(start, start + state.perPage);
-    }
-
     // ========================================
     // RENDER REVIEWS
     // ========================================
+    function renderResultCount(shownTotal) {
+        if (state.loading || state.loadError) {
+            dom.resultCount.innerHTML = '';
+            return;
+        }
+
+        if (state.filterRating === 'all') {
+            dom.resultCount.innerHTML = shownTotal === 0
+                ? ''
+                : shownTotal + ' review' + (shownTotal === 1 ? '' : 's');
+            return;
+        }
+
+        dom.resultCount.innerHTML =
+            shownTotal + ' review' + (shownTotal === 1 ? '' : 's') +
+            ' · ' + state.filterRating + '-star' +
+            '<button type="button" class="rv-clear-filter" id="rv-clear-filter">' +
+            'Clear' +
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>' +
+            '</button>';
+    }
+
+    function renderLoadMore(shownCount, total) {
+        if (state.loading || state.loadError || total <= shownCount) {
+            dom.moreWrap.hidden = true;
+            return;
+        }
+        dom.moreWrap.hidden = false;
+        dom.moreNote.textContent = 'Showing ' + shownCount + ' of ' + total + ' reviews';
+    }
+
     function renderReviews() {
         if (state.loading) {
-            dom.reviewList.innerHTML =
-                '<div class="rv-empty">' +
-                '<p class="rv-empty-title">Loading reviews…</p>' +
-                '</div>';
-            dom.pagination.style.display = 'none';
+            var skeletons = '';
+            for (var s = 0; s < 3; s++) {
+                skeletons += '<div class="rv-skeleton">' +
+                    '<div class="rv-skeleton-line"></div>' +
+                    '<div class="rv-skeleton-line"></div>' +
+                    '<div class="rv-skeleton-line"></div>' +
+                    '</div>';
+            }
+            dom.reviewList.innerHTML = skeletons;
+            renderResultCount(0);
+            renderLoadMore(0, 0);
             return;
         }
 
@@ -269,142 +321,100 @@
                 '<p class="rv-empty-title">Could not load reviews</p>' +
                 '<p class="rv-empty-text">Please check your connection and refresh the page.</p>' +
                 '</div>';
-            dom.pagination.style.display = 'none';
+            renderResultCount(0);
+            renderLoadMore(0, 0);
             return;
         }
 
         var filtered = getFilteredSortedReviews();
         var total = filtered.length;
+        renderResultCount(total);
 
         if (total === 0) {
             dom.reviewList.innerHTML =
                 '<div class="rv-empty">' +
                 '<div class="rv-empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>' +
-                '<p class="rv-empty-title">No reviews found</p>' +
-                '<p class="rv-empty-text">Try adjusting your filters, or be the first to write a review.</p>' +
+                '<p class="rv-empty-title">No reviews yet</p>' +
+                '<p class="rv-empty-text">Be the first to share your experience with Hawaa Edge.</p>' +
                 '</div>';
-            dom.pagination.style.display = 'none';
+            renderLoadMore(0, 0);
             return;
         }
 
-        dom.pagination.style.display = 'flex';
-        var page = getPageSlice(filtered);
+        var page = filtered.slice(0, state.visibleCount);
         var html = '';
 
         for (var i = 0; i < page.length; i++) {
             var r = page[i];
 
             var verifiedHTML = r.verified
-                ? '<span class="rv-card-verified"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Verified Purchase</span>'
+                ? '<span aria-hidden="true">&middot;</span>' +
+                  '<span class="rv-card-verified"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Verified purchase</span>'
                 : '';
 
             var helpfulActive = votedReviewIds[r.id] ? ' active' : '';
 
             html += '<article class="rv-card">' +
-                '<div class="rv-card-header">' +
-                '<div class="rv-card-stars">' + generateStarsHTML(r.rating) + '</div>' +
+                '<div class="rv-card-top">' +
+                '<span class="rv-avatar" aria-hidden="true">' + escapeHTML(getInitial(r.name)) + '</span>' +
+                '<div class="rv-card-id">' +
+                '<span class="rv-card-name">' + escapeHTML(r.name) + '</span>' +
+                '<span class="rv-card-meta">' +
                 '<span class="rv-card-date">' + formatDate(r.date) + '</span>' +
+                verifiedHTML +
+                '</span>' +
+                '</div>' +
+                '<div class="rv-card-stars" aria-label="' + r.rating + ' out of 5 stars">' + generateStarsHTML(r.rating) + '</div>' +
                 '</div>' +
                 '<h3 class="rv-card-title">' + escapeHTML(r.title) + '</h3>' +
                 '<p class="rv-card-body">' + escapeHTML(r.content) + '</p>' +
-                '<div class="rv-card-footer">' +
-                '<div class="rv-card-author">' +
-                '<span class="rv-card-name">' + escapeHTML(r.name) + '</span>' +
-                verifiedHTML +
-                '</div>' +
                 '<button class="rv-card-helpful' + helpfulActive + '" data-id="' + escapeHTML(r.id) + '">' +
                 '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3H14zM7 22H4a2 2 0 01-2-2v-7a2 2 0 012-2h3"/></svg>' +
                 'Helpful (<span class="rv-helpful-count">' + r.helpful + '</span>)' +
                 '</button>' +
-                '</div>' +
                 '</article>';
         }
 
         dom.reviewList.innerHTML = html;
-        renderPagination(total);
-    }
-
-    // ========================================
-    // PAGINATION
-    // ========================================
-    function renderPagination(totalItems) {
-        var totalPages = Math.ceil(totalItems / state.perPage);
-
-        if (totalPages <= 1) {
-            dom.pagination.style.display = 'none';
-            return;
-        }
-
-        dom.pagination.style.display = 'flex';
-        dom.prevBtn.disabled = state.currentPage <= 1;
-        dom.nextBtn.disabled = state.currentPage >= totalPages;
-
-        var html = '';
-        for (var i = 1; i <= totalPages; i++) {
-            var active = i === state.currentPage ? ' active' : '';
-            html += '<button class="rv-page-num' + active + '">' + i + '</button>';
-        }
-        dom.pageNumbers.innerHTML = html;
-    }
-
-    function scrollToControls() {
-        var controls = document.querySelector('.rv-controls');
-        if (controls) {
-            var headerHeight = 80;
-            var top = controls.getBoundingClientRect().top + window.pageYOffset - headerHeight - 16;
-            window.scrollTo({ top: top, behavior: 'smooth' });
-        }
+        renderLoadMore(page.length, total);
     }
 
     // ========================================
     // EVENT HANDLERS
     // ========================================
+    function setFilter(value) {
+        state.filterRating = value;
+        state.visibleCount = PER_PAGE;
+        syncDistActive();
+        renderReviews();
+    }
+
     function initSortAndFilter() {
         dom.sortSelect.addEventListener('change', function () {
             state.sortBy = this.value;
-            state.currentPage = 1;
+            state.visibleCount = PER_PAGE;
             renderReviews();
         });
 
-        dom.filterStars.addEventListener('click', function (e) {
-            var btn = e.target.closest('.rv-filter-btn');
-            if (!btn) return;
+        // Distribution rows in the summary double as rating filters.
+        dom.distribution.addEventListener('click', function (e) {
+            var row = e.target.closest('.rv-dist-row');
+            if (!row || row.disabled) return;
 
-            var btns = dom.filterStars.querySelectorAll('.rv-filter-btn');
-            for (var i = 0; i < btns.length; i++) {
-                btns[i].classList.remove('active');
-            }
-            btn.classList.add('active');
+            var value = row.getAttribute('data-filter');
+            setFilter(state.filterRating === value ? 'all' : value);
+        });
 
-            state.filterRating = btn.getAttribute('data-filter');
-            state.currentPage = 1;
-            renderReviews();
+        // "Clear" chip in the toolbar (rendered while a filter is active).
+        dom.resultCount.addEventListener('click', function (e) {
+            if (e.target.closest('.rv-clear-filter')) setFilter('all');
         });
     }
 
-    function initPagination() {
-        dom.pagination.addEventListener('click', function (e) {
-            var numBtn = e.target.closest('.rv-page-num');
-            var prevBtn = e.target.closest('#rv-prev');
-            var nextBtn = e.target.closest('#rv-next');
-
-            if (numBtn) {
-                state.currentPage = parseInt(numBtn.textContent);
-                renderReviews();
-                scrollToControls();
-            } else if (prevBtn && state.currentPage > 1) {
-                state.currentPage--;
-                renderReviews();
-                scrollToControls();
-            } else if (nextBtn) {
-                var filtered = getFilteredSortedReviews();
-                var totalPages = Math.ceil(filtered.length / state.perPage);
-                if (state.currentPage < totalPages) {
-                    state.currentPage++;
-                    renderReviews();
-                    scrollToControls();
-                }
-            }
+    function initLoadMore() {
+        dom.moreBtn.addEventListener('click', function () {
+            state.visibleCount += PER_PAGE;
+            renderReviews();
         });
     }
 
@@ -511,7 +521,6 @@
 
     function initModal() {
         dom.writeBtn.addEventListener('click', openModal);
-        dom.fab.addEventListener('click', openModal);
 
         dom.modalClose.addEventListener('click', closeModal);
         dom.cancelBtn.addEventListener('click', closeModal);
@@ -542,8 +551,7 @@
         var btns = dom.starSelector.querySelectorAll('.rv-star-btn');
         for (var i = 0; i < btns.length; i++) {
             var val = parseInt(btns[i].getAttribute('data-value'));
-            var svg = btns[i].querySelector('svg');
-            svg.setAttribute('fill', val <= rating ? '#FACC15' : '#E5E7EB');
+            btns[i].classList.toggle('is-filled', val <= rating);
         }
     }
 
@@ -556,7 +564,7 @@
                     state.selectedRating = parseInt(btn.getAttribute('data-value'));
                     updateStarDisplay(state.selectedRating);
                     dom.starLabel.textContent = starLabels[state.selectedRating];
-                    dom.starLabel.style.color = '';
+                    dom.starLabel.classList.remove('error');
                 });
 
                 btn.addEventListener('mouseenter', function () {
@@ -577,16 +585,16 @@
     // FORM VALIDATION & SUBMISSION
     // ========================================
     function clearFormErrors() {
-        var inputs = dom.reviewForm.querySelectorAll('.sp-input');
+        var inputs = dom.reviewForm.querySelectorAll('.rv-input');
         for (var i = 0; i < inputs.length; i++) {
             inputs[i].classList.remove('error');
         }
-        dom.starLabel.style.color = '';
+        dom.starLabel.classList.remove('error');
     }
 
     function initFormValidation() {
         // Clear error on focus
-        var inputs = dom.reviewForm.querySelectorAll('.sp-input');
+        var inputs = dom.reviewForm.querySelectorAll('.rv-input');
         for (var i = 0; i < inputs.length; i++) {
             inputs[i].addEventListener('focus', function () {
                 this.classList.remove('error');
@@ -605,7 +613,7 @@
 
             if (rating === 0) {
                 dom.starLabel.textContent = 'Please select a rating';
-                dom.starLabel.style.color = '#ef4444';
+                dom.starLabel.classList.add('error');
                 hasError = true;
             }
             if (!title || title.length > 100) {
@@ -630,7 +638,7 @@
             }
 
             dom.submitBtn.disabled = true;
-            dom.submitBtn.textContent = 'Submitting...';
+            dom.submitBtn.textContent = 'Submitting…';
 
             fb.addDoc(fb.collection(fb.db, 'reviews'), {
                 uid: currentUser.uid,
@@ -648,13 +656,13 @@
                 dom.modalForm.style.display = 'none';
                 dom.modalSuccess.classList.remove('hidden');
                 dom.submitBtn.disabled = false;
-                dom.submitBtn.textContent = 'Submit Review';
+                dom.submitBtn.textContent = 'Submit review';
             }).catch(function (err) {
                 console.error('Review submit failed:', err);
                 dom.submitBtn.disabled = false;
-                dom.submitBtn.textContent = 'Submit Review';
+                dom.submitBtn.textContent = 'Submit review';
                 dom.starLabel.textContent = 'Could not submit your review. Please try again.';
-                dom.starLabel.style.color = '#ef4444';
+                dom.starLabel.classList.add('error');
             });
         });
     }
@@ -663,7 +671,7 @@
         state.selectedRating = 0;
         updateStarDisplay(0);
         dom.starLabel.textContent = '';
-        dom.starLabel.style.color = '';
+        dom.starLabel.classList.remove('error');
 
         dom.titleInput.value = '';
         dom.contentInput.value = '';
@@ -684,7 +692,7 @@
         renderSummary();
         renderReviews();
         initSortAndFilter();
-        initPagination();
+        initLoadMore();
         initHelpful();
         initPhotoLightbox();
         initModal();
