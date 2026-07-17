@@ -1,675 +1,918 @@
-/* ========================================
-   ABOUT PAGE STYLES
-   Mobile-first, desktop compatible
-======================================== */
+/* ============================================================
+   ABOUT PAGE — "BREATH"
+   Editorial chapter layout on the Monsoon Mist palette.
+   Mobile-first, desktop compatible. No photo assets required
+   except the product shot in the Engineering chapter.
+   ============================================================ */
 
-/* ========================================
-   HERO SECTION
-======================================== */
-.about-hero {
-    padding: 160px 16px 80px;
-    text-align: center;
+.about-main {
     background: var(--mist);
+    overflow-x: clip;
 }
 
-.about-hero-content {
-    max-width: 600px;
+.ab-container {
+    max-width: 1080px;
     margin: 0 auto;
+    position: relative;
 }
 
-.about-hero-title {
+/* ---------- Shared editorial pieces ---------- */
+.ab-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
     font-family: 'Outfit', sans-serif;
-    font-size: 2.5rem;
-    line-height: 1.1;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--teal-deep);
+}
+
+.ab-eyebrow::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--teal-deep);
+    flex-shrink: 0;
+}
+
+.ab-chapter-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--teal-deep);
+    margin-bottom: 24px;
+}
+
+.ab-chapter-label::after {
+    content: '';
+    flex: 0 0 48px;
+    height: 1px;
+    background: var(--teal-deep);
+    opacity: 0.4;
+}
+
+.ab-chapter-index {
+    font-weight: 600;
+}
+
+/* Oversized ghost numeral behind each chapter */
+.ab-chapter-num {
+    position: absolute;
+    top: -0.18em;
+    right: -8px;
+    font-family: 'Outfit', sans-serif;
+    font-size: clamp(7rem, 20vw, 15rem);
+    font-weight: 700;
+    line-height: 1;
+    color: var(--ink-line-soft);
+    letter-spacing: -0.04em;
+    pointer-events: none;
+    user-select: none;
+    z-index: 0;
+}
+
+.ab-section-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: clamp(1.75rem, 4.5vw, 2.5rem);
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
     color: var(--ink);
     margin-bottom: 20px;
-    letter-spacing: -0.01em;
 }
 
-.about-title-h {
-    font-weight: 700;
+.ab-section-title em {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-weight: 500;
 }
 
-.about-title-awaa {
-    font-weight: 300;
+/* ---------- Scroll reveal (gated behind .ab-js) ---------- */
+.ab-js [data-reveal] {
+    opacity: 0;
+    transform: translateY(26px);
+    transition:
+        opacity 0.8s ease,
+        transform 0.8s cubic-bezier(0.22, 0.61, 0.36, 1);
+    transition-delay: var(--rd, 0s);
 }
 
-.about-hero-tagline {
-    font-family: 'Outfit', sans-serif;
-    font-size: 1.5rem;
-    font-weight: 300;
-    color: var(--ink-soft);
-    line-height: 1.35;
+.ab-js [data-reveal].is-in {
+    opacity: 1;
+    transform: none;
 }
 
-@media (min-width: 768px) {
-    .about-hero {
-        padding: 200px 24px 100px;
-    }
-
-    .about-hero-title {
-        font-size: 4rem;
-        margin-bottom: 24px;
-    }
-
-    .about-hero-tagline {
-        font-size: 2rem;
-    }
-}
-
-@media (min-width: 1024px) {
-    .about-hero {
-        padding: 240px 24px 120px;
-    }
-
-    .about-hero-title {
-        font-size: 5rem;
-    }
-
-    .about-hero-tagline {
-        font-size: 2.25rem;
-    }
-}
-
-/* ========================================
-   HERO MEDIA (VIDEO / IMAGE)
-======================================== */
-.about-hero-media {
-    padding: 0 16px 0;
-    background: var(--mist);
-}
-
-.about-hero-media-inner {
-    max-width: 720px;
-    margin: 0 auto;
-    border-radius: 20px;
-    overflow: hidden;
+/* ============================================================
+   1. HERO — mist, breathing rings, drifting particles
+   ============================================================ */
+.ab-hero {
     position: relative;
-    aspect-ratio: 3 / 4;
-    background: #f3f4f6;
+    min-height: 88vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 150px 20px 110px;
+    background: var(--mist);
+    overflow: hidden;
 }
 
-.about-hero-video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+.ab-hero-bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+/* Soft ambient orbs */
+.ab-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(70px);
+}
+
+.ab-orb-1 {
+    width: 46vw;
+    height: 46vw;
+    min-width: 320px;
+    min-height: 320px;
+    top: -12%;
+    left: -10%;
+    background: rgba(30, 124, 113, 0.14);
+    animation: ab-drift 18s ease-in-out infinite alternate;
+}
+
+.ab-orb-2 {
+    width: 38vw;
+    height: 38vw;
+    min-width: 260px;
+    min-height: 260px;
+    bottom: -14%;
+    right: -8%;
+    background: rgba(30, 124, 113, 0.10);
+    animation: ab-drift 22s ease-in-out infinite alternate-reverse;
+}
+
+.ab-orb-3 {
+    width: 24vw;
+    height: 24vw;
+    min-width: 180px;
+    min-height: 180px;
+    top: 30%;
+    right: 12%;
+    background: var(--mist-deeper);
+    opacity: 0.55;
+    animation: ab-drift 16s ease-in-out infinite alternate;
+}
+
+@keyframes ab-drift {
+    from { transform: translate(0, 0) scale(1); }
+    to   { transform: translate(4vw, -3vh) scale(1.08); }
+}
+
+/* Breathing rings — the purifier's 360° intake as a motif */
+.ab-ring {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 1px solid var(--ink-line);
+    border-radius: 50%;
+    opacity: 0.55;
+    animation: ab-breathe 9s ease-in-out infinite;
+}
+
+.ab-ring-1 { width: min(420px, 90vw);  height: min(420px, 90vw); }
+.ab-ring-2 { width: min(660px, 130vw); height: min(660px, 130vw); animation-delay: 1.4s; }
+.ab-ring-3 { width: min(920px, 170vw); height: min(920px, 170vw); animation-delay: 2.8s; }
+
+@keyframes ab-breathe {
+    0%, 100% { transform: translate(-50%, -50%) scale(1);    opacity: 0.35; }
+    50%      { transform: translate(-50%, -50%) scale(1.05); opacity: 0.7; }
+}
+
+/* Purified-air particles drifting upward */
+.ab-particle {
+    position: absolute;
+    bottom: -12px;
+    left: var(--x, 50%);
+    width: var(--s, 5px);
+    height: var(--s, 5px);
+    border-radius: 50%;
+    background: var(--teal-deep);
+    opacity: 0;
+    animation: ab-float var(--d, 12s) linear infinite;
+    animation-delay: var(--delay, 0s);
+}
+
+@keyframes ab-float {
+    0%   { transform: translateY(0) translateX(0);        opacity: 0; }
+    12%  { opacity: 0.35; }
+    55%  { transform: translateY(-46vh) translateX(14px); opacity: 0.22; }
+    100% { transform: translateY(-90vh) translateX(-8px); opacity: 0; }
+}
+
+.ab-hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 860px;
+}
+
+.ab-hero-content .ab-eyebrow {
+    margin-bottom: 24px;
+}
+
+.ab-hero-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: clamp(2.4rem, 7vw, 4.75rem);
+    font-weight: 600;
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-bottom: 24px;
+}
+
+.ab-hero-title em {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-weight: 500;
+    color: var(--teal-deep);
+}
+
+.ab-hero-sub {
+    font-family: 'Outfit', sans-serif;
+    font-size: clamp(1rem, 2.2vw, 1.2rem);
+    font-weight: 400;
+    line-height: 1.6;
+    color: var(--ink-soft);
+    max-width: 540px;
+    margin: 0 auto;
+}
+
+/* Scroll cue */
+.ab-scroll-cue {
+    position: absolute;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+}
+
+.ab-scroll-cue span {
     display: block;
+    width: 1px;
+    height: 48px;
+    background: var(--ink-line);
+    position: relative;
+    overflow: hidden;
+}
+
+.ab-scroll-cue span::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    background: var(--teal-deep);
+    animation: ab-cue 2.2s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+@keyframes ab-cue {
+    0%   { top: -50%; }
+    100% { top: 110%; }
+}
+
+/* ============================================================
+   2. MARQUEE RIBBON
+   ============================================================ */
+.ab-marquee {
+    background: var(--mist-deep);
+    border-top: 1px solid var(--ink-line-soft);
+    border-bottom: 1px solid var(--ink-line-soft);
+    padding: 26px 0;
+    overflow: hidden;
+}
+
+.ab-marquee-track {
+    display: flex;
+    width: max-content;
+    animation: ab-marquee 30s linear infinite;
+}
+
+.ab-marquee:hover .ab-marquee-track {
+    animation-play-state: paused;
+}
+
+@keyframes ab-marquee {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+}
+
+.ab-marquee-group {
+    display: flex;
+    align-items: center;
+    gap: 36px;
+    padding-right: 36px;
+}
+
+.ab-marquee-word {
+    font-family: 'Outfit', sans-serif;
+    font-size: clamp(1.3rem, 3.2vw, 2rem);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    white-space: nowrap;
+}
+
+.ab-marquee-word.is-outline {
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(18, 49, 44, 0.45);
+}
+
+.ab-marquee-word.is-serif {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-weight: 500;
+    color: var(--teal-deep);
+}
+
+.ab-marquee-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--teal-deep);
+    opacity: 0.5;
+    flex-shrink: 0;
+}
+
+/* ============================================================
+   3. CHAPTER 01 — MISSION (paper)
+   ============================================================ */
+.ab-mission {
+    background: var(--paper);
+    padding: 88px 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+.ab-mission .ab-container {
+    max-width: 860px;
+}
+
+.ab-mission-text {
+    position: relative;
+    z-index: 1;
+    font-family: 'Outfit', sans-serif;
+    font-size: clamp(1.5rem, 3.6vw, 2.4rem);
+    font-weight: 400;
+    line-height: 1.4;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+}
+
+.ab-mission-text em {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-weight: 500;
+    color: var(--teal-deep);
+    white-space: normal;
+}
+
+/* ============================================================
+   4. STATS BAND — the single dark moment (ink)
+   ============================================================ */
+.ab-stats {
+    background:
+        radial-gradient(70% 90% at 50% 0%, rgba(79, 196, 184, 0.08), transparent 70%),
+        var(--ink);
+    padding: 88px 20px;
+}
+
+.ab-stats-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--teal-on-dark);
+    margin-bottom: 16px;
+}
+
+.ab-stats-eyebrow::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--teal-on-dark);
+}
+
+.ab-stats-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: clamp(1.75rem, 4.5vw, 2.5rem);
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: var(--on-ink);
+    margin-bottom: 48px;
+}
+
+.ab-stats-title em {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-weight: 500;
+    color: var(--teal-on-dark);
+}
+
+.ab-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    border-top: 1px solid rgba(234, 240, 236, 0.14);
+    border-left: 1px solid rgba(234, 240, 236, 0.14);
+}
+
+.ab-stat {
+    padding: 28px 20px 32px;
+    border-right: 1px solid rgba(234, 240, 236, 0.14);
+    border-bottom: 1px solid rgba(234, 240, 236, 0.14);
+}
+
+.ab-stat-value {
+    font-family: 'Outfit', sans-serif;
+    font-size: clamp(2.4rem, 6vw, 3.75rem);
+    font-weight: 300;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--on-ink);
+    margin-bottom: 12px;
+    font-variant-numeric: tabular-nums;
+}
+
+.ab-stat-value .ab-stat-accent {
+    color: var(--teal-on-dark);
+}
+
+.ab-stat-label {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 400;
+    line-height: 1.55;
+    color: rgba(234, 240, 236, 0.62);
+    max-width: 24ch;
+}
+
+/* ============================================================
+   5. CHAPTER 02 — ENGINEERING (mist, product visual)
+   ============================================================ */
+.ab-story {
+    background: var(--mist);
+    padding: 88px 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+.ab-story-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 48px;
+    align-items: center;
+}
+
+.ab-story-copy {
     position: relative;
     z-index: 1;
 }
 
-.about-hero-image {
-    position: absolute;
-    inset: 0;
-    background-size: cover;
-    background-position: center;
-    z-index: 0;
-}
-
-@media (min-width: 768px) {
-    .about-hero-media {
-        padding: 0 24px 0;
-    }
-
-    .about-hero-media-inner {
-        border-radius: 24px;
-    }
-}
-
-/* ========================================
-   MISSION STATEMENT
-======================================== */
-.about-mission {
-    padding: 60px 16px;
-    background: var(--mist-deep);
-}
-
-.about-mission-container {
-    max-width: 720px;
-    margin: 0 auto;
-}
-
-.about-mission-text {
+.ab-story-text {
     font-family: 'Outfit', sans-serif;
-    font-size: 1.35rem;
+    font-size: 1rem;
     font-weight: 400;
-    line-height: 1.5;
-    color: var(--ink);
-}
-
-@media (min-width: 768px) {
-    .about-mission {
-        padding: 80px 24px;
-    }
-
-    .about-mission-text {
-        font-size: 1.75rem;
-        line-height: 1.45;
-    }
-}
-
-@media (min-width: 1024px) {
-    .about-mission-text {
-        font-size: 2rem;
-    }
-}
-
-/* ========================================
-   AUTO-SCROLLING IMAGE STRIP
-======================================== */
-.about-image-strip {
-    padding: 40px 0;
-    overflow: hidden;
-    background: var(--mist);
-}
-
-.about-strip-track {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    width: max-content;
-    animation: about-strip-scroll 30s linear infinite;
-}
-
-.about-strip-track:hover {
-    animation-play-state: paused;
-}
-
-@keyframes about-strip-scroll {
-    0% {
-        transform: translateX(0);
-    }
-    100% {
-        transform: translateX(-50%);
-    }
-}
-
-.about-strip-item {
-    flex-shrink: 0;
-    border-radius: 12px;
-    overflow: hidden;
-}
-
-.about-strip-img {
-    width: 100%;
-    height: 100%;
-    background-size: cover;
-    background-position: center;
-    background-color: #f3f4f6;
-}
-
-/* Pattern: portrait, small-rect, portrait */
-.about-strip-portrait {
-    width: 150px;
-    height: 220px;
-}
-
-.about-strip-rect {
-    width: 200px;
-    height: 150px;
-    align-self: center;
-}
-
-@media (min-width: 768px) {
-    .about-image-strip {
-        padding: 60px 0;
-    }
-
-    .about-strip-track {
-        gap: 16px;
-    }
-
-    .about-strip-portrait {
-        width: 200px;
-        height: 290px;
-    }
-
-    .about-strip-rect {
-        width: 270px;
-        height: 200px;
-    }
-}
-
-@media (min-width: 1024px) {
-    .about-strip-portrait {
-        width: 240px;
-        height: 340px;
-    }
-
-    .about-strip-rect {
-        width: 320px;
-        height: 230px;
-    }
-}
-
-/* ========================================
-   DEVELOPMENT / ENGINEERING SECTION
-======================================== */
-.about-development {
-    padding: 60px 16px;
-    background: var(--mist-deep);
-}
-
-.about-development-container {
-    max-width: 720px;
-    margin: 0 auto;
-}
-
-.about-development-header {
-    margin-bottom: 32px;
-}
-
-.about-development-title {
-    font-family: 'Outfit', sans-serif;
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: var(--ink);
-    line-height: 1.3;
-    margin-bottom: 8px;
-}
-
-.about-development-label {
-    font-family: 'Outfit', sans-serif;
-    font-size: 0.9rem;
-    font-weight: 400;
-    color: var(--teal-deep);
-}
-
-.about-development-text {
-    font-family: 'Outfit', sans-serif;
-    font-size: 0.95rem;
-    font-weight: 400;
-    line-height: 1.7;
+    line-height: 1.75;
     color: var(--ink-soft);
-    margin-bottom: 20px;
+    margin-bottom: 18px;
 }
 
-.about-development-text:last-child {
+.ab-story-text:last-child {
     margin-bottom: 0;
 }
 
-@media (min-width: 768px) {
-    .about-development {
-        padding: 80px 24px;
-    }
-
-    .about-development-title {
-        font-size: 2rem;
-    }
-
-    .about-development-label {
-        font-size: 1rem;
-    }
-
-    .about-development-text {
-        font-size: 1.05rem;
-    }
+.ab-story-visual {
+    position: relative;
+    z-index: 1;
+    padding: 0 12px 12px 0;
 }
 
-/* ========================================
-   DIVIDER
-======================================== */
-.about-divider {
-    padding: 0 16px;
-    background: var(--mist);
+/* Offset teal plate behind the product card */
+.ab-story-visual::before {
+    content: '';
+    position: absolute;
+    top: 24px;
+    left: 24px;
+    right: -12px;
+    bottom: -12px;
+    border-radius: 28px;
+    background: var(--teal-tint);
+    z-index: 0;
 }
 
-.about-divider-line {
-    max-width: 720px;
-    margin: 0 auto;
-    height: 1px;
-    background: #e5e7eb;
+.ab-story-card {
+    position: relative;
+    z-index: 1;
+    border-radius: 28px;
+    overflow: hidden;
+    background: var(--paper);
+    border: 1px solid var(--ink-line-soft);
+    aspect-ratio: 1 / 1;
 }
 
-@media (min-width: 768px) {
-    .about-divider {
-        padding: 0 24px;
-    }
+.ab-story-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
 }
 
-/* ========================================
-   TEAM - FOUNDERS
-======================================== */
-.about-team {
-    padding: 60px 16px;
-    background: var(--mist);
-}
-
-.about-team-container {
-    max-width: 720px;
-    margin: 0 auto;
-}
-
-.about-team-header {
-    margin-bottom: 40px;
-}
-
-.about-team-title {
+.ab-story-chip {
+    position: absolute;
+    z-index: 2;
+    left: 20px;
+    bottom: 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 16px;
+    border-radius: 9999px;
+    background: var(--ink);
+    color: var(--on-ink);
     font-family: 'Outfit', sans-serif;
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: var(--ink);
-    line-height: 1.3;
-    margin-bottom: 8px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
 }
 
-.about-team-label {
-    font-family: 'Outfit', sans-serif;
-    font-size: 0.9rem;
-    font-weight: 400;
-    color: var(--teal-deep);
+.ab-story-chip::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--teal-brand); /* status LED on a dark chip */
 }
 
-/* Founders Photo */
-.about-founders-photo {
-    margin-bottom: 48px;
-    border-radius: 16px;
+/* ============================================================
+   6. CHAPTER 03 — TEAM (mist-deep)
+   ============================================================ */
+.ab-team {
+    background: var(--mist-deep);
+    padding: 88px 20px;
+    position: relative;
     overflow: hidden;
 }
 
-.about-founders-img {
-    width: 100%;
-    aspect-ratio: 4 / 3;
-    background-size: cover;
-    background-position: center;
-    background-color: #f3f4f6;
+.ab-team-header {
+    position: relative;
+    z-index: 1;
+    margin-bottom: 48px;
+    max-width: 640px;
 }
 
-/* Founder Bios */
-.about-founders-bios {
-    display: flex;
-    flex-direction: column;
-    gap: 48px;
-}
-
-.about-founder {
-    /* Individual founder block */
-}
-
-.about-founder-name {
+.ab-team-sub {
     font-family: 'Outfit', sans-serif;
-    font-size: 1.15rem;
+    font-size: 1rem;
+    line-height: 1.65;
+    color: var(--ink-soft);
+}
+
+.ab-team-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    position: relative;
+    z-index: 1;
+}
+
+.ab-founder-card {
+    background: var(--paper);
+    border: 1px solid var(--ink-line-soft);
+    border-radius: 20px;
+    padding: 28px 24px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.ab-founder-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px var(--shadow-tint-sm);
+}
+
+.ab-founder-monogram {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--teal-tint), rgba(30, 124, 113, 0.2));
+    color: var(--teal-deep);
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    margin-bottom: 20px;
+}
+
+.ab-founder-name {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.2rem;
     font-weight: 600;
     color: var(--ink);
     margin-bottom: 4px;
 }
 
-.about-founder-role {
+.ab-founder-role {
     font-family: 'Outfit', sans-serif;
-    font-size: 0.85rem;
-    font-weight: 400;
-    color: var(--ink-soft);
-    margin-bottom: 16px;
+    font-size: 0.72rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--teal-deep);
+    margin-bottom: 14px;
 }
 
-.about-founder-bio {
+.ab-founder-bio {
     font-family: 'Outfit', sans-serif;
-    font-size: 0.95rem;
+    font-size: 0.92rem;
     font-weight: 400;
     line-height: 1.7;
     color: var(--ink-soft);
 }
 
-@media (min-width: 768px) {
-    .about-team {
-        padding: 80px 24px;
-    }
-
-    .about-team-title {
-        font-size: 2rem;
-    }
-
-    .about-team-label {
-        font-size: 1rem;
-    }
-
-    .about-founders-photo {
-        border-radius: 20px;
-    }
-
-    .about-founder-name {
-        font-size: 1.3rem;
-    }
-
-    .about-founder-role {
-        font-size: 0.9rem;
-    }
-
-    .about-founder-bio {
-        font-size: 1.05rem;
-    }
-}
-
-/* ========================================
-   TEAM LIST (PILLS)
-======================================== */
-.about-team-list {
-    padding: 0 16px 60px;
+/* ============================================================
+   7. CHAPTER 04 — VALUES (mist, editorial rows)
+   ============================================================ */
+.ab-values {
     background: var(--mist);
+    padding: 88px 20px;
+    position: relative;
+    overflow: hidden;
 }
 
-.about-team-list-container {
-    max-width: 720px;
-    margin: 0 auto;
+.ab-values-header {
+    position: relative;
+    z-index: 1;
+    margin-bottom: 24px;
+    max-width: 640px;
 }
 
-.about-team-list-label {
+.ab-values-list {
+    position: relative;
+    z-index: 1;
+    border-top: 1px solid var(--ink-line);
+}
+
+.ab-value-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+    padding: 28px 8px;
+    border-bottom: 1px solid var(--ink-line);
+    border-radius: 2px;
+    transition: background 0.3s ease;
+}
+
+.ab-value-row:hover {
+    background: var(--teal-tint-soft);
+}
+
+.ab-value-index {
     font-family: 'Outfit', sans-serif;
-    font-size: 0.9rem;
-    font-weight: 400;
-    color: var(--teal-deep);
-    margin-bottom: 20px;
-}
-
-.about-team-pills {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-}
-
-.about-team-pill {
-    display: inline-block;
-    padding: 10px 18px;
-    background: white;
-    border: 1px solid var(--ink-line);
-    border-radius: 9999px;
-    font-family: 'Outfit', sans-serif;
-    font-size: 0.85rem;
-    font-weight: 400;
-    color: var(--ink);
-    transition: all 0.2s ease;
-    white-space: nowrap;
-}
-
-.about-team-pill:hover {
-    border-color: #d1d5db;
-    background: #f9fafb;
-}
-
-@media (min-width: 768px) {
-    .about-team-list {
-        padding: 0 24px 80px;
-    }
-
-    .about-team-list-label {
-        font-size: 1rem;
-    }
-
-    .about-team-pill {
-        padding: 12px 22px;
-        font-size: 0.9rem;
-    }
-}
-
-/* ========================================
-   COMPANY VALUES
-======================================== */
-.about-values {
-    padding: 60px 16px;
-    background: var(--mist-deep);
-}
-
-.about-values-container {
-    max-width: 720px;
-    margin: 0 auto;
-}
-
-.about-values-header {
-    margin-bottom: 40px;
-}
-
-.about-values-title {
-    font-family: 'Outfit', sans-serif;
-    font-size: 1.5rem;
+    font-size: 0.8rem;
     font-weight: 600;
-    color: var(--ink);
+    color: var(--teal-deep);
+    letter-spacing: 0.08em;
+    padding-top: 4px;
+}
+
+.ab-value-name {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 600;
     line-height: 1.3;
-    margin-bottom: 8px;
-}
-
-.about-values-label {
-    font-family: 'Outfit', sans-serif;
-    font-size: 0.9rem;
-    font-weight: 400;
-    color: var(--teal-deep);
-}
-
-.about-values-list {
-    display: flex;
-    flex-direction: column;
-}
-
-.about-values-divider {
-    height: 1px;
-    background: #e5e7eb;
-}
-
-.about-value-item {
-    padding: 28px 0;
-}
-
-.about-value-name {
-    font-family: 'Outfit', sans-serif;
-    font-size: 1rem;
-    font-weight: 600;
     color: var(--ink);
-    margin-bottom: 8px;
 }
 
-.about-value-desc {
+.ab-value-desc {
     font-family: 'Outfit', sans-serif;
-    font-size: 0.9rem;
+    font-size: 0.92rem;
     font-weight: 400;
-    line-height: 1.65;
+    line-height: 1.7;
     color: var(--ink-soft);
 }
 
-@media (min-width: 768px) {
-    .about-values {
-        padding: 80px 24px;
-    }
-
-    .about-values-title {
-        font-size: 2rem;
-    }
-
-    .about-values-label {
-        font-size: 1rem;
-    }
-
-    .about-value-item {
-        padding: 32px 0;
-    }
-
-    .about-value-name {
-        font-size: 1.1rem;
-    }
-
-    .about-value-desc {
-        font-size: 0.95rem;
-    }
-}
-
-/* ========================================
-   NEWSLETTER
-======================================== */
-.about-newsletter {
-    padding: 0 16px 60px;
+/* ============================================================
+   8. CTA BAND — teal-deep card
+   ============================================================ */
+.ab-cta {
     background: var(--mist);
+    padding: 0 20px 88px;
 }
 
-.about-newsletter-container {
-    max-width: 720px;
-    margin: 0 auto;
-}
-
-.about-newsletter-card {
-    background: var(--paper);
-    border-radius: 16px;
-    padding: 40px 24px;
+.ab-cta-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 28px;
+    background:
+        radial-gradient(90% 120% at 85% -10%, rgba(242, 250, 248, 0.12), transparent 60%),
+        var(--teal-deep);
+    padding: 64px 28px;
     text-align: center;
 }
 
-.about-newsletter-title {
+/* Decorative intake rings in the card corners */
+.ab-cta-ring {
+    position: absolute;
+    border: 1px solid rgba(242, 250, 248, 0.16);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.ab-cta-ring-1 { width: 300px; height: 300px; top: -140px;  right: -100px; }
+.ab-cta-ring-2 { width: 460px; height: 460px; top: -220px;  right: -180px; }
+.ab-cta-ring-3 { width: 260px; height: 260px; bottom: -150px; left: -90px; }
+
+.ab-cta-title {
     font-family: 'Outfit', sans-serif;
-    font-size: 1.1rem;
+    font-size: clamp(1.9rem, 5vw, 3rem);
     font-weight: 600;
-    color: var(--ink);
-    margin-bottom: 6px;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    color: var(--on-teal);
+    margin-bottom: 16px;
 }
 
-.about-newsletter-desc {
+.ab-cta-title em {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-weight: 500;
+}
+
+.ab-cta-sub {
     font-family: 'Outfit', sans-serif;
-    font-size: 0.85rem;
-    font-weight: 400;
-    color: var(--ink-soft);
-    margin-bottom: 24px;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: rgba(242, 250, 248, 0.75);
+    max-width: 440px;
+    margin: 0 auto 36px;
 }
 
-.about-newsletter-btn {
+.ab-cta-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+}
+
+.ab-cta-btn {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    padding: 12px 24px;
+    gap: 10px;
+    padding: 15px 30px;
+    border-radius: 9999px;
     background: var(--paper);
     color: var(--ink);
-    border: 1px solid var(--ink-line);
-    border-radius: 9999px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.ab-cta-btn svg {
+    width: 17px;
+    height: 17px;
+    transition: transform 0.25s ease;
+}
+
+.ab-cta-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 28px rgba(10, 34, 30, 0.35);
+}
+
+.ab-cta-btn:hover svg {
+    transform: translateX(3px);
+}
+
+.ab-cta-link {
     font-family: 'Outfit', sans-serif;
     font-size: 0.9rem;
     font-weight: 500;
+    color: rgba(242, 250, 248, 0.85);
     text-decoration: none;
-    transition: all 0.2s ease;
-    cursor: pointer;
+    border-bottom: 1px solid rgba(242, 250, 248, 0.35);
+    padding-bottom: 2px;
+    transition: color 0.2s ease, border-color 0.2s ease;
 }
 
-.about-newsletter-btn svg {
-    width: 16px;
-    height: 16px;
+.ab-cta-link:hover {
+    color: var(--on-teal);
+    border-color: var(--on-teal);
 }
 
-.about-newsletter-btn:hover {
-    border-color: var(--ink-line);
-    background: var(--mist-deep);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px var(--shadow-tint-sm);
-}
-
+/* ============================================================
+   RESPONSIVE — tablet & desktop
+   ============================================================ */
 @media (min-width: 768px) {
-    .about-newsletter {
-        padding: 0 24px 80px;
+    .ab-mission,
+    .ab-stats,
+    .ab-story,
+    .ab-team,
+    .ab-values {
+        padding: 112px 24px;
     }
 
-    .about-newsletter-card {
-        border-radius: 20px;
-        padding: 48px 32px;
+    .ab-cta {
+        padding: 0 24px 112px;
     }
 
-    .about-newsletter-title {
-        font-size: 1.25rem;
+    .ab-stats-grid {
+        grid-template-columns: repeat(4, 1fr);
     }
 
-    .about-newsletter-desc {
-        font-size: 0.9rem;
+    .ab-stat {
+        padding: 32px 24px 36px;
+    }
+
+    .ab-story-grid {
+        grid-template-columns: 0.95fr 1.05fr;
+        gap: 64px;
+    }
+
+    /* Visual on the left at desktop so the ghost numeral stays visible */
+    .ab-story-visual {
+        order: -1;
+    }
+
+    .ab-team-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+    }
+
+    .ab-founder-card {
+        padding: 32px 28px;
+    }
+
+    .ab-value-row {
+        grid-template-columns: 72px 280px 1fr;
+        gap: 24px;
+        padding: 34px 12px;
+        align-items: start;
+    }
+
+    .ab-cta-card {
+        padding: 88px 48px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .ab-value-row {
+        grid-template-columns: 88px 340px 1fr;
+    }
+}
+
+/* ============================================================
+   REDUCED MOTION
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+    .ab-orb,
+    .ab-ring,
+    .ab-particle,
+    .ab-scroll-cue span::after,
+    .ab-marquee-track {
+        animation: none;
+    }
+
+    .ab-particle {
+        display: none;
+    }
+
+    .ab-js [data-reveal] {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+
+    .ab-founder-card:hover,
+    .ab-cta-btn:hover {
+        transform: none;
     }
 }
