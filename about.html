@@ -153,211 +153,224 @@
         </div>
     </div>
 
+    <main class="about-main">
+
     <!-- ========================================
-         SECTION: HERO
+         SECTION: HERO — breathing rings + air particles
     ======================================== -->
-    <section class="about-hero">
-        <div class="about-hero-content">
-            <h1 class="about-hero-title">
-                <span class="about-title-h">H</span><span class="about-title-awaa">awaa</span>
-            </h1>
-            <p class="about-hero-tagline">The clean air<br>company</p>
+    <section class="ab-hero">
+        <div class="ab-hero-bg" aria-hidden="true">
+            <span class="ab-orb ab-orb-1"></span>
+            <span class="ab-orb ab-orb-2"></span>
+            <span class="ab-orb ab-orb-3"></span>
+            <span class="ab-ring ab-ring-1"></span>
+            <span class="ab-ring ab-ring-2"></span>
+            <span class="ab-ring ab-ring-3"></span>
+            <span class="ab-particle" style="--x: 8%;  --s: 5px; --d: 13s; --delay: 0s;"></span>
+            <span class="ab-particle" style="--x: 22%; --s: 4px; --d: 17s; --delay: 3s;"></span>
+            <span class="ab-particle" style="--x: 37%; --s: 6px; --d: 11s; --delay: 6s;"></span>
+            <span class="ab-particle" style="--x: 52%; --s: 4px; --d: 15s; --delay: 1.5s;"></span>
+            <span class="ab-particle" style="--x: 64%; --s: 5px; --d: 19s; --delay: 8s;"></span>
+            <span class="ab-particle" style="--x: 78%; --s: 4px; --d: 12s; --delay: 4.5s;"></span>
+            <span class="ab-particle" style="--x: 88%; --s: 6px; --d: 16s; --delay: 10s;"></span>
+            <span class="ab-particle" style="--x: 95%; --s: 4px; --d: 14s; --delay: 2s;"></span>
         </div>
+        <div class="ab-hero-content">
+            <p class="ab-eyebrow" data-reveal>About Hawaa</p>
+            <h1 class="ab-hero-title" data-reveal style="--rd: 0.1s;">Clean air shouldn't be a luxury.<br>It should be <em>everywhere.</em></h1>
+            <p class="ab-hero-sub" data-reveal style="--rd: 0.2s;">We're Hawaa &mdash; the clean air company. We build honest, engineering-first air purifiers for every Indian home.</p>
+        </div>
+        <div class="ab-scroll-cue" aria-hidden="true"><span></span></div>
     </section>
 
     <!-- ========================================
-         SECTION: HERO VIDEO / IMAGE
+         SECTION: MARQUEE RIBBON
     ======================================== -->
-    <section class="about-hero-media">
-        <div class="about-hero-media-inner">
-            <video
-                class="about-hero-video"
-                autoplay
-                muted
-                playsinline
-                loop
-                poster="public/images/about-hero-poster.webp"
-            >
-                <source src="public/videos/about-hero.webm" type="video/webm">
-            </video>
-            <div class="about-hero-image" style="background-image: url('public/images/about-hero-poster.webp')"></div>
-        </div>
-    </section>
-
-    <!-- ========================================
-         SECTION: MISSION STATEMENT
-    ======================================== -->
-    <section class="about-mission">
-        <div class="about-mission-container">
-            <p class="about-mission-text">While most air purifier companies focus on premium pricing and complex features, we're building the opposite &mdash; technology that's accessible to every home. We believe every family deserves clean air, not as a luxury, but as a basic right that shouldn't break the bank.</p>
-        </div>
-    </section>
-
-    <!-- ========================================
-         SECTION: AUTO-SCROLLING IMAGE STRIP
-    ======================================== -->
-    <section class="about-image-strip">
-        <div class="about-strip-track" id="about-strip-track">
-            <!-- Pattern: portrait, small-rect, portrait (repeating) -->
-            <div class="about-strip-item about-strip-portrait">
-                <div class="about-strip-img" style="background-image: url('public/images/about-strip-01.webp')"></div>
+    <section class="ab-marquee" aria-hidden="true">
+        <div class="ab-marquee-track">
+            <div class="ab-marquee-group">
+                <span class="ab-marquee-word">Breathe better</span>
+                <span class="ab-marquee-dot"></span>
+                <span class="ab-marquee-word is-outline">&#2360;&#2366;&#2347;&#2364; &#2361;&#2357;&#2366;</span>
+                <span class="ab-marquee-dot"></span>
+                <span class="ab-marquee-word is-serif">Live better</span>
+                <span class="ab-marquee-dot"></span>
+                <span class="ab-marquee-word">Clean air for every home</span>
+                <span class="ab-marquee-dot"></span>
+                <span class="ab-marquee-word is-outline">&#2361;&#2352; &#2328;&#2352; &#2325;&#2375; &#2354;&#2367;&#2319;</span>
+                <span class="ab-marquee-dot"></span>
             </div>
-            <div class="about-strip-item about-strip-rect">
-                <div class="about-strip-img" style="background-image: url('public/images/about-strip-02.webp')"></div>
-            </div>
-            <div class="about-strip-item about-strip-portrait">
-                <div class="about-strip-img" style="background-image: url('public/images/about-strip-03.webp')"></div>
-            </div>
-            <div class="about-strip-item about-strip-portrait">
-                <div class="about-strip-img" style="background-image: url('public/images/about-strip-04.webp')"></div>
-            </div>
-            <div class="about-strip-item about-strip-rect">
-                <div class="about-strip-img" style="background-image: url('public/images/about-strip-05.webp')"></div>
-            </div>
-            <div class="about-strip-item about-strip-portrait">
-                <div class="about-strip-img" style="background-image: url('public/images/about-strip-06.webp')"></div>
+            <div class="ab-marquee-group">
+                <span class="ab-marquee-word">Breathe better</span>
+                <span class="ab-marquee-dot"></span>
+                <span class="ab-marquee-word is-outline">&#2360;&#2366;&#2347;&#2364; &#2361;&#2357;&#2366;</span>
+                <span class="ab-marquee-dot"></span>
+                <span class="ab-marquee-word is-serif">Live better</span>
+                <span class="ab-marquee-dot"></span>
+                <span class="ab-marquee-word">Clean air for every home</span>
+                <span class="ab-marquee-dot"></span>
+                <span class="ab-marquee-word is-outline">&#2361;&#2352; &#2328;&#2352; &#2325;&#2375; &#2354;&#2367;&#2319;</span>
+                <span class="ab-marquee-dot"></span>
             </div>
         </div>
     </section>
 
     <!-- ========================================
-         SECTION: DEVELOPMENT / ENGINEERING
+         CHAPTER 01 — MISSION (paper)
     ======================================== -->
-    <section class="about-development">
-        <div class="about-development-container">
-            <div class="about-development-header">
-                <h2 class="about-development-title">Engineering-driven design</h2>
-                <p class="about-development-label">Development</p>
-            </div>
-            <div class="about-development-body">
-                <p class="about-development-text">Our team spent over a year researching filtration systems, airflow dynamics, and sensor technology before building the first prototype. Every decision &mdash; from the H13 HEPA filter grade to the gesture sensor placement &mdash; was validated through rigorous testing and real-world usage data.</p>
-                <p class="about-development-text">At Hawaa, we're taking these engineering principles and applying them where they matter most: inside your home. We build air purifiers that don't just perform in lab conditions &mdash; they perform in yours.</p>
-            </div>
+    <section class="ab-mission">
+        <div class="ab-container">
+            <span class="ab-chapter-num" aria-hidden="true">01</span>
+            <p class="ab-chapter-label" data-reveal><span class="ab-chapter-index">01</span> Our mission</p>
+            <p class="ab-mission-text" data-reveal style="--rd: 0.1s;">While most air purifier companies chase premium pricing and complex features, we're building the opposite &mdash; technology that's <em>accessible to every home</em>. Every family deserves clean air. Not as a luxury, but as <em>a basic right</em> that shouldn't break the bank.</p>
         </div>
     </section>
 
     <!-- ========================================
-         SECTION: DIVIDER
+         SECTION: STATS BAND (dark ink moment)
     ======================================== -->
-    <div class="about-divider">
-        <div class="about-divider-line"></div>
-    </div>
-
-    <!-- ========================================
-         SECTION: TEAM - FOUNDERS
-    ======================================== -->
-    <section class="about-team">
-        <div class="about-team-container">
-            <div class="about-team-header">
-                <h2 class="about-team-title">Built by passionate makers</h2>
-                <p class="about-team-label">Team</p>
-            </div>
-
-            <!-- Founders Photo -->
-            <div class="about-founders-photo">
-                <div class="about-founders-img" style="background-image: url('public/images/about-founders.webp')"></div>
-            </div>
-
-            <!-- Founder Bios -->
-            <div class="about-founders-bios">
-                <!-- Founder 1 -->
-                <div class="about-founder">
-                    <h3 class="about-founder-name">Smith Bhalodiya</h3>
-                    <p class="about-founder-role">CEO, Co-Founder</p>
-                    <p class="about-founder-bio">Smith leads Hawaa's vision and business strategy. With a deep understanding of India's air quality challenges and consumer needs, he drives the company's mission to make clean air accessible. His focus on affordability without compromising quality has shaped Hawaa into a brand that puts real outcomes over marketing promises.</p>
+    <section class="ab-stats">
+        <div class="ab-container">
+            <p class="ab-stats-eyebrow" data-reveal>No promises. Proof.</p>
+            <h2 class="ab-stats-title" data-reveal style="--rd: 0.1s;">Numbers we <em>stand behind</em></h2>
+            <div class="ab-stats-grid">
+                <div class="ab-stat" data-reveal>
+                    <p class="ab-stat-value">H<span class="ab-stat-accent">13</span></p>
+                    <p class="ab-stat-label">Medical-grade HEPA filtration in every unit</p>
                 </div>
-
-                <!-- Founder 2 -->
-                <div class="about-founder">
-                    <h3 class="about-founder-name">Kelvin Satodiya</h3>
-                    <p class="about-founder-role">CTO, Co-Founder</p>
-                    <p class="about-founder-bio">Kelvin oversees all product engineering and technology at Hawaa. From sensor calibration to smart home integration, he ensures every technical decision translates into a better user experience. His obsession with precision engineering is why Hawaa Edge delivers lab-grade filtration at a fraction of the industry cost.</p>
+                <div class="ab-stat" data-reveal style="--rd: 0.1s;">
+                    <p class="ab-stat-value"><span class="ab-stat-accent">&#8377;</span><span data-count="899">899</span></p>
+                    <p class="ab-stat-label">Replacement filters &mdash; a price unmatched in the industry</p>
                 </div>
-
-                <!-- Founder 3 -->
-                <div class="about-founder">
-                    <h3 class="about-founder-name">Darshan Pandya</h3>
-                    <p class="about-founder-role">COO, Co-Founder</p>
-                    <p class="about-founder-bio">Darshan manages operations, supply chain, and manufacturing. He built Hawaa's entirely India-based production pipeline, ensuring quality control at every stage. His operational expertise is the reason Hawaa can offer premium air purification with replacement filters at just &#8377;899 &mdash; a price point unmatched in the industry.</p>
+                <div class="ab-stat" data-reveal style="--rd: 0.2s;">
+                    <p class="ab-stat-value"><span data-count="12">12</span><span class="ab-stat-accent">+</span></p>
+                    <p class="ab-stat-label">Months of research before the first prototype</p>
+                </div>
+                <div class="ab-stat" data-reveal style="--rd: 0.3s;">
+                    <p class="ab-stat-value"><span data-count="100">100</span><span class="ab-stat-accent">%</span></p>
+                    <p class="ab-stat-label">Designed, engineered and manufactured in India</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- ========================================
-         SECTION: TEAM LIST
+         CHAPTER 02 — ENGINEERING (mist + product)
     ======================================== -->
-    <section class="about-team-list">
-        <div class="about-team-list-container">
-            <p class="about-team-list-label">Team</p>
-            <div class="about-team-pills">
-                <span class="about-team-pill">Smith Bhalodiya</span>
-                <span class="about-team-pill">Kelvin Satodiya</span>
-                <span class="about-team-pill">Darshan Pandya</span>
-                <span class="about-team-pill">Hawaa Team</span>
-            </div>
-        </div>
-    </section>
-
-    <!-- ========================================
-         SECTION: COMPANY VALUES
-    ======================================== -->
-    <section class="about-values">
-        <div class="about-values-container">
-            <div class="about-values-header">
-                <h2 class="about-values-title">What we care about</h2>
-                <p class="about-values-label">Company values</p>
-            </div>
-
-            <div class="about-values-list">
-                <div class="about-values-divider"></div>
-
-                <div class="about-value-item">
-                    <h3 class="about-value-name">Honesty over hype</h3>
-                    <p class="about-value-desc">We publish lab reports, not marketing claims. Every number on our website is backed by independent testing. If we can't prove it, we don't say it.</p>
+    <section class="ab-story">
+        <div class="ab-container">
+            <span class="ab-chapter-num" aria-hidden="true">02</span>
+            <div class="ab-story-grid">
+                <div class="ab-story-copy">
+                    <p class="ab-chapter-label" data-reveal><span class="ab-chapter-index">02</span> Engineering</p>
+                    <h2 class="ab-section-title" data-reveal style="--rd: 0.1s;">Built in the lab, proven <em>in your home</em></h2>
+                    <p class="ab-story-text" data-reveal style="--rd: 0.15s;">Our team spent over a year researching filtration systems, airflow dynamics, and sensor technology before building the first prototype. Every decision &mdash; from the H13 HEPA filter grade to the gesture sensor placement &mdash; was validated through rigorous testing and real-world usage data.</p>
+                    <p class="ab-story-text" data-reveal style="--rd: 0.2s;">At Hawaa, we take those engineering principles and apply them where they matter most: inside your home. Our purifiers don't just perform in lab conditions &mdash; they perform in yours.</p>
                 </div>
-
-                <div class="about-values-divider"></div>
-
-                <div class="about-value-item">
-                    <h3 class="about-value-name">Accessible by default</h3>
-                    <p class="about-value-desc">Clean air shouldn't be a premium lifestyle product. We design for the family buying their first purifier, not the one upgrading their third.</p>
-                </div>
-
-                <div class="about-values-divider"></div>
-
-                <div class="about-value-item">
-                    <h3 class="about-value-name">Sweat the details</h3>
-                    <p class="about-value-desc">From the click of a gesture sensor to the seal on a filter cartridge, we obsess over the small things. The experience is in the details no one notices until they're missing.</p>
-                </div>
-
-                <div class="about-values-divider"></div>
-
-                <div class="about-value-item">
-                    <h3 class="about-value-name">Build it here</h3>
-                    <p class="about-value-desc">Designed, engineered, and manufactured in India. Not because it's a marketing badge, but because we believe in building where we breathe.</p>
+                <div class="ab-story-visual" data-reveal style="--rd: 0.2s;">
+                    <div class="ab-story-card">
+                        <img src="public/images/hero-resting.webp" alt="Hawaa Edge air purifier" loading="lazy">
+                    </div>
+                    <span class="ab-story-chip">Hawaa Edge &middot; H13 HEPA</span>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- ========================================
-         SECTION: NEWSLETTER
+         CHAPTER 03 — TEAM (mist-deep)
     ======================================== -->
-    <section class="about-newsletter">
-        <div class="about-newsletter-container">
-            <div class="about-newsletter-card">
-                <h3 class="about-newsletter-title">Get the latest in your inbox</h3>
-                <p class="about-newsletter-desc">Sign up to our newsletter</p>
-                <a href="#" class="about-newsletter-btn" id="about-newsletter-btn">
-                    Subscribe
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M5 12h14M12 5l7 7-7 7"/>
-                    </svg>
-                </a>
+    <section class="ab-team">
+        <div class="ab-container">
+            <span class="ab-chapter-num" aria-hidden="true">03</span>
+            <div class="ab-team-header">
+                <p class="ab-chapter-label" data-reveal><span class="ab-chapter-index">03</span> The team</p>
+                <h2 class="ab-section-title" data-reveal style="--rd: 0.1s;">Built by <em>passionate makers</em></h2>
+                <p class="ab-team-sub" data-reveal style="--rd: 0.15s;">Three co-founders, one obsession: making clean air something every family can afford.</p>
+            </div>
+            <div class="ab-team-grid">
+                <div class="ab-founder-card" data-reveal>
+                    <div class="ab-founder-monogram" aria-hidden="true">SB</div>
+                    <h3 class="ab-founder-name">Smith Bhalodiya</h3>
+                    <p class="ab-founder-role">CEO &middot; Co-Founder</p>
+                    <p class="ab-founder-bio">Smith leads Hawaa's vision and business strategy. With a deep understanding of India's air quality challenges and consumer needs, he drives the company's mission to make clean air accessible. His focus on affordability without compromising quality has shaped Hawaa into a brand that puts real outcomes over marketing promises.</p>
+                </div>
+                <div class="ab-founder-card" data-reveal style="--rd: 0.12s;">
+                    <div class="ab-founder-monogram" aria-hidden="true">KS</div>
+                    <h3 class="ab-founder-name">Kelvin Satodiya</h3>
+                    <p class="ab-founder-role">CTO &middot; Co-Founder</p>
+                    <p class="ab-founder-bio">Kelvin oversees all product engineering and technology at Hawaa. From sensor calibration to smart home integration, he ensures every technical decision translates into a better user experience. His obsession with precision engineering is why Hawaa Edge delivers lab-grade filtration at a fraction of the industry cost.</p>
+                </div>
+                <div class="ab-founder-card" data-reveal style="--rd: 0.24s;">
+                    <div class="ab-founder-monogram" aria-hidden="true">DP</div>
+                    <h3 class="ab-founder-name">Darshan Pandya</h3>
+                    <p class="ab-founder-role">COO &middot; Co-Founder</p>
+                    <p class="ab-founder-bio">Darshan manages operations, supply chain, and manufacturing. He built Hawaa's entirely India-based production pipeline, ensuring quality control at every stage. His operational expertise is the reason Hawaa can offer premium air purification with replacement filters at just &#8377;899 &mdash; a price point unmatched in the industry.</p>
+                </div>
             </div>
         </div>
     </section>
+
+    <!-- ========================================
+         CHAPTER 04 — VALUES (mist, editorial rows)
+    ======================================== -->
+    <section class="ab-values">
+        <div class="ab-container">
+            <span class="ab-chapter-num" aria-hidden="true">04</span>
+            <div class="ab-values-header">
+                <p class="ab-chapter-label" data-reveal><span class="ab-chapter-index">04</span> Our values</p>
+                <h2 class="ab-section-title" data-reveal style="--rd: 0.1s;">What we <em>care about</em></h2>
+            </div>
+            <div class="ab-values-list">
+                <div class="ab-value-row" data-reveal>
+                    <p class="ab-value-index">/ 01</p>
+                    <h3 class="ab-value-name">Honesty over hype</h3>
+                    <p class="ab-value-desc">We publish lab reports, not marketing claims. Every number on our website is backed by independent testing. If we can't prove it, we don't say it.</p>
+                </div>
+                <div class="ab-value-row" data-reveal style="--rd: 0.08s;">
+                    <p class="ab-value-index">/ 02</p>
+                    <h3 class="ab-value-name">Accessible by default</h3>
+                    <p class="ab-value-desc">Clean air shouldn't be a premium lifestyle product. We design for the family buying their first purifier, not the one upgrading their third.</p>
+                </div>
+                <div class="ab-value-row" data-reveal style="--rd: 0.16s;">
+                    <p class="ab-value-index">/ 03</p>
+                    <h3 class="ab-value-name">Sweat the details</h3>
+                    <p class="ab-value-desc">From the click of a gesture sensor to the seal on a filter cartridge, we obsess over the small things. The experience is in the details no one notices until they're missing.</p>
+                </div>
+                <div class="ab-value-row" data-reveal style="--rd: 0.24s;">
+                    <p class="ab-value-index">/ 04</p>
+                    <h3 class="ab-value-name">Build it here</h3>
+                    <p class="ab-value-desc">Designed, engineered, and manufactured in India. Not because it's a marketing badge, but because we believe in building where we breathe.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================
+         SECTION: CTA BAND (teal-deep)
+    ======================================== -->
+    <section class="ab-cta">
+        <div class="ab-container">
+            <div class="ab-cta-card" data-reveal>
+                <span class="ab-cta-ring ab-cta-ring-1" aria-hidden="true"></span>
+                <span class="ab-cta-ring ab-cta-ring-2" aria-hidden="true"></span>
+                <span class="ab-cta-ring ab-cta-ring-3" aria-hidden="true"></span>
+                <h2 class="ab-cta-title">Clean air, for <em>every home.</em></h2>
+                <p class="ab-cta-sub">Bring home Hawaa Edge &mdash; designed, engineered and built in India.</p>
+                <div class="ab-cta-actions">
+                    <a href="edge.html" class="ab-cta-btn">
+                        Explore Hawaa Edge
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                    <a href="support.html" class="ab-cta-link">Talk to us</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    </main>
 
     <!-- ========================================
          SECTION: FOOTER
