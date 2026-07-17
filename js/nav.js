@@ -20,6 +20,7 @@ window.hawaaFirebaseReady = window.hawaaFirebase
 
     function openMenu() {
         hamburger.classList.add('active');
+        hamburger.setAttribute('aria-expanded', 'true');
         menuPanel.classList.add('active');
         menuOverlay.classList.add('active');
         document.body.classList.add('menu-open');
@@ -28,13 +29,27 @@ window.hawaaFirebaseReady = window.hawaaFirebase
 
     function closeMenu() {
         hamburger.classList.remove('active');
+        hamburger.setAttribute('aria-expanded', 'false');
         menuPanel.classList.remove('active');
         menuOverlay.classList.remove('active');
         document.body.classList.remove('menu-open');
         document.body.style.overflow = '';
     }
 
+    // Highlight the current page inside the menu panel.
+    (function markActivePage() {
+        var current = window.location.pathname.split('/').pop() || 'index.html';
+        document.querySelectorAll('.menu-nav-item[href]').forEach(function(link) {
+            var target = (link.getAttribute('href') || '').split('#')[0];
+            if (target && target === current) {
+                link.setAttribute('aria-current', 'page');
+            }
+        });
+    })();
+
     if (hamburger && menuPanel && menuOverlay) {
+        hamburger.setAttribute('aria-expanded', 'false');
+
         hamburger.addEventListener('click', function() {
             if (menuPanel.classList.contains('active')) {
                 closeMenu();
@@ -46,8 +61,8 @@ window.hawaaFirebaseReady = window.hawaaFirebase
 
         menuOverlay.addEventListener('click', closeMenu);
 
-        // Close menu when clicking a nav item
-        document.querySelectorAll('.menu-nav-item').forEach(function(item) {
+        // Close menu when clicking any nav item, utility row or the buy CTA
+        document.querySelectorAll('.menu-nav-item, .menu-utility-item, .menu-cta').forEach(function(item) {
             item.addEventListener('click', closeMenu);
         });
 

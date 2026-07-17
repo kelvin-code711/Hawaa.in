@@ -142,6 +142,55 @@ body.menu-open .logo-img {
     }
 }
 
+/* Always-available Buy CTA in the header.
+   Frosted glass over dark heroes; solid teal once the header
+   gains a light background (scrolled / static pages / open menu). */
+.header-buy-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 16px;
+    border-radius: 9999px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.14);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    text-decoration: none;
+    transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease, transform 0.2s ease;
+}
+
+.header-buy-pill:hover {
+    background: rgba(255, 255, 255, 0.24);
+    transform: translateY(-1px);
+}
+
+.header.scrolled .header-buy-pill,
+body.menu-open .header-buy-pill {
+    background: var(--teal-deep);
+    border-color: var(--teal-deep);
+    color: var(--on-teal);
+    box-shadow: 0 2px 12px var(--shadow-cta);
+}
+
+.header.scrolled .header-buy-pill:hover,
+body.menu-open .header-buy-pill:hover {
+    background: var(--teal-deep-hover);
+    border-color: var(--teal-deep-hover);
+    box-shadow: 0 4px 16px var(--shadow-cta);
+}
+
+@media (min-width: 640px) {
+    .header-buy-pill {
+        padding: 9px 20px;
+        font-size: 0.82rem;
+    }
+}
+
 /* Hamburger Menu - visible on all screen sizes */
 .hamburger {
     display: flex;
@@ -236,7 +285,18 @@ body.menu-open .logo-img {
     }
 }
 
-/* Menu nav items */
+/* Eyebrow label above the nav list */
+.menu-eyebrow {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 10px;
+}
+
+/* Menu nav items — editorial numbered list */
 .menu-nav {
     display: flex;
     flex-direction: column;
@@ -245,18 +305,58 @@ body.menu-open .logo-img {
 .menu-nav-item {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding: 20px 0;
+    gap: 14px;
+    padding: 15px 0;
     font-family: 'Outfit', sans-serif;
-    font-size: 1rem;
+    font-size: 1.35rem;
     font-weight: 500;
-    color: var(--ink-soft);
+    letter-spacing: -0.01em;
+    color: var(--ink);
     transition: color 0.2s ease;
     text-decoration: none;
+    border-bottom: 1px solid var(--ink-line-soft);
+}
+
+.menu-nav-item:last-child {
+    border-bottom: none;
+}
+
+.menu-item-num {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 0.8rem;
+    color: var(--teal-deep);
+    min-width: 24px;
+    transform: translateY(-0.35em);
+}
+
+.menu-item-label {
+    flex: 1;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.menu-item-arrow {
+    width: 18px;
+    height: 18px;
+    color: var(--ink-faint);
+    flex-shrink: 0;
+    opacity: 0;
+    transform: translate(-6px, 6px);
+    transition: opacity 0.25s ease, transform 0.25s ease, color 0.25s ease;
 }
 
 .menu-nav-item:hover {
-    color: var(--ink);
+    color: var(--teal-deep);
+}
+
+.menu-nav-item:hover .menu-item-label {
+    transform: translateX(4px);
+}
+
+.menu-nav-item:hover .menu-item-arrow {
+    opacity: 1;
+    transform: translate(0, 0);
+    color: var(--teal-deep);
 }
 
 .menu-nav-item.active,
@@ -264,39 +364,149 @@ body.menu-open .logo-img {
     color: var(--teal-deep);
 }
 
-/* Account & Cart entries inside the menu panel */
-button.menu-nav-item {
-    width: 100%;
-    background: none;
-    border: none;
-    cursor: pointer;
-    text-align: left;
+.menu-nav-item[aria-current="page"] .menu-item-arrow {
+    opacity: 1;
+    transform: translate(0, 0);
+    color: var(--teal-deep);
 }
 
-.menu-nav-item svg {
-    width: 20px;
-    height: 20px;
+/* Utility row: Account & Cart as tactile cards */
+.menu-utility {
+    display: flex;
+    gap: 10px;
+    margin-top: 22px;
+}
+
+.menu-utility-item {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 16px;
+    background: var(--paper);
+    border: 1px solid var(--ink-line-soft);
+    border-radius: 14px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.92rem;
+    font-weight: 500;
+    color: var(--ink);
+    text-decoration: none;
+    cursor: pointer;
+    text-align: left;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.menu-utility-item:hover {
+    border-color: var(--ink-line);
+    box-shadow: 0 4px 14px var(--shadow-tint-sm);
+    transform: translateY(-1px);
+}
+
+.menu-utility-item svg {
+    width: 19px;
+    height: 19px;
     color: var(--ink-soft);
     flex-shrink: 0;
 }
 
-.menu-nav-item:hover svg {
-    color: var(--ink);
-}
-
-.menu-nav-item.signed-in svg {
+.menu-utility-item.signed-in svg {
     color: var(--success);
 }
 
-.menu-nav-item .cart-badge {
-    margin-left: 8px;
-    vertical-align: middle;
+/* Buy CTA anchored at the bottom of the menu */
+.menu-cta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-top: 12px;
+    padding: 16px 20px;
+    background: var(--teal-deep);
+    border-radius: 16px;
+    color: var(--on-teal);
+    text-decoration: none;
+    box-shadow: 0 6px 20px var(--shadow-cta);
+    transition: background 0.2s ease, box-shadow 0.25s ease, transform 0.25s ease;
 }
+
+.menu-cta:hover {
+    background: var(--teal-deep-hover);
+    box-shadow: 0 10px 26px var(--shadow-cta);
+    transform: translateY(-1px);
+}
+
+.menu-cta-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.menu-cta-label {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.menu-cta-sub {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 400;
+    opacity: 0.75;
+}
+
+.menu-cta-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.14);
+    flex-shrink: 0;
+    transition: transform 0.25s ease, background 0.2s ease;
+}
+
+.menu-cta-arrow svg {
+    width: 17px;
+    height: 17px;
+}
+
+.menu-cta:hover .menu-cta-arrow {
+    transform: translateX(3px);
+    background: rgba(255, 255, 255, 0.22);
+}
+
+/* Staggered entrance for panel content */
+.menu-panel .menu-eyebrow,
+.menu-panel .menu-nav-item,
+.menu-panel .menu-utility,
+.menu-panel .menu-cta {
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity 0.4s ease, transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.menu-panel.active .menu-eyebrow,
+.menu-panel.active .menu-nav-item,
+.menu-panel.active .menu-utility,
+.menu-panel.active .menu-cta {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.menu-panel.active .menu-eyebrow { transition-delay: 0.08s; }
+.menu-panel.active .menu-nav-item:nth-child(1) { transition-delay: 0.12s; }
+.menu-panel.active .menu-nav-item:nth-child(2) { transition-delay: 0.16s; }
+.menu-panel.active .menu-nav-item:nth-child(3) { transition-delay: 0.20s; }
+.menu-panel.active .menu-nav-item:nth-child(4) { transition-delay: 0.24s; }
+.menu-panel.active .menu-nav-item:nth-child(5) { transition-delay: 0.28s; }
+.menu-panel.active .menu-utility { transition-delay: 0.34s; }
+.menu-panel.active .menu-cta { transition-delay: 0.40s; }
 
 @media (min-width: 640px) {
     .menu-nav-item {
-        font-size: 1.05rem;
-        padding: 22px 0;
+        font-size: 1.5rem;
+        padding: 17px 0;
     }
 }
 
@@ -696,12 +906,20 @@ button.menu-nav-item {
     justify-content: space-between;
 }
 
+.sticky-product-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    min-width: 0;
+}
+
 .sticky-product-name {
     font-family: 'Outfit', sans-serif;
-    font-size: 1.1rem;
+    font-size: 1.05rem;
     font-weight: 600;
     color: white;
     letter-spacing: 0.02em;
+    line-height: 1.25;
 }
 
 .sticky-edge {
@@ -711,29 +929,78 @@ button.menu-nav-item {
     opacity: 0.9;
 }
 
+.sticky-product-price {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.65);
+    letter-spacing: 0.03em;
+}
+
+/* Conversion CTA — deliberately the loudest element on the bar:
+   gradient fill, breathing glow, shine sweep and an arrow nudge. */
 .sticky-buy-btn {
-    /* Blue glassmorphism pill button */
+    position: relative;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 8px 18px;
-    background: var(--teal-deep);
-    border: 1px solid var(--teal-deep);
+    gap: 8px;
+    padding: 12px 26px;
+    background: linear-gradient(135deg, #2A9D8F 0%, var(--teal-deep) 55%, var(--teal-deep-press) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.22);
     border-radius: 9999px;
-    color: var(--on-teal);
+    color: #fff;
     font-family: 'Outfit', sans-serif;
-    font-size: 0.75rem;
-    font-weight: 600;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
     text-decoration: none;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 12px var(--shadow-cta), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    overflow: hidden;
+    transition: transform 0.25s ease, box-shadow 0.3s ease, filter 0.25s ease;
+    box-shadow: 0 4px 18px rgba(63, 183, 172, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+    animation: stickyBuyPulse 2.6s ease-in-out infinite;
+}
+
+.sticky-buy-btn svg {
+    width: 15px;
+    height: 15px;
+    flex-shrink: 0;
+    transition: transform 0.25s ease;
+}
+
+/* Shine sweep across the button */
+.sticky-buy-btn::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -80%;
+    width: 45%;
+    height: 100%;
+    background: linear-gradient(105deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+    transform: skewX(-20deg);
+    animation: stickyBuyShine 3.2s ease-in-out infinite;
+    pointer-events: none;
 }
 
 .sticky-buy-btn:hover {
-    background: var(--teal-deep-hover);
-    border-color: var(--teal-deep-hover);
-    box-shadow: 0 4px 16px var(--shadow-cta), inset 0 1px 0 rgba(255, 255, 255, 0.25);
-    transform: scale(1.02);
+    transform: scale(1.05);
+    filter: brightness(1.06);
+    box-shadow: 0 6px 26px rgba(63, 183, 172, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.sticky-buy-btn:hover svg {
+    transform: translateX(3px);
+}
+
+@keyframes stickyBuyPulse {
+    0%, 100% { box-shadow: 0 4px 18px rgba(63, 183, 172, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.25); }
+    50% { box-shadow: 0 4px 30px rgba(63, 183, 172, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.25); }
+}
+
+@keyframes stickyBuyShine {
+    0%, 55% { left: -80%; }
+    100% { left: 130%; }
 }
 
 /* Hide header when buy bar is visible */
@@ -5634,24 +5901,54 @@ body.buy-page,
     }
 }
 
-/* Cart item count, shown inline next to the "Cart" label in the menu panel */
+/* Cart item count, shown inline next to the "Cart" label in the menu panel.
+   Quiet text when empty ("0 items"), teal pill once something is added. */
 .cart-badge {
-    display: none;
-    min-width: 18px;
-    height: 18px;
-    background: var(--teal-deep);
-    color: var(--paper);
+    margin-left: auto;
     font-family: 'Outfit', sans-serif;
-    font-size: 0.65rem;
-    font-weight: 600;
-    border-radius: 9999px;
-    line-height: 18px;
-    text-align: center;
-    padding: 0 5px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--ink-faint);
+    white-space: nowrap;
+    transition: color 0.2s ease;
 }
 
-.cart-badge.visible {
-    display: inline-block;
+.cart-badge.has-items {
+    background: var(--teal-deep);
+    color: var(--on-teal);
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 3px 9px;
+    border-radius: 9999px;
+    line-height: 1.4;
+}
+
+/* Item count next to the drawer title */
+.cart-title-count {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--ink-soft);
+    letter-spacing: 0;
+}
+
+/* CTA inside the empty-cart state */
+.cart-empty-cta {
+    display: inline-flex;
+    align-items: center;
+    margin-top: 14px;
+    padding: 10px 22px;
+    background: var(--teal-deep);
+    color: var(--on-teal);
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    border-radius: 9999px;
+    text-decoration: none;
+    transition: background 0.2s ease;
+}
+
+.cart-empty-cta:hover {
+    background: var(--teal-deep-hover);
 }
 
 /* ---- Cart Overlay ---- */
