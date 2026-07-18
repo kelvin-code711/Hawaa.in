@@ -327,7 +327,7 @@
 
                 <!-- SVG Diagram -->
                 <div class="bp-diagram-wrap" id="bp-diagram-wrap">
-                    <svg class="bp-diagram" viewBox="0 0 440 430" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Top-down bedroom floor plan showing correct air purifier placement">
+                    <svg class="bp-diagram" viewBox="0 0 440 404" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Top-down bedroom floor plan showing correct air purifier placement">
                         <defs>
                             <marker id="bp-arrowhead" markerWidth="4" markerHeight="4" refX="3.5" refY="2" orient="auto" markerUnits="strokeWidth">
                                 <path d="M 0 0 L 4 2 L 0 4 z" fill="#1E7C71" opacity="0.55"/>
@@ -367,9 +367,9 @@
 
                         <!-- ── FURNITURE ── -->
                         <g class="bpd-furn">
-                            <!-- Rug -->
-                            <rect x="52" y="262" width="120" height="88" rx="12" fill="#E9F1EB" stroke="#DCE7DF" stroke-width="1.5"/>
-                            <rect x="60" y="270" width="104" height="72" rx="8" fill="none" stroke="#DCE7DF" stroke-width="1" stroke-dasharray="3 4"/>
+                            <!-- Rug (foot of the bed) -->
+                            <rect x="76" y="254" width="132" height="86" rx="12" fill="#E9F1EB" stroke="#DCE7DF" stroke-width="1.5"/>
+                            <rect x="84" y="262" width="116" height="70" rx="8" fill="none" stroke="#DCE7DF" stroke-width="1" stroke-dasharray="3 4"/>
 
                             <!-- Bed: headboard + frame -->
                             <rect x="38" y="38" width="168" height="200" rx="6" fill="#DFE9E2" stroke="#B7C8BF" stroke-width="1.5"/>
@@ -382,14 +382,16 @@
                             <rect x="52" y="57" width="64" height="26" rx="8" fill="#F7FAF8" stroke="#C2D2C9" stroke-width="1"/>
                             <rect x="126" y="57" width="64" height="26" rx="8" fill="#F7FAF8" stroke="#C2D2C9" stroke-width="1"/>
 
-                            <!-- Side table + lamp -->
-                            <rect x="334" y="38" width="62" height="62" rx="4" fill="#DFE9E2" stroke="#B7C8BF" stroke-width="1.5"/>
-                            <circle cx="365" cy="69" r="16" fill="#EAF1EC" stroke="#C2D2C9" stroke-width="1"/>
-                            <circle cx="365" cy="69" r="5" fill="#C2D2C9"/>
+                            <!-- Nightstand beside the bed + lamp -->
+                            <rect x="214" y="38" width="52" height="52" rx="4" fill="#DFE9E2" stroke="#B7C8BF" stroke-width="1.5"/>
+                            <circle cx="240" cy="64" r="13" fill="#EAF1EC" stroke="#C2D2C9" stroke-width="1"/>
+                            <circle cx="240" cy="64" r="4" fill="#C2D2C9"/>
 
-                            <!-- Plant -->
-                            <circle cx="384" cy="182" r="15" fill="#DFE9E2" stroke="#B7C8BF" stroke-width="1.5"/>
-                            <path d="M384 182c-2-8-8-12-14-13M384 182c1-9 7-14 12-15M384 182c-6-3-8-9-7-15" stroke="#7FA396" stroke-width="1.3" fill="none"/>
+                            <!-- Wardrobe along the right wall -->
+                            <rect x="342" y="38" width="54" height="150" rx="3" fill="#DFE9E2" stroke="#B7C8BF" stroke-width="1.5"/>
+                            <line x1="369" y1="42" x2="369" y2="184" stroke="#C2D2C9" stroke-width="1.2"/>
+                            <line x1="362" y1="106" x2="362" y2="120" stroke="#B7C8BF" stroke-width="1.6" stroke-linecap="round"/>
+                            <line x1="376" y1="106" x2="376" y2="120" stroke="#B7C8BF" stroke-width="1.6" stroke-linecap="round"/>
                         </g>
 
                         <!-- ── AIRFLOW (base arcs around purifier) ── -->
@@ -411,15 +413,14 @@
                             <line x1="310" y1="325" x2="318" y2="325" stroke="#A9BDB3" stroke-width="1"/>
                             <line x1="310" y1="382" x2="318" y2="382" stroke="#A9BDB3" stroke-width="1"/>
                             <text x="348" y="360" font-family="Outfit, sans-serif" font-size="8.5" fill="#5C726C">30 cm</text>
-                            <text x="314" y="418" font-family="Outfit, sans-serif" font-size="9" fill="#8CA298" text-anchor="middle">Minimum clearance 20&ndash;30 cm</text>
                         </g>
 
-                        <!-- ── GHOST: wrong spot (rule 2) ── -->
+                        <!-- ── GHOST: wrong spot behind the door (rule 2) ── -->
                         <g class="bpd-ghost">
-                            <circle cx="56" cy="354" r="15" fill="rgba(168,69,47,0.07)" stroke="#A8452F" stroke-width="1.4" stroke-dasharray="4 3.5"/>
-                            <line x1="50" y1="348" x2="62" y2="360" stroke="#A8452F" stroke-width="1.6" stroke-linecap="round"/>
-                            <line x1="62" y1="348" x2="50" y2="360" stroke="#A8452F" stroke-width="1.6" stroke-linecap="round"/>
-                            <text x="82" y="358" font-family="Outfit, sans-serif" font-size="8.5" font-weight="500" fill="#A8452F">Too tight</text>
+                            <circle cx="196" cy="354" r="15" fill="rgba(168,69,47,0.07)" stroke="#A8452F" stroke-width="1.4" stroke-dasharray="4 3.5"/>
+                            <line x1="190" y1="348" x2="202" y2="360" stroke="#A8452F" stroke-width="1.6" stroke-linecap="round"/>
+                            <line x1="202" y1="348" x2="190" y2="360" stroke="#A8452F" stroke-width="1.6" stroke-linecap="round"/>
+                            <text x="196" y="330" font-family="Outfit, sans-serif" font-size="8.5" font-weight="500" fill="#A8452F" text-anchor="middle">Blocked by door</text>
                         </g>
 
                         <!-- ── BREATHING ZONE (rule 3) ── -->
@@ -448,16 +449,16 @@
                             <text x="388" y="342.5" font-family="Outfit, sans-serif" font-size="10" font-weight="600" fill="#F7FAF8" text-anchor="middle">1</text>
                         </g>
                         <g class="bp-marker" data-marker="2">
-                            <circle cx="56" cy="312" r="12" fill="#12312C"/>
-                            <text x="56" y="316.5" font-family="Outfit, sans-serif" font-size="10" font-weight="600" fill="#F7FAF8" text-anchor="middle">2</text>
+                            <circle cx="232" cy="362" r="12" fill="#12312C"/>
+                            <text x="232" y="366.5" font-family="Outfit, sans-serif" font-size="10" font-weight="600" fill="#F7FAF8" text-anchor="middle">2</text>
                         </g>
                         <g class="bp-marker" data-marker="3">
-                            <circle cx="310" cy="62" r="12" fill="#12312C"/>
-                            <text x="310" y="66.5" font-family="Outfit, sans-serif" font-size="10" font-weight="600" fill="#F7FAF8" text-anchor="middle">3</text>
+                            <circle cx="296" cy="62" r="12" fill="#12312C"/>
+                            <text x="296" y="66.5" font-family="Outfit, sans-serif" font-size="10" font-weight="600" fill="#F7FAF8" text-anchor="middle">3</text>
                         </g>
                         <g class="bp-marker" data-marker="4">
-                            <circle cx="198" cy="308" r="12" fill="#12312C"/>
-                            <text x="198" y="312.5" font-family="Outfit, sans-serif" font-size="10" font-weight="600" fill="#F7FAF8" text-anchor="middle">4</text>
+                            <circle cx="198" cy="290" r="12" fill="#12312C"/>
+                            <text x="198" y="294.5" font-family="Outfit, sans-serif" font-size="10" font-weight="600" fill="#F7FAF8" text-anchor="middle">4</text>
                         </g>
                     </svg>
                     <p class="bp-hint">Tap a rule to see it on the plan</p>
@@ -506,7 +507,7 @@
 
     <!-- ========================================
          SECTION: TOUCH CONTROLS
-         Interactive device dial
+         Replica of the Hawaa Edge hexagonal panel
     ======================================== -->
     <section class="tc-section" id="touch-controls" aria-label="Touch Controls Guide">
         <div class="tc-container">
@@ -514,97 +515,99 @@
             <div class="tc-header" data-reveal>
                 <p class="tc-eyebrow">Touch Controls</p>
                 <h2 class="tc-headline">Everything you need,<br>at a <span class="italic">touch</span></h2>
-                <p class="tc-desc">Six controls cover everything you'll use day to day. Try them on the panel.</p>
+                <p class="tc-desc">The panel on top of your Hawaa Edge, exactly as you'll find it. Try the keys.</p>
             </div>
 
             <div class="tc-stage" data-reveal>
 
-                <!-- Device top view -->
-                <div class="tc-device-wrap">
-                    <div class="tc-device" id="tc-device" data-active="power" role="group" aria-label="Interactive touch panel demo">
-                        <div class="tc-device-face" aria-hidden="true"></div>
-                        <div class="tc-led" aria-hidden="true"></div>
+                <div class="tc-hex" id="tc-device" data-active="power" role="group" aria-label="Interactive touch panel demo">
 
-                        <div class="tc-display" aria-live="polite">
-                            <span class="tc-glyphs" aria-hidden="true">
-                                <span class="tc-glyph" data-key="power"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="7"/><line x1="10" y1="3" x2="10" y2="6"/></svg></span>
-                                <span class="tc-glyph" data-key="fan"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10h12M4 6h8M4 14h6"/></svg></span>
-                                <span class="tc-glyph" data-key="sleep"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3C6.13 3 3 6.13 3 10s3.13 7 7 7 7-3.13 7-7"/><path d="M13 3c0 1.66-1.34 3-3 3"/></svg></span>
-                                <span class="tc-glyph" data-key="timer"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="7"/><polyline points="10,6 10,10 13,12"/></svg></span>
-                                <span class="tc-glyph" data-key="wifi"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5C5 9.46 7.46 7 10.5 7S16 9.46 16 12.5"/><path d="M2 15c0-4.42 3.58-8 8-8s8 3.58 8 8"/><circle cx="10" cy="16" r="1" fill="currentColor"/></svg></span>
-                                <span class="tc-glyph" data-key="filter"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v4M10 14v4M4.22 4.22l2.83 2.83M12.95 12.95l2.83 2.83M2 10h4M14 10h4M4.22 15.78l2.83-2.83M12.95 7.05l2.83-2.83"/></svg></span>
-                            </span>
-                            <span class="tc-display-label" id="tc-display-label">Power</span>
-                            <span class="tc-display-sub" id="tc-display-sub">Turn the purifier on or off</span>
-                        </div>
+                    <!-- Hexagonal panel body -->
+                    <svg class="tc-hex-bg" viewBox="0 0 400 460" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <radialGradient id="tc-face-grad" cx="40%" cy="30%" r="80%">
+                                <stop offset="0%" stop-color="#222526"/>
+                                <stop offset="70%" stop-color="#131516"/>
+                                <stop offset="100%" stop-color="#0F1112"/>
+                            </radialGradient>
+                        </defs>
+                        <!-- Outer rim -->
+                        <path d="M200 30 L373.2 130 V330 L200 430 L26.8 330 V130 Z"
+                              fill="none" stroke="#C6CEC9" stroke-width="46" stroke-linejoin="round"/>
+                        <!-- Black face -->
+                        <path d="M200 30 L373.2 130 V330 L200 430 L26.8 330 V130 Z"
+                              fill="url(#tc-face-grad)" stroke="#131516" stroke-width="30" stroke-linejoin="round"/>
+                    </svg>
 
-                        <button type="button" class="tc-key" data-key="power" style="--a:-90deg" aria-pressed="true" aria-label="Power">
-                            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10" cy="10" r="7"/><line x1="10" y1="3" x2="10" y2="6"/></svg>
-                        </button>
-                        <button type="button" class="tc-key" data-key="fan" style="--a:-30deg" aria-pressed="false" aria-label="Fan Speed">
-                            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10h12M4 6h8M4 14h6"/></svg>
-                        </button>
-                        <button type="button" class="tc-key" data-key="sleep" style="--a:30deg" aria-pressed="false" aria-label="Sleep Mode">
-                            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3C6.13 3 3 6.13 3 10s3.13 7 7 7 7-3.13 7-7"/><path d="M13 3c0 1.66-1.34 3-3 3"/></svg>
-                        </button>
-                        <button type="button" class="tc-key" data-key="timer" style="--a:90deg" aria-pressed="false" aria-label="Timer">
-                            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10" cy="10" r="7"/><polyline points="10,6 10,10 13,12"/></svg>
-                        </button>
-                        <button type="button" class="tc-key" data-key="wifi" style="--a:150deg" aria-pressed="false" aria-label="Wi-Fi Pairing">
-                            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5C5 9.46 7.46 7 10.5 7S16 9.46 16 12.5"/><path d="M2 15c0-4.42 3.58-8 8-8s8 3.58 8 8"/><circle cx="10" cy="16" r="1" fill="currentColor"/></svg>
-                        </button>
-                        <button type="button" class="tc-key" data-key="filter" style="--a:210deg" aria-pressed="false" aria-label="Filter Reminder">
-                            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 2v4M10 14v4M4.22 4.22l2.83 2.83M12.95 12.95l2.83 2.83M2 10h4M14 10h4M4.22 15.78l2.83-2.83M12.95 7.05l2.83-2.83"/></svg>
-                        </button>
-                    </div>
-                    <p class="tc-device-hint">Tap a key to explore</p>
+                    <!-- Center wordmark -->
+                    <img class="tc-hex-logo" src="public/images/web_header_mobile_light.svg" alt="" aria-hidden="true" draggable="false">
+
+                    <!-- Keys, placed as on the device -->
+                    <button type="button" class="tc-key" data-key="power" style="--x:50%; --y:18.5%" aria-pressed="true" aria-label="Power" data-label="Power" data-sub="Turn the purifier on or off">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M12 3.5v8"/>
+                            <path d="M8.2 5.8a7.5 7.5 0 1 0 7.6 0"/>
+                        </svg>
+                    </button>
+
+                    <button type="button" class="tc-key" data-key="wifi" style="--x:21%; --y:33%" aria-pressed="false" aria-label="Wi-Fi Pairing" data-label="Wi-Fi Pairing" data-sub="Connect the purifier to the app">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M3.5 10.2a12.5 12.5 0 0 1 17 0"/>
+                            <path d="M6.9 13.6a8 8 0 0 1 10.2 0"/>
+                            <circle cx="12" cy="17" r="1.1" fill="currentColor" stroke="none"/>
+                        </svg>
+                    </button>
+
+                    <button type="button" class="tc-key" data-key="sleep" style="--x:79%; --y:33%" aria-pressed="false" aria-label="Sleep Mode" data-label="Sleep Mode" data-sub="Runs quietly at low fan speed">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M18.6 14.4A8 8 0 1 1 9.6 5.4a6.3 6.3 0 0 0 9 9z"/>
+                            <path d="M16.8 4.2v3M15.3 5.7h3"/>
+                            <circle cx="19.8" cy="8.6" r="0.7" fill="currentColor" stroke="none"/>
+                        </svg>
+                    </button>
+
+                    <button type="button" class="tc-key tc-key--stack" data-key="fan" style="--x:22%; --y:63.5%" aria-pressed="false" aria-label="Fan Speed" data-label="Fan Speed" data-sub="Low, medium, and high airflow">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <circle cx="12" cy="12" r="1.9"/>
+                            <path d="M12.7 10.2c-.8-3.3.2-6 2.2-6 1.7 0 2.7 1.2 2.7 2.7 0 2.2-2.2 3.5-4.9 3.3z"/>
+                            <path d="M12.7 10.2c-.8-3.3.2-6 2.2-6 1.7 0 2.7 1.2 2.7 2.7 0 2.2-2.2 3.5-4.9 3.3z" transform="rotate(120 12 12)"/>
+                            <path d="M12.7 10.2c-.8-3.3.2-6 2.2-6 1.7 0 2.7 1.2 2.7 2.7 0 2.2-2.2 3.5-4.9 3.3z" transform="rotate(240 12 12)"/>
+                        </svg>
+                        <span class="tc-ind" aria-hidden="true"><i class="is-on"></i><i></i><i></i></span>
+                    </button>
+
+                    <button type="button" class="tc-key tc-key--stack" data-key="timer" style="--x:78%; --y:63.5%" aria-pressed="false" aria-label="Timer" data-label="Timer" data-sub="Set 2h, 4h, or 8h runtime">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <circle cx="12" cy="12" r="8"/>
+                            <path d="M12 12l-2.6 2"/>
+                            <circle cx="12" cy="7.6" r="0.9" fill="currentColor" stroke="none"/>
+                            <circle cx="16.1" cy="10.6" r="0.9" fill="currentColor" stroke="none"/>
+                            <circle cx="15" cy="15.6" r="0.9" fill="currentColor" stroke="none"/>
+                        </svg>
+                        <span class="tc-ind" aria-hidden="true"><i class="is-on"></i><i></i><i></i></span>
+                        <span class="tc-ind-nums" aria-hidden="true"><em>2</em><em>4</em><em>8</em></span>
+                    </button>
+
+                    <button type="button" class="tc-key" data-key="filter" style="--x:50%; --y:81%" aria-pressed="false" aria-label="Filter Reminder" data-label="Filter Reminder" data-sub="A gentle reminder every 4&ndash;5 months">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <ellipse cx="12" cy="8.4" rx="3.4" ry="1.4"/>
+                            <path d="M8.6 8.4v5a3.4 1.4 0 0 0 6.8 0v-5"/>
+                            <path d="M19.6 12.2a7.6 7.6 0 0 1-6.2 7.3"/>
+                            <path d="M15.2 17.6l-1.8 1.9 1.9 1.7"/>
+                            <path d="M4.4 11.8A7.6 7.6 0 0 1 10.6 4.5"/>
+                            <path d="M8.8 6.4l1.8-1.9-1.9-1.7"/>
+                        </svg>
+                    </button>
+
                 </div>
 
-                <!-- Control index — synced with the dial -->
-                <div class="tc-index" role="list">
-                    <button type="button" class="tc-index-item is-active" data-key="power" role="listitem">
-                        <span class="tc-index-led" aria-hidden="true"></span>
-                        <span class="tc-index-text">
-                            <span class="tc-index-label">Power</span>
-                            <span class="tc-index-sub">Turn the purifier on or off</span>
-                        </span>
-                    </button>
-                    <button type="button" class="tc-index-item" data-key="fan" role="listitem">
-                        <span class="tc-index-led" aria-hidden="true"></span>
-                        <span class="tc-index-text">
-                            <span class="tc-index-label">Fan Speed</span>
-                            <span class="tc-index-sub">Low, medium, and high airflow</span>
-                        </span>
-                    </button>
-                    <button type="button" class="tc-index-item" data-key="sleep" role="listitem">
-                        <span class="tc-index-led" aria-hidden="true"></span>
-                        <span class="tc-index-text">
-                            <span class="tc-index-label">Sleep Mode</span>
-                            <span class="tc-index-sub">Runs quietly at low fan speed</span>
-                        </span>
-                    </button>
-                    <button type="button" class="tc-index-item" data-key="timer" role="listitem">
-                        <span class="tc-index-led" aria-hidden="true"></span>
-                        <span class="tc-index-text">
-                            <span class="tc-index-label">Timer</span>
-                            <span class="tc-index-sub">Set 2h, 4h, or 8h runtime</span>
-                        </span>
-                    </button>
-                    <button type="button" class="tc-index-item" data-key="wifi" role="listitem">
-                        <span class="tc-index-led" aria-hidden="true"></span>
-                        <span class="tc-index-text">
-                            <span class="tc-index-label">Wi-Fi Pairing</span>
-                            <span class="tc-index-sub">Connect the purifier to the app</span>
-                        </span>
-                    </button>
-                    <button type="button" class="tc-index-item" data-key="filter" role="listitem">
-                        <span class="tc-index-led" aria-hidden="true"></span>
-                        <span class="tc-index-text">
-                            <span class="tc-index-label">Filter Reminder</span>
-                            <span class="tc-index-sub">A gentle reminder every 4&ndash;5 months</span>
-                        </span>
-                    </button>
-                </div>
+                <!-- Single-line dynamic caption -->
+                <p class="tc-caption" aria-live="polite">
+                    <span class="tc-caption-label" id="tc-display-label">Power</span>
+                    <span class="tc-caption-sep" aria-hidden="true"></span>
+                    <span class="tc-caption-sub" id="tc-display-sub">Turn the purifier on or off</span>
+                </p>
+                <p class="tc-hint">Tap a key to explore</p>
 
             </div><!-- /.tc-stage -->
 
@@ -776,63 +779,89 @@
 
                 <!-- Exploded filter layers -->
                 <div class="fc-illustration" aria-hidden="true">
-                    <svg class="fc-filter-svg" viewBox="0 0 400 330" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <svg class="fc-filter-svg" viewBox="0 0 460 330" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <!-- Cylinder body shading -->
+                            <linearGradient id="fcx-body" x1="0" y1="0" x2="1" y2="0">
+                                <stop offset="0" stop-color="#DFE6E1"/>
+                                <stop offset="0.16" stop-color="#FCFDFC"/>
+                                <stop offset="0.5" stop-color="#F5F8F6"/>
+                                <stop offset="0.82" stop-color="#E2E9E4"/>
+                                <stop offset="1" stop-color="#CFD9D2"/>
+                            </linearGradient>
+                            <!-- Vertical pleats -->
+                            <pattern id="fcx-pleats" width="7" height="10" patternUnits="userSpaceOnUse">
+                                <rect width="3.5" height="10" fill="rgba(255,255,255,0.55)"/>
+                                <rect x="3.5" width="3.5" height="10" fill="rgba(31,41,37,0.06)"/>
+                                <line x1="0" y1="0" x2="0" y2="10" stroke="rgba(31,41,37,0.13)" stroke-width="0.8"/>
+                            </pattern>
+                            <!-- Carbon honeycomb -->
+                            <pattern id="fcx-honey" width="11" height="10" patternUnits="userSpaceOnUse">
+                                <circle cx="3" cy="2.5" r="2.1" stroke="#4B5254" stroke-width="0.9" fill="none"/>
+                                <circle cx="8.5" cy="7.5" r="2.1" stroke="#4B5254" stroke-width="0.9" fill="none"/>
+                            </pattern>
+                            <!-- Pre-filter mesh -->
+                            <pattern id="fcx-mesh" width="4.5" height="4.5" patternUnits="userSpaceOnUse">
+                                <path d="M0 0H4.5M0 0V4.5" stroke="#C7D2CA" stroke-width="0.7"/>
+                            </pattern>
+                            <filter id="fcx-blur" x="-40%" y="-40%" width="180%" height="180%">
+                                <feGaussianBlur stdDeviation="4"/>
+                            </filter>
+                        </defs>
 
-                        <!-- Layer 1: Pre-filter -->
-                        <g class="fcx-pre">
-                            <rect x="90" y="44" width="140" height="34" fill="#E4EDE6"/>
-                            <path d="M90 78a70 13 0 0 0 140 0" fill="#E4EDE6" stroke="#C2D2C9" stroke-width="1.5"/>
-                            <line x1="90" y1="44" x2="90" y2="78" stroke="#C2D2C9" stroke-width="1.5"/>
-                            <line x1="230" y1="44" x2="230" y2="78" stroke="#C2D2C9" stroke-width="1.5"/>
-                            <line x1="106" y1="48" x2="106" y2="76" stroke="#C2D2C9" stroke-width="1" stroke-dasharray="2 3" opacity="0.8"/>
-                            <line x1="124" y1="50" x2="124" y2="78" stroke="#C2D2C9" stroke-width="1" stroke-dasharray="2 3" opacity="0.8"/>
-                            <line x1="142" y1="51" x2="142" y2="79" stroke="#C2D2C9" stroke-width="1" stroke-dasharray="2 3" opacity="0.8"/>
-                            <line x1="160" y1="52" x2="160" y2="80" stroke="#C2D2C9" stroke-width="1" stroke-dasharray="2 3" opacity="0.8"/>
-                            <line x1="178" y1="51" x2="178" y2="79" stroke="#C2D2C9" stroke-width="1" stroke-dasharray="2 3" opacity="0.8"/>
-                            <line x1="196" y1="50" x2="196" y2="78" stroke="#C2D2C9" stroke-width="1" stroke-dasharray="2 3" opacity="0.8"/>
-                            <line x1="214" y1="48" x2="214" y2="76" stroke="#C2D2C9" stroke-width="1" stroke-dasharray="2 3" opacity="0.8"/>
-                            <ellipse cx="160" cy="44" rx="70" ry="13" fill="#EFF5F1" stroke="#C2D2C9" stroke-width="1.5"/>
-                        </g>
-                        <g class="fcx-label" data-for="pre">
-                            <line x1="234" y1="60" x2="270" y2="56" stroke="#B7C8BF" stroke-width="1" stroke-dasharray="2 3"/>
-                            <text x="276" y="55" font-family="Outfit, sans-serif" font-size="12" font-weight="600" fill="#12312C">Pre-filter</text>
-                            <text x="276" y="70" font-family="Outfit, sans-serif" font-size="10" fill="#5C726C">Dust &amp; lint</text>
-                        </g>
+                        <!-- ── ASSEMBLED FILTER ── -->
+                        <g class="fcx-cyl">
+                            <!-- Ground shadow -->
+                            <ellipse cx="128" cy="296" rx="92" ry="11" fill="rgba(18,49,44,0.16)" filter="url(#fcx-blur)"/>
 
-                        <!-- Layer 2: HEPA -->
-                        <g class="fcx-hepa">
-                            <rect x="90" y="140" width="140" height="52" fill="#F7FAF8"/>
-                            <path d="M90 192a70 13 0 0 0 140 0" fill="#F7FAF8" stroke="#CFDCD4" stroke-width="1.5"/>
-                            <line x1="90" y1="140" x2="90" y2="192" stroke="#CFDCD4" stroke-width="1.5"/>
-                            <line x1="230" y1="140" x2="230" y2="192" stroke="#CFDCD4" stroke-width="1.5"/>
-                            <path d="M90 160l10-8 10 8 10-8 10 8 10-8 10 8 10-8 10 8 10-8 10 8 10-8 10 8 10-8 10 8" stroke="#D7E2DA" stroke-width="1.2"/>
-                            <path d="M90 178l10-8 10 8 10-8 10 8 10-8 10 8 10-8 10 8 10-8 10 8 10-8 10 8 10-8 10 8" stroke="#D7E2DA" stroke-width="1.2"/>
-                            <ellipse cx="160" cy="140" rx="70" ry="13" fill="#FBFDFC" stroke="#CFDCD4" stroke-width="1.5"/>
-                        </g>
-                        <g class="fcx-label" data-for="hepa">
-                            <line x1="234" y1="166" x2="270" y2="162" stroke="#B7C8BF" stroke-width="1" stroke-dasharray="2 3"/>
-                            <text x="276" y="161" font-family="Outfit, sans-serif" font-size="12" font-weight="600" fill="#12312C">HEPA layer</text>
-                            <text x="276" y="176" font-family="Outfit, sans-serif" font-size="10" fill="#5C726C">Fine particles</text>
-                        </g>
+                            <!-- Bottom cap -->
+                            <ellipse cx="128" cy="276" rx="85" ry="20" fill="#1B1D1F"/>
 
-                        <!-- Layer 3: Carbon core -->
-                        <g class="fcx-carbon">
-                            <rect x="90" y="254" width="140" height="40" fill="#2A2C2E"/>
-                            <path d="M90 294a70 13 0 0 0 140 0" fill="#2A2C2E" stroke="#1B1D1F" stroke-width="1.5"/>
-                            <line x1="90" y1="254" x2="90" y2="294" stroke="#1B1D1F" stroke-width="1.5"/>
-                            <line x1="230" y1="254" x2="230" y2="294" stroke="#1B1D1F" stroke-width="1.5"/>
-                            <ellipse cx="160" cy="254" rx="70" ry="13" fill="#3A423F" stroke="#1B1D1F" stroke-width="1.5"/>
-                            <circle cx="130" cy="252" r="1.5" fill="#5C726C"/>
-                            <circle cx="152" cy="256" r="1.5" fill="#5C726C"/>
-                            <circle cx="176" cy="251" r="1.5" fill="#5C726C"/>
-                            <circle cx="196" cy="255" r="1.5" fill="#5C726C"/>
-                        </g>
-                        <g class="fcx-label" data-for="carbon">
-                            <line x1="234" y1="272" x2="270" y2="268" stroke="#B7C8BF" stroke-width="1" stroke-dasharray="2 3"/>
-                            <text x="276" y="267" font-family="Outfit, sans-serif" font-size="12" font-weight="600" fill="#12312C">Carbon core</text>
-                            <text x="276" y="282" font-family="Outfit, sans-serif" font-size="10" fill="#5C726C">Odours</text>
+                            <!-- Pleated body -->
+                            <path d="M43 58 V270 A85 18 0 0 0 213 270 V58 Z" fill="url(#fcx-body)"/>
+                            <path d="M43 58 V270 A85 18 0 0 0 213 270 V58 Z" fill="url(#fcx-pleats)"/>
+
+                            <!-- Top cap -->
+                            <ellipse cx="128" cy="58" rx="85" ry="20" fill="#17191B"/>
+                            <ellipse cx="128" cy="58" rx="85" ry="20" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+                            <ellipse cx="128" cy="58" rx="62" ry="14.5" fill="#101213"/>
+                            <ellipse cx="128" cy="58" rx="45" ry="10.5" fill="#0B0C0D"/>
+                            <ellipse cx="128" cy="58" rx="45" ry="10.5" fill="url(#fcx-honey)" opacity="0.9"/>
                         </g>
 
+                        <!-- ── UNWRAPPED LAYERS ── -->
+                        <!-- Carbon sheet -->
+                        <g class="fcx-sheet fcx-s1">
+                            <path d="M240 90 C255 82 285 82 300 88 V248 C285 254 255 254 240 246 Z" fill="#26292B"/>
+                            <path d="M240 90 C255 82 285 82 300 88 V248 C285 254 255 254 240 246 Z" fill="url(#fcx-honey)"/>
+                            <path d="M240 90 C255 82 285 82 300 88" stroke="rgba(255,255,255,0.14)" stroke-width="1" fill="none"/>
+                        </g>
+
+                        <!-- HEPA sheet -->
+                        <g class="fcx-sheet fcx-s2">
+                            <path d="M312 78 C327 70 357 70 372 76 V260 C357 266 327 266 312 258 Z" fill="#FBFCFB" stroke="#C9D3CC" stroke-width="1"/>
+                            <path d="M312 78 C327 70 357 70 372 76 V260 C357 266 327 266 312 258 Z" fill="url(#fcx-pleats)"/>
+                        </g>
+
+                        <!-- Pre-filter sheet -->
+                        <g class="fcx-sheet fcx-s3">
+                            <path d="M384 66 C399 58 429 58 444 64 V272 C429 278 399 278 384 270 Z" fill="#EEF2EF" stroke="#C9D3CC" stroke-width="1"/>
+                            <path d="M384 66 C399 58 429 58 444 64 V272 C429 278 399 278 384 270 Z" fill="url(#fcx-mesh)"/>
+                        </g>
+
+                        <!-- ── LABELS ── -->
+                        <g class="fcx-label">
+                            <text x="270" y="278" font-family="Outfit, sans-serif" font-size="11.5" font-weight="600" fill="#12312C" text-anchor="middle">Carbon core</text>
+                            <text x="270" y="292" font-family="Outfit, sans-serif" font-size="9.5" fill="#5C726C" text-anchor="middle">Odours</text>
+                        </g>
+                        <g class="fcx-label">
+                            <text x="342" y="290" font-family="Outfit, sans-serif" font-size="11.5" font-weight="600" fill="#12312C" text-anchor="middle">HEPA layer</text>
+                            <text x="342" y="304" font-family="Outfit, sans-serif" font-size="9.5" fill="#5C726C" text-anchor="middle">Fine particles</text>
+                        </g>
+                        <g class="fcx-label">
+                            <text x="414" y="302" font-family="Outfit, sans-serif" font-size="11.5" font-weight="600" fill="#12312C" text-anchor="middle">Pre-filter</text>
+                            <text x="414" y="316" font-family="Outfit, sans-serif" font-size="9.5" fill="#5C726C" text-anchor="middle">Dust &amp; lint</text>
+                        </g>
                     </svg>
                 </div><!-- /.fc-illustration -->
 
@@ -1080,39 +1109,28 @@
         }());
 
 
-        // Touch controls: interactive dial
-        // Keys and index rows both drive the center display; a gentle
-        // auto-tour runs until the user interacts.
+        // Touch controls: hexagonal panel replica
+        // Keys drive the caption; a gentle auto-tour runs until the
+        // user interacts.
         (function () {
             var device = document.getElementById('tc-device');
             if (!device) return;
 
             var keys = Array.prototype.slice.call(device.querySelectorAll('.tc-key'));
-            var indexItems = Array.prototype.slice.call(document.querySelectorAll('.tc-index-item'));
             var label = document.getElementById('tc-display-label');
             var sub = document.getElementById('tc-display-sub');
             var order = keys.map(function (k) { return k.dataset.key; });
 
-            var copy = {};
-            indexItems.forEach(function (item) {
-                copy[item.dataset.key] = {
-                    label: item.querySelector('.tc-index-label').textContent,
-                    sub: item.querySelector('.tc-index-sub').textContent
-                };
-            });
-
             function setActive(key) {
                 device.dataset.active = key;
                 keys.forEach(function (k) {
-                    k.setAttribute('aria-pressed', String(k.dataset.key === key));
+                    var on = k.dataset.key === key;
+                    k.setAttribute('aria-pressed', String(on));
+                    if (on) {
+                        label.textContent = k.dataset.label;
+                        sub.textContent = k.dataset.sub;
+                    }
                 });
-                indexItems.forEach(function (item) {
-                    item.classList.toggle('is-active', item.dataset.key === key);
-                });
-                if (copy[key]) {
-                    label.textContent = copy[key].label;
-                    sub.textContent = copy[key].sub;
-                }
             }
 
             // Gentle auto-tour until first interaction
@@ -1130,7 +1148,7 @@
                 if (tour) { clearInterval(tour); tour = null; }
             }
 
-            keys.concat(indexItems).forEach(function (el) {
+            keys.forEach(function (el) {
                 el.addEventListener('click', function () {
                     stopTour();
                     setActive(el.dataset.key);
