@@ -567,7 +567,7 @@
 }
 
 /* ========================================
-   BEDROOM PLACEMENT — STATE-DRIVEN PLAN
+   BEDROOM PLACEMENT — LIVE FLOOR PLAN
 ======================================== */
 .bp-section {
     background: var(--mist-deep);
@@ -576,22 +576,21 @@
 }
 
 .bp-container {
-    max-width: 1080px;
+    max-width: 1020px;
     margin: 0 auto;
 }
 
 .bp-header {
-    margin-bottom: 32px;
+    margin-bottom: 28px;
 }
 
-/* ---- Content layout (mobile: stacked) ---- */
-.bp-content {
+/* ---- Stage: diagram + tabs ---- */
+.bp-stage {
     display: flex;
     flex-direction: column;
-    gap: 32px;
+    gap: 24px;
 }
 
-/* ---- SVG Diagram ---- */
 .bp-diagram-wrap {
     width: 100%;
     max-width: 480px;
@@ -605,22 +604,6 @@
     border: 1px solid var(--ink-line-soft);
     background: #F3F8F4;
     box-shadow: 0 6px 28px var(--shadow-tint-sm);
-}
-
-.bp-hint {
-    font-family: 'Outfit', sans-serif;
-    font-size: 0.74rem;
-    font-weight: 400;
-    color: var(--ink-faint);
-    letter-spacing: 0.03em;
-    margin: 10px 0 0;
-    text-align: center;
-}
-
-@media (min-width: 1024px) {
-    .bp-hint {
-        display: none; /* hover affordance replaces the tap hint */
-    }
 }
 
 /* ---- Diagram states ---- */
@@ -678,69 +661,76 @@
     }
 }
 
-/* ---- Placement rules — open hairline list ---- */
-.bp-rules {
+/* ---- Rule tabs ---- */
+.bp-panel {
     display: flex;
     flex-direction: column;
+    width: 100%;
+    max-width: 480px;
 }
 
-.bp-rule {
+.bp-tabs {
     display: flex;
-    align-items: flex-start;
-    gap: 18px;
-    padding: 16px 4px;
-    border-top: 1px solid var(--ink-line);
+    flex-direction: column;
+    gap: 2px;
+}
+
+.bp-tab {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    padding: 10px 14px;
+    margin: 0;
+    background: none;
+    border: none;
+    border-radius: 10px;
+    text-align: left;
     cursor: pointer;
-    outline: none;
     -webkit-tap-highlight-color: transparent;
-    transition: background 0.25s ease, padding-left 0.25s ease;
+    transition: background 0.25s ease;
 }
 
-.bp-rule:last-child {
-    border-bottom: 1px solid var(--ink-line);
-}
-
-.bp-rule:hover,
-.bp-rule:focus,
-.bp-rule.is-active {
+.bp-tab:hover,
+.bp-tab.is-active {
     background: var(--teal-tint-soft);
-    padding-left: 12px;
 }
 
-.bp-rule-num {
+.bp-tab-num {
     font-family: 'Outfit', sans-serif;
     font-size: 0.7rem;
     font-weight: 600;
     letter-spacing: 0.08em;
     color: var(--teal-deep);
     flex-shrink: 0;
-    min-width: 24px;
-    padding-top: 3px;
+    min-width: 22px;
 }
 
-.bp-rule-body {
-    flex: 1;
-}
-
-.bp-rule-title {
+.bp-tab-title {
     font-family: 'Outfit', sans-serif;
-    font-size: 0.95rem;
+    font-size: 0.94rem;
     font-weight: 600;
     color: var(--ink);
-    margin: 0 0 4px;
-    line-height: 1.3;
+    line-height: 1.35;
 }
 
-.bp-rule-desc {
+.bp-tab.is-active .bp-tab-title {
+    color: var(--teal-deep);
+}
+
+/* Shared caption for the active rule */
+.bp-caption {
     font-family: 'Outfit', sans-serif;
-    font-size: 0.85rem;
+    font-size: 0.88rem;
     font-weight: 400;
     color: var(--ink-soft);
-    line-height: 1.55;
-    margin: 0;
+    line-height: 1.6;
+    min-height: 44px;
+    margin: 14px 0 0;
+    padding: 14px 14px 0;
+    border-top: 1px solid var(--ink-line);
 }
 
-/* ---- Marker active state (JS-controlled) ---- */
+/* ---- Marker interactivity (JS-controlled) ---- */
 .bp-marker {
     cursor: pointer;
 }
@@ -760,31 +750,29 @@
     }
 
     .bp-diagram-wrap {
-        max-width: 560px;
+        max-width: 520px;
     }
 }
 
 @media (min-width: 1024px) {
     .bp-section {
-        padding: 96px 48px 104px;
+        padding: 88px 48px 96px;
     }
 
-    .bp-content {
+    .bp-stage {
         flex-direction: row;
-        align-items: flex-start;
+        align-items: center;
         gap: 72px;
     }
 
     .bp-diagram-wrap {
-        width: 46%;
+        flex: 0 0 50%;
         max-width: none;
-        flex-shrink: 0;
-        position: sticky;
-        top: 96px;
     }
 
-    .bp-rules {
+    .bp-panel {
         flex: 1;
+        max-width: 400px;
     }
 }
 

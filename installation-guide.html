@@ -319,14 +319,12 @@
             <div class="bp-header" data-reveal>
                 <p class="bp-eyebrow">Placement Guide</p>
                 <h2 class="bp-headline">Where to place it in your <span class="italic">bedroom</span></h2>
-                <p class="bp-desc">Position your Hawaa Edge correctly to get the most out of every breath. Each rule plays out live on the floor plan.</p>
             </div>
 
-            <!-- Main content -->
-            <div class="bp-content" data-reveal>
+            <!-- Stage: live floor plan + rule tabs -->
+            <div class="bp-stage" data-reveal>
 
-                <!-- SVG Diagram -->
-                <div class="bp-diagram-wrap" id="bp-diagram-wrap">
+                <div class="bp-diagram-wrap" id="bp-diagram-wrap" data-state="1">
                     <svg class="bp-diagram" viewBox="0 0 440 404" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Top-down bedroom floor plan showing correct air purifier placement">
                         <defs>
                             <marker id="bp-arrowhead" markerWidth="4" markerHeight="4" refX="3.5" refY="2" orient="auto" markerUnits="strokeWidth">
@@ -461,46 +459,31 @@
                             <text x="198" y="294.5" font-family="Outfit, sans-serif" font-size="10" font-weight="600" fill="#F7FAF8" text-anchor="middle">4</text>
                         </g>
                     </svg>
-                    <p class="bp-hint">Tap a rule to see it on the plan</p>
                 </div>
 
-                <!-- Placement rules — open editorial list -->
-                <div class="bp-rules">
-
-                    <div class="bp-rule" data-card="1" tabindex="0">
-                        <span class="bp-rule-num" aria-hidden="true">01</span>
-                        <div class="bp-rule-body">
-                            <p class="bp-rule-title">Leave space from the wall</p>
-                            <p class="bp-rule-desc">Keep 20&ndash;30 cm clearance so airflow is not restricted.</p>
-                        </div>
+                <div class="bp-panel">
+                    <div class="bp-tabs" role="list">
+                        <button type="button" class="bp-tab is-active" data-card="1" data-desc="Keep 20&ndash;30 cm clearance so airflow is not restricted." role="listitem">
+                            <span class="bp-tab-num" aria-hidden="true">01</span>
+                            <span class="bp-tab-title">Leave space from the wall</span>
+                        </button>
+                        <button type="button" class="bp-tab" data-card="2" data-desc="Do not place behind furniture, curtains, or tight spaces." role="listitem">
+                            <span class="bp-tab-num" aria-hidden="true">02</span>
+                            <span class="bp-tab-title">Avoid blocked corners</span>
+                        </button>
+                        <button type="button" class="bp-tab" data-card="3" data-desc="Side placement near the bed improves nighttime purification." role="listitem">
+                            <span class="bp-tab-num" aria-hidden="true">03</span>
+                            <span class="bp-tab-title">Place near breathing zone</span>
+                        </button>
+                        <button type="button" class="bp-tab" data-card="4" data-desc="Position the purifier where air can circulate across the room." role="listitem">
+                            <span class="bp-tab-num" aria-hidden="true">04</span>
+                            <span class="bp-tab-title">Allow room circulation</span>
+                        </button>
                     </div>
-
-                    <div class="bp-rule" data-card="2" tabindex="0">
-                        <span class="bp-rule-num" aria-hidden="true">02</span>
-                        <div class="bp-rule-body">
-                            <p class="bp-rule-title">Avoid blocked corners</p>
-                            <p class="bp-rule-desc">Do not place behind furniture, curtains, or tight spaces.</p>
-                        </div>
-                    </div>
-
-                    <div class="bp-rule" data-card="3" tabindex="0">
-                        <span class="bp-rule-num" aria-hidden="true">03</span>
-                        <div class="bp-rule-body">
-                            <p class="bp-rule-title">Place near breathing zone</p>
-                            <p class="bp-rule-desc">Side placement near the bed improves nighttime purification.</p>
-                        </div>
-                    </div>
-
-                    <div class="bp-rule" data-card="4" tabindex="0">
-                        <span class="bp-rule-num" aria-hidden="true">04</span>
-                        <div class="bp-rule-body">
-                            <p class="bp-rule-title">Allow room circulation</p>
-                            <p class="bp-rule-desc">Position the purifier where air can circulate across the room.</p>
-                        </div>
-                    </div>
-
+                    <p class="bp-caption" id="bp-caption" aria-live="polite">Keep 20&ndash;30 cm clearance so airflow is not restricted.</p>
                 </div>
-            </div><!-- /.bp-content -->
+
+            </div><!-- /.bp-stage -->
 
         </div><!-- /.bp-container -->
     </section>
@@ -1066,46 +1049,66 @@
         }());
 
 
-        // Bedroom placement: state-driven floor plan
-        // Hover/focus/tap a rule (or hover a marker) to play that rule
-        // out on the diagram.
+        // Bedroom placement: live floor plan
+        // Rule tabs (and plan markers) drive the diagram state and the
+        // caption; a gentle auto-tour runs until the user interacts.
         (function () {
             var wrap = document.getElementById('bp-diagram-wrap');
-            var rules = Array.prototype.slice.call(document.querySelectorAll('.bp-rule[data-card]'));
+            var tabs = Array.prototype.slice.call(document.querySelectorAll('.bp-tab[data-card]'));
             var markers = Array.prototype.slice.call(document.querySelectorAll('.bp-marker[data-marker]'));
-            if (!wrap || !rules.length) return;
+            var caption = document.getElementById('bp-caption');
+            if (!wrap || !tabs.length) return;
 
-            var pinned = null; // tap-pinned rule number (mobile)
-
-            function apply(num) {
-                if (num) {
-                    wrap.dataset.state = num;
-                } else {
-                    delete wrap.dataset.state;
-                }
-                rules.forEach(function (r) {
-                    r.classList.toggle('is-active', r.dataset.card === num);
+            function setActive(num) {
+                wrap.dataset.state = num;
+                tabs.forEach(function (t) {
+                    var on = t.dataset.card === num;
+                    t.classList.toggle('is-active', on);
+                    if (on && caption) caption.textContent = t.dataset.desc;
                 });
                 markers.forEach(function (m) {
                     m.classList.toggle('is-active', m.dataset.marker === num);
                 });
             }
 
-            rules.forEach(function (rule) {
-                rule.addEventListener('mouseenter', function () { apply(rule.dataset.card); });
-                rule.addEventListener('mouseleave', function () { apply(pinned); });
-                rule.addEventListener('focusin', function () { apply(rule.dataset.card); });
-                rule.addEventListener('focusout', function () { apply(pinned); });
-                rule.addEventListener('click', function () {
-                    pinned = (pinned === rule.dataset.card) ? null : rule.dataset.card;
-                    apply(pinned || rule.dataset.card);
+            // Gentle auto-tour until first interaction
+            var tour = null;
+            var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            if (!prefersReducedMotion) {
+                var i = 0;
+                tour = setInterval(function () {
+                    i = (i + 1) % tabs.length;
+                    setActive(tabs[i].dataset.card);
+                }, 4200);
+            }
+
+            function stopTour() {
+                if (tour) { clearInterval(tour); tour = null; }
+            }
+
+            tabs.forEach(function (tab) {
+                tab.addEventListener('click', function () {
+                    stopTour();
+                    setActive(tab.dataset.card);
+                });
+                tab.addEventListener('mouseenter', function () {
+                    stopTour();
+                    setActive(tab.dataset.card);
                 });
             });
 
             markers.forEach(function (marker) {
-                marker.addEventListener('mouseenter', function () { apply(marker.dataset.marker); });
-                marker.addEventListener('mouseleave', function () { apply(pinned); });
+                marker.addEventListener('click', function () {
+                    stopTour();
+                    setActive(marker.dataset.marker);
+                });
+                marker.addEventListener('mouseenter', function () {
+                    stopTour();
+                    setActive(marker.dataset.marker);
+                });
             });
+
+            setActive('1');
         }());
 
 
