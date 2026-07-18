@@ -1135,13 +1135,13 @@ body.menu-open .logo-img {
 ======================================== */
 .trust-badges {
     position: relative;
-    padding: 40px 0;
+    padding: 40px 0 16px;
     background: var(--mist);
 }
 
 @media (min-width: 640px) {
     .trust-badges {
-        padding: 50px 0;
+        padding: 50px 0 20px;
     }
 }
 
@@ -1328,7 +1328,7 @@ body.menu-open .logo-img {
    AQI CHECKER SECTION - SEAMLESS
 ======================================== */
 .aqi-section {
-    padding: 48px 16px;
+    padding: 16px;
     background: var(--mist);
     display: flex;
     justify-content: center;
@@ -1336,7 +1336,7 @@ body.menu-open .logo-img {
 
 @media (min-width: 640px) {
     .aqi-section {
-        padding: 64px 24px;
+        padding: 20px 24px;
     }
 }
 
@@ -1827,14 +1827,14 @@ body.menu-open .logo-img {
    FEATURE SLIDER SECTION
 ======================================== */
 .feature-section {
-    padding: 50px 16px 60px;
+    padding: 24px 16px 60px;
     background: var(--mist);
     overflow: hidden;
 }
 
 @media (min-width: 640px) {
     .feature-section {
-        padding: 60px 24px 80px;
+        padding: 32px 24px 80px;
     }
 }
 
