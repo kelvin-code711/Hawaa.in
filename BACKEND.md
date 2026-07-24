@@ -10,7 +10,7 @@ web clients. All website collections are separate.
 
 | Feature | Page | Firestore collection |
 | --- | --- | --- |
-| Sign in / sign up (phone OTP + email/password) | every page (header modal) | `web_users` profile doc per user |
+| Sign in / sign up (Google + phone OTP) | every page (header modal) | `web_users` profile doc per user |
 | Account page | `account.html` | reads `web_users`, own `reviews` |
 | Review submissions (sign-in required) | `reviews.html` | `reviews` (created as `status: "pending"`) |
 | Review display | `reviews.html` | `reviews` where `status == "approved"` |
@@ -32,11 +32,37 @@ safe to commit. All protection comes from `firestore.rules`.
 
 ## Authentication
 
-- **Providers:** Email/Password and Phone (SMS region allowlist: IN).
+- **Providers:** Google and Phone (SMS region allowlist: IN). Email/password
+  was removed — Google and phone OTP both sign in *and* create the account on
+  first use, so there is no separate sign-up path (this keeps the modal flow
+  consistent). The sign-in modal shows "Continue with Google", an "or"
+  divider, the mobile-number field, and a "By continuing…" legal notice.
+- **Enable Google (required):** Firebase console → Authentication → Sign-in
+  method → enable **Google**, and add the site's domain (e.g.
+  `in-code711.github.io` and any custom domain) under
+  Authentication → Settings → **Authorized domains**. Until this is done the
+  Google button returns `auth/operation-not-allowed` /
+  `auth/unauthorized-domain`, and the UI tells the user to use their mobile
+  number instead. Google sign-in uses a popup, falling back to a full-page
+  redirect when popups are blocked (common in mobile in-app browsers).
 - **Test phone number:** `+91 88661 19918` → OTP `123456` (no SMS sent).
   Configured in Firebase console → Authentication → Sign-in method.
 - On sign-in, `js/nav.js` upserts `web_users/{uid}` (uid, displayName,
-  email/phone, createdAt, lastLoginAt) and redirects to `account.html`.
+  email/phone, photoURL, createdAt, lastLoginAt) and redirects to
+  `account.html`.
+
+## Profile photo
+
+The account page (`account.html`) lets a signed-in user set a profile photo
+via the **"+"** badge on the avatar. The image is centre-cropped and
+downscaled client-side to a 256×256 JPEG (`js/account.js`), cached in
+`localStorage` for instant display on the same device, and stored as a
+bounded data URI in `web_users/{uid}.photoURL`. Google users are seeded with
+their Google avatar on first sign-in. **Deploy the updated `firestore.rules`**
+(they now allow the `photoURL` field, ≤ 900 KB, on `web_users`) — otherwise
+the Firestore write is rejected and the photo only persists on the local
+device:
+`npx -y firebase-tools@latest deploy --only firestore:rules`.
 
 ## Reviews moderation
 

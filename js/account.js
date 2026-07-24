@@ -12,6 +12,8 @@
     var contentSection = document.getElementById('account-content');
     var signinBtn = document.getElementById('account-signin-btn');
     var avatar = document.getElementById('account-avatar');
+    var avatarBtn = document.getElementById('account-avatar-btn');
+    var avatarInput = document.getElementById('account-avatar-input');
     var nameEl = document.getElementById('account-name');
     var nameRow = document.getElementById('account-name-row');
     var nameEdit = document.getElementById('account-name-edit');
@@ -49,12 +51,27 @@
         return user.displayName || user.email || user.phoneNumber || 'Hawaa user';
     }
 
+    function avatarCacheKey(user) {
+        return 'hawaa_avatar_' + user.uid;
+    }
+
+    // Show either the profile photo (if any) or the initial letter fallback.
+    function setAvatar(user, photoURL) {
+        if (photoURL) {
+            avatar.style.backgroundImage = 'url("' + photoURL + '")';
+            avatar.classList.add('has-photo');
+            avatar.textContent = '';
+        } else {
+            avatar.style.backgroundImage = '';
+            avatar.classList.remove('has-photo');
+            avatar.textContent = displayLabel(user).charAt(0).toUpperCase();
+        }
+    }
+
     function renderSignedIn(user) {
         signedOutSection.classList.add('hidden');
         contentSection.classList.remove('hidden');
 
-        var label = displayLabel(user);
-        avatar.textContent = label.charAt(0).toUpperCase();
         nameEl.textContent = user.displayName || 'Add your name';
 
         emailEl.textContent = user.email || '';
@@ -62,11 +79,23 @@
         phoneEl.textContent = user.phoneNumber || '';
         phoneEl.style.display = user.phoneNumber ? '' : 'none';
 
-        // Member since — from the web_users profile doc.
+        // Instant paint: cached photo (this device) or the initial letter,
+        // then reconcile with the profile doc below.
+        var cached = null;
+        try { cached = localStorage.getItem(avatarCacheKey(user)); } catch (e) { /* ignore */ }
+        setAvatar(user, cached || user.photoURL || '');
+
+        // Member since + authoritative photo — from the web_users profile doc.
         fb.getDoc(fb.doc(fb.db, 'web_users', user.uid)).then(function (snap) {
-            if (snap.exists() && snap.data().createdAt && snap.data().createdAt.toDate) {
-                var d = snap.data().createdAt.toDate();
+            if (!snap.exists()) return;
+            var data = snap.data();
+            if (data.createdAt && data.createdAt.toDate) {
+                var d = data.createdAt.toDate();
                 sinceEl.textContent = 'Member since ' + MONTHS[d.getMonth()] + ' ' + d.getFullYear();
+            }
+            if (data.photoURL) {
+                setAvatar(user, data.photoURL);
+                try { localStorage.setItem(avatarCacheKey(user), data.photoURL); } catch (e) { /* ignore */ }
             }
         }).catch(function () { /* non-blocking */ });
 
@@ -165,6 +194,105 @@
         });
     }
 
+    // Create or update the web_users profile doc in the exact shape the
+    // security rules require: a fresh doc needs uid + createdAt + lastLoginAt,
+    // while an existing doc may only change lastLoginAt/displayName/photoURL.
+    // (Writing a partial doc as a "create" was the cause of the save error.)
+    function syncProfileDoc(user, fields) {
+        var ref = fb.doc(fb.db, 'web_users', user.uid);
+        return fb.getDoc(ref).then(function (snap) {
+            if (snap.exists()) {
+                var update = { lastLoginAt: fb.serverTimestamp() };
+                if ('displayName' in fields) update.displayName = fields.displayName;
+                if ('photoURL' in fields) update.photoURL = fields.photoURL;
+                return fb.setDoc(ref, update, { merge: true });
+            }
+            var data = {
+                uid: user.uid,
+                createdAt: fb.serverTimestamp(),
+                lastLoginAt: fb.serverTimestamp()
+            };
+            if (user.email) data.email = user.email;
+            if (user.phoneNumber) data.phone = user.phoneNumber;
+            if ('displayName' in fields) data.displayName = fields.displayName;
+            else if (user.displayName) data.displayName = user.displayName;
+            if ('photoURL' in fields) data.photoURL = fields.photoURL;
+            return fb.setDoc(ref, data);
+        });
+    }
+
+    // ---- Profile photo ----
+    var AVATAR_MAX = 256; // px — square, keeps the stored data URI small
+
+    function compressImage(file) {
+        return new Promise(function (resolve, reject) {
+            if (!file.type || file.type.indexOf('image/') !== 0) {
+                reject(new Error('not-image'));
+                return;
+            }
+            var reader = new FileReader();
+            reader.onload = function () {
+                var img = new Image();
+                img.onload = function () {
+                    // Centre-crop to a square, then downscale.
+                    var side = Math.min(img.width, img.height);
+                    var sx = (img.width - side) / 2;
+                    var sy = (img.height - side) / 2;
+                    var canvas = document.createElement('canvas');
+                    canvas.width = AVATAR_MAX;
+                    canvas.height = AVATAR_MAX;
+                    var ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, sx, sy, side, side, 0, 0, AVATAR_MAX, AVATAR_MAX);
+                    resolve(canvas.toDataURL('image/jpeg', 0.85));
+                };
+                img.onerror = function () { reject(new Error('decode')); };
+                img.src = reader.result;
+            };
+            reader.onerror = function () { reject(new Error('read')); };
+            reader.readAsDataURL(file);
+        });
+    }
+
+    if (avatarBtn && avatarInput) {
+        avatarBtn.addEventListener('click', function () {
+            if (avatarBtn.disabled) return;
+            avatarInput.click();
+        });
+
+        avatarInput.addEventListener('change', function () {
+            var file = avatarInput.files && avatarInput.files[0];
+            if (!file || !currentUser) return;
+            if (file.size > 8 * 1024 * 1024) {
+                errorEl.textContent = 'Please choose an image under 8 MB.';
+                avatarInput.value = '';
+                return;
+            }
+            errorEl.textContent = '';
+            avatarBtn.disabled = true;
+            avatarBtn.classList.add('loading');
+
+            compressImage(file).then(function (dataUrl) {
+                // Paint + cache immediately so it works on this device even
+                // before the Firestore write (or rules deploy) lands.
+                setAvatar(currentUser, dataUrl);
+                try { localStorage.setItem(avatarCacheKey(currentUser), dataUrl); } catch (e) { /* ignore */ }
+                return syncProfileDoc(currentUser, { photoURL: dataUrl });
+            }).then(function () {
+                avatarBtn.disabled = false;
+                avatarBtn.classList.remove('loading');
+                avatarInput.value = '';
+            }).catch(function (err) {
+                console.warn('Avatar update failed:', err);
+                avatarBtn.disabled = false;
+                avatarBtn.classList.remove('loading');
+                avatarInput.value = '';
+                if (err && (err.message === 'not-image' || err.message === 'decode')) {
+                    errorEl.textContent = 'That image could not be used. Please try another.';
+                }
+            });
+        });
+    }
+
     // ---- Name editing ----
     function openNameEdit() {
         nameRow.classList.add('hidden');
@@ -188,17 +316,18 @@
         nameSave.disabled = true;
         nameSave.textContent = 'Saving…';
 
+        // Firebase Auth is the source of truth for the displayed name. Once
+        // it succeeds the name is saved, so reflect it immediately and treat
+        // the Firestore mirror as best-effort — this removes the spurious
+        // error that used to appear while the name saved fine underneath.
         fb.updateProfile(currentUser, { displayName: name }).then(function () {
-            // Rules require lastLoginAt to accompany profile updates.
-            return fb.setDoc(fb.doc(fb.db, 'web_users', currentUser.uid), {
-                displayName: name,
-                lastLoginAt: fb.serverTimestamp()
-            }, { merge: true });
-        }).then(function () {
             nameSave.disabled = false;
             nameSave.textContent = 'Save';
             closeNameEdit();
             renderSignedIn(currentUser);
+            return syncProfileDoc(currentUser, { displayName: name }).catch(function (err) {
+                console.warn('Profile name sync failed:', err);
+            });
         }).catch(function (err) {
             console.warn('Name update failed:', err);
             nameSave.disabled = false;

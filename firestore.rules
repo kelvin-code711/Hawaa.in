@@ -23,6 +23,7 @@ rules_version = '2';
 //   - displayName: string (optional, 1-100)
 //   - email: string (optional, valid email, immutable)
 //   - phone: string (optional, E.164, immutable)
+//   - photoURL: string (optional, provider avatar URL or small data: URI)
 //
 // Collection: reviews (product reviews, sign-in + moderation model)
 //   - uid: string (== auth.uid on create, immutable)
@@ -73,6 +74,13 @@ service cloud.firestore {
       return name is string && name.size() >= 1 && name.size() <= 100;
     }
 
+    // Profile photo: either a provider avatar URL (https) or a small
+    // client-compressed data: URI. Bounded so a single field can never
+    // approach Firestore's 1 MB document ceiling.
+    function isValidPhotoURL(url) {
+      return url is string && url.size() >= 1 && url.size() <= 900000;
+    }
+
     // ===============================================================
     // supportTickets — contact form on support.html (anonymous)
     // ===============================================================
@@ -109,23 +117,26 @@ service cloud.firestore {
 
     function isValidNewUser(data, userId) {
       return data.keys().hasAll(['uid', 'createdAt', 'lastLoginAt']) &&
-        data.keys().hasOnly(['uid', 'createdAt', 'lastLoginAt', 'displayName', 'email', 'phone']) &&
+        data.keys().hasOnly(['uid', 'createdAt', 'lastLoginAt', 'displayName', 'email', 'phone', 'photoURL']) &&
         data.uid == userId &&
         isServerTime(data.createdAt) &&
         isServerTime(data.lastLoginAt) &&
         (!('displayName' in data) || isValidDisplayName(data.displayName)) &&
         (!('email' in data) || validEmail(data.email)) &&
-        (!('phone' in data) || isValidPhone(data.phone));
+        (!('phone' in data) || isValidPhone(data.phone)) &&
+        (!('photoURL' in data) || isValidPhotoURL(data.photoURL));
     }
 
-    // Updates may only touch lastLoginAt and displayName; identity
+    // Updates may only touch lastLoginAt, displayName and photoURL; identity
     // fields (uid, createdAt, email, phone) are immutable.
     function isValidUserUpdate() {
       return request.resource.data.diff(resource.data).affectedKeys()
-          .hasOnly(['lastLoginAt', 'displayName']) &&
+          .hasOnly(['lastLoginAt', 'displayName', 'photoURL']) &&
         isServerTime(request.resource.data.lastLoginAt) &&
         (!('displayName' in request.resource.data) ||
-          isValidDisplayName(request.resource.data.displayName));
+          isValidDisplayName(request.resource.data.displayName)) &&
+        (!('photoURL' in request.resource.data) ||
+          isValidPhotoURL(request.resource.data.photoURL));
     }
 
     // ===============================================================

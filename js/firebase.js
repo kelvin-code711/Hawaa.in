@@ -18,6 +18,10 @@ import {
     sendPasswordResetEmail,
     signInWithPhoneNumber,
     RecaptchaVerifier,
+    GoogleAuthProvider,
+    signInWithPopup,
+    signInWithRedirect,
+    getRedirectResult,
     updateProfile,
     signOut
 } from 'https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js';
@@ -63,6 +67,10 @@ const api = {
     sendPasswordResetEmail,
     signInWithPhoneNumber,
     RecaptchaVerifier,
+    GoogleAuthProvider,
+    signInWithPopup,
+    signInWithRedirect,
+    getRedirectResult,
     updateProfile,
     signOut,
     doc,

@@ -108,65 +108,58 @@ window.hawaaFirebaseReady = window.hawaaFirebase
     var confirmationResult = null;  // from signInWithPhoneNumber
     var recaptchaVerifier = null;
 
-    // ---- Dynamically injected email step ----
-    var emailStep = null;
+    // Google 'G' logo (official four-colour mark) as an inline SVG data source.
+    var GOOGLE_LOGO_SVG =
+        '<svg class="signin-google-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">' +
+            '<path fill="#4285F4" d="M23.06 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h6.2a5.3 5.3 0 0 1-2.3 3.48v2.89h3.72c2.18-2 3.44-4.96 3.44-8.38z"/>' +
+            '<path fill="#34A853" d="M12 24c3.12 0 5.74-1.03 7.65-2.8l-3.72-2.89c-1.03.69-2.35 1.1-3.93 1.1-3.02 0-5.58-2.04-6.49-4.79H1.66v3c1.9 3.78 5.82 6.38 10.34 6.38z"/>' +
+            '<path fill="#FBBC05" d="M5.51 14.62a7.2 7.2 0 0 1 0-4.62v-3H1.66a12 12 0 0 0 0 10.62l3.85-3z"/>' +
+            '<path fill="#EA4335" d="M12 4.75c1.7 0 3.23.59 4.43 1.73l3.3-3.3C17.73 1.24 15.12 0 12 0 7.48 0 3.56 2.6 1.66 6.38l3.85 3C6.42 6.79 8.98 4.75 12 4.75z"/>' +
+        '</svg>';
 
-    function injectEmailUI() {
+    // ---- Inject the Google button, method divider and legal notice into the
+    // phone step. Phone OTP and Google both sign in *and* create the account,
+    // so there is no separate "sign up" path to confuse the flow. ----
+    function injectAuthUI() {
         if (!signinModal || !phoneStep) return;
 
-        // "or continue with email" switch inside the phone step
-        var switchWrap = document.createElement('div');
-        switchWrap.className = 'signin-actions';
-        switchWrap.innerHTML =
-            '<button type="button" class="signin-back" id="signin-use-email">Use email instead</button>';
-        phoneStep.appendChild(switchWrap);
+        var title = phoneStep.querySelector('.signin-title');
+        var subtitle = phoneStep.querySelector('.signin-subtitle');
+        if (title) title.textContent = 'Sign in or create account';
+        if (subtitle) subtitle.textContent = 'Continue with Google, or your mobile number';
 
-        // Email step
-        emailStep = document.createElement('div');
-        emailStep.className = 'signin-step hidden';
-        emailStep.id = 'signin-email-step';
-        emailStep.innerHTML =
-            '<h2 class="signin-title">Sign in</h2>' +
-            '<p class="signin-subtitle" id="signin-email-subtitle">Enter your email and password</p>' +
-            '<div class="phone-input-group hidden" id="signin-name-group" style="margin-bottom:10px;">' +
-                '<input type="text" class="phone-input" id="signin-name" placeholder="Full name" autocomplete="name" maxlength="100" style="padding-left:16px;">' +
-            '</div>' +
-            '<div class="phone-input-group" id="signin-email-group" style="margin-bottom:10px;">' +
-                '<input type="email" class="phone-input" id="signin-email" placeholder="Email address" autocomplete="email" style="padding-left:16px;">' +
-            '</div>' +
-            '<div class="phone-input-group" id="signin-password-group">' +
-                '<input type="password" class="phone-input" id="signin-password" placeholder="Password" autocomplete="current-password" style="padding-left:16px;">' +
-            '</div>' +
-            '<p class="signin-error" id="signin-email-error"></p>' +
-            '<button class="signin-btn" id="signin-email-submit">Sign in</button>' +
-            '<div class="signin-actions">' +
-                '<button type="button" class="signin-back" id="signin-email-toggle">Create an account</button>' +
-                '<button type="button" class="signin-resend" id="signin-forgot">Forgot password?</button>' +
-            '</div>' +
-            '<div class="signin-actions">' +
-                '<button type="button" class="signin-back" id="signin-use-phone">Use mobile number instead</button>' +
-            '</div>';
-        signinModal.appendChild(emailStep);
+        // Google button + "or" divider, placed above the phone field.
+        var social = document.createElement('div');
+        social.className = 'signin-social';
+        social.innerHTML =
+            '<button type="button" class="signin-google-btn" id="signin-google">' +
+                GOOGLE_LOGO_SVG +
+                '<span>Continue with Google</span>' +
+            '</button>' +
+            '<p class="signin-social-error" id="signin-google-error"></p>' +
+            '<div class="signin-divider"><span>or</span></div>';
+        // Sits directly above the mobile-number field.
+        var phoneGroup = phoneStep.querySelector('#signin-phone-group');
+        if (phoneGroup) {
+            phoneStep.insertBefore(social, phoneGroup);
+        } else {
+            phoneStep.appendChild(social);
+        }
 
+        // Legal notice, appended after the Send OTP button.
+        var legal = document.createElement('p');
+        legal.className = 'signin-legal';
+        legal.innerHTML =
+            'By continuing, you agree to Hawaa\'s ' +
+            '<a href="terms-of-service.html">Terms of Service</a>. ' +
+            'Read our <a href="privacy-policy.html">Privacy policy</a>.';
+        phoneStep.appendChild(legal);
     }
 
-    injectEmailUI();
+    injectAuthUI();
 
-    var useEmailBtn = document.getElementById('signin-use-email');
-    var usePhoneBtn = document.getElementById('signin-use-phone');
-    var nameGroup = document.getElementById('signin-name-group');
-    var nameInput = document.getElementById('signin-name');
-    var emailInput = document.getElementById('signin-email');
-    var emailGroup = document.getElementById('signin-email-group');
-    var passwordInput = document.getElementById('signin-password');
-    var passwordGroup = document.getElementById('signin-password-group');
-    var emailError = document.getElementById('signin-email-error');
-    var emailSubmit = document.getElementById('signin-email-submit');
-    var emailToggle = document.getElementById('signin-email-toggle');
-    var emailSubtitle = document.getElementById('signin-email-subtitle');
-    var forgotBtn = document.getElementById('signin-forgot');
-
-    var emailMode = 'signin'; // 'signin' | 'signup'
+    var googleBtn = document.getElementById('signin-google');
+    var googleError = document.getElementById('signin-google-error');
 
     // Auto-focusing a field on touch devices pops the keyboard (and, on iOS,
     // can zoom/shift the page) the moment the modal opens — only do it when
@@ -180,7 +173,7 @@ window.hawaaFirebaseReady = window.hawaaFirebase
     }
 
     function showStep(step) {
-        [phoneStep, otpStep, emailStep].forEach(function(s) {
+        [phoneStep, otpStep].forEach(function(s) {
             if (s) s.classList.add('hidden');
         });
         if (step) step.classList.remove('hidden');
@@ -200,7 +193,12 @@ window.hawaaFirebaseReady = window.hawaaFirebase
             case 'auth/wrong-password':
             case 'auth/user-not-found': return 'Incorrect email or password.';
             case 'auth/network-request-failed': return 'Network error. Please check your connection and try again.';
-            case 'auth/billing-not-enabled': return 'SMS sign-in is not available right now. Please use email instead.';
+            case 'auth/billing-not-enabled': return 'SMS sign-in is not available right now. Please continue with Google.';
+            case 'auth/account-exists-with-different-credential': return 'You already have an account with this email. Try a different sign-in method.';
+            case 'auth/unauthorized-domain': return 'Google sign-in isn\'t enabled for this site yet. Please use your mobile number.';
+            case 'auth/operation-not-allowed': return 'Google sign-in isn\'t enabled yet. Please use your mobile number.';
+            case 'auth/popup-closed-by-user':
+            case 'auth/cancelled-popup-request': return 'Sign-in was cancelled. Please try again.';
             default: return (err && err.message) ? err.message.replace('Firebase: ', '') : 'Something went wrong. Please try again.';
         }
     }
@@ -212,6 +210,8 @@ window.hawaaFirebaseReady = window.hawaaFirebase
             if (snap.exists()) {
                 var update = { lastLoginAt: fb.serverTimestamp() };
                 if (user.displayName) update.displayName = user.displayName;
+                // Only seed a photo from the provider if the user hasn't set one.
+                if (user.photoURL && !snap.data().photoURL) update.photoURL = user.photoURL;
                 return fb.setDoc(ref, update, { merge: true });
             }
             var data = {
@@ -222,6 +222,7 @@ window.hawaaFirebaseReady = window.hawaaFirebase
             if (user.displayName) data.displayName = user.displayName;
             if (user.email) data.email = user.email;
             if (user.phoneNumber) data.phone = user.phoneNumber;
+            if (user.photoURL) data.photoURL = user.photoURL;
             return fb.setDoc(ref, data);
         }).catch(function(err) {
             // Profile write must never block sign-in UX.
@@ -276,11 +277,8 @@ window.hawaaFirebaseReady = window.hawaaFirebase
         if (phoneInput) phoneInput.value = '';
         if (phoneInputGroup) phoneInputGroup.classList.remove('error');
         if (phoneError) phoneError.textContent = '';
-
-        if (emailInput) emailInput.value = '';
-        if (passwordInput) passwordInput.value = '';
-        if (nameInput) nameInput.value = '';
-        if (emailError) emailError.textContent = '';
+        if (googleError) googleError.textContent = '';
+        if (googleBtn) googleBtn.disabled = false;
 
         otpInputs.forEach(function(input) {
             input.value = '';
@@ -296,10 +294,6 @@ window.hawaaFirebaseReady = window.hawaaFirebase
         if (verifyBtn) {
             verifyBtn.disabled = false;
             verifyBtn.textContent = 'Verify';
-        }
-        if (emailSubmit) {
-            emailSubmit.disabled = false;
-            emailSubmit.textContent = emailMode === 'signup' ? 'Create account' : 'Sign in';
         }
 
         // Clear timer
@@ -341,7 +335,60 @@ window.hawaaFirebaseReady = window.hawaaFirebase
                     : 'Sign in';
             }
         });
+
+        // Complete a Google sign-in that fell back to a full-page redirect
+        // (used when popups are blocked, e.g. some in-app/mobile browsers).
+        fb.getRedirectResult(fb.auth).then(function(result) {
+            if (result && result.user) {
+                onSignedIn(result.user);
+            }
+        }).catch(function(err) {
+            console.warn('Google redirect sign-in failed:', err);
+        });
     });
+
+    // ---- Google sign-in (also creates the account on first use) ----
+    function signInWithGoogle() {
+        if (!fb) {
+            if (googleError) googleError.textContent = 'Still connecting… please try again in a moment.';
+            return;
+        }
+        if (googleError) googleError.textContent = '';
+        if (googleBtn) {
+            googleBtn.disabled = true;
+            googleBtn.classList.add('loading');
+        }
+
+        var provider = new fb.GoogleAuthProvider();
+        provider.setCustomParameters({ prompt: 'select_account' });
+
+        fb.signInWithPopup(fb.auth, provider)
+            .then(function(credential) {
+                onSignedIn(credential.user);
+            })
+            .catch(function(err) {
+                var code = (err && err.code) || '';
+                // A blocked/closed popup is common on mobile — fall back to a
+                // redirect flow, which getRedirectResult() completes on return.
+                if (code === 'auth/popup-blocked' ||
+                    code === 'auth/operation-not-supported-in-this-environment' ||
+                    code === 'auth/cancelled-popup-request') {
+                    fb.signInWithRedirect(fb.auth, provider).catch(function(rErr) {
+                        if (googleBtn) { googleBtn.disabled = false; googleBtn.classList.remove('loading'); }
+                        if (googleError) googleError.textContent = friendlyAuthError(rErr);
+                    });
+                    return;
+                }
+                if (googleBtn) { googleBtn.disabled = false; googleBtn.classList.remove('loading'); }
+                // A user closing the popup themselves isn't an error worth shouting about.
+                if (code === 'auth/popup-closed-by-user') return;
+                if (googleError) googleError.textContent = friendlyAuthError(err);
+            });
+    }
+
+    if (googleBtn) {
+        googleBtn.addEventListener('click', signInWithGoogle);
+    }
 
     function ensureRecaptcha() {
         if (recaptchaVerifier) return recaptchaVerifier;
@@ -608,114 +655,6 @@ window.hawaaFirebaseReady = window.hawaaFirebase
                 // Restart timer
                 startResendTimer();
             });
-        });
-    }
-
-    // ---- Email step wiring ----
-    function setEmailMode(mode) {
-        emailMode = mode;
-        var signup = mode === 'signup';
-        if (nameGroup) nameGroup.classList.toggle('hidden', !signup);
-        if (emailSubtitle) emailSubtitle.textContent = signup ? 'Create your Hawaa account' : 'Enter your email and password';
-        if (emailSubmit) emailSubmit.textContent = signup ? 'Create account' : 'Sign in';
-        if (emailToggle) emailToggle.textContent = signup ? 'I already have an account' : 'Create an account';
-        if (passwordInput) passwordInput.setAttribute('autocomplete', signup ? 'new-password' : 'current-password');
-        if (emailError) emailError.textContent = '';
-    }
-
-    if (useEmailBtn) {
-        useEmailBtn.addEventListener('click', function() {
-            showStep(emailStep);
-            setEmailMode('signin');
-            setTimeout(function() { autoFocus(emailInput); }, 100);
-        });
-    }
-
-    if (usePhoneBtn) {
-        usePhoneBtn.addEventListener('click', function() {
-            showStep(phoneStep);
-            setTimeout(function() { autoFocus(phoneInput); }, 100);
-        });
-    }
-
-    if (emailToggle) {
-        emailToggle.addEventListener('click', function() {
-            setEmailMode(emailMode === 'signup' ? 'signin' : 'signup');
-        });
-    }
-
-    if (forgotBtn) {
-        forgotBtn.addEventListener('click', function() {
-            var email = emailInput ? emailInput.value.trim() : '';
-            if (!email) {
-                if (emailError) emailError.textContent = 'Enter your email above, then tap "Forgot password?" again.';
-                return;
-            }
-            if (!fb) return;
-            fb.sendPasswordResetEmail(fb.auth, email)
-                .then(function() {
-                    if (emailError) emailError.textContent = 'Password reset email sent. Check your inbox.';
-                })
-                .catch(function(err) {
-                    if (emailError) emailError.textContent = friendlyAuthError(err);
-                });
-        });
-    }
-
-    function handleEmailSubmit() {
-        var email = emailInput ? emailInput.value.trim() : '';
-        var password = passwordInput ? passwordInput.value : '';
-        var name = nameInput ? nameInput.value.trim() : '';
-
-        if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
-            if (emailError) emailError.textContent = 'Please enter a valid email address.';
-            return;
-        }
-        if (!password || password.length < 6) {
-            if (emailError) emailError.textContent = 'Password must be at least 6 characters.';
-            return;
-        }
-        if (!fb) {
-            if (emailError) emailError.textContent = 'Still connecting… please try again in a moment.';
-            return;
-        }
-
-        emailSubmit.disabled = true;
-        emailSubmit.innerHTML = '<span class="spinner"></span>' + (emailMode === 'signup' ? 'Creating...' : 'Signing in...');
-
-        var action = emailMode === 'signup'
-            ? fb.createUserWithEmailAndPassword(fb.auth, email, password).then(function(credential) {
-                  if (name) {
-                      return fb.updateProfile(credential.user, { displayName: name }).then(function() {
-                          return credential;
-                      });
-                  }
-                  return credential;
-              })
-            : fb.signInWithEmailAndPassword(fb.auth, email, password);
-
-        action
-            .then(function(credential) {
-                emailSubmit.disabled = false;
-                emailSubmit.textContent = 'Done';
-                onSignedIn(credential.user);
-            })
-            .catch(function(err) {
-                emailSubmit.disabled = false;
-                emailSubmit.textContent = emailMode === 'signup' ? 'Create account' : 'Sign in';
-                if (emailError) emailError.textContent = friendlyAuthError(err);
-            });
-    }
-
-    if (emailSubmit) {
-        emailSubmit.addEventListener('click', handleEmailSubmit);
-    }
-    if (passwordInput) {
-        passwordInput.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                handleEmailSubmit();
-            }
         });
     }
 
