@@ -117,18 +117,38 @@ window.hawaaFirebaseReady = window.hawaaFirebase
             '<path fill="#EA4335" d="M12 4.75c1.7 0 3.23.59 4.43 1.73l3.3-3.3C17.73 1.24 15.12 0 12 0 7.48 0 3.56 2.6 1.66 6.38l3.85 3C6.42 6.79 8.98 4.75 12 4.75z"/>' +
         '</svg>';
 
-    // ---- Inject the Google button, method divider and legal notice into the
-    // phone step. Phone OTP and Google both sign in *and* create the account,
-    // so there is no separate "sign up" path to confuse the flow. ----
+    var authMode = 'signin';        // 'signin' | 'signup'
+    var currentSignupName = '';     // name captured on the sign-up tab
+
+    // ---- Build the unified auth UI inside the phone step: a visible
+    // Sign in / Sign up toggle, Google, the mobile-number field (with an
+    // extra name field on Sign up), and the legal notice. Google and phone
+    // OTP both authenticate AND create the account; the toggle makes that
+    // choice explicit and, on Sign up, captures the new user's name. ----
     function injectAuthUI() {
         if (!signinModal || !phoneStep) return;
 
         var title = phoneStep.querySelector('.signin-title');
         var subtitle = phoneStep.querySelector('.signin-subtitle');
-        if (title) title.textContent = 'Sign in or create account';
-        if (subtitle) subtitle.textContent = 'Continue with Google, or your mobile number';
+        if (title) title.textContent = 'Welcome to Hawaa';
+        if (subtitle) subtitle.id = 'signin-subtitle';
 
-        // Google button + "or" divider, placed above the phone field.
+        var phoneGroup = phoneStep.querySelector('#signin-phone-group');
+
+        // Segmented Sign in / Sign up toggle — the explicit entry point.
+        var tabs = document.createElement('div');
+        tabs.className = 'signin-tabs';
+        tabs.setAttribute('role', 'tablist');
+        tabs.innerHTML =
+            '<button type="button" class="signin-tab is-active" id="signin-tab-signin" role="tab" aria-selected="true">Sign in</button>' +
+            '<button type="button" class="signin-tab" id="signin-tab-signup" role="tab" aria-selected="false">Sign up</button>';
+        if (subtitle) {
+            phoneStep.insertBefore(tabs, subtitle.nextSibling);
+        } else {
+            phoneStep.insertBefore(tabs, phoneStep.firstChild);
+        }
+
+        // Google button + "or" divider.
         var social = document.createElement('div');
         social.className = 'signin-social';
         social.innerHTML =
@@ -138,12 +158,22 @@ window.hawaaFirebaseReady = window.hawaaFirebase
             '</button>' +
             '<p class="signin-social-error" id="signin-google-error"></p>' +
             '<div class="signin-divider"><span>or</span></div>';
-        // Sits directly above the mobile-number field.
-        var phoneGroup = phoneStep.querySelector('#signin-phone-group');
         if (phoneGroup) {
             phoneStep.insertBefore(social, phoneGroup);
         } else {
             phoneStep.appendChild(social);
+        }
+
+        // Full-name field — shown only on Sign up, sits above the number.
+        var nameGroup = document.createElement('div');
+        nameGroup.className = 'phone-input-group signin-name-group hidden';
+        nameGroup.id = 'signin-name-group';
+        nameGroup.innerHTML =
+            '<input type="text" class="phone-input" id="signin-name" placeholder="Full name" autocomplete="name" maxlength="100" style="padding-left:16px;">';
+        if (phoneGroup) {
+            phoneStep.insertBefore(nameGroup, phoneGroup);
+        } else {
+            phoneStep.appendChild(nameGroup);
         }
 
         // Legal notice, appended after the Send OTP button.
@@ -160,6 +190,60 @@ window.hawaaFirebaseReady = window.hawaaFirebase
 
     var googleBtn = document.getElementById('signin-google');
     var googleError = document.getElementById('signin-google-error');
+    var signinTab = document.getElementById('signin-tab-signin');
+    var signupTab = document.getElementById('signin-tab-signup');
+    var authSubtitle = document.getElementById('signin-subtitle');
+    var nameGroupEl = document.getElementById('signin-name-group');
+    var nameInputEl = document.getElementById('signin-name');
+
+    function setAuthMode(mode) {
+        authMode = mode;
+        var signup = mode === 'signup';
+        if (signinTab) {
+            signinTab.classList.toggle('is-active', !signup);
+            signinTab.setAttribute('aria-selected', String(!signup));
+        }
+        if (signupTab) {
+            signupTab.classList.toggle('is-active', signup);
+            signupTab.setAttribute('aria-selected', String(signup));
+        }
+        if (authSubtitle) {
+            authSubtitle.textContent = signup
+                ? 'Create your account with Google or your mobile number'
+                : 'Welcome back — continue with Google or your mobile number';
+        }
+        if (nameGroupEl) nameGroupEl.classList.toggle('hidden', !signup);
+        if (phoneError) phoneError.textContent = '';
+        if (googleError) googleError.textContent = '';
+    }
+
+    if (signinTab) {
+        signinTab.addEventListener('click', function() {
+            setAuthMode('signin');
+            autoFocus(phoneInput);
+        });
+    }
+    if (signupTab) {
+        signupTab.addEventListener('click', function() {
+            setAuthMode('signup');
+            autoFocus(nameInputEl);
+        });
+    }
+    if (nameInputEl) {
+        nameInputEl.addEventListener('input', function() {
+            if (nameGroupEl) nameGroupEl.classList.remove('error');
+            if (phoneError) phoneError.textContent = '';
+        });
+        nameInputEl.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                autoFocus(phoneInput);
+            }
+        });
+    }
+
+    // Initialise copy/state for the default (Sign in) tab.
+    setAuthMode('signin');
 
     // Auto-focusing a field on touch devices pops the keyboard (and, on iOS,
     // can zoom/shift the page) the moment the modal opens — only do it when
@@ -279,6 +363,10 @@ window.hawaaFirebaseReady = window.hawaaFirebase
         if (phoneError) phoneError.textContent = '';
         if (googleError) googleError.textContent = '';
         if (googleBtn) googleBtn.disabled = false;
+        if (nameInputEl) nameInputEl.value = '';
+        if (nameGroupEl) nameGroupEl.classList.remove('error');
+        currentSignupName = '';
+        setAuthMode('signin');
 
         otpInputs.forEach(function(input) {
             input.value = '';
@@ -457,6 +545,19 @@ window.hawaaFirebaseReady = window.hawaaFirebase
                 if (phoneError) phoneError.textContent = error;
                 return;
             }
+            // On Sign up, ask for the name so a new mobile account isn't nameless.
+            if (authMode === 'signup') {
+                var typedName = nameInputEl ? nameInputEl.value.trim() : '';
+                if (!typedName) {
+                    if (nameGroupEl) nameGroupEl.classList.add('error');
+                    if (phoneError) phoneError.textContent = 'Please enter your name to create an account.';
+                    if (nameInputEl) autoFocus(nameInputEl);
+                    return;
+                }
+                currentSignupName = typedName;
+            } else {
+                currentSignupName = '';
+            }
             if (!fb) {
                 if (phoneError) phoneError.textContent = 'Still connecting… please try again in a moment.';
                 return;
@@ -573,6 +674,13 @@ window.hawaaFirebaseReady = window.hawaaFirebase
             confirmationResult.confirm(otp)
                 .then(function(credential) {
                     verifyBtn.disabled = false;
+                    // Save the name captured on the Sign up tab before landing
+                    // on the account page (only when the account has no name yet).
+                    if (currentSignupName && credential.user && !credential.user.displayName) {
+                        return fb.updateProfile(credential.user, { displayName: currentSignupName })
+                            .catch(function() { /* name is non-blocking */ })
+                            .then(function() { onSignedIn(credential.user); });
+                    }
                     onSignedIn(credential.user);
                 })
                 .catch(function(err) {

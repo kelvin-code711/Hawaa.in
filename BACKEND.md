@@ -33,10 +33,13 @@ safe to commit. All protection comes from `firestore.rules`.
 ## Authentication
 
 - **Providers:** Google and Phone (SMS region allowlist: IN). Email/password
-  was removed — Google and phone OTP both sign in *and* create the account on
-  first use, so there is no separate sign-up path (this keeps the modal flow
-  consistent). The sign-in modal shows "Continue with Google", an "or"
-  divider, the mobile-number field, and a "By continuing…" legal notice.
+  was removed. The modal has an explicit **Sign in / Sign up** segmented
+  toggle, then "Continue with Google", an "or" divider, the mobile-number
+  field, and a "By continuing…" legal notice. Google and phone OTP both
+  authenticate *and* create the account; the toggle makes the choice visible
+  and, on **Sign up**, shows a required Full-name field so a new mobile
+  account isn't nameless (the name is written to the Auth profile on OTP
+  verify). Google fills the name automatically.
 - **Enable Google (required):** Firebase console → Authentication → Sign-in
   method → enable **Google**, and add the site's domain (e.g.
   `in-code711.github.io` and any custom domain) under
