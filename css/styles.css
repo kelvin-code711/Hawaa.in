@@ -649,6 +649,11 @@ body.menu-open .logo-img {
     transition: opacity 0.2s ease;
 }
 
+/* Informational (not an error) — e.g. "you already have an account" */
+.signin-error.info {
+    color: var(--teal-deep);
+}
+
 /* Primary button */
 .signin-btn {
     width: 100%;

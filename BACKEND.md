@@ -40,6 +40,14 @@ safe to commit. All protection comes from `firestore.rules`.
   and, on **Sign up**, shows a required Full-name field so a new mobile
   account isn't nameless (the name is written to the Auth profile on OTP
   verify). Google fills the name automatically.
+- **Existing number on Sign up:** phone auth is idempotent and a number can't
+  be checked for existence before the OTP is sent (Firebase blocks
+  enumeration). So `js/nav.js` detects *after* verifying whether the account
+  was actually new (`getAdditionalUserInfo(...).isNewUser`, with a metadata
+  timestamp fallback). If someone picks **Sign up** with a number that already
+  has an account, it shows "You already have a Hawaa account with this number —
+  signing you in…" and signs them in without touching their existing name,
+  instead of implying a new account was created.
 - **Enable Google (required):** Firebase console → Authentication → Sign-in
   method → enable **Google**, and add the site's domain (e.g.
   `in-code711.github.io` and any custom domain) under
