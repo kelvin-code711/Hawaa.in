@@ -168,7 +168,16 @@
         <!-- Signed-in state -->
         <section class="account-content hidden" id="account-content">
             <div class="account-card">
-                <div class="account-avatar" id="account-avatar">?</div>
+                <div class="account-avatar-wrap">
+                    <div class="account-avatar" id="account-avatar">?</div>
+                    <button type="button" class="account-avatar-btn" id="account-avatar-btn" aria-label="Change profile photo">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M12 5v14"/>
+                            <path d="M5 12h14"/>
+                        </svg>
+                    </button>
+                    <input type="file" id="account-avatar-input" accept="image/*" hidden>
+                </div>
                 <div class="account-identity">
                     <div class="account-name-row" id="account-name-row">
                         <h1 class="account-name" id="account-name">&nbsp;</h1>
