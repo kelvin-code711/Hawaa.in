@@ -812,6 +812,41 @@ body.menu-open .logo-img {
     to { transform: rotate(360deg); }
 }
 
+/* Sign in / Sign up segmented toggle */
+.signin-tabs {
+    display: flex;
+    gap: 4px;
+    padding: 4px;
+    background: var(--mist-deep);
+    border-radius: 12px;
+    margin-bottom: 24px;
+}
+
+.signin-tab {
+    flex: 1;
+    padding: 10px 12px;
+    border: none;
+    border-radius: 9px;
+    background: transparent;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--ink-soft);
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.signin-tab:hover {
+    color: var(--ink);
+}
+
+.signin-tab.is-active {
+    background: var(--paper);
+    color: var(--ink);
+    font-weight: 600;
+    box-shadow: 0 1px 3px rgba(29, 32, 35, 0.12);
+}
+
 /* Social sign-in (Google) */
 .signin-social {
     display: flex;
