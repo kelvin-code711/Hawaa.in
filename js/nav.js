@@ -314,6 +314,22 @@ window.hawaaFirebaseReady = window.hawaaFirebase
         });
     }
 
+    // Phone auth is idempotent — the same OTP flow signs in an existing user
+    // or creates a new one — and a phone number can't be checked for existence
+    // before the OTP. So we detect *after* verifying whether the account was
+    // actually just created, using the credential's additional info (with a
+    // metadata timestamp fallback).
+    function isNewAccount(credential) {
+        try {
+            if (fb && fb.getAdditionalUserInfo) {
+                var info = fb.getAdditionalUserInfo(credential);
+                if (info && typeof info.isNewUser === 'boolean') return info.isNewUser;
+            }
+        } catch (e) { /* fall through to the metadata heuristic */ }
+        var m = credential && credential.user && credential.user.metadata;
+        return !!(m && m.creationTime && m.creationTime === m.lastSignInTime);
+    }
+
     function onSignedIn(user) {
         upsertUserProfile(user);
         if (verifyBtn) {
@@ -372,7 +388,7 @@ window.hawaaFirebaseReady = window.hawaaFirebase
             input.value = '';
             input.classList.remove('error', 'filled');
         });
-        if (otpError) otpError.textContent = '';
+        if (otpError) { otpError.textContent = ''; otpError.classList.remove('info'); }
 
         // Reset buttons
         if (sendOtpBtn) {
@@ -606,7 +622,7 @@ window.hawaaFirebaseReady = window.hawaaFirebase
 
             // Clear error styling
             this.classList.remove('error');
-            if (otpError) otpError.textContent = '';
+            if (otpError) { otpError.textContent = ''; otpError.classList.remove('info'); }
 
             if (this.value) {
                 this.classList.add('filled');
@@ -654,6 +670,7 @@ window.hawaaFirebaseReady = window.hawaaFirebase
     if (verifyBtn) {
         verifyBtn.addEventListener('click', function() {
             var otp = Array.from(otpInputs).map(function(inp) { return inp.value; }).join('');
+            if (otpError) otpError.classList.remove('info');
 
             if (otp.length !== 6) {
                 otpInputs.forEach(function(inp) {
@@ -674,9 +691,22 @@ window.hawaaFirebaseReady = window.hawaaFirebase
             confirmationResult.confirm(otp)
                 .then(function(credential) {
                     verifyBtn.disabled = false;
-                    // Save the name captured on the Sign up tab before landing
-                    // on the account page (only when the account has no name yet).
-                    if (currentSignupName && credential.user && !credential.user.displayName) {
+                    var newUser = isNewAccount(credential);
+
+                    // Chose "Sign up" but this number already has an account:
+                    // don't pretend a new one was created — say so, then sign in.
+                    if (authMode === 'signup' && !newUser) {
+                        if (otpError) {
+                            otpError.classList.add('info');
+                            otpError.textContent = 'You already have a Hawaa account with this number — signing you in…';
+                        }
+                        setTimeout(function() { onSignedIn(credential.user); }, 1300);
+                        return;
+                    }
+
+                    // Genuine new sign-up: save the name captured on the tab
+                    // before landing on the account page.
+                    if (newUser && currentSignupName && credential.user && !credential.user.displayName) {
                         return fb.updateProfile(credential.user, { displayName: currentSignupName })
                             .catch(function() { /* name is non-blocking */ })
                             .then(function() { onSignedIn(credential.user); });

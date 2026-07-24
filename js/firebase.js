@@ -22,6 +22,7 @@ import {
     signInWithPopup,
     signInWithRedirect,
     getRedirectResult,
+    getAdditionalUserInfo,
     updateProfile,
     signOut
 } from 'https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js';
@@ -71,6 +72,7 @@ const api = {
     signInWithPopup,
     signInWithRedirect,
     getRedirectResult,
+    getAdditionalUserInfo,
     updateProfile,
     signOut,
     doc,
