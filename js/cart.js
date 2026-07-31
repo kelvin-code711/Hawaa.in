@@ -175,6 +175,22 @@
         return Math.floor((subtotal * 18 + 50) / 100);
     }
 
+    function gaItems() {
+        return cart.map(function(item) {
+            return {
+                item_id: item.id,
+                item_name: item.name,
+                item_variant: item.variant,
+                price: item.price,
+                quantity: item.qty
+            };
+        });
+    }
+
+    function gaTrack(name, params) {
+        if (window.hawaaAnalytics) window.hawaaAnalytics.track(name, params);
+    }
+
     // ========================================
     // CART STATE
     // ========================================
@@ -440,6 +456,12 @@
                 if (profileBtn) profileBtn.click();
                 return;
             }
+            var subtotal = getSubtotal();
+            gaTrack('begin_checkout', {
+                currency: 'INR',
+                value: subtotal + gstOf(subtotal),
+                items: gaItems()
+            });
             showCheckoutView();
         });
     }
@@ -535,14 +557,30 @@
         placeBtn.disabled = true;
         placeBtn.textContent = 'Placing order...';
 
+        // Snapshot items before the cart is cleared on success.
+        var orderedItems = gaItems();
+
         fb.addDoc(fb.collection(fb.db, 'orders'), order).then(function(ref) {
             placeBtn.disabled = false;
             placeBtn.textContent = 'Place Order';
+            gaTrack('purchase', {
+                transaction_id: ref.id,
+                currency: 'INR',
+                value: total,
+                payment_type: 'cod',
+                items: orderedItems
+            });
             cart = [];
             updateCartUI();
             showSuccessView(ref.id);
         }).catch(function(err) {
             console.error('Order failed:', err);
+            gaTrack('payment_failed', {
+                currency: 'INR',
+                value: total,
+                payment_type: 'cod',
+                error_code: (err && err.code) || 'unknown'
+            });
             placeBtn.disabled = false;
             placeBtn.textContent = 'Place Order';
             if (checkoutError) {

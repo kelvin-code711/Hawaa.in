@@ -728,6 +728,9 @@ if (newsletterForm) {
         }
 
         window.hawaaBackend.subscribeNewsletter(email).then(function() {
+            if (window.hawaaAnalytics) {
+                window.hawaaAnalytics.track('newsletter_signup', { method: 'footer_form' });
+            }
             form.reset();
             showResult('Subscribed ✓');
         }).catch(function(err) {

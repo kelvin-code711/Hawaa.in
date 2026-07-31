@@ -42,6 +42,11 @@ import {
     writeBatch,
     increment
 } from 'https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js';
+import {
+    initializeAnalytics,
+    logEvent,
+    isSupported as analyticsIsSupported
+} from 'https://www.gstatic.com/firebasejs/12.15.0/firebase-analytics.js';
 
 const firebaseConfig = {
     apiKey: 'AIzaSyB9KznUPIvHKwLk7Vo9H05jBYiE8MgrPzk',
@@ -56,6 +61,26 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 auth.languageCode = 'en';
 const db = getFirestore(app);
+
+// ---- GA4 via Firebase Analytics ----
+// The measurement ID comes from the Firebase project's dynamic config.
+// Auto page_view is disabled: js/analytics.js sends its own page_view
+// (with UTM params) and queues events until this connects.
+analyticsIsSupported().then(function (supported) {
+    if (!supported) return;
+    try {
+        const analytics = initializeAnalytics(app, {
+            config: { send_page_view: false }
+        });
+        if (window.hawaaAnalytics) {
+            window.hawaaAnalytics._connect(function (name, params) {
+                logEvent(analytics, name, params);
+            });
+        }
+    } catch (e) {
+        console.warn('Analytics unavailable:', e);
+    }
+}).catch(function () { /* analytics unsupported in this browser */ });
 
 // ---- Auth + Firestore surface for nav.js / reviews.js / account.js ----
 const api = {

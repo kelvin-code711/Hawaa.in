@@ -581,6 +581,10 @@ window.hawaaFirebaseReady = window.hawaaFirebase
 
             currentPhone = number;
 
+            if (window.hawaaAnalytics) {
+                window.hawaaAnalytics.track('phone_entered', { method: 'phone' });
+            }
+
             // Show loading
             sendOtpBtn.disabled = true;
             sendOtpBtn.innerHTML = '<span class="spinner"></span>Sending...';
@@ -693,6 +697,10 @@ window.hawaaFirebaseReady = window.hawaaFirebase
                     verifyBtn.disabled = false;
                     var newUser = isNewAccount(credential);
 
+                    if (window.hawaaAnalytics) {
+                        window.hawaaAnalytics.track('otp_verified', { method: 'phone' });
+                    }
+
                     // Chose "Sign up" but this number already has an account:
                     // don't pretend a new one was created — say so, then sign in.
                     if (authMode === 'signup' && !newUser) {
@@ -716,6 +724,12 @@ window.hawaaFirebaseReady = window.hawaaFirebase
                 .catch(function(err) {
                     verifyBtn.disabled = false;
                     verifyBtn.textContent = 'Verify';
+                    if (window.hawaaAnalytics) {
+                        window.hawaaAnalytics.track('otp_failed', {
+                            method: 'phone',
+                            error_code: (err && err.code) || 'unknown'
+                        });
+                    }
                     otpInputs.forEach(function(inp) { inp.classList.add('error'); });
                     if (otpError) otpError.textContent = friendlyAuthError(err);
                 });
