@@ -318,6 +318,20 @@
             var variant = (purchaseType === 'subscribe' ? 'Subscribe' : 'One-time')
                 + ' · ' + COLOUR_NAMES[selectedColour];
 
+            if (window.hawaaAnalytics) {
+                window.hawaaAnalytics.track('reserve_click', {
+                    currency: 'INR',
+                    value: price,
+                    items: [{
+                        item_id: 'purifier-' + purchaseType + '-' + selectedColour,
+                        item_name: 'Hawaa Edge',
+                        item_variant: variant,
+                        price: price,
+                        quantity: 1
+                    }]
+                });
+            }
+
             window.hawaaCart.add({
                 id: 'purifier-' + purchaseType + '-' + selectedColour,
                 name: 'Hawaa Edge',
@@ -423,5 +437,18 @@
     // INITIALIZE
     // ========================================
     updatePrices();
+
+    if (window.hawaaAnalytics) {
+        window.hawaaAnalytics.track('view_item', {
+            currency: 'INR',
+            value: PRICES[purchaseType],
+            items: [{
+                item_id: 'purifier-' + purchaseType + '-' + selectedColour,
+                item_name: 'Hawaa Edge',
+                price: PRICES[purchaseType],
+                quantity: 1
+            }]
+        });
+    }
 
 })();
