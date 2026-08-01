@@ -50,7 +50,11 @@ import {
 
 const firebaseConfig = {
     apiKey: 'AIzaSyB9KznUPIvHKwLk7Vo9H05jBYiE8MgrPzk',
-    authDomain: 'hawaa-air-27548.firebaseapp.com',
+    // Custom domain so Google sign-in popups/redirects stay on hawaa.in
+    // (the redirect fallback breaks on Safari when authDomain differs from
+    // the site's domain). Requires hawaa.in in Auth → Authorized domains
+    // and https://hawaa.in/__/auth/handler in the OAuth client's redirect URIs.
+    authDomain: 'hawaa.in',
     projectId: 'hawaa-air-27548',
     storageBucket: 'hawaa-air-27548.firebasestorage.app',
     messagingSenderId: '994326211415',
