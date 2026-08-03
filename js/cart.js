@@ -766,9 +766,13 @@
             console.error('Could not start payment:', err);
             setPlaceBtnReady();
             if (checkoutError) {
+                // Surface the underlying code — "(functions/not-found)",
+                // "(functions/unavailable)" etc. — so failures can be
+                // diagnosed from a screenshot instead of the console.
+                var detail = (err && (err.code || err.message)) || 'unknown';
                 checkoutError.textContent = (err && err.message === 'razorpay-script-load')
                     ? 'Could not load the payment window. Please check your connection and try again.'
-                    : 'Could not start the payment. Please try again or choose Cash on Delivery.';
+                    : 'Could not start the payment. Please try again or choose Cash on Delivery. (' + detail + ')';
             }
         });
     }

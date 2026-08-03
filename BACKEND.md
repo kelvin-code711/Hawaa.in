@@ -111,6 +111,39 @@ Firebase console → Firestore → Data:
 - `reviews` — moderate `pending` → `approved`.
 - `newsletterSubscribers` — export emails for your mailing tool.
 
+## Exporting to CSV / Excel
+
+The console shows one document at a time, so bulk work (packing slips,
+accounting, a mailing list) uses `scripts/export-orders.js`, which reads
+a collection with the Admin SDK and writes a spreadsheet-ready CSV
+(UTF-8 BOM so ₹ and Indian names survive Excel; IST timestamps; nested
+maps flattened to `address.city`, `razorpay.paymentId`, …; newest first).
+
+One-time setup: Firebase console → ⚙ → Project settings → **Service
+accounts** → **Generate new private key**, save it as
+`serviceAccountKey.json` in the project root. That key grants full
+project access — `.gitignore` covers it, and it must never be committed
+or shared. Then:
+
+```bash
+cd functions && npm install && cd ..    # once; provides firebase-admin
+node scripts/export-orders.js                              # -> orders.csv
+node scripts/export-orders.js --since 2026-08-01           # from a date (IST)
+node scripts/export-orders.js --status placed              # unshipped only
+node scripts/export-orders.js --collection supportTickets  # any collection
+node scripts/export-orders.js --out C:\Users\me\Desktop\orders.csv
+```
+
+`--since` needs the `createdAt` index Firestore prompts for on first use
+(the error message contains a one-click link). The generated CSVs hold
+customer names, phones and addresses: they are gitignored, and should be
+treated like any other PII export.
+
+For a always-live view instead of point-in-time files, the Firebase
+**Stream Firestore to BigQuery** extension mirrors a collection into
+BigQuery, which connects directly to Looker Studio / Sheets — worth it
+once order volume outgrows manual exports.
+
 ## Orders (Cash on Delivery)
 
 The cart (persisted in localStorage) checks out to an `orders` document.

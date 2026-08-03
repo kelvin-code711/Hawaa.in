@@ -15,6 +15,16 @@ Thumbs.db
 .env
 .env.*
 
+# Firebase service-account keys (full project access — never commit)
+serviceAccountKey.json
+*-firebase-adminsdk-*.json
+
+# Exports produced by scripts/export-orders.js (contain customer PII)
+/orders.csv
+/supportTickets.csv
+/newsletterSubscribers.csv
+/reviews.csv
+
 # Cloud Functions
 functions/node_modules/
 .firebase/
