@@ -156,11 +156,17 @@ Razorpay). The online flow never trusts the browser with money:
 ```bash
 npx -y firebase-tools@latest functions:secrets:set RAZORPAY_KEY_ID
 npx -y firebase-tools@latest functions:secrets:set RAZORPAY_KEY_SECRET
-npx -y firebase-tools@latest deploy --only functions
-npx -y firebase-tools@latest deploy --only hosting
 ```
 
 Paste the Key ID / Key Secret from the Razorpay dashboard when prompted.
+Deploys are automatic from GitHub: pushes to `main` publish hosting
+(`firebase-hosting-deploy.yml`) and, when `functions/**` or
+`firebase.json` changed, the Cloud Functions
+(`firebase-functions-deploy.yml`, also runnable by hand from the
+Actions tab). The functions workflow reuses the
+`FIREBASE_SERVICE_ACCOUNT` repo secret, whose service account needs the
+**Editor** role in Google Cloud IAM (hosting-only permissions aren't
+enough to deploy functions).
 **The key secret must never appear in the repo or any client file.** With
 `rzp_test_…` keys everything runs in Razorpay **test mode**: no real money
 moves, and real cards are declined — so COD stays the default payment
