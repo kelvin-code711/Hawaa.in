@@ -21,7 +21,8 @@ $Hosts = @(
     "securetoken.googleapis.com",
     "firebasehosting.googleapis.com",
     "serviceusage.googleapis.com",
-    "firebaserules.googleapis.com"
+    "firebaserules.googleapis.com",
+    "firestore.googleapis.com"
 )
 $Marker = "# hawaa-firebase-network-fix"
 $HostsFile = "$env:SystemRoot\System32\drivers\etc\hosts"
