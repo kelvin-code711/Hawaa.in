@@ -105,8 +105,19 @@
                             '<input type="text" class="checkout-input" id="co-pincode" placeholder="PIN code" maxlength="6" inputmode="numeric" autocomplete="postal-code">' +
                         '</div>' +
                         '<input type="text" class="checkout-input" id="co-state" placeholder="State" maxlength="100" autocomplete="address-level1">' +
+                        '<h3 class="checkout-title checkout-pay-title">Payment method</h3>' +
+                        '<div class="checkout-pay-methods" id="checkout-pay-methods">' +
+                            '<label class="checkout-pay-option">' +
+                                '<input type="radio" name="co-pay-method" value="razorpay">' +
+                                '<span class="checkout-pay-label">Pay Online<small>UPI · Cards · Netbanking</small></span>' +
+                            '</label>' +
+                            '<label class="checkout-pay-option">' +
+                                '<input type="radio" name="co-pay-method" value="cod" checked>' +
+                                '<span class="checkout-pay-label">Cash on Delivery<small>Pay when it arrives</small></span>' +
+                            '</label>' +
+                        '</div>' +
                         '<p class="checkout-error" id="checkout-error"></p>' +
-                        '<div class="checkout-total-row"><span>Total (Cash on Delivery)</span><span id="checkout-total">₹0</span></div>' +
+                        '<div class="checkout-total-row"><span id="checkout-total-label">Total</span><span id="checkout-total">₹0</span></div>' +
                         '<button type="submit" class="cart-checkout-btn" id="checkout-place-btn">Place Order</button>' +
                     '</form>' +
                 '</div>' +
@@ -116,7 +127,7 @@
                     '</div>' +
                     '<h3 class="checkout-title" style="text-align:center;">Order placed!</h3>' +
                     '<p class="checkout-success-text">Order ID: <strong id="order-success-id"></strong></p>' +
-                    '<p class="checkout-success-text">Pay in cash when your Hawaa arrives. Track it anytime on your <a href="account.html">account page</a>.</p>' +
+                    '<p class="checkout-success-text" id="order-success-note">Pay in cash when your Hawaa arrives. Track it anytime on your <a href="account.html">account page</a>.</p>' +
                     '<button type="button" class="cart-checkout-btn" id="order-success-done">Done</button>' +
                 '</div>' +
             '</div>' +
@@ -154,11 +165,14 @@
     var checkoutForm = document.getElementById('checkout-form');
     var checkoutError = document.getElementById('checkout-error');
     var checkoutTotal = document.getElementById('checkout-total');
+    var checkoutTotalLabel = document.getElementById('checkout-total-label');
     var placeBtn = document.getElementById('checkout-place-btn');
     var successView = document.getElementById('order-success-view');
     var successId = document.getElementById('order-success-id');
+    var successNote = document.getElementById('order-success-note');
     var successDone = document.getElementById('order-success-done');
     var cartBody = document.getElementById('cart-body');
+    var payMethodBox = document.getElementById('checkout-pay-methods');
 
     // ========================================
     // UTILITY
@@ -415,6 +429,33 @@
         if (successView) successView.classList.add('hidden');
     }
 
+    // ---- Payment method (COD vs Razorpay online) ----
+    function getPayMethod() {
+        var checked = payMethodBox &&
+            payMethodBox.querySelector('input[name="co-pay-method"]:checked');
+        return checked ? checked.value : 'cod';
+    }
+
+    function refreshPayMethodUI() {
+        var method = getPayMethod();
+        var subtotal = getSubtotal();
+        var total = subtotal + gstOf(subtotal);
+        if (checkoutTotalLabel) {
+            checkoutTotalLabel.textContent = method === 'cod'
+                ? 'Total (Cash on Delivery)'
+                : 'Total';
+        }
+        if (placeBtn && !placeBtn.disabled) {
+            placeBtn.textContent = method === 'cod'
+                ? 'Place Order'
+                : 'Pay ' + formatPrice(total);
+        }
+    }
+
+    if (payMethodBox) {
+        payMethodBox.addEventListener('change', refreshPayMethodUI);
+    }
+
     function showCheckoutView() {
         if (cartBody) cartBody.classList.add('hidden');
         if (cartFooter) cartFooter.classList.add('hidden');
@@ -425,6 +466,7 @@
         var total = subtotal + gstOf(subtotal);
         if (checkoutTotal) checkoutTotal.textContent = formatPrice(total);
         if (checkoutError) checkoutError.textContent = '';
+        refreshPayMethodUI();
 
         // Prefill from the signed-in account where possible.
         var fb = window.hawaaFirebase;
@@ -437,12 +479,18 @@
         }
     }
 
-    function showSuccessView(orderId) {
+    function showSuccessView(orderId, method) {
         if (cartBody) cartBody.classList.add('hidden');
         if (cartFooter) cartFooter.classList.add('hidden');
         if (checkoutView) checkoutView.classList.add('hidden');
         if (successView) successView.classList.remove('hidden');
         if (successId) successId.textContent = orderId;
+        if (successNote) {
+            // Static strings only — safe as innerHTML (keeps the account link).
+            successNote.innerHTML = method === 'razorpay'
+                ? 'Payment received. Track your order anytime on your <a href="account.html">account page</a>.'
+                : 'Pay in cash when your Hawaa arrives. Track it anytime on your <a href="account.html">account page</a>.';
+        }
     }
 
     if (checkoutBtn) {
@@ -539,6 +587,21 @@
         };
         if (line2) address.line2 = line2;
 
+        // Snapshot items before the cart is cleared on success.
+        var orderedItems = gaItems();
+
+        if (getPayMethod() === 'razorpay') {
+            payWithRazorpay({
+                qtyOnetime: qtyOnetime,
+                qtySubscribe: qtySubscribe,
+                qtyFilter: qtyFilter,
+                address: address,
+                total: total,
+                orderedItems: orderedItems
+            });
+            return;
+        }
+
         var order = {
             uid: fb.auth.currentUser.uid,
             qtyPurifierOnetime: qtyOnetime,
@@ -554,15 +617,10 @@
         };
         if (qtySubscribe > 0) order.filterInterval = meta.filterInterval;
 
-        placeBtn.disabled = true;
-        placeBtn.textContent = 'Placing order...';
-
-        // Snapshot items before the cart is cleared on success.
-        var orderedItems = gaItems();
+        setPlaceBtnBusy('Placing order...');
 
         fb.addDoc(fb.collection(fb.db, 'orders'), order).then(function(ref) {
-            placeBtn.disabled = false;
-            placeBtn.textContent = 'Place Order';
+            setPlaceBtnReady();
             gaTrack('purchase', {
                 transaction_id: ref.id,
                 currency: 'INR',
@@ -572,7 +630,7 @@
             });
             cart = [];
             updateCartUI();
-            showSuccessView(ref.id);
+            showSuccessView(ref.id, 'cod');
         }).catch(function(err) {
             console.error('Order failed:', err);
             gaTrack('payment_failed', {
@@ -581,12 +639,167 @@
                 payment_type: 'cod',
                 error_code: (err && err.code) || 'unknown'
             });
-            placeBtn.disabled = false;
-            placeBtn.textContent = 'Place Order';
+            setPlaceBtnReady();
             if (checkoutError) {
                 checkoutError.textContent = err && err.code === 'permission-denied'
                     ? 'Order could not be validated. Please refresh the page and try again.'
                     : 'Could not place the order. Please check your connection and try again.';
+            }
+        });
+    }
+
+    // ========================================
+    // ONLINE PAYMENT (Razorpay via Cloud Functions)
+    // The browser only sends quantities + address; the Cloud Function
+    // recomputes the amount from the fixed catalog, creates the
+    // Razorpay order, and (after signature verification) writes the
+    // real order with the Admin SDK. Amounts can't be tampered with
+    // on either path.
+    // ========================================
+    var razorpayScriptPromise = null;
+
+    function setPlaceBtnBusy(label) {
+        if (!placeBtn) return;
+        placeBtn.disabled = true;
+        placeBtn.textContent = label;
+    }
+
+    function setPlaceBtnReady() {
+        if (!placeBtn) return;
+        placeBtn.disabled = false;
+        refreshPayMethodUI();
+    }
+
+    function loadRazorpayScript() {
+        if (window.Razorpay) return Promise.resolve();
+        if (razorpayScriptPromise) return razorpayScriptPromise;
+        razorpayScriptPromise = new Promise(function(resolve, reject) {
+            var s = document.createElement('script');
+            s.src = 'https://checkout.razorpay.com/v1/checkout.js';
+            s.onload = resolve;
+            s.onerror = function() {
+                razorpayScriptPromise = null;
+                reject(new Error('razorpay-script-load'));
+            };
+            document.head.appendChild(s);
+        });
+        return razorpayScriptPromise;
+    }
+
+    function payWithRazorpay(ctx) {
+        var fb = window.hawaaFirebase;
+        if (!fb || !fb.auth.currentUser) return;
+        if (!fb.httpsCallable || !fb.functions) {
+            // Stale cached js/firebase.js without the functions SDK.
+            if (checkoutError) {
+                checkoutError.textContent = 'Online payment is unavailable right now. Please refresh the page or choose Cash on Delivery.';
+            }
+            return;
+        }
+
+        setPlaceBtnBusy('Starting payment...');
+        if (checkoutError) checkoutError.textContent = '';
+
+        var payload = {
+            qtyPurifierOnetime: ctx.qtyOnetime,
+            qtyPurifierSubscribe: ctx.qtySubscribe,
+            qtyFilter: ctx.qtyFilter,
+            address: ctx.address
+        };
+        if (ctx.qtySubscribe > 0) payload.filterInterval = meta.filterInterval;
+
+        var createOrder = fb.httpsCallable(fb.functions, 'createRazorpayOrder');
+
+        Promise.all([loadRazorpayScript(), createOrder(payload)]).then(function(results) {
+            var data = results[1].data;
+            var user = fb.auth.currentUser;
+            var settled = false; // guards against dismiss firing after success
+
+            var rz = new window.Razorpay({
+                key: data.keyId,
+                order_id: data.razorpayOrderId,
+                amount: data.amount,
+                currency: data.currency,
+                name: 'Hawaa',
+                description: 'Hawaa air purifier order',
+                prefill: {
+                    name: ctx.address.name,
+                    contact: ctx.address.phone,
+                    email: (user && user.email) || ''
+                },
+                theme: { color: '#2E3238' },
+                handler: function(resp) {
+                    settled = true;
+                    confirmRazorpayPayment(resp, ctx);
+                },
+                modal: {
+                    ondismiss: function() {
+                        if (settled) return;
+                        setPlaceBtnReady();
+                        gaTrack('payment_failed', {
+                            currency: 'INR',
+                            value: ctx.total,
+                            payment_type: 'razorpay',
+                            error_code: 'dismissed'
+                        });
+                        if (checkoutError) {
+                            checkoutError.textContent = 'Payment cancelled — you have not been charged.';
+                        }
+                    }
+                }
+            });
+
+            rz.on('payment.failed', function(resp) {
+                gaTrack('payment_failed', {
+                    currency: 'INR',
+                    value: ctx.total,
+                    payment_type: 'razorpay',
+                    error_code: (resp && resp.error && resp.error.code) || 'unknown'
+                });
+                if (checkoutError) {
+                    checkoutError.textContent = 'Payment failed. You can retry or choose Cash on Delivery.';
+                }
+            });
+
+            rz.open();
+        }).catch(function(err) {
+            console.error('Could not start payment:', err);
+            setPlaceBtnReady();
+            if (checkoutError) {
+                checkoutError.textContent = (err && err.message === 'razorpay-script-load')
+                    ? 'Could not load the payment window. Please check your connection and try again.'
+                    : 'Could not start the payment. Please try again or choose Cash on Delivery.';
+            }
+        });
+    }
+
+    function confirmRazorpayPayment(resp, ctx) {
+        var fb = window.hawaaFirebase;
+        setPlaceBtnBusy('Confirming payment...');
+
+        var verify = fb.httpsCallable(fb.functions, 'verifyRazorpayPayment');
+        verify({
+            razorpayOrderId: resp.razorpay_order_id,
+            razorpayPaymentId: resp.razorpay_payment_id,
+            razorpaySignature: resp.razorpay_signature
+        }).then(function(result) {
+            setPlaceBtnReady();
+            gaTrack('purchase', {
+                transaction_id: result.data.orderId,
+                currency: 'INR',
+                value: ctx.total,
+                payment_type: 'razorpay',
+                items: ctx.orderedItems
+            });
+            cart = [];
+            updateCartUI();
+            showSuccessView(result.data.orderId, 'razorpay');
+        }).catch(function(err) {
+            console.error('Payment verification failed:', err);
+            setPlaceBtnReady();
+            if (checkoutError) {
+                checkoutError.textContent = 'Your payment went through but we could not confirm it. ' +
+                    'Please contact support with payment ID ' + resp.razorpay_payment_id + '.';
             }
         });
     }

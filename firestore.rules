@@ -39,6 +39,11 @@ rules_version = '2';
 // review. Document ID: {uid}_{reviewId}; created atomically with the
 // helpful increment.
 //
+// Collection: razorpay_orders — pending online-payment checkouts,
+// written/read ONLY by the Razorpay Cloud Functions via the Admin SDK
+// (paid orders land in `orders` with paymentMethod 'razorpay').
+// No client access — covered by the default deny below.
+//
 // All other collections (incl. device backend's users, device_owners):
 // no client access.
 // ===============================================================

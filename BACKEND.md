@@ -18,6 +18,7 @@ web clients. All website collections are separate.
 | Contact / support form | `support.html` | `supportTickets` |
 | Newsletter signup | `index.html` footer | `newsletterSubscribers` (doc ID = email) |
 | Checkout — Cash on Delivery (sign-in required) | `buy.html` cart | `orders` (created as `status: "placed"`) |
+| Checkout — Pay Online via Razorpay (sign-in required) | `buy.html` cart | `orders` via Cloud Function (+ server-only `razorpay_orders`) |
 | Order history | `account.html` | own `orders` |
 
 `js/firebase.js` initializes the Firebase SDK (CDN, no build step) and exposes:
@@ -121,14 +122,62 @@ created as `status: "placed"`; manage them in the console (`confirmed`,
 `shipped`, `delivered`, `cancelled` — the account page colors each).
 Clients can never read others' orders (address PII), update, or delete.
 
-**When the catalog prices change, update BOTH `js/buy.js` (PRICES /
-FILTER_PRICE) and the `isValidNewOrder` arithmetic in `firestore.rules`,
-then redeploy the rules — otherwise checkout will be rejected.**
+**When the catalog prices change, update `js/buy.js` (PRICES /
+FILTER_PRICE), the `isValidNewOrder` arithmetic in `firestore.rules`, AND
+`CATALOG` in `functions/razorpay.js`, then redeploy rules + functions —
+otherwise checkout (COD and online alike) will be rejected.**
+
+## Orders (Pay Online — Razorpay)
+
+The checkout drawer has a **Payment method** toggle: Cash on Delivery
+(default, unchanged) or **Pay Online** (UPI / cards / netbanking via
+Razorpay). The online flow never trusts the browser with money:
+
+1. `js/cart.js` calls the callable Cloud Function **`createRazorpayOrder`**
+   (asia-south1) with quantities + address only. The function recomputes
+   subtotal/GST/total from the fixed catalog in `functions/razorpay.js`
+   (same integer math as `firestore.rules`), creates an order with the
+   Razorpay Orders API, stashes the pending checkout in the server-only
+   `razorpay_orders/{razorpayOrderId}` collection, and returns the
+   Razorpay key ID + order id (so no Razorpay key lives in the repo).
+2. The browser opens Razorpay Checkout
+   (`https://checkout.razorpay.com/v1/checkout.js`, loaded on demand).
+3. On payment, `js/cart.js` calls **`verifyRazorpayPayment`**, which checks
+   the HMAC-SHA256 payment signature against the key secret and only then
+   writes the real `orders` document with the Admin SDK —
+   `paymentMethod: "razorpay"`, `status: "placed"`, plus a `razorpay`
+   map (`orderId`, `paymentId`, `keyMode: "test" | "live"`). The write is
+   idempotent (a retried verification returns the same order) and
+   `firestore.rules` needed no loosening: clients still can't create
+   non-COD orders, and `razorpay_orders` is denied to all clients.
+
+### Setup (one-time)
+
+```bash
+npx -y firebase-tools@latest functions:secrets:set RAZORPAY_KEY_ID
+npx -y firebase-tools@latest functions:secrets:set RAZORPAY_KEY_SECRET
+npx -y firebase-tools@latest deploy --only functions
+npx -y firebase-tools@latest deploy --only hosting
+```
+
+Paste the Key ID / Key Secret from the Razorpay dashboard when prompted.
+**The key secret must never appear in the repo or any client file.** With
+`rzp_test_…` keys everything runs in Razorpay **test mode**: no real money
+moves, and real cards are declined — so COD stays the default payment
+method. Test with card `4111 1111 1111 1111` (any future expiry/CVV) or
+UPI `success@razorpay` / `failure@razorpay`; payments appear in the
+Razorpay dashboard with the Test Mode toggle on.
+
+### Going live
+
+Generate live keys after Razorpay KYC/activation, run the two
+`functions:secrets:set` commands again with the live values, and redeploy
+functions. Nothing in the repo changes; optionally make Pay Online the
+default by moving the `checked` attribute between the two payment-method
+radios in `js/cart.js`.
 
 ## Roadmap
 
-- **Online payment:** add Razorpay alongside COD via a Cloud Function
-  (order creation + signature verification; Blaze plan is already active).
 - **Review photos:** needs Firebase Storage (upload UI exists but is hidden).
 - **Hosting & email:** deploy via `firebase deploy --only hosting`
   (`firebase.json` is configured) and add the "Trigger Email" extension for
