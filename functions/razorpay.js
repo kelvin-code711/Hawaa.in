@@ -119,7 +119,7 @@ function verifyPaymentSignature(razorpayOrderId, razorpayPaymentId, signature, k
     return a.length === b.length && crypto.timingSafeEqual(a, b);
 }
 
-// Creates an order on Razorpay (amount in paise). Node 20's global
+// Creates an order on Razorpay (amount in paise). Uses Node's global
 // fetch; Basic auth with key_id:key_secret.
 async function createRazorpayOrder(keyId, keySecret, { amountPaise, receipt, notes }) {
     const auth = Buffer.from(`${keyId}:${keySecret}`).toString('base64');

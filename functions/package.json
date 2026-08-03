@@ -3,7 +3,7 @@
   "description": "Cloud Functions for hawaa.in (CPCB AQI pipeline + Razorpay payments)",
   "private": true,
   "engines": {
-    "node": "20"
+    "node": "22"
   },
   "main": "index.js",
   "scripts": {
