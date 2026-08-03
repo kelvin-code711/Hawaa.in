@@ -1,27 +1,36 @@
 // ========================================
-// hawaa.in Cloud Functions — live CPCB AQI pipeline
+// hawaa.in Cloud Functions
 //
-// refreshAqiData runs every 30 minutes, pulls all CPCB station
-// readings from the official data.gov.in mirror of the CPCB CAAQMS
-// network, aggregates them per city (see ./aqi.js), and stores the
-// snapshot at Firestore doc aqi/latest. The website only ever reads
-// that document, so visitors never hit data.gov.in directly and the
-// last good snapshot survives upstream outages.
+// 1) Live CPCB AQI pipeline: refreshAqiData runs every 30 minutes,
+//    pulls all CPCB station readings from the official data.gov.in
+//    mirror of the CPCB CAAQMS network, aggregates them per city
+//    (see ./aqi.js), and stores the snapshot at Firestore doc
+//    aqi/latest. The website only ever reads that document, so
+//    visitors never hit data.gov.in directly and the last good
+//    snapshot survives upstream outages.
+//
+// 2) Razorpay online payments: createRazorpayOrder recomputes the
+//    cart total server-side and opens an order with Razorpay;
+//    verifyRazorpayPayment checks the payment signature and only
+//    then writes the real `orders` document (see ./razorpay.js).
 // ========================================
 
 'use strict';
 
 const { onSchedule } = require('firebase-functions/v2/scheduler');
-const { onRequest } = require('firebase-functions/v2/https');
+const { onRequest, onCall, HttpsError } = require('firebase-functions/v2/https');
 const { defineSecret } = require('firebase-functions/params');
 const logger = require('firebase-functions/logger');
 const admin = require('firebase-admin');
 
 const { buildCitySnapshot } = require('./aqi');
+const rzp = require('./razorpay');
 
 admin.initializeApp();
 
 const dataGovApiKey = defineSecret('DATA_GOV_API_KEY');
+const razorpayKeyId = defineSecret('RAZORPAY_KEY_ID');
+const razorpayKeySecret = defineSecret('RAZORPAY_KEY_SECRET');
 
 // data.gov.in's WAF resets bare programmatic requests; present a
 // regular browser profile.
@@ -166,5 +175,161 @@ exports.refreshAqiHttp = onRequest(
             logger.error('Manual refresh failed', err);
             res.status(500).json({ ok: false, error: String(err && err.message) });
         }
+    }
+);
+
+// ========================================
+// Razorpay online payments
+//
+// Flow: the cart calls createRazorpayOrder with quantities + address
+// (never prices — amounts are recomputed here from the fixed catalog),
+// gets back a Razorpay order id, and opens Razorpay Checkout. After
+// the shopper pays, the cart calls verifyRazorpayPayment; only a
+// valid HMAC signature creates the real `orders` document (via the
+// Admin SDK, so firestore.rules stay locked down for prepaid orders).
+// The intermediate state lives in `razorpay_orders/{razorpayOrderId}`,
+// which no client can read or write.
+// ========================================
+
+exports.createRazorpayOrder = onCall(
+    {
+        region: 'asia-south1',
+        secrets: [razorpayKeyId, razorpayKeySecret],
+        timeoutSeconds: 30,
+        memory: '256MiB',
+        cors: true
+    },
+    async (request) => {
+        if (!request.auth) {
+            throw new HttpsError('unauthenticated', 'Sign in to pay online.');
+        }
+
+        let payload;
+        try {
+            payload = rzp.validateCheckoutPayload(request.data);
+        } catch (err) {
+            throw new HttpsError('invalid-argument', err.message);
+        }
+
+        const keyId = razorpayKeyId.value().trim();
+        const uid = request.auth.uid;
+
+        let order;
+        try {
+            order = await rzp.createRazorpayOrder(keyId, razorpayKeySecret.value().trim(), {
+                amountPaise: payload.amounts.total * 100,
+                // Receipt is capped at 40 chars by Razorpay; uid is 28.
+                receipt: `web-${uid}`.slice(0, 40),
+                notes: { uid, source: 'hawaa.in cart' }
+            });
+        } catch (err) {
+            logger.error('Razorpay order create failed', err);
+            throw new HttpsError('unavailable',
+                'Could not start the payment. Please try again.');
+        }
+
+        const pending = {
+            uid,
+            qtyPurifierOnetime: payload.qtyPurifierOnetime,
+            qtyPurifierSubscribe: payload.qtyPurifierSubscribe,
+            qtyFilter: payload.qtyFilter,
+            subtotal: payload.amounts.subtotal,
+            gst: payload.amounts.gst,
+            total: payload.amounts.total,
+            address: payload.address,
+            status: 'created',
+            // Recorded so orders paid with test keys are recognizable.
+            keyMode: keyId.startsWith('rzp_test_') ? 'test' : 'live',
+            createdAt: admin.firestore.FieldValue.serverTimestamp()
+        };
+        if (payload.filterInterval) pending.filterInterval = payload.filterInterval;
+
+        await admin.firestore().doc(`razorpay_orders/${order.id}`).set(pending);
+
+        return {
+            keyId,
+            razorpayOrderId: order.id,
+            amount: order.amount,
+            currency: order.currency
+        };
+    }
+);
+
+exports.verifyRazorpayPayment = onCall(
+    {
+        region: 'asia-south1',
+        secrets: [razorpayKeySecret],
+        timeoutSeconds: 30,
+        memory: '256MiB',
+        cors: true
+    },
+    async (request) => {
+        if (!request.auth) {
+            throw new HttpsError('unauthenticated', 'Sign in to pay online.');
+        }
+        const data = request.data || {};
+        const razorpayOrderId = data.razorpayOrderId;
+        const razorpayPaymentId = data.razorpayPaymentId;
+        const razorpaySignature = data.razorpaySignature;
+
+        if (!rzp.verifyPaymentSignature(razorpayOrderId, razorpayPaymentId,
+            razorpaySignature, razorpayKeySecret.value().trim())) {
+            logger.warn('Razorpay signature mismatch', { razorpayOrderId, uid: request.auth.uid });
+            throw new HttpsError('permission-denied',
+                'Payment could not be verified.');
+        }
+
+        const db = admin.firestore();
+        const pendingRef = db.doc(`razorpay_orders/${razorpayOrderId}`);
+        const orderRef = db.collection('orders').doc();
+        const uid = request.auth.uid;
+
+        const orderDocId = await db.runTransaction(async (tx) => {
+            const snap = await tx.get(pendingRef);
+            if (!snap.exists) {
+                throw new HttpsError('not-found', 'Unknown payment order.');
+            }
+            const pending = snap.data();
+            if (pending.uid !== uid) {
+                throw new HttpsError('permission-denied', 'This payment belongs to another account.');
+            }
+            // Retried verification (double-click, flaky network): the
+            // order was already written, just return it again.
+            if (pending.status === 'paid' && pending.orderDocId) {
+                return pending.orderDocId;
+            }
+
+            const order = {
+                uid,
+                qtyPurifierOnetime: pending.qtyPurifierOnetime,
+                qtyPurifierSubscribe: pending.qtyPurifierSubscribe,
+                qtyFilter: pending.qtyFilter,
+                subtotal: pending.subtotal,
+                gst: pending.gst,
+                total: pending.total,
+                address: pending.address,
+                paymentMethod: 'razorpay',
+                razorpay: {
+                    orderId: razorpayOrderId,
+                    paymentId: razorpayPaymentId,
+                    keyMode: pending.keyMode
+                },
+                status: 'placed',
+                createdAt: admin.firestore.FieldValue.serverTimestamp()
+            };
+            if (pending.filterInterval) order.filterInterval = pending.filterInterval;
+
+            tx.set(orderRef, order);
+            tx.update(pendingRef, {
+                status: 'paid',
+                paymentId: razorpayPaymentId,
+                orderDocId: orderRef.id,
+                paidAt: admin.firestore.FieldValue.serverTimestamp()
+            });
+            return orderRef.id;
+        });
+
+        logger.info('Razorpay payment verified', { razorpayOrderId, orderDocId, uid });
+        return { orderId: orderDocId };
     }
 );

@@ -9692,6 +9692,59 @@ body.account-page {
     border-color: var(--error);
 }
 
+.checkout-pay-title {
+    font-size: 15px;
+    margin-top: 6px;
+}
+
+.checkout-pay-methods {
+    display: flex;
+    gap: 10px;
+}
+
+.checkout-pay-option {
+    flex: 1;
+    min-width: 0;
+    cursor: pointer;
+}
+
+.checkout-pay-option input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.checkout-pay-label {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    background: var(--paper);
+    border: 1px solid var(--ink-line);
+    border-radius: 10px;
+    padding: 12px 14px;
+    transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.checkout-pay-label small {
+    font-size: 11.5px;
+    font-weight: 400;
+    color: var(--ink-soft);
+}
+
+.checkout-pay-option input:checked + .checkout-pay-label {
+    border-color: var(--teal-deep);
+    outline: 1px solid var(--teal-deep);
+}
+
+.checkout-pay-option input:focus-visible + .checkout-pay-label {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 3px;
+}
+
 .checkout-error {
     font-family: 'Outfit', sans-serif;
     font-size: 13px;

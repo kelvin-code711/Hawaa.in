@@ -97,3 +97,82 @@ assert.strictEqual(buildCitySnapshot(null, NOW).cityCount, 0);
 assert.strictEqual(buildCitySnapshot([null, 42, {}], NOW).cityCount, 0);
 
 console.log('All AQI aggregation tests passed.');
+
+// ===============================================================
+// Razorpay helpers (../razorpay.js)
+// ===============================================================
+const crypto = require('node:crypto');
+const rzp = require(path.join(__dirname, '..', 'razorpay.js'));
+
+// ---- gstOf: must match firestore.rules / js/cart.js integer math ----
+assert.strictEqual(rzp.gstOf(5999), 1080);   // 5999*18+50 = 108032 -> 1080
+assert.strictEqual(rzp.gstOf(0), 0);
+assert.strictEqual(rzp.gstOf(250), 45);      // exact .5 boundary rounds up
+
+// ---- computeAmounts: fixed catalog, client can't name a price ----
+const amounts = rzp.computeAmounts(1, 1, 2);
+assert.strictEqual(amounts.subtotal, 5999 + 5499 + 2 * 1499);
+assert.strictEqual(amounts.gst, rzp.gstOf(amounts.subtotal));
+assert.strictEqual(amounts.total, amounts.subtotal + amounts.gst);
+
+// ---- validateCheckoutPayload ----
+const goodAddress = {
+    name: 'Asha Rao',
+    phone: '+919876543210',
+    line1: '12 MG Road',
+    city: 'Bengaluru',
+    state: 'Karnataka',
+    pincode: '560001'
+};
+const payload = rzp.validateCheckoutPayload({
+    qtyPurifierOnetime: 1,
+    qtyPurifierSubscribe: 1,
+    qtyFilter: 0,
+    filterInterval: 6,
+    address: goodAddress
+});
+assert.strictEqual(payload.amounts.subtotal, 5999 + 5499);
+assert.strictEqual(payload.filterInterval, 6);
+assert.strictEqual(payload.address.line2, undefined);
+
+// filterInterval is dropped when nothing is subscribed / value invalid.
+assert.strictEqual(rzp.validateCheckoutPayload({
+    qtyPurifierOnetime: 1, qtyPurifierSubscribe: 0, qtyFilter: 0,
+    filterInterval: 6, address: goodAddress
+}).filterInterval, undefined);
+assert.strictEqual(rzp.validateCheckoutPayload({
+    qtyPurifierOnetime: 0, qtyPurifierSubscribe: 1, qtyFilter: 0,
+    filterInterval: 7, address: goodAddress
+}).filterInterval, undefined);
+
+// Rejections: empty cart, tampered/absurd quantities, bad address.
+assert.throws(() => rzp.validateCheckoutPayload({
+    qtyPurifierOnetime: 0, qtyPurifierSubscribe: 0, qtyFilter: 0, address: goodAddress
+}), /empty/);
+assert.throws(() => rzp.validateCheckoutPayload({
+    qtyPurifierOnetime: 1.5, qtyPurifierSubscribe: 0, qtyFilter: 0, address: goodAddress
+}), /quantities/);
+assert.throws(() => rzp.validateCheckoutPayload({
+    qtyPurifierOnetime: 11, qtyPurifierSubscribe: 0, qtyFilter: 0, address: goodAddress
+}), /quantities/);
+assert.throws(() => rzp.validateCheckoutPayload({
+    qtyPurifierOnetime: 1, qtyPurifierSubscribe: 0, qtyFilter: 0,
+    address: Object.assign({}, goodAddress, { phone: '9876543210' })
+}), /address/);
+assert.throws(() => rzp.validateCheckoutPayload({
+    qtyPurifierOnetime: 1, qtyPurifierSubscribe: 0, qtyFilter: 0,
+    address: Object.assign({}, goodAddress, { pincode: '05601' })
+}), /address/);
+
+// ---- verifyPaymentSignature (HMAC-SHA256 of "orderId|paymentId") ----
+const secret = 'test_secret_value';
+const sig = crypto.createHmac('sha256', secret)
+    .update('order_abc|pay_xyz').digest('hex');
+assert.strictEqual(rzp.verifyPaymentSignature('order_abc', 'pay_xyz', sig, secret), true);
+assert.strictEqual(rzp.verifyPaymentSignature('order_abc', 'pay_xyz', sig.slice(0, -1) + '0', secret), false);
+assert.strictEqual(rzp.verifyPaymentSignature('order_other', 'pay_xyz', sig, secret), false);
+assert.strictEqual(rzp.verifyPaymentSignature('order_abc', 'pay_xyz', 'short', secret), false);
+assert.strictEqual(rzp.verifyPaymentSignature('', '', '', secret), false);
+assert.strictEqual(rzp.verifyPaymentSignature(null, undefined, sig, secret), false);
+
+console.log('All Razorpay helper tests passed.');

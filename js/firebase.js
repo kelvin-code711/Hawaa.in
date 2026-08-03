@@ -47,6 +47,10 @@ import {
     logEvent,
     isSupported as analyticsIsSupported
 } from 'https://www.gstatic.com/firebasejs/12.15.0/firebase-analytics.js';
+import {
+    getFunctions,
+    httpsCallable
+} from 'https://www.gstatic.com/firebasejs/12.15.0/firebase-functions.js';
 
 const firebaseConfig = {
     apiKey: 'AIzaSyB9KznUPIvHKwLk7Vo9H05jBYiE8MgrPzk',
@@ -65,6 +69,8 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 auth.languageCode = 'en';
 const db = getFirestore(app);
+// Callable Cloud Functions (Razorpay checkout) live in asia-south1.
+const functions = getFunctions(app, 'asia-south1');
 
 // ---- GA4 via Firebase Analytics ----
 // The measurement ID comes from the Firebase project's dynamic config.
@@ -91,6 +97,8 @@ const api = {
     app,
     auth,
     db,
+    functions,
+    httpsCallable,
     onAuthStateChanged,
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
