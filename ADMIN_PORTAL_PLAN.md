@@ -10,17 +10,48 @@ new hosting, no new vendor, no recurring cost.
 
 ---
 
+## 0. BLOCKER — resolve before Phase 1
+
+**`+91 88661 19918` is currently registered in Firebase as a *test*
+phone number with the fixed OTP `123456`, and no SMS is ever sent.**
+It is documented at `BACKEND.md:60`, in a **public** GitHub repository.
+
+If that number becomes the Super Admin while this configuration stands,
+anyone on the internet can read the documentation, enter the number, type
+`123456`, and hold full Super Admin access. No SMS is sent, so the owner
+of the number would receive no warning. Every other control in this
+document — the gate, the roles, the audit log — is bypassed at the front
+door.
+
+**Required before any admin account is created:**
+
+1. Firebase console → Authentication → Sign-in method → Phone → **Test
+   phone numbers** → delete the `+91 88661 19918` row. Delete every other
+   row too, or note them as permanently unusable for staff accounts.
+2. Verify a real SMS OTP arrives on that number afterwards.
+3. Remove line 60 from `BACKEND.md`. The number is a personal mobile
+   published publicly; git history will retain it, so treat it as
+   disclosed and rely on step 1 for the actual fix.
+
+Test numbers are a development convenience and are safe *only* while no
+account of consequence uses them. The moment an admin role exists, any
+configured test number is an unauthenticated backdoor.
+
+---
+
 ## 1. Address
 
-**`hawaa.in/hawa-mahal-7k2`**
+**`hawaa.in/hawaa-ops-k711`**
 
-"Hawa Mahal" — the Palace of Winds — is on-brand and easy to remember;
-the `-7k2` suffix is what stops it being guessable. Automated scanners
-probe `/admin`, `/wp-admin`, `/dashboard` and similar; none of them will
-ever try this.
+Automated scanners probe `/admin`, `/wp-admin`, `/dashboard` and similar;
+none of them will try this.
 
-The suffix can be any 2–4 characters you like — it is changed by renaming
-one route, with no other consequences.
+One caveat: the `k711` suffix mirrors the public GitHub username
+`kelvin-code711`, which is discoverable from the repository behind the
+site. Someone specifically targeting Hawaa could reason their way to it.
+That is acceptable — Section 4's gate is what actually protects the
+portal — but a random suffix would be strictly better if the goal is to
+be unguessable. Changed by renaming one route.
 
 **This is a second lock, not the first.** The address being secret is a
 nice-to-have. Sections 4 and 5 are what actually protect the data.
@@ -185,9 +216,13 @@ adding and removing staff.
 
 ## 6. What is needed from you
 
-- The mobile number that should be the first **Super Admin**.
-- Confirmation of the address `hawaa.in/hawa-mahal-7k2` (or a different
-  suffix).
+- **Section 0 cleared first** — the test-number backdoor removed and a
+  real SMS OTP confirmed working. Nothing else proceeds until this is
+  done.
+- ~~The mobile number for the first **Super Admin**.~~ **Given:
+  `+91 88661 19918`** — usable only once Section 0 is cleared.
+- ~~Confirmation of the address.~~ **Decided:
+  `hawaa.in/hawaa-ops-k711`.**
 - ~~Confirmation of the sign-in flow.~~ **Decided: invite by phone
   number + OTP.** The username-and-password variant will not be built.
 - Later, at Phase 5: turn on 2-step verification for the Google account
