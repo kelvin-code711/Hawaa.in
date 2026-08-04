@@ -67,7 +67,10 @@ the page.
 
 ## 3. Granting and removing access
 
-### Recommended: invite by phone number
+### Confirmed: invite by phone number
+
+> **Decided.** Access is granted by adding a mobile number to the
+> allowlist; there are no admin passwords anywhere in the system.
 
 1. Super Admin opens **Team** in the portal and enters the person's name,
    mobile number, and role.
@@ -185,8 +188,8 @@ adding and removing staff.
 - The mobile number that should be the first **Super Admin**.
 - Confirmation of the address `hawaa.in/hawa-mahal-7k2` (or a different
   suffix).
-- Confirmation of the invite-by-phone flow, or a decision to build the
-  username-and-password variant instead.
+- ~~Confirmation of the sign-in flow.~~ **Decided: invite by phone
+  number + OTP.** The username-and-password variant will not be built.
 - Later, at Phase 5: turn on 2-step verification for the Google account
   used for admin, and delete the local `serviceAccountKey.json`.
 
