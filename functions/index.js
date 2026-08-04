@@ -19,18 +19,23 @@
 
 const { onSchedule } = require('firebase-functions/v2/scheduler');
 const { onRequest, onCall, HttpsError } = require('firebase-functions/v2/https');
+const { onDocumentWritten } = require('firebase-functions/v2/firestore');
 const { defineSecret } = require('firebase-functions/params');
 const logger = require('firebase-functions/logger');
 const admin = require('firebase-admin');
 
 const { buildCitySnapshot } = require('./aqi');
 const rzp = require('./razorpay');
+const adminCore = require('./admin');
 
 admin.initializeApp();
 
 const dataGovApiKey = defineSecret('DATA_GOV_API_KEY');
 const razorpayKeyId = defineSecret('RAZORPAY_KEY_ID');
 const razorpayKeySecret = defineSecret('RAZORPAY_KEY_SECRET');
+// Bootstrap only: lets the very first Super Admin claim the empty
+// roster. Inert once any admin exists (see redeemAdminInvite).
+const bootstrapSuperAdminPhone = defineSecret('BOOTSTRAP_SUPER_ADMIN_PHONE');
 
 // data.gov.in's WAF resets bare programmatic requests; present a
 // regular browser profile.
@@ -331,5 +336,340 @@ exports.verifyRazorpayPayment = onCall(
 
         logger.info('Razorpay payment verified', { razorpayOrderId, orderDocId, uid });
         return { orderId: orderDocId };
+    }
+);
+
+// ========================================
+// Admin portal (hawaa.in/hawaa-ops-7k11s)
+//
+// Access model:
+//   admin_invites/{e164Phone} — pending invite created by a Super Admin
+//   admins/{uid}              — the live roster; role lives here
+//   admin_audit/{autoId}      — append-only record of every change
+//
+// No client can write any of those three collections (see
+// firestore.rules). Every privileged change goes through adminAction
+// below, which authorises against the admins document and writes the
+// audit entry inside the same transaction — so an action cannot happen
+// without leaving a trace, and revoking someone takes effect on their
+// very next request rather than whenever their token expires.
+// ========================================
+
+// Authorisation for callables. Deliberately reads admins/{uid} rather
+// than trusting request.auth.token.role: the custom claim is baked into
+// an ID token that stays valid for up to an hour, so a revoked admin
+// would keep their powers until it expired. This costs one document
+// read and makes revocation immediate.
+async function requireAdmin(request, permission) {
+    if (!request.auth) {
+        throw new HttpsError('unauthenticated', 'Sign in first.');
+    }
+    const uid = request.auth.uid;
+    const snap = await admin.firestore().doc(`admins/${uid}`).get();
+    if (!snap.exists) {
+        // Same message either way — an ordinary customer probing the
+        // portal learns nothing about whether admin accounts exist.
+        throw new HttpsError('permission-denied', 'Not authorised.');
+    }
+    const actor = snap.data();
+    if (!adminCore.can(actor.role, permission)) {
+        throw new HttpsError('permission-denied', 'Your role cannot do that.');
+    }
+    return { uid, role: actor.role, name: actor.name, phone: actor.phone };
+}
+
+function auditEntry(actor, action, target, details) {
+    return {
+        actorUid: actor.uid,
+        actorRole: actor.role,
+        actorPhone: actor.phone || null,
+        action,
+        target: target || null,
+        details: details || {},
+        at: admin.firestore.FieldValue.serverTimestamp()
+    };
+}
+
+async function countSuperAdmins() {
+    const agg = await admin.firestore().collection('admins')
+        .where('role', '==', 'super_admin').count().get();
+    return agg.data().count;
+}
+
+// Mirrors the role from admins/{uid} into a custom claim, so
+// firestore.rules can gate reads without a document lookup per request.
+// On removal or demotion the refresh tokens are revoked, forcing the
+// browser to obtain a token that no longer carries the old role.
+exports.syncAdminClaims = onDocumentWritten(
+    { document: 'admins/{uid}', region: 'asia-south1' },
+    async (event) => {
+        const uid = event.params.uid;
+        const after = event.data && event.data.after;
+        const before = event.data && event.data.before;
+        const newRole = after && after.exists ? after.data().role : null;
+        const oldRole = before && before.exists ? before.data().role : null;
+        if (newRole === oldRole) return;
+
+        try {
+            await admin.auth().setCustomUserClaims(uid,
+                newRole ? { role: newRole } : null);
+            // Downgrade or removal must not wait for token expiry.
+            const demoted = !newRole ||
+                (oldRole && adminCore.rankOf(newRole) < adminCore.rankOf(oldRole));
+            if (demoted) {
+                await admin.auth().revokeRefreshTokens(uid);
+            }
+            logger.info('Admin claim synced', { uid, oldRole, newRole, demoted });
+        } catch (err) {
+            logger.error('Failed to sync admin claim', { uid, newRole, err });
+            throw err;
+        }
+    }
+);
+
+// Called by the portal right after sign-in. Turns a pending invite into
+// a real admin record. The phone number is taken from the verified ID
+// token, never from the request body, so an invite can only be redeemed
+// by someone holding that SIM.
+exports.redeemAdminInvite = onCall(
+    {
+        region: 'asia-south1',
+        secrets: [bootstrapSuperAdminPhone],
+        timeoutSeconds: 30,
+        memory: '256MiB',
+        cors: true
+    },
+    async (request) => {
+        if (!request.auth) {
+            throw new HttpsError('unauthenticated', 'Sign in first.');
+        }
+        const uid = request.auth.uid;
+        const phone = adminCore.normalisePhone(request.auth.token.phone_number);
+        if (!phone) {
+            throw new HttpsError('failed-precondition',
+                'Admin access requires signing in with your mobile number.');
+        }
+
+        const db = admin.firestore();
+        const adminRef = db.doc(`admins/${uid}`);
+
+        const existing = await adminRef.get();
+        if (existing.exists) {
+            return { role: existing.data().role, redeemed: false };
+        }
+
+        const inviteRef = db.doc(`admin_invites/${phone}`);
+        const invite = await inviteRef.get();
+
+        let role;
+        let name;
+        let source;
+
+        if (invite.exists) {
+            role = invite.data().role;
+            name = invite.data().name;
+            source = 'invite';
+        } else {
+            // Bootstrap: only while the roster is completely empty, and
+            // only for the configured number. Once one admin exists this
+            // branch can never run again.
+            const roster = await db.collection('admins').limit(1).get();
+            const configured = adminCore.normalisePhone(
+                (bootstrapSuperAdminPhone.value() || '').trim());
+            if (!roster.empty || !configured || configured !== phone) {
+                throw new HttpsError('permission-denied', 'Not authorised.');
+            }
+            role = 'super_admin';
+            name = request.auth.token.name || 'Owner';
+            source = 'bootstrap';
+        }
+
+        if (!adminCore.isRole(role)) {
+            throw new HttpsError('failed-precondition', 'That invite has an invalid role.');
+        }
+
+        const actor = { uid, role, phone };
+        const batch = db.batch();
+        batch.set(adminRef, {
+            uid,
+            phone,
+            name,
+            role,
+            createdAt: admin.firestore.FieldValue.serverTimestamp()
+        });
+        if (invite.exists) batch.delete(inviteRef);
+        batch.set(db.collection('admin_audit').doc(),
+            auditEntry(actor, 'team.redeem', uid, { role, source }));
+        await batch.commit();
+
+        logger.info('Admin invite redeemed', { uid, role, source });
+        return { role, redeemed: true };
+    }
+);
+
+// Every privileged mutation in the portal. One entry point so that
+// permission checking and audit logging cannot be forgotten.
+exports.adminAction = onCall(
+    {
+        region: 'asia-south1',
+        timeoutSeconds: 30,
+        memory: '256MiB',
+        cors: true
+    },
+    async (request) => {
+        const data = request.data || {};
+        const action = data.action;
+        const db = admin.firestore();
+
+        // ---- Orders: advance or cancel ----
+        if (action === 'order.setStatus') {
+            const actor = await requireAdmin(request, 'orders.updateStatus');
+            const orderId = String(data.orderId || '');
+            if (!orderId) throw new HttpsError('invalid-argument', 'Missing order.');
+            const ref = db.doc(`orders/${orderId}`);
+
+            return db.runTransaction(async (tx) => {
+                const snap = await tx.get(ref);
+                if (!snap.exists) throw new HttpsError('not-found', 'Order not found.');
+                const from = snap.data().status;
+                let to;
+                try {
+                    to = adminCore.validateOrderTransition(from, data.status, actor.role);
+                } catch (err) {
+                    throw new HttpsError('failed-precondition', err.message);
+                }
+                tx.update(ref, {
+                    status: to,
+                    statusUpdatedAt: admin.firestore.FieldValue.serverTimestamp(),
+                    statusUpdatedBy: actor.uid
+                });
+                tx.set(db.collection('admin_audit').doc(),
+                    auditEntry(actor, 'order.setStatus', orderId, { from, to }));
+                return { orderId, status: to };
+            });
+        }
+
+        // ---- Reviews: approve or reject ----
+        if (action === 'review.moderate') {
+            const actor = await requireAdmin(request, 'reviews.moderate');
+            const reviewId = String(data.reviewId || '');
+            if (!reviewId) throw new HttpsError('invalid-argument', 'Missing review.');
+            const ref = db.doc(`reviews/${reviewId}`);
+
+            let decision;
+            try {
+                decision = adminCore.validateReviewDecision(
+                    data.decision, data.verified === true, actor.role);
+            } catch (err) {
+                throw new HttpsError('failed-precondition', err.message);
+            }
+
+            return db.runTransaction(async (tx) => {
+                const snap = await tx.get(ref);
+                if (!snap.exists) throw new HttpsError('not-found', 'Review not found.');
+                const from = snap.data().status;
+                tx.update(ref, {
+                    status: decision.status,
+                    verified: decision.verified,
+                    moderatedAt: admin.firestore.FieldValue.serverTimestamp(),
+                    moderatedBy: actor.uid
+                });
+                tx.set(db.collection('admin_audit').doc(),
+                    auditEntry(actor, 'review.moderate', reviewId, {
+                        from, to: decision.status, verified: decision.verified
+                    }));
+                return { reviewId, status: decision.status };
+            });
+        }
+
+        // ---- Team: invite someone by phone number ----
+        if (action === 'team.invite') {
+            const actor = await requireAdmin(request, 'team.manage');
+            let invite;
+            try {
+                invite = adminCore.validateInvite(data);
+                adminCore.assertCanAssign(actor.role, invite.role);
+            } catch (err) {
+                throw new HttpsError('invalid-argument', err.message);
+            }
+
+            const ref = db.doc(`admin_invites/${invite.phone}`);
+            const batch = db.batch();
+            batch.set(ref, {
+                phone: invite.phone,
+                name: invite.name,
+                role: invite.role,
+                invitedBy: actor.uid,
+                createdAt: admin.firestore.FieldValue.serverTimestamp()
+            });
+            batch.set(db.collection('admin_audit').doc(),
+                auditEntry(actor, 'team.invite', invite.phone,
+                    { role: invite.role, name: invite.name }));
+            await batch.commit();
+            return { phone: invite.phone, role: invite.role };
+        }
+
+        // ---- Team: change an existing admin's role ----
+        if (action === 'team.setRole') {
+            const actor = await requireAdmin(request, 'team.manage');
+            const targetUid = String(data.uid || '');
+            if (!targetUid) throw new HttpsError('invalid-argument', 'Missing user.');
+            try {
+                adminCore.assertCanAssign(actor.role, data.role);
+            } catch (err) {
+                throw new HttpsError('invalid-argument', err.message);
+            }
+
+            const ref = db.doc(`admins/${targetUid}`);
+            const snap = await ref.get();
+            if (!snap.exists) throw new HttpsError('not-found', 'That person is not an admin.');
+            const from = snap.data().role;
+
+            if (from === 'super_admin' && data.role !== 'super_admin') {
+                try {
+                    adminCore.assertNotLastSuperAdmin(targetUid, actor.uid,
+                        await countSuperAdmins());
+                } catch (err) {
+                    throw new HttpsError('failed-precondition', err.message);
+                }
+            }
+
+            const batch = db.batch();
+            batch.update(ref, { role: data.role });
+            batch.set(db.collection('admin_audit').doc(),
+                auditEntry(actor, 'team.setRole', targetUid, { from, to: data.role }));
+            await batch.commit();
+            return { uid: targetUid, role: data.role };
+        }
+
+        // ---- Team: revoke access ----
+        if (action === 'team.revoke') {
+            const actor = await requireAdmin(request, 'team.manage');
+            const targetUid = String(data.uid || '');
+            if (!targetUid) throw new HttpsError('invalid-argument', 'Missing user.');
+
+            const ref = db.doc(`admins/${targetUid}`);
+            const snap = await ref.get();
+            if (!snap.exists) throw new HttpsError('not-found', 'That person is not an admin.');
+            const from = snap.data().role;
+
+            if (from === 'super_admin') {
+                try {
+                    adminCore.assertNotLastSuperAdmin(targetUid, actor.uid,
+                        await countSuperAdmins());
+                } catch (err) {
+                    throw new HttpsError('failed-precondition', err.message);
+                }
+            }
+
+            const batch = db.batch();
+            batch.delete(ref);
+            batch.set(db.collection('admin_audit').doc(),
+                auditEntry(actor, 'team.revoke', targetUid, { from }));
+            await batch.commit();
+            return { uid: targetUid, revoked: true };
+        }
+
+        throw new HttpsError('invalid-argument', 'Unknown action.');
     }
 );

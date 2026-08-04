@@ -10,48 +10,32 @@ new hosting, no new vendor, no recurring cost.
 
 ---
 
-## 0. BLOCKER — resolve before Phase 1
+## 0. Test-number backdoor — CLEARED
 
-**`+91 88661 19918` is currently registered in Firebase as a *test*
-phone number with the fixed OTP `123456`, and no SMS is ever sent.**
-It is documented at `BACKEND.md:60`, in a **public** GitHub repository.
+`+91 88661 19918` was registered in Firebase as a *test* phone number
+with the fixed OTP `123456` and no SMS, and was documented in a public
+repository. As a Super Admin number that would have let anyone read the
+docs and sign straight in, bypassing every other control here.
 
-If that number becomes the Super Admin while this configuration stands,
-anyone on the internet can read the documentation, enter the number, type
-`123456`, and hold full Super Admin access. No SMS is sent, so the owner
-of the number would receive no warning. Every other control in this
-document — the gate, the roles, the audit log — is bypassed at the front
-door.
+- **Removed** from Firebase console → Authentication → Sign-in method →
+  Phone → Test phone numbers, confirmed by the owner.
+- The documentation line is gone from `BACKEND.md`, replaced with a note
+  on why the test-number list is kept empty. Git history retains the
+  number, so it is treated as disclosed; removing the Firebase setting
+  is the fix that matters.
 
-**Required before any admin account is created:**
-
-1. Firebase console → Authentication → Sign-in method → Phone → **Test
-   phone numbers** → delete the `+91 88661 19918` row. Delete every other
-   row too, or note them as permanently unusable for staff accounts.
-2. Verify a real SMS OTP arrives on that number afterwards.
-3. Remove line 60 from `BACKEND.md`. The number is a personal mobile
-   published publicly; git history will retain it, so treat it as
-   disclosed and rely on step 1 for the actual fix.
-
-Test numbers are a development convenience and are safe *only* while no
-account of consequence uses them. The moment an admin role exists, any
-configured test number is an unauthenticated backdoor.
+Keep that list empty. A test number is safe only while no account of
+consequence uses it — the moment admin roles exist, any entry there is
+an unauthenticated way in.
 
 ---
 
 ## 1. Address
 
-**`hawaa.in/hawaa-ops-k711`**
+**`hawaa.in/hawaa-ops-7k11s`**
 
 Automated scanners probe `/admin`, `/wp-admin`, `/dashboard` and similar;
 none of them will try this.
-
-One caveat: the `k711` suffix mirrors the public GitHub username
-`kelvin-code711`, which is discoverable from the repository behind the
-site. Someone specifically targeting Hawaa could reason their way to it.
-That is acceptable — Section 4's gate is what actually protects the
-portal — but a random suffix would be strictly better if the goal is to
-be unguessable. Changed by renaming one route.
 
 **This is a second lock, not the first.** The address being secret is a
 nice-to-have. Sections 4 and 5 are what actually protect the data.
@@ -158,9 +142,12 @@ a plain **404 Not Found** — identical to a page that does not exist, so
 a stranger cannot even confirm the portal is real. The page HTML never
 reaches an unauthenticated visitor.
 
-**Layer 3 — Identity.** Sign-in by phone OTP (or Google with 2-step
-verification enabled). The account must also appear on the admin
-allowlist — a valid Hawaa customer login is not admin access.
+**Layer 3 — Identity.** Sign-in by phone OTP only. Invites are keyed by
+phone number and redeemed against the verified number inside the login
+token, so Google sign-in cannot reach the portal even for an account that
+holds a role — admin access is tied to a physical SIM. The account must
+also appear on the admin roster; a valid Hawaa customer login is not
+admin access.
 
 **Layer 4 — Authorization.** The person's role travels inside their login
 token, and `firestore.rules` checks it on every single read and write.
@@ -190,13 +177,17 @@ improvement in this plan.
 
 Each phase is independently useful and safe to stop at.
 
-**Phase 1 — Foundation.** `admins` collection, the four roles, a Cloud
-Function mirroring the role into the login token, `firestore.rules`
-rewritten to enforce every row of the table in Section 2, and the audit
-log. No visible UI yet; this is the part that actually secures things.
+**Phase 1 — Foundation. ✅ Done.** `admins`, `admin_invites` and
+`admin_audit` collections; the four roles and the permission matrix in
+`functions/admin.js`; the `syncAdminClaims` trigger mirroring the role
+into the login token; `redeemAdminInvite` and the audited `adminAction`
+callable; `firestore.rules` enforcing the read half of Section 2's table;
+and 60-odd tests covering the matrix, privilege escalation, the order
+lifecycle and PII masking. No visible UI yet — this is the part that
+actually secures things.
 
 **Phase 2 — The gate.** Session-cookie sign-in, the serving function,
-the `hawa-mahal-7k2` route, `robots.txt`. From here the portal is
+the `hawaa-ops-7k11s` route, `robots.txt`. From here the portal is
 unreachable and invisible to everyone else.
 
 **Phase 3 — Operations UI.** Order list with filters and status buttons,
@@ -222,7 +213,7 @@ adding and removing staff.
 - ~~The mobile number for the first **Super Admin**.~~ **Given:
   `+91 88661 19918`** — usable only once Section 0 is cleared.
 - ~~Confirmation of the address.~~ **Decided:
-  `hawaa.in/hawaa-ops-k711`.**
+  `hawaa.in/hawaa-ops-7k11s`.**
 - ~~Confirmation of the sign-in flow.~~ **Decided: invite by phone
   number + OTP.** The username-and-password variant will not be built.
 - Later, at Phase 5: turn on 2-step verification for the Google account

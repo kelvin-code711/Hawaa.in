@@ -44,6 +44,20 @@ rules_version = '2';
 // (paid orders land in `orders` with paymentMethod 'razorpay').
 // No client access — covered by the default deny below.
 //
+// Collection: admins (admin portal roster) — doc ID = Auth UID
+//   - uid | phone (E.164) | name | role | createdAt
+//   - role: 'viewer' | 'staff' | 'manager' | 'super_admin'
+//   - client-writable: NEVER. Managed by the adminAction callable.
+//
+// Collection: admin_invites — doc ID = E.164 phone number
+//   - phone | name | role | invitedBy | createdAt
+//   - created by adminAction('team.invite'), consumed by
+//     redeemAdminInvite when that number signs in. No client writes.
+//
+// Collection: admin_audit — append-only privileged-action history
+//   - actorUid | actorRole | actorPhone | action | target | details | at
+//   - no client writes, ever; Super Admin reads.
+//
 // All other collections (incl. device backend's users, device_owners):
 // no client access.
 // ===============================================================
@@ -87,6 +101,54 @@ service cloud.firestore {
     }
 
     // ===============================================================
+    // Admin portal roles
+    //
+    // The role is carried as a custom claim, written only by the
+    // syncAdminClaims Cloud Function from admins/{uid}. A client cannot
+    // set or forge it — claims are signed into the ID token by Firebase.
+    //
+    // These rules cover READS only. Every admin write goes through the
+    // adminAction callable (Admin SDK, which bypasses rules) so that
+    // permission checks and audit logging cannot be sidestepped; that
+    // is why orders/reviews stay `allow update: if false` below even
+    // for a Super Admin.
+    //
+    // Mirrors PERMISSIONS in functions/admin.js — change both together.
+    // ===============================================================
+
+    function hasRole(roles) {
+      return isAuthenticated() &&
+        'role' in request.auth.token &&
+        request.auth.token.role in roles;
+    }
+
+    // 'orders.read' + 'orders.readPii'. Viewer is deliberately absent:
+    // rules cannot redact fields, so a Viewer's masked view is served
+    // by a callable instead of by direct collection access.
+    function canReadOrders() {
+      return hasRole(['super_admin', 'manager', 'staff']);
+    }
+
+    // 'reviews.read' — includes pending reviews awaiting moderation.
+    function canReadAllReviews() {
+      return hasRole(['super_admin', 'manager']);
+    }
+
+    // 'tickets.read'
+    function canReadTickets() {
+      return hasRole(['super_admin', 'manager', 'staff']);
+    }
+
+    // 'export' — the newsletter list is a bulk-PII export surface.
+    function canExport() {
+      return hasRole(['super_admin', 'manager']);
+    }
+
+    function isSuperAdmin() {
+      return hasRole(['super_admin']);
+    }
+
+    // ===============================================================
     // supportTickets — contact form on support.html (anonymous)
     // ===============================================================
     match /supportTickets/{ticketId} {
@@ -102,7 +164,9 @@ service cloud.firestore {
         request.resource.data.page is string &&
         request.resource.data.page.size() <= 200 &&
         isServerTime(request.resource.data.createdAt);
-      allow read, update, delete: if false;
+      // Customers can never read tickets; admin roles with 'tickets.read' can.
+      allow read: if canReadTickets();
+      allow update, delete: if false;
     }
 
     // ===============================================================
@@ -113,7 +177,8 @@ service cloud.firestore {
         request.resource.data.keys().hasOnly(['email', 'createdAt']) &&
         validEmail(request.resource.data.email) &&
         isServerTime(request.resource.data.createdAt);
-      allow read, update, delete: if false;
+      allow read: if canExport();
+      allow update, delete: if false;
     }
 
     // ===============================================================
@@ -208,8 +273,11 @@ service cloud.firestore {
       // Approved reviews are public; authors can also see their own
       // (e.g. pending ones listed on the account page).
       allow read: if resource.data.status == 'approved' ||
-        (isAuthenticated() && resource.data.uid == request.auth.uid);
+        (isAuthenticated() && resource.data.uid == request.auth.uid) ||
+        canReadAllReviews();
       allow create: if isAuthenticated() && isValidNewReview(request.resource.data);
+      // Helpful votes only. Moderation (approve/reject/verified) runs
+      // through the adminAction callable so it is always audited.
       allow update: if isAuthenticated() && isValidHelpfulVote(reviewId);
       allow delete: if false;
     }
@@ -276,8 +344,11 @@ service cloud.firestore {
     // happen only from the console / privileged server code
     // ===============================================================
     match /orders/{orderId} {
-      allow read: if isAuthenticated() && resource.data.uid == request.auth.uid;
+      allow read: if (isAuthenticated() && resource.data.uid == request.auth.uid) ||
+        canReadOrders();
       allow create: if isAuthenticated() && isValidNewOrder(request.resource.data);
+      // Status changes run through the adminAction callable — no admin,
+      // however senior, can alter an order straight from the browser.
       allow update, delete: if false;
     }
 
@@ -288,6 +359,44 @@ service cloud.firestore {
     // ===============================================================
     match /aqi/{docId} {
       allow read: if true;
+      allow write: if false;
+    }
+
+    // ===============================================================
+    // admins — the live staff roster. Doc ID = Firebase Auth UID.
+    //   uid, phone (E.164), name, role, createdAt
+    //
+    // Writes are denied to every client without exception: roles are
+    // granted and revoked only through the adminAction callable, which
+    // enforces "nobody may grant a role above their own" and records an
+    // audit entry. A Super Admin cannot quietly promote themselves by
+    // editing this collection from a browser console.
+    // ===============================================================
+    match /admins/{adminUid} {
+      // Read your own record (so the portal can show your role before
+      // the custom claim refreshes); Super Admins see the whole team.
+      allow read: if isOwner(adminUid) || isSuperAdmin();
+      allow write: if false;
+    }
+
+    // ===============================================================
+    // admin_invites — pending access, doc ID = E.164 phone number.
+    // Created by adminAction('team.invite'), consumed by
+    // redeemAdminInvite once that number signs in.
+    // ===============================================================
+    match /admin_invites/{phone} {
+      allow read: if isSuperAdmin();
+      allow write: if false;
+    }
+
+    // ===============================================================
+    // admin_audit — append-only history of every privileged change.
+    // Written only by the Admin SDK. No client can create, edit or
+    // delete an entry: not staff, not a Manager, not the Super Admin.
+    // That is the point — the log has to outlast the person it records.
+    // ===============================================================
+    match /admin_audit/{entryId} {
+      allow read: if isSuperAdmin();
       allow write: if false;
     }
 

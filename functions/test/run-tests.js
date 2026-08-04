@@ -176,3 +176,136 @@ assert.strictEqual(rzp.verifyPaymentSignature('', '', '', secret), false);
 assert.strictEqual(rzp.verifyPaymentSignature(null, undefined, sig, secret), false);
 
 console.log('All Razorpay helper tests passed.');
+
+// ===============================================================
+// Admin portal core (../admin.js)
+// ===============================================================
+const adm = require(path.join(__dirname, '..', 'admin.js'));
+
+// ---- Permission matrix: every row of the plan's table ----
+assert.strictEqual(adm.can('super_admin', 'team.manage'), true);
+assert.strictEqual(adm.can('manager', 'team.manage'), false);
+assert.strictEqual(adm.can('staff', 'team.manage'), false);
+assert.strictEqual(adm.can('viewer', 'team.manage'), false);
+
+assert.strictEqual(adm.can('super_admin', 'audit.read'), true);
+assert.strictEqual(adm.can('manager', 'audit.read'), false);
+
+assert.strictEqual(adm.can('manager', 'reviews.moderate'), true);
+assert.strictEqual(adm.can('staff', 'reviews.moderate'), false);
+
+assert.strictEqual(adm.can('staff', 'orders.updateStatus'), true);
+assert.strictEqual(adm.can('staff', 'orders.cancel'), false);
+assert.strictEqual(adm.can('viewer', 'orders.updateStatus'), false);
+
+// Staff must not be able to bulk-export the customer list.
+assert.strictEqual(adm.can('manager', 'export'), true);
+assert.strictEqual(adm.can('staff', 'export'), false);
+assert.strictEqual(adm.can('viewer', 'export'), false);
+
+// Viewer sees the dashboard but never customer PII.
+assert.strictEqual(adm.can('viewer', 'dashboard'), true);
+assert.strictEqual(adm.can('viewer', 'orders.read'), true);
+assert.strictEqual(adm.can('viewer', 'orders.readPii'), false);
+assert.strictEqual(adm.can('staff', 'orders.readPii'), true);
+
+// Unknown / malformed roles are never granted anything.
+assert.strictEqual(adm.can('root', 'orders.read'), false);
+assert.strictEqual(adm.can('', 'orders.read'), false);
+assert.strictEqual(adm.can(null, 'orders.read'), false);
+assert.strictEqual(adm.can(undefined, 'dashboard'), false);
+
+// ---- normalisePhone: must produce exactly what firestore.rules accepts ----
+assert.strictEqual(adm.normalisePhone('+919876543210'), '+919876543210');
+assert.strictEqual(adm.normalisePhone('+91 98765 43210'), '+919876543210');
+assert.strictEqual(adm.normalisePhone('+91-98765-43210'), '+919876543210');
+assert.strictEqual(adm.normalisePhone('9876543210'), null);
+assert.strictEqual(adm.normalisePhone('+0123456789'), null);
+assert.strictEqual(adm.normalisePhone(''), null);
+assert.strictEqual(adm.normalisePhone(null), null);
+assert.strictEqual(adm.normalisePhone('+91987654321012345'), null);
+
+// ---- validateInvite ----
+const invite = adm.validateInvite({
+    phone: '+91 88661 19918', name: '  Asha Rao  ', role: 'staff'
+});
+assert.deepStrictEqual(invite, {
+    phone: '+918866119918', name: 'Asha Rao', role: 'staff'
+});
+assert.throws(() => adm.validateInvite({ phone: '123', name: 'A', role: 'staff' }), /mobile number/);
+assert.throws(() => adm.validateInvite({ phone: '+919876543210', name: '', role: 'staff' }), /name/);
+assert.throws(() => adm.validateInvite({ phone: '+919876543210', name: 'A', role: 'root' }), /role/);
+
+// ---- Privilege escalation must be impossible ----
+assert.throws(() => adm.assertCanAssign('manager', 'staff'), /Super Admin/);
+assert.throws(() => adm.assertCanAssign('staff', 'staff'), /Super Admin/);
+assert.throws(() => adm.assertCanAssign('viewer', 'viewer'), /Super Admin/);
+// A Super Admin may grant any role up to their own.
+assert.doesNotThrow(() => adm.assertCanAssign('super_admin', 'super_admin'));
+assert.doesNotThrow(() => adm.assertCanAssign('super_admin', 'manager'));
+assert.throws(() => adm.assertCanAssign('super_admin', 'root'), /Unknown role/);
+
+// ---- The last Super Admin cannot lock themselves out ----
+assert.throws(() => adm.assertNotLastSuperAdmin('u1', 'u1', 1), /only Super Admin/);
+assert.doesNotThrow(() => adm.assertNotLastSuperAdmin('u1', 'u1', 2));
+// Removing somebody else is always fine.
+assert.doesNotThrow(() => adm.assertNotLastSuperAdmin('u2', 'u1', 1));
+
+// ---- Order lifecycle ----
+assert.strictEqual(adm.validateOrderTransition('placed', 'confirmed', 'staff'), 'confirmed');
+assert.strictEqual(adm.validateOrderTransition('confirmed', 'shipped', 'staff'), 'shipped');
+assert.strictEqual(adm.validateOrderTransition('shipped', 'delivered', 'staff'), 'delivered');
+// No going backwards, and terminal states stay terminal.
+assert.throws(() => adm.validateOrderTransition('delivered', 'placed', 'super_admin'), /cannot move/);
+assert.throws(() => adm.validateOrderTransition('cancelled', 'confirmed', 'super_admin'), /cannot move/);
+assert.throws(() => adm.validateOrderTransition('shipped', 'cancelled', 'manager'), /cannot move/);
+assert.throws(() => adm.validateOrderTransition('nonsense', 'placed', 'super_admin'), /unrecognised/);
+// Cancelling needs 'orders.cancel', which Staff does not have.
+assert.throws(() => adm.validateOrderTransition('placed', 'cancelled', 'staff'), /cannot make that change/);
+assert.doesNotThrow(() => adm.validateOrderTransition('placed', 'cancelled', 'manager'));
+assert.throws(() => adm.validateOrderTransition('placed', 'confirmed', 'viewer'), /cannot make that change/);
+
+// ---- Review moderation ----
+assert.deepStrictEqual(
+    adm.validateReviewDecision('approved', true, 'manager'),
+    { status: 'approved', verified: true }
+);
+assert.throws(() => adm.validateReviewDecision('approved', true, 'staff'), /cannot moderate/);
+assert.throws(() => adm.validateReviewDecision('deleted', false, 'manager'), /approved or rejected/);
+assert.throws(() => adm.validateReviewDecision('approved', 'yes', 'manager'), /true or false/);
+assert.throws(() => adm.validateReviewDecision('rejected', true, 'manager'), /rejected review/);
+
+// ---- PII masking for the Viewer role ----
+const fullOrder = {
+    qtyPurifierOnetime: 1, qtyPurifierSubscribe: 0, qtyFilter: 2,
+    subtotal: 8997, gst: 1619, total: 10616,
+    paymentMethod: 'cod', status: 'placed', createdAt: 'T',
+    uid: 'customer-uid',
+    address: {
+        name: 'Asha Rao', phone: '+919876543210', line1: '12 MG Road',
+        line2: 'Near Park', city: 'Bengaluru', state: 'Karnataka', pincode: '560001'
+    }
+};
+
+const masked = adm.projectOrder(fullOrder, 'viewer');
+assert.strictEqual(masked.total, 10616);
+assert.strictEqual(masked.address.city, 'Bengaluru');
+// Nothing that identifies or locates the customer survives.
+assert.strictEqual(masked.address.name, undefined);
+assert.strictEqual(masked.address.line1, undefined);
+assert.strictEqual(masked.address.line2, undefined);
+assert.strictEqual(masked.address.pincode, undefined);
+assert.strictEqual(masked.uid, undefined);
+assert.strictEqual(masked.address.phone.indexOf('9876543') === -1, true);
+assert.strictEqual(adm.maskPhone('+919876543210'), '+91••••••••10');
+assert.strictEqual(adm.maskPhone('abc'), '');
+assert.strictEqual(adm.maskPhone(null), '');
+
+// Roles that carry 'orders.readPii' get the document untouched.
+assert.strictEqual(adm.projectOrder(fullOrder, 'staff'), fullOrder);
+assert.strictEqual(adm.projectOrder(fullOrder, 'manager'), fullOrder);
+assert.strictEqual(adm.projectOrder(fullOrder, 'super_admin'), fullOrder);
+// An unknown role is treated as untrusted, not as an admin.
+assert.strictEqual(adm.projectOrder(fullOrder, 'root').address.name, undefined);
+
+console.log('All admin portal tests passed.');
