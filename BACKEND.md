@@ -289,6 +289,53 @@ all devices.
 `robots.txt` deliberately omits the portal path — see the comments in
 that file for why listing a secret URL there is counterproductive.
 
+### The screens (Phase 3)
+
+The portal is a single page served by `adminPortal`, with tabs gated by
+the caller's permissions: **Orders**, **Reviews**, **Support**, **Team**
+and **Activity** (the audit log). A summary strip shows orders today,
+revenue this week, orders awaiting dispatch, and reviews waiting.
+
+All reads go through the **`adminQuery`** callable
+(`resource: 'summary' | 'orders' | 'reviews' | 'tickets' | 'team' |
+'audit'`) and all writes through **`adminAction`**. The browser never
+queries Firestore directly, which is what makes the Viewer role's
+masking real: `projectOrder()` strips name, street address and pincode
+**on the server**, so the unmasked values are never transmitted. Rules
+cannot do this — they allow or deny whole documents, never fields.
+
+Dashboard maths lives in `summariseOrders()` / `istDayStartMs()` in
+`functions/admin.js`. "Today" means the **IST** day (00:00 IST is 18:30
+UTC the previous day); a UTC-based implementation would file every order
+placed before 05:30 IST under the wrong day. Cancelled orders count as
+orders placed but never as revenue.
+
+The page receives the caller's permission list from
+`adminCore.PERMISSIONS[role]` rather than re-deriving it in browser JS,
+so there is only ever one copy of the matrix. Hidden buttons are
+cosmetic — `adminQuery` and `adminAction` re-authorise every call.
+
+### Deploys
+
+Pushes to `main` run two workflows: `firebase-hosting-deploy.yml`
+(static files) and `firebase-functions-deploy.yml` (**functions *and*
+`firestore.rules`**). The rules ship with the functions deliberately —
+the portal's role checks span both, and rules lagging behind the code
+would lock the portal out of its own data.
+
+**Service-account roles required on `hawaa-air-27548`** for the
+functions workflow, beyond Editor: **Service Account User**, **Cloud
+Functions Admin**, **Secret Manager Admin**. Editor deliberately
+excludes granting permissions, and a functions deploy has to grant
+several — which is why a robot deploy fails where an Owner's local
+deploy succeeds. These project-level bindings are also needed once:
+
+```bash
+gcloud projects add-iam-policy-binding hawaa-air-27548 --member=serviceAccount:service-994326211415@gcp-sa-pubsub.iam.gserviceaccount.com --role=roles/iam.serviceAccountTokenCreator
+gcloud projects add-iam-policy-binding hawaa-air-27548 --member=serviceAccount:994326211415-compute@developer.gserviceaccount.com --role=roles/run.invoker
+gcloud projects add-iam-policy-binding hawaa-air-27548 --member=serviceAccount:994326211415-compute@developer.gserviceaccount.com --role=roles/eventarc.eventReceiver
+```
+
 ### First Super Admin (one-time)
 
 ```bash
