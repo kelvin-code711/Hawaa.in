@@ -14,7 +14,25 @@
       "**/node_modules/**",
       "**/*.md"
     ],
-    "cleanUrls": true
+    "cleanUrls": true,
+    "rewrites": [
+      {
+        "source": "/hawaa-ops-7k11s",
+        "function": { "functionId": "adminPortal", "region": "asia-south1" }
+      },
+      {
+        "source": "/hawaa-ops-7k11s/**",
+        "function": { "functionId": "adminPortal", "region": "asia-south1" }
+      }
+    ],
+    "headers": [
+      {
+        "source": "/hawaa-ops-7k11s/**",
+        "headers": [
+          { "key": "X-Robots-Tag", "value": "noindex, nofollow, noarchive" }
+        ]
+      }
+    ]
   },
   "functions": [
     {

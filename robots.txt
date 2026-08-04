@@ -1,0 +1,14 @@
+User-agent: *
+Allow: /
+
+# The staff portal is deliberately NOT listed here.
+#
+# robots.txt is public and is the first file anyone curious reads, so a
+# Disallow line for a secret path advertises that path instead of
+# protecting it — and it buys nothing: the portal is served by a Cloud
+# Function that returns "X-Robots-Tag: noindex, nofollow, noarchive" on
+# every response and a 404 to anyone without a valid admin session, so
+# there is nothing for a crawler to index in the first place.
+#
+# Rule of thumb: robots.txt is for pages that exist publicly but are not
+# worth indexing. It is never a security control.

@@ -57,8 +57,13 @@ safe to commit. All protection comes from `firestore.rules`.
   `auth/unauthorized-domain`, and the UI tells the user to use their mobile
   number instead. Google sign-in uses a popup, falling back to a full-page
   redirect when popups are blocked (common in mobile in-app browsers).
-- **Test phone number:** `+91 88661 19918` → OTP `123456` (no SMS sent).
-  Configured in Firebase console → Authentication → Sign-in method.
+- **Test phone numbers:** none, deliberately. Firebase's "test phone
+  numbers" feature pins a fixed OTP to a number and sends no SMS, which
+  is an unauthenticated way in for anyone who learns the pair. That is
+  harmless for a throwaway customer login and unacceptable once the same
+  number holds an admin role, so the list under Authentication →
+  Sign-in method → Phone is kept empty. Test sign-in with a real number
+  and a real SMS.
 - On sign-in, `js/nav.js` upserts `web_users/{uid}` (uid, displayName,
   email/phone, photoURL, createdAt, lastLoginAt) and redirects to
   `account.html`.
@@ -214,6 +219,88 @@ Generate live keys after Razorpay KYC/activation, run the two
 functions. Nothing in the repo changes; optionally make Pay Online the
 default by moving the `checked` attribute between the two payment-method
 radios in `js/cart.js`.
+
+## Admin portal — access control (Phase 1)
+
+The staff portal will live at **`hawaa.in/hawaa-ops-7k11s`**. Phase 1
+ships the access-control foundation only; see `ADMIN_PORTAL_PLAN.md` for
+the full design and remaining phases.
+
+**Roles** — `viewer` → `staff` → `manager` → `super_admin`, defined once
+in `functions/admin.js` (`PERMISSIONS`). `firestore.rules` mirrors the
+*read* half of that matrix; the write half is enforced by the
+`adminAction` callable.
+
+**Collections**
+
+| Collection | Purpose | Client writes |
+| --- | --- | --- |
+| `admins/{uid}` | live roster, holds the role | never |
+| `admin_invites/{e164Phone}` | pending access | never |
+| `admin_audit/{autoId}` | append-only action history | never |
+
+**Why admin writes go through a Cloud Function.** `orders` and `reviews`
+remain `allow update: if false` for everyone, Super Admin included. Every
+privileged change is made by `adminAction` with the Admin SDK, which
+checks the caller's role and writes the audit entry *in the same
+transaction* — so an action cannot occur without a trace, and no browser
+console can bypass either step.
+
+**Why authorisation re-reads `admins/{uid}`.** The role also travels as a
+custom claim (set by the `syncAdminClaims` trigger) so rules can gate
+reads cheaply. Claims are baked into an ID token valid for up to an hour,
+so callables authorise against the document instead: revoking someone
+takes effect on their next request, not whenever their token expires.
+`syncAdminClaims` additionally revokes refresh tokens on demotion.
+
+**Sign-in is phone-only for admins.** Invites are keyed by phone number
+and redeemed against the verified `phone_number` claim in the ID token,
+so access is tied to a physical SIM. There are no admin passwords.
+
+### The gate (Phase 2)
+
+`firebase.json` rewrites `/hawaa-ops-7k11s` (and everything under it) to
+the **`adminPortal`** function instead of serving a static file, so the
+operations HTML only leaves the server after a session is verified *and*
+the roster re-checked. Responses carry `Cache-Control: private,
+no-store`, `X-Robots-Tag: noindex`, `X-Frame-Options: DENY` and
+`Referrer-Policy: no-referrer`.
+
+| Request | Response |
+| --- | --- |
+| No session cookie | Anonymous sign-in form (no branding) |
+| Valid session, no `admins/{uid}` | 404, same as a nonexistent URL |
+| Valid session with a role | The portal |
+| Any other path or method under the route | 404 |
+
+**The cookie is named `__session` — that is not a preference.** Firebase
+Hosting strips every cookie except that one before forwarding a request
+to a function. It is set `HttpOnly` (page scripts cannot read it),
+`Secure`, `SameSite=Strict`, and scoped to `Path=/hawaa-ops-7k11s` so it
+is never sent on public pages — a site-wide cookie would enter the
+Hosting CDN's cache key and fragment caching for the whole site.
+
+Sessions last 8 hours and are minted only from an ID token whose sign-in
+happened within the last 5 minutes, so a captured token cannot be traded
+for a long-lived cookie later. `verifySessionCookie(..., true)` checks
+revocation on every load, and signing out revokes refresh tokens across
+all devices.
+
+`robots.txt` deliberately omits the portal path — see the comments in
+that file for why listing a secret URL there is counterproductive.
+
+### First Super Admin (one-time)
+
+```bash
+npx -y firebase-tools@latest functions:secrets:set BOOTSTRAP_SUPER_ADMIN_PHONE
+```
+
+Enter the owner's number in E.164 (`+919876543210`). After deploy, that
+number signs in and the portal calls `redeemAdminInvite`, which creates
+the first `super_admin`. **The bootstrap path only runs while `admins` is
+completely empty** — once one admin exists it can never fire again, so a
+leaked secret is inert. Everyone else is added from the portal's Team
+screen; nobody self-registers.
 
 ## Roadmap
 

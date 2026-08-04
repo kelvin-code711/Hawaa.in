@@ -19,18 +19,24 @@
 
 const { onSchedule } = require('firebase-functions/v2/scheduler');
 const { onRequest, onCall, HttpsError } = require('firebase-functions/v2/https');
+const { onDocumentWritten } = require('firebase-functions/v2/firestore');
 const { defineSecret } = require('firebase-functions/params');
 const logger = require('firebase-functions/logger');
 const admin = require('firebase-admin');
 
 const { buildCitySnapshot } = require('./aqi');
 const rzp = require('./razorpay');
+const adminCore = require('./admin');
+const portal = require('./portal');
 
 admin.initializeApp();
 
 const dataGovApiKey = defineSecret('DATA_GOV_API_KEY');
 const razorpayKeyId = defineSecret('RAZORPAY_KEY_ID');
 const razorpayKeySecret = defineSecret('RAZORPAY_KEY_SECRET');
+// Bootstrap only: lets the very first Super Admin claim the empty
+// roster. Inert once any admin exists (see redeemAdminInvite).
+const bootstrapSuperAdminPhone = defineSecret('BOOTSTRAP_SUPER_ADMIN_PHONE');
 
 // data.gov.in's WAF resets bare programmatic requests; present a
 // regular browser profile.
@@ -331,5 +337,499 @@ exports.verifyRazorpayPayment = onCall(
 
         logger.info('Razorpay payment verified', { razorpayOrderId, orderDocId, uid });
         return { orderId: orderDocId };
+    }
+);
+
+// ========================================
+// Admin portal (hawaa.in/hawaa-ops-7k11s)
+//
+// Access model:
+//   admin_invites/{e164Phone} — pending invite created by a Super Admin
+//   admins/{uid}              — the live roster; role lives here
+//   admin_audit/{autoId}      — append-only record of every change
+//
+// No client can write any of those three collections (see
+// firestore.rules). Every privileged change goes through adminAction
+// below, which authorises against the admins document and writes the
+// audit entry inside the same transaction — so an action cannot happen
+// without leaving a trace, and revoking someone takes effect on their
+// very next request rather than whenever their token expires.
+// ========================================
+
+// Authorisation for callables. Deliberately reads admins/{uid} rather
+// than trusting request.auth.token.role: the custom claim is baked into
+// an ID token that stays valid for up to an hour, so a revoked admin
+// would keep their powers until it expired. This costs one document
+// read and makes revocation immediate.
+async function requireAdmin(request, permission) {
+    if (!request.auth) {
+        throw new HttpsError('unauthenticated', 'Sign in first.');
+    }
+    const uid = request.auth.uid;
+    const snap = await admin.firestore().doc(`admins/${uid}`).get();
+    if (!snap.exists) {
+        // Same message either way — an ordinary customer probing the
+        // portal learns nothing about whether admin accounts exist.
+        throw new HttpsError('permission-denied', 'Not authorised.');
+    }
+    const actor = snap.data();
+    if (!adminCore.can(actor.role, permission)) {
+        throw new HttpsError('permission-denied', 'Your role cannot do that.');
+    }
+    return { uid, role: actor.role, name: actor.name, phone: actor.phone };
+}
+
+function auditEntry(actor, action, target, details) {
+    return {
+        actorUid: actor.uid,
+        actorRole: actor.role,
+        actorPhone: actor.phone || null,
+        action,
+        target: target || null,
+        details: details || {},
+        at: admin.firestore.FieldValue.serverTimestamp()
+    };
+}
+
+async function countSuperAdmins() {
+    const agg = await admin.firestore().collection('admins')
+        .where('role', '==', 'super_admin').count().get();
+    return agg.data().count;
+}
+
+// Mirrors the role from admins/{uid} into a custom claim, so
+// firestore.rules can gate reads without a document lookup per request.
+// On removal or demotion the refresh tokens are revoked, forcing the
+// browser to obtain a token that no longer carries the old role.
+exports.syncAdminClaims = onDocumentWritten(
+    { document: 'admins/{uid}', region: 'asia-south1' },
+    async (event) => {
+        const uid = event.params.uid;
+        const after = event.data && event.data.after;
+        const before = event.data && event.data.before;
+        const newRole = after && after.exists ? after.data().role : null;
+        const oldRole = before && before.exists ? before.data().role : null;
+        if (newRole === oldRole) return;
+
+        try {
+            await admin.auth().setCustomUserClaims(uid,
+                newRole ? { role: newRole } : null);
+            // Downgrade or removal must not wait for token expiry.
+            const demoted = !newRole ||
+                (oldRole && adminCore.rankOf(newRole) < adminCore.rankOf(oldRole));
+            if (demoted) {
+                await admin.auth().revokeRefreshTokens(uid);
+            }
+            logger.info('Admin claim synced', { uid, oldRole, newRole, demoted });
+        } catch (err) {
+            logger.error('Failed to sync admin claim', { uid, newRole, err });
+            throw err;
+        }
+    }
+);
+
+// Resolves who somebody is on the admin roster, redeeming a pending
+// invite the first time they appear. The phone number always comes from
+// the verified token, never from a request body, so an invite can only
+// be redeemed by whoever holds that SIM.
+//
+// Returns null when the caller has no claim to admin access — callers
+// translate that into a deliberately uninformative response.
+// Requires the bootstrapSuperAdminPhone secret to be bound.
+async function resolveOrRedeemAdmin(uid, tokenPhone, fallbackName) {
+    const phone = adminCore.normalisePhone(tokenPhone);
+    if (!phone) return null;
+
+    const db = admin.firestore();
+    const adminRef = db.doc(`admins/${uid}`);
+
+    const existing = await adminRef.get();
+    if (existing.exists) {
+        const current = existing.data();
+        return { role: current.role, name: current.name, phone, redeemed: false };
+    }
+
+    const inviteRef = db.doc(`admin_invites/${phone}`);
+    const invite = await inviteRef.get();
+
+    let role;
+    let name;
+    let source;
+
+    if (invite.exists) {
+        role = invite.data().role;
+        name = invite.data().name;
+        source = 'invite';
+    } else {
+        // Bootstrap: only while the roster is completely empty, and only
+        // for the configured number. Once one admin exists this branch
+        // can never run again, which makes a leaked secret inert.
+        const roster = await db.collection('admins').limit(1).get();
+        const configured = adminCore.normalisePhone(
+            (bootstrapSuperAdminPhone.value() || '').trim());
+        if (!roster.empty || !configured || configured !== phone) return null;
+        role = 'super_admin';
+        name = fallbackName || 'Owner';
+        source = 'bootstrap';
+    }
+
+    if (!adminCore.isRole(role)) {
+        logger.error('Invite carries an invalid role', { uid, phone, role });
+        return null;
+    }
+
+    const batch = db.batch();
+    batch.set(adminRef, {
+        uid,
+        phone,
+        name,
+        role,
+        createdAt: admin.firestore.FieldValue.serverTimestamp()
+    });
+    if (invite.exists) batch.delete(inviteRef);
+    batch.set(db.collection('admin_audit').doc(),
+        auditEntry({ uid, role, phone }, 'team.redeem', uid, { role, source }));
+    await batch.commit();
+
+    logger.info('Admin invite redeemed', { uid, role, source });
+    return { role, name, phone, redeemed: true };
+}
+
+// Exposed for the portal's own use and for any future non-cookie client.
+exports.redeemAdminInvite = onCall(
+    {
+        region: 'asia-south1',
+        secrets: [bootstrapSuperAdminPhone],
+        timeoutSeconds: 30,
+        memory: '256MiB',
+        cors: true
+    },
+    async (request) => {
+        if (!request.auth) {
+            throw new HttpsError('unauthenticated', 'Sign in first.');
+        }
+        const resolved = await resolveOrRedeemAdmin(
+            request.auth.uid,
+            request.auth.token.phone_number,
+            request.auth.token.name
+        );
+        if (!resolved) {
+            throw new HttpsError('permission-denied', 'Not authorised.');
+        }
+        return { role: resolved.role, redeemed: resolved.redeemed };
+    }
+);
+
+// Every privileged mutation in the portal. One entry point so that
+// permission checking and audit logging cannot be forgotten.
+exports.adminAction = onCall(
+    {
+        region: 'asia-south1',
+        timeoutSeconds: 30,
+        memory: '256MiB',
+        cors: true
+    },
+    async (request) => {
+        const data = request.data || {};
+        const action = data.action;
+        const db = admin.firestore();
+
+        // ---- Orders: advance or cancel ----
+        if (action === 'order.setStatus') {
+            const actor = await requireAdmin(request, 'orders.updateStatus');
+            const orderId = String(data.orderId || '');
+            if (!orderId) throw new HttpsError('invalid-argument', 'Missing order.');
+            const ref = db.doc(`orders/${orderId}`);
+
+            return db.runTransaction(async (tx) => {
+                const snap = await tx.get(ref);
+                if (!snap.exists) throw new HttpsError('not-found', 'Order not found.');
+                const from = snap.data().status;
+                let to;
+                try {
+                    to = adminCore.validateOrderTransition(from, data.status, actor.role);
+                } catch (err) {
+                    throw new HttpsError('failed-precondition', err.message);
+                }
+                tx.update(ref, {
+                    status: to,
+                    statusUpdatedAt: admin.firestore.FieldValue.serverTimestamp(),
+                    statusUpdatedBy: actor.uid
+                });
+                tx.set(db.collection('admin_audit').doc(),
+                    auditEntry(actor, 'order.setStatus', orderId, { from, to }));
+                return { orderId, status: to };
+            });
+        }
+
+        // ---- Reviews: approve or reject ----
+        if (action === 'review.moderate') {
+            const actor = await requireAdmin(request, 'reviews.moderate');
+            const reviewId = String(data.reviewId || '');
+            if (!reviewId) throw new HttpsError('invalid-argument', 'Missing review.');
+            const ref = db.doc(`reviews/${reviewId}`);
+
+            let decision;
+            try {
+                decision = adminCore.validateReviewDecision(
+                    data.decision, data.verified === true, actor.role);
+            } catch (err) {
+                throw new HttpsError('failed-precondition', err.message);
+            }
+
+            return db.runTransaction(async (tx) => {
+                const snap = await tx.get(ref);
+                if (!snap.exists) throw new HttpsError('not-found', 'Review not found.');
+                const from = snap.data().status;
+                tx.update(ref, {
+                    status: decision.status,
+                    verified: decision.verified,
+                    moderatedAt: admin.firestore.FieldValue.serverTimestamp(),
+                    moderatedBy: actor.uid
+                });
+                tx.set(db.collection('admin_audit').doc(),
+                    auditEntry(actor, 'review.moderate', reviewId, {
+                        from, to: decision.status, verified: decision.verified
+                    }));
+                return { reviewId, status: decision.status };
+            });
+        }
+
+        // ---- Team: invite someone by phone number ----
+        if (action === 'team.invite') {
+            const actor = await requireAdmin(request, 'team.manage');
+            let invite;
+            try {
+                invite = adminCore.validateInvite(data);
+                adminCore.assertCanAssign(actor.role, invite.role);
+            } catch (err) {
+                throw new HttpsError('invalid-argument', err.message);
+            }
+
+            const ref = db.doc(`admin_invites/${invite.phone}`);
+            const batch = db.batch();
+            batch.set(ref, {
+                phone: invite.phone,
+                name: invite.name,
+                role: invite.role,
+                invitedBy: actor.uid,
+                createdAt: admin.firestore.FieldValue.serverTimestamp()
+            });
+            batch.set(db.collection('admin_audit').doc(),
+                auditEntry(actor, 'team.invite', invite.phone,
+                    { role: invite.role, name: invite.name }));
+            await batch.commit();
+            return { phone: invite.phone, role: invite.role };
+        }
+
+        // ---- Team: change an existing admin's role ----
+        if (action === 'team.setRole') {
+            const actor = await requireAdmin(request, 'team.manage');
+            const targetUid = String(data.uid || '');
+            if (!targetUid) throw new HttpsError('invalid-argument', 'Missing user.');
+            try {
+                adminCore.assertCanAssign(actor.role, data.role);
+            } catch (err) {
+                throw new HttpsError('invalid-argument', err.message);
+            }
+
+            const ref = db.doc(`admins/${targetUid}`);
+            const snap = await ref.get();
+            if (!snap.exists) throw new HttpsError('not-found', 'That person is not an admin.');
+            const from = snap.data().role;
+
+            if (from === 'super_admin' && data.role !== 'super_admin') {
+                try {
+                    adminCore.assertNotLastSuperAdmin(targetUid, actor.uid,
+                        await countSuperAdmins());
+                } catch (err) {
+                    throw new HttpsError('failed-precondition', err.message);
+                }
+            }
+
+            const batch = db.batch();
+            batch.update(ref, { role: data.role });
+            batch.set(db.collection('admin_audit').doc(),
+                auditEntry(actor, 'team.setRole', targetUid, { from, to: data.role }));
+            await batch.commit();
+            return { uid: targetUid, role: data.role };
+        }
+
+        // ---- Team: revoke access ----
+        if (action === 'team.revoke') {
+            const actor = await requireAdmin(request, 'team.manage');
+            const targetUid = String(data.uid || '');
+            if (!targetUid) throw new HttpsError('invalid-argument', 'Missing user.');
+
+            const ref = db.doc(`admins/${targetUid}`);
+            const snap = await ref.get();
+            if (!snap.exists) throw new HttpsError('not-found', 'That person is not an admin.');
+            const from = snap.data().role;
+
+            if (from === 'super_admin') {
+                try {
+                    adminCore.assertNotLastSuperAdmin(targetUid, actor.uid,
+                        await countSuperAdmins());
+                } catch (err) {
+                    throw new HttpsError('failed-precondition', err.message);
+                }
+            }
+
+            const batch = db.batch();
+            batch.delete(ref);
+            batch.set(db.collection('admin_audit').doc(),
+                auditEntry(actor, 'team.revoke', targetUid, { from }));
+            await batch.commit();
+            return { uid: targetUid, revoked: true };
+        }
+
+        throw new HttpsError('invalid-argument', 'Unknown action.');
+    }
+);
+
+// ========================================
+// The gate — serves hawaa.in/hawaa-ops-7k11s
+//
+// Firebase Hosting rewrites the portal path here instead of serving a
+// static file, so the operations HTML only ever leaves this function
+// after a session has been verified AND the roster re-checked.
+//
+// Three outcomes, chosen so a stranger learns as little as possible:
+//   no session          -> an anonymous sign-in form
+//   session, no role    -> 404, identical to a URL that does not exist
+//   session with a role -> the portal
+//
+// A signed-in Hawaa *customer* who guesses the URL therefore sees a 404,
+// not a hint that they found something real.
+// ========================================
+
+function applySecurityHeaders(res) {
+    Object.keys(portal.SECURITY_HEADERS).forEach(function (key) {
+        res.set(key, portal.SECURITY_HEADERS[key]);
+    });
+}
+
+function sendNotFound(res) {
+    applySecurityHeaders(res);
+    res.status(404).type('text/html')
+        .send('<!doctype html><meta charset="utf-8"><title>Not Found</title>Not Found');
+}
+
+function sendLoginPage(res) {
+    applySecurityHeaders(res);
+    res.status(200).type('text/html').send(portal.loginPageHtml());
+}
+
+exports.adminPortal = onRequest(
+    {
+        region: 'asia-south1',
+        secrets: [bootstrapSuperAdminPhone],
+        timeoutSeconds: 30,
+        memory: '256MiB',
+        // Reachable so Hosting can forward to it; the cookie check below
+        // is the actual authentication.
+        invoker: 'public'
+    },
+    async (req, res) => {
+        const base = portal.PORTAL_PATH;
+        const rawPath = (req.path || '/').replace(/\/+$/, '') || '/';
+
+        let sub;
+        if (rawPath === base) sub = '/';
+        else if (rawPath.indexOf(base + '/') === 0) sub = rawPath.slice(base.length);
+        else return sendNotFound(res);
+
+        // ---- Exchange a verified ID token for the session cookie ----
+        if (sub === '/session' && req.method === 'POST') {
+            const idToken = req.body && req.body.idToken;
+            if (typeof idToken !== 'string' || idToken.length === 0) {
+                applySecurityHeaders(res);
+                return res.status(400).json({ error: 'missing token' });
+            }
+
+            let decoded;
+            try {
+                decoded = await admin.auth().verifyIdToken(idToken, true);
+            } catch (err) {
+                applySecurityHeaders(res);
+                return res.status(401).json({ error: 'invalid token' });
+            }
+
+            // Only mint a long-lived cookie from a *fresh* sign-in, so an
+            // ID token captured earlier cannot be traded for one later.
+            if ((Date.now() / 1000) - decoded.auth_time > 5 * 60) {
+                applySecurityHeaders(res);
+                return res.status(401).json({ error: 'stale sign-in' });
+            }
+
+            const resolved = await resolveOrRedeemAdmin(
+                decoded.uid, decoded.phone_number, decoded.name);
+            if (!resolved) {
+                logger.warn('Portal sign-in refused', { uid: decoded.uid });
+                applySecurityHeaders(res);
+                return res.status(404).json({ error: 'not found' });
+            }
+
+            let cookie;
+            try {
+                cookie = await admin.auth().createSessionCookie(idToken, {
+                    expiresIn: portal.SESSION_MAX_AGE_MS
+                });
+            } catch (err) {
+                logger.error('Session cookie creation failed', err);
+                applySecurityHeaders(res);
+                return res.status(500).json({ error: 'session failed' });
+            }
+
+            applySecurityHeaders(res);
+            res.set('Set-Cookie',
+                portal.buildSessionCookie(cookie, portal.SESSION_MAX_AGE_MS));
+            logger.info('Portal session opened', { uid: decoded.uid, role: resolved.role });
+            return res.status(200).json({ ok: true });
+        }
+
+        // ---- Sign out: clear the cookie and kill every other session ----
+        if (sub === '/logout' && req.method === 'POST') {
+            const existing = portal.sessionCookieFrom(req.headers.cookie);
+            if (existing) {
+                try {
+                    const decoded = await admin.auth().verifySessionCookie(existing);
+                    // Signs the account out everywhere, not just this
+                    // browser — the safer default on a shared machine.
+                    await admin.auth().revokeRefreshTokens(decoded.sub);
+                } catch (err) { /* already invalid; just clear it */ }
+            }
+            applySecurityHeaders(res);
+            res.set('Set-Cookie', portal.clearedSessionCookie());
+            return res.redirect(303, base);
+        }
+
+        if (sub !== '/' || req.method !== 'GET') return sendNotFound(res);
+
+        // ---- Serve the portal ----
+        const cookie = portal.sessionCookieFrom(req.headers.cookie);
+        if (!cookie) return sendLoginPage(res);
+
+        let decoded;
+        try {
+            // checkRevoked: a demoted or signed-out admin's session dies
+            // immediately rather than lasting until the cookie expires.
+            decoded = await admin.auth().verifySessionCookie(cookie, true);
+        } catch (err) {
+            res.set('Set-Cookie', portal.clearedSessionCookie());
+            return sendLoginPage(res);
+        }
+
+        // Re-check the roster on every page load: revoking access must
+        // not wait for a cookie to expire.
+        const snap = await admin.firestore().doc(`admins/${decoded.uid}`).get();
+        if (!snap.exists) {
+            res.set('Set-Cookie', portal.clearedSessionCookie());
+            return sendNotFound(res);
+        }
+
+        applySecurityHeaders(res);
+        return res.status(200).type('text/html')
+            .send(portal.portalShellHtml(snap.data()));
     }
 );
