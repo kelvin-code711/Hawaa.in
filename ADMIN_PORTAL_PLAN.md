@@ -137,10 +137,21 @@ Seven layers. An attacker has to defeat all of them.
 anywhere on the public site.
 
 **Layer 2 — The gate.** The portal is not a plain file. A Cloud Function
-serves it and checks for a valid signed session first. No session means
-a plain **404 Not Found** — identical to a page that does not exist, so
-a stranger cannot even confirm the portal is real. The page HTML never
-reaches an unauthenticated visitor.
+serves it and checks for a valid signed session first. Three outcomes:
+
+| Who | Gets |
+| --- | --- |
+| No session | An anonymous sign-in form — no logo, no company name, no mention of what it opens |
+| Signed in, no role | **404 Not Found**, identical to a URL that does not exist |
+| Signed in, has a role | The portal |
+
+The operations HTML never reaches anyone without a role. The sign-in
+form is the one unavoidable exception: a person arriving on a new device
+has to be able to log in, so *something* must answer at that address.
+The form is therefore stripped of anything identifying — finding it
+tells you a login exists, not whose it is or what it protects. A
+signed-in Hawaa customer who guesses the URL gets the 404, so an
+ordinary account cannot confirm the portal is real either.
 
 **Layer 3 — Identity.** Sign-in by phone OTP only. Invites are keyed by
 phone number and redeemed against the verified number inside the login
@@ -186,9 +197,21 @@ and 60-odd tests covering the matrix, privilege escalation, the order
 lifecycle and PII masking. No visible UI yet — this is the part that
 actually secures things.
 
-**Phase 2 — The gate.** Session-cookie sign-in, the serving function,
-the `hawaa-ops-7k11s` route, `robots.txt`. From here the portal is
-unreachable and invisible to everyone else.
+**Phase 2 — The gate. ✅ Done.** Session-cookie sign-in
+(`adminPortal` in `functions/index.js`, templates and cookie handling in
+`functions/portal.js`), the Hosting rewrite for `/hawaa-ops-7k11s`, and
+`robots.txt`. The session cookie is `__session` — the only cookie
+Firebase Hosting forwards to a function — set HttpOnly, Secure,
+SameSite=Strict and scoped to the portal path so admin sessions stay out
+of the CDN cache key for the rest of the site. Sessions last 8 hours,
+are minted only from a sign-in less than 5 minutes old, and are checked
+against the roster on every page load.
+
+Note: `robots.txt` deliberately does **not** list the portal path.
+That file is public and is the first thing a curious visitor reads, so a
+`Disallow` line would advertise the address while protecting nothing —
+the function already returns `X-Robots-Tag: noindex` and a 404 without a
+session, leaving crawlers nothing to index.
 
 **Phase 3 — Operations UI.** Order list with filters and status buttons,
 order detail with everything needed to pack and ship, review moderation

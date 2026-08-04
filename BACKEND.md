@@ -257,6 +257,38 @@ takes effect on their next request, not whenever their token expires.
 and redeemed against the verified `phone_number` claim in the ID token,
 so access is tied to a physical SIM. There are no admin passwords.
 
+### The gate (Phase 2)
+
+`firebase.json` rewrites `/hawaa-ops-7k11s` (and everything under it) to
+the **`adminPortal`** function instead of serving a static file, so the
+operations HTML only leaves the server after a session is verified *and*
+the roster re-checked. Responses carry `Cache-Control: private,
+no-store`, `X-Robots-Tag: noindex`, `X-Frame-Options: DENY` and
+`Referrer-Policy: no-referrer`.
+
+| Request | Response |
+| --- | --- |
+| No session cookie | Anonymous sign-in form (no branding) |
+| Valid session, no `admins/{uid}` | 404, same as a nonexistent URL |
+| Valid session with a role | The portal |
+| Any other path or method under the route | 404 |
+
+**The cookie is named `__session` — that is not a preference.** Firebase
+Hosting strips every cookie except that one before forwarding a request
+to a function. It is set `HttpOnly` (page scripts cannot read it),
+`Secure`, `SameSite=Strict`, and scoped to `Path=/hawaa-ops-7k11s` so it
+is never sent on public pages — a site-wide cookie would enter the
+Hosting CDN's cache key and fragment caching for the whole site.
+
+Sessions last 8 hours and are minted only from an ID token whose sign-in
+happened within the last 5 minutes, so a captured token cannot be traded
+for a long-lived cookie later. `verifySessionCookie(..., true)` checks
+revocation on every load, and signing out revokes refresh tokens across
+all devices.
+
+`robots.txt` deliberately omits the portal path — see the comments in
+that file for why listing a secret URL there is counterproductive.
+
 ### First Super Admin (one-time)
 
 ```bash

@@ -27,6 +27,7 @@ const admin = require('firebase-admin');
 const { buildCitySnapshot } = require('./aqi');
 const rzp = require('./razorpay');
 const adminCore = require('./admin');
+const portal = require('./portal');
 
 admin.initializeApp();
 
@@ -427,10 +428,74 @@ exports.syncAdminClaims = onDocumentWritten(
     }
 );
 
-// Called by the portal right after sign-in. Turns a pending invite into
-// a real admin record. The phone number is taken from the verified ID
-// token, never from the request body, so an invite can only be redeemed
-// by someone holding that SIM.
+// Resolves who somebody is on the admin roster, redeeming a pending
+// invite the first time they appear. The phone number always comes from
+// the verified token, never from a request body, so an invite can only
+// be redeemed by whoever holds that SIM.
+//
+// Returns null when the caller has no claim to admin access — callers
+// translate that into a deliberately uninformative response.
+// Requires the bootstrapSuperAdminPhone secret to be bound.
+async function resolveOrRedeemAdmin(uid, tokenPhone, fallbackName) {
+    const phone = adminCore.normalisePhone(tokenPhone);
+    if (!phone) return null;
+
+    const db = admin.firestore();
+    const adminRef = db.doc(`admins/${uid}`);
+
+    const existing = await adminRef.get();
+    if (existing.exists) {
+        const current = existing.data();
+        return { role: current.role, name: current.name, phone, redeemed: false };
+    }
+
+    const inviteRef = db.doc(`admin_invites/${phone}`);
+    const invite = await inviteRef.get();
+
+    let role;
+    let name;
+    let source;
+
+    if (invite.exists) {
+        role = invite.data().role;
+        name = invite.data().name;
+        source = 'invite';
+    } else {
+        // Bootstrap: only while the roster is completely empty, and only
+        // for the configured number. Once one admin exists this branch
+        // can never run again, which makes a leaked secret inert.
+        const roster = await db.collection('admins').limit(1).get();
+        const configured = adminCore.normalisePhone(
+            (bootstrapSuperAdminPhone.value() || '').trim());
+        if (!roster.empty || !configured || configured !== phone) return null;
+        role = 'super_admin';
+        name = fallbackName || 'Owner';
+        source = 'bootstrap';
+    }
+
+    if (!adminCore.isRole(role)) {
+        logger.error('Invite carries an invalid role', { uid, phone, role });
+        return null;
+    }
+
+    const batch = db.batch();
+    batch.set(adminRef, {
+        uid,
+        phone,
+        name,
+        role,
+        createdAt: admin.firestore.FieldValue.serverTimestamp()
+    });
+    if (invite.exists) batch.delete(inviteRef);
+    batch.set(db.collection('admin_audit').doc(),
+        auditEntry({ uid, role, phone }, 'team.redeem', uid, { role, source }));
+    await batch.commit();
+
+    logger.info('Admin invite redeemed', { uid, role, source });
+    return { role, name, phone, redeemed: true };
+}
+
+// Exposed for the portal's own use and for any future non-cookie client.
 exports.redeemAdminInvite = onCall(
     {
         region: 'asia-south1',
@@ -443,67 +508,15 @@ exports.redeemAdminInvite = onCall(
         if (!request.auth) {
             throw new HttpsError('unauthenticated', 'Sign in first.');
         }
-        const uid = request.auth.uid;
-        const phone = adminCore.normalisePhone(request.auth.token.phone_number);
-        if (!phone) {
-            throw new HttpsError('failed-precondition',
-                'Admin access requires signing in with your mobile number.');
+        const resolved = await resolveOrRedeemAdmin(
+            request.auth.uid,
+            request.auth.token.phone_number,
+            request.auth.token.name
+        );
+        if (!resolved) {
+            throw new HttpsError('permission-denied', 'Not authorised.');
         }
-
-        const db = admin.firestore();
-        const adminRef = db.doc(`admins/${uid}`);
-
-        const existing = await adminRef.get();
-        if (existing.exists) {
-            return { role: existing.data().role, redeemed: false };
-        }
-
-        const inviteRef = db.doc(`admin_invites/${phone}`);
-        const invite = await inviteRef.get();
-
-        let role;
-        let name;
-        let source;
-
-        if (invite.exists) {
-            role = invite.data().role;
-            name = invite.data().name;
-            source = 'invite';
-        } else {
-            // Bootstrap: only while the roster is completely empty, and
-            // only for the configured number. Once one admin exists this
-            // branch can never run again.
-            const roster = await db.collection('admins').limit(1).get();
-            const configured = adminCore.normalisePhone(
-                (bootstrapSuperAdminPhone.value() || '').trim());
-            if (!roster.empty || !configured || configured !== phone) {
-                throw new HttpsError('permission-denied', 'Not authorised.');
-            }
-            role = 'super_admin';
-            name = request.auth.token.name || 'Owner';
-            source = 'bootstrap';
-        }
-
-        if (!adminCore.isRole(role)) {
-            throw new HttpsError('failed-precondition', 'That invite has an invalid role.');
-        }
-
-        const actor = { uid, role, phone };
-        const batch = db.batch();
-        batch.set(adminRef, {
-            uid,
-            phone,
-            name,
-            role,
-            createdAt: admin.firestore.FieldValue.serverTimestamp()
-        });
-        if (invite.exists) batch.delete(inviteRef);
-        batch.set(db.collection('admin_audit').doc(),
-            auditEntry(actor, 'team.redeem', uid, { role, source }));
-        await batch.commit();
-
-        logger.info('Admin invite redeemed', { uid, role, source });
-        return { role, redeemed: true };
+        return { role: resolved.role, redeemed: resolved.redeemed };
     }
 );
 
@@ -671,5 +684,152 @@ exports.adminAction = onCall(
         }
 
         throw new HttpsError('invalid-argument', 'Unknown action.');
+    }
+);
+
+// ========================================
+// The gate — serves hawaa.in/hawaa-ops-7k11s
+//
+// Firebase Hosting rewrites the portal path here instead of serving a
+// static file, so the operations HTML only ever leaves this function
+// after a session has been verified AND the roster re-checked.
+//
+// Three outcomes, chosen so a stranger learns as little as possible:
+//   no session          -> an anonymous sign-in form
+//   session, no role    -> 404, identical to a URL that does not exist
+//   session with a role -> the portal
+//
+// A signed-in Hawaa *customer* who guesses the URL therefore sees a 404,
+// not a hint that they found something real.
+// ========================================
+
+function applySecurityHeaders(res) {
+    Object.keys(portal.SECURITY_HEADERS).forEach(function (key) {
+        res.set(key, portal.SECURITY_HEADERS[key]);
+    });
+}
+
+function sendNotFound(res) {
+    applySecurityHeaders(res);
+    res.status(404).type('text/html')
+        .send('<!doctype html><meta charset="utf-8"><title>Not Found</title>Not Found');
+}
+
+function sendLoginPage(res) {
+    applySecurityHeaders(res);
+    res.status(200).type('text/html').send(portal.loginPageHtml());
+}
+
+exports.adminPortal = onRequest(
+    {
+        region: 'asia-south1',
+        secrets: [bootstrapSuperAdminPhone],
+        timeoutSeconds: 30,
+        memory: '256MiB',
+        // Reachable so Hosting can forward to it; the cookie check below
+        // is the actual authentication.
+        invoker: 'public'
+    },
+    async (req, res) => {
+        const base = portal.PORTAL_PATH;
+        const rawPath = (req.path || '/').replace(/\/+$/, '') || '/';
+
+        let sub;
+        if (rawPath === base) sub = '/';
+        else if (rawPath.indexOf(base + '/') === 0) sub = rawPath.slice(base.length);
+        else return sendNotFound(res);
+
+        // ---- Exchange a verified ID token for the session cookie ----
+        if (sub === '/session' && req.method === 'POST') {
+            const idToken = req.body && req.body.idToken;
+            if (typeof idToken !== 'string' || idToken.length === 0) {
+                applySecurityHeaders(res);
+                return res.status(400).json({ error: 'missing token' });
+            }
+
+            let decoded;
+            try {
+                decoded = await admin.auth().verifyIdToken(idToken, true);
+            } catch (err) {
+                applySecurityHeaders(res);
+                return res.status(401).json({ error: 'invalid token' });
+            }
+
+            // Only mint a long-lived cookie from a *fresh* sign-in, so an
+            // ID token captured earlier cannot be traded for one later.
+            if ((Date.now() / 1000) - decoded.auth_time > 5 * 60) {
+                applySecurityHeaders(res);
+                return res.status(401).json({ error: 'stale sign-in' });
+            }
+
+            const resolved = await resolveOrRedeemAdmin(
+                decoded.uid, decoded.phone_number, decoded.name);
+            if (!resolved) {
+                logger.warn('Portal sign-in refused', { uid: decoded.uid });
+                applySecurityHeaders(res);
+                return res.status(404).json({ error: 'not found' });
+            }
+
+            let cookie;
+            try {
+                cookie = await admin.auth().createSessionCookie(idToken, {
+                    expiresIn: portal.SESSION_MAX_AGE_MS
+                });
+            } catch (err) {
+                logger.error('Session cookie creation failed', err);
+                applySecurityHeaders(res);
+                return res.status(500).json({ error: 'session failed' });
+            }
+
+            applySecurityHeaders(res);
+            res.set('Set-Cookie',
+                portal.buildSessionCookie(cookie, portal.SESSION_MAX_AGE_MS));
+            logger.info('Portal session opened', { uid: decoded.uid, role: resolved.role });
+            return res.status(200).json({ ok: true });
+        }
+
+        // ---- Sign out: clear the cookie and kill every other session ----
+        if (sub === '/logout' && req.method === 'POST') {
+            const existing = portal.sessionCookieFrom(req.headers.cookie);
+            if (existing) {
+                try {
+                    const decoded = await admin.auth().verifySessionCookie(existing);
+                    // Signs the account out everywhere, not just this
+                    // browser — the safer default on a shared machine.
+                    await admin.auth().revokeRefreshTokens(decoded.sub);
+                } catch (err) { /* already invalid; just clear it */ }
+            }
+            applySecurityHeaders(res);
+            res.set('Set-Cookie', portal.clearedSessionCookie());
+            return res.redirect(303, base);
+        }
+
+        if (sub !== '/' || req.method !== 'GET') return sendNotFound(res);
+
+        // ---- Serve the portal ----
+        const cookie = portal.sessionCookieFrom(req.headers.cookie);
+        if (!cookie) return sendLoginPage(res);
+
+        let decoded;
+        try {
+            // checkRevoked: a demoted or signed-out admin's session dies
+            // immediately rather than lasting until the cookie expires.
+            decoded = await admin.auth().verifySessionCookie(cookie, true);
+        } catch (err) {
+            res.set('Set-Cookie', portal.clearedSessionCookie());
+            return sendLoginPage(res);
+        }
+
+        // Re-check the roster on every page load: revoking access must
+        // not wait for a cookie to expire.
+        const snap = await admin.firestore().doc(`admins/${decoded.uid}`).get();
+        if (!snap.exists) {
+            res.set('Set-Cookie', portal.clearedSessionCookie());
+            return sendNotFound(res);
+        }
+
+        applySecurityHeaders(res);
+        return res.status(200).type('text/html')
+            .send(portal.portalShellHtml(snap.data()));
     }
 );

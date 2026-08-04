@@ -309,3 +309,75 @@ assert.strictEqual(adm.projectOrder(fullOrder, 'super_admin'), fullOrder);
 assert.strictEqual(adm.projectOrder(fullOrder, 'root').address.name, undefined);
 
 console.log('All admin portal tests passed.');
+
+// ===============================================================
+// Portal gate — cookies and templates (../portal.js)
+// ===============================================================
+const gate = require(path.join(__dirname, '..', 'portal.js'));
+
+// ---- Firebase Hosting forwards exactly one cookie name ----
+assert.strictEqual(gate.SESSION_COOKIE_NAME, '__session');
+
+// ---- parseCookies ----
+assert.deepStrictEqual(gate.parseCookies('a=1; b=2'), { a: '1', b: '2' });
+assert.deepStrictEqual(gate.parseCookies('  a = 1 ;b=2  '), { a: '1', b: '2' });
+assert.deepStrictEqual(gate.parseCookies('a=hello%20world'), { a: 'hello world' });
+// Malformed input must never throw — this parses attacker-controlled headers.
+assert.deepStrictEqual(gate.parseCookies(''), {});
+assert.deepStrictEqual(gate.parseCookies(null), {});
+assert.deepStrictEqual(gate.parseCookies(undefined), {});
+assert.deepStrictEqual(gate.parseCookies('novalue'), {});
+assert.deepStrictEqual(gate.parseCookies('=leading'), {});
+assert.deepStrictEqual(gate.parseCookies('a=%E0%A4'), { a: '%E0%A4' }); // bad escape kept raw
+// A duplicated name must resolve to the first occurrence, so a second
+// injected __session cannot override the real one.
+assert.deepStrictEqual(gate.parseCookies('__session=real; __session=fake').__session, 'real');
+
+// ---- sessionCookieFrom ----
+assert.strictEqual(gate.sessionCookieFrom('__session=abc123'), 'abc123');
+assert.strictEqual(gate.sessionCookieFrom('other=1'), null);
+assert.strictEqual(gate.sessionCookieFrom('__session='), null);
+assert.strictEqual(gate.sessionCookieFrom(''), null);
+assert.strictEqual(gate.sessionCookieFrom(null), null);
+
+// ---- buildSessionCookie: every flag matters ----
+const setCookie = gate.buildSessionCookie('tok en', gate.SESSION_MAX_AGE_MS);
+assert.ok(setCookie.indexOf('__session=tok%20en') === 0, 'value must be encoded');
+assert.ok(setCookie.includes('HttpOnly'), 'page scripts must not read the session');
+assert.ok(setCookie.includes('Secure'), 'never send over plain HTTP');
+assert.ok(setCookie.includes('SameSite=Strict'), 'blocks cross-site use');
+assert.ok(setCookie.includes('Max-Age=28800'), '8 hours');
+// Scoped to the portal so admin sessions stay out of the public CDN cache key.
+assert.ok(setCookie.includes('Path=' + gate.PORTAL_PATH));
+assert.ok(!setCookie.includes('Path=/;'), 'must not be site-wide');
+
+const cleared = gate.clearedSessionCookie();
+assert.ok(cleared.includes('Max-Age=0'));
+assert.ok(cleared.includes('Path=' + gate.PORTAL_PATH));
+assert.ok(cleared.includes('HttpOnly') && cleared.includes('Secure'));
+
+// ---- Response headers ----
+assert.strictEqual(gate.SECURITY_HEADERS['Cache-Control'], 'private, no-store, max-age=0');
+assert.ok(gate.SECURITY_HEADERS['X-Robots-Tag'].includes('noindex'));
+assert.strictEqual(gate.SECURITY_HEADERS['X-Frame-Options'], 'DENY');
+assert.strictEqual(gate.SECURITY_HEADERS['Referrer-Policy'], 'no-referrer');
+
+// ---- Login page gives nothing away ----
+const login = gate.loginPageHtml();
+assert.ok(login.includes('<title>Sign in</title>'));
+assert.ok(login.includes('noindex'));
+// No branding and no hint of what the login opens.
+assert.strictEqual(/hawaa/i.test(login.replace(/hawaa-air-27548|hawaa\.in|hawaa-ops-7k11s/g, '')), false);
+assert.strictEqual(/admin|staff|portal|operations/i.test(login), false);
+
+// ---- Portal shell escapes stored values ----
+const shell = gate.portalShellHtml({ name: '<script>x</script>Asha', role: 'manager' });
+assert.strictEqual(shell.includes('<script>x</script>Asha'), false);
+assert.ok(shell.includes('scriptx/scriptAsha'));
+assert.ok(shell.includes('manager'));
+// Missing fields must not render "undefined" at a signed-in admin.
+const bare = gate.portalShellHtml({});
+assert.ok(bare.includes('there'));
+assert.strictEqual(bare.includes('undefined'), false);
+
+console.log('All portal gate tests passed.');
