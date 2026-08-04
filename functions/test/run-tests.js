@@ -437,3 +437,80 @@ assert.deepStrictEqual(
 );
 
 console.log('All dashboard summary tests passed.');
+
+// ===============================================================
+// CSV export (../csv.js)
+// ===============================================================
+const csvlib = require(path.join(__dirname, '..', 'csv.js'));
+
+// ---- csvCell: spreadsheet hazards ----
+assert.strictEqual(csvlib.csvCell('plain'), 'plain');
+assert.strictEqual(csvlib.csvCell('a,b'), '"a,b"');
+assert.strictEqual(csvlib.csvCell('say "hi"'), '"say ""hi"""');
+assert.strictEqual(csvlib.csvCell('line1\nline2'), '"line1\nline2"');
+assert.strictEqual(csvlib.csvCell(''), '');
+assert.strictEqual(csvlib.csvCell(null), '');
+assert.strictEqual(csvlib.csvCell(undefined), '');
+// Leading symbols are quoted so Excel treats them as text. This is both
+// a display fix for phone numbers and the CSV-injection guard.
+assert.strictEqual(csvlib.csvCell('+919876543210'), '"+919876543210"');
+assert.strictEqual(csvlib.csvCell('=1+1'), '"=1+1"');
+assert.strictEqual(csvlib.csvCell('@user'), '"@user"');
+assert.strictEqual(csvlib.csvCell('-5'), '"-5"');
+assert.strictEqual(csvlib.csvCell('=cmd|"/c calc"!A1'), '"=cmd|""/c calc""!A1"');
+
+// ---- Timestamps render in IST and sort as text ----
+const ts = { toMillis: () => Date.UTC(2026, 7, 3, 10, 11, 0) }; // 15:41 IST
+assert.strictEqual(csvlib.formatTimestamp(ts), '2026-08-03 15:41 IST');
+// Just before IST midnight must still be the 3rd, not the 4th.
+assert.strictEqual(
+    csvlib.formatTimestamp({ toMillis: () => Date.UTC(2026, 7, 3, 18, 29, 0) }),
+    '2026-08-03 23:59 IST'
+);
+// Raw Firestore shape (_seconds) works too, for documents read via the
+// REST shape rather than the SDK.
+assert.strictEqual(
+    csvlib.formatTimestamp({ _seconds: Date.UTC(2026, 7, 3, 10, 11, 0) / 1000 }),
+    '2026-08-03 15:41 IST'
+);
+
+// ---- flatten: nested maps become dotted columns ----
+const flat = csvlib.flatten({
+    total: 7079,
+    address: { name: 'Asha Rao', city: 'Bengaluru', pincode: '560001' },
+    razorpay: { paymentId: 'pay_1', keyMode: 'test' },
+    createdAt: ts,
+    tags: ['a', 'b']
+});
+assert.strictEqual(flat['address.city'], 'Bengaluru');
+assert.strictEqual(flat['razorpay.paymentId'], 'pay_1');
+assert.strictEqual(flat.createdAt, '2026-08-03 15:41 IST');
+assert.strictEqual(flat.tags, 'a | b');
+assert.strictEqual(flat.total, '7079');
+
+// ---- Column order: known fields first, unknown ones kept not dropped ----
+const rows = [Object.assign({ orderId: 'o1', surpriseField: 'x' }, flat)];
+const cols = csvlib.buildColumns('orders', rows);
+assert.strictEqual(cols[0], 'orderId');
+assert.strictEqual(cols.indexOf('address.name') < cols.indexOf('surpriseField'), true);
+assert.ok(cols.includes('surpriseField'), 'a new field must never be silently dropped');
+// Non-order collections lead with docId.
+assert.strictEqual(csvlib.buildColumns('supportTickets', [{ docId: 'd1', email: 'a@b.co' }])[0], 'docId');
+
+// ---- toCsv: CRLF line endings, header first ----
+const out = csvlib.toCsv([{ a: '1', b: 'x,y' }], ['a', 'b']);
+assert.strictEqual(out, 'a,b\r\n1,"x,y"\r\n');
+assert.strictEqual(csvlib.toCsv([], ['a']), 'a\r\n');
+
+// ---- Newest first ----
+const sorted = csvlib.sortNewestFirst([
+    { createdAt: '2026-08-01 10:00 IST' },
+    { createdAt: '2026-08-03 10:00 IST' },
+    { createdAt: '2026-08-02 10:00 IST' }
+]);
+assert.strictEqual(sorted[0].createdAt, '2026-08-03 10:00 IST');
+assert.strictEqual(sorted[2].createdAt, '2026-08-01 10:00 IST');
+// Rows with no timestamp must not throw or jump the queue.
+assert.doesNotThrow(() => csvlib.sortNewestFirst([{}, { createdAt: '2026-08-01 10:00 IST' }]));
+
+console.log('All CSV export tests passed.');

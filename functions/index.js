@@ -28,6 +28,7 @@ const { buildCitySnapshot } = require('./aqi');
 const rzp = require('./razorpay');
 const adminCore = require('./admin');
 const portal = require('./portal');
+const csv = require('./csv');
 
 admin.initializeApp();
 
@@ -749,6 +750,17 @@ function orderToPlain(doc) {
 const QUERY_LIMIT_DEFAULT = 50;
 const QUERY_LIMIT_MAX = 200;
 
+// Collections the portal may export. An allowlist, not a denylist: the
+// project shares a Firebase project with the device backend, whose
+// `users` and `device_owners` collections must never be reachable from
+// the website's admin surface.
+const EXPORTABLE = ['orders', 'supportTickets', 'newsletterSubscribers', 'reviews'];
+
+// A callable response is capped at 10 MB. This keeps the largest
+// plausible export well inside that and bounds the read cost of a
+// misclick; `capped` in the response tells the portal to say so.
+const EXPORT_ROW_CAP = 5000;
+
 function boundedLimit(value) {
     const n = parseInt(value, 10);
     if (!Number.isFinite(n) || n <= 0) return QUERY_LIMIT_DEFAULT;
@@ -893,6 +905,41 @@ exports.adminQuery = onCall(
                         createdAt: timestampToMs(d.createdAt)
                     };
                 })
+            };
+        }
+
+        if (resource === 'export') {
+            const actor = await requireAdmin(request, 'export');
+            const collection = String(data.collection || 'orders');
+            if (EXPORTABLE.indexOf(collection) === -1) {
+                throw new HttpsError('invalid-argument', 'That collection cannot be exported.');
+            }
+
+            const snap = await db.collection(collection)
+                .limit(EXPORT_ROW_CAP).get();
+            if (snap.empty) return { collection, rows: 0, csv: '' };
+
+            const idField = collection === 'orders' ? 'orderId' : 'docId';
+            const rows = csv.sortNewestFirst(snap.docs.map(function (doc) {
+                const flat = csv.flatten(doc.data());
+                const row = {};
+                row[idField] = doc.id;
+                return Object.assign(row, flat);
+            }));
+
+            // A bulk PII download is exactly the kind of action the log
+            // exists for, so record it before handing the file over.
+            await db.collection('admin_audit').doc().set(
+                auditEntry(actor, 'data.export', collection, { rows: rows.length }));
+
+            logger.info('Admin CSV export', {
+                uid: actor.uid, collection, rows: rows.length
+            });
+            return {
+                collection,
+                rows: rows.length,
+                capped: rows.length >= EXPORT_ROW_CAP,
+                csv: csv.toCsv(rows, csv.buildColumns(collection, rows))
             };
         }
 

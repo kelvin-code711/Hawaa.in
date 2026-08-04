@@ -118,33 +118,29 @@ Firebase console → Firestore → Data:
 
 ## Exporting to CSV / Excel
 
-The console shows one document at a time, so bulk work (packing slips,
-accounting, a mailing list) uses `scripts/export-orders.js`, which reads
-a collection with the Admin SDK and writes a spreadsheet-ready CSV
-(UTF-8 BOM so ₹ and Indian names survive Excel; IST timestamps; nested
-maps flattened to `address.city`, `razorpay.paymentId`, …; newest first).
+Use the admin portal's **Download CSV** control (Orders tab, Manager and
+above). It exports `orders`, `supportTickets`, `newsletterSubscribers` or
+`reviews` as a spreadsheet-ready file: UTF-8 BOM so ₹ and Indian names
+survive Excel, IST timestamps, nested maps flattened to `address.city` /
+`razorpay.paymentId`, newest first. Formatting lives in `functions/csv.js`
+and is unit-tested.
 
-One-time setup: Firebase console → ⚙ → Project settings → **Service
-accounts** → **Generate new private key**, save it as
-`serviceAccountKey.json` in the project root. That key grants full
-project access — `.gitignore` covers it, and it must never be committed
-or shared. Then:
+Every export writes an `admin_audit` entry (`data.export`) with the row
+count — a bulk copy of customer data is exactly what the log is for.
 
-```bash
-cd functions && npm install && cd ..    # once; provides firebase-admin
-node scripts/export-orders.js                              # -> orders.csv
-node scripts/export-orders.js --since 2026-08-01           # from a date (IST)
-node scripts/export-orders.js --status placed              # unshipped only
-node scripts/export-orders.js --collection supportTickets  # any collection
-node scripts/export-orders.js --out C:\Users\me\Desktop\orders.csv
-```
+**`scripts/export-orders.js` was deleted in Phase 5, along with the need
+for `serviceAccountKey.json`.** That key granted unrestricted access to
+the whole project with no login, and it lived unencrypted on a laptop; a
+role-checked, audited button in the portal replaces it. If a key was
+generated previously, revoke it: Firebase console → ⚙ → Project settings
+→ Service accounts → Manage service account permissions → Keys → delete.
+Deleting the local file alone is not enough — the key stays valid until
+it is revoked in the console.
 
-`--since` needs the `createdAt` index Firestore prompts for on first use
-(the error message contains a one-click link). The generated CSVs hold
-customer names, phones and addresses: they are gitignored, and should be
-treated like any other PII export.
+Downloaded CSVs still hold names, phones and addresses. `.gitignore`
+covers `*.csv` at the repo root; treat them like any other PII export.
 
-For a always-live view instead of point-in-time files, the Firebase
+For an always-live view instead of point-in-time files, the Firebase
 **Stream Firestore to BigQuery** extension mirrors a collection into
 BigQuery, which connects directly to Looker Studio / Sheets — worth it
 once order volume outgrows manual exports.
@@ -335,6 +331,35 @@ gcloud projects add-iam-policy-binding hawaa-air-27548 --member=serviceAccount:s
 gcloud projects add-iam-policy-binding hawaa-air-27548 --member=serviceAccount:994326211415-compute@developer.gserviceaccount.com --role=roles/run.invoker
 gcloud projects add-iam-policy-binding hawaa-air-27548 --member=serviceAccount:994326211415-compute@developer.gserviceaccount.com --role=roles/eventarc.eventReceiver
 ```
+
+### Runbook — day-to-day admin tasks
+
+**Give someone access.** Portal → **Team** → enter their name, mobile
+number in the form `+919876543210`, and a role → **Invite**. Tell them
+the portal address. They sign in with that number and an OTP; nothing is
+created for them to remember and nothing is shared over chat.
+
+**Change what someone can do.** Team → pick a new role from the dropdown
+next to their name. It applies immediately, and their existing sign-in
+is invalidated if the change reduces their access.
+
+**Remove someone.** Team → **Remove access**. Effective on their very
+next click. Do this the day a person leaves — it is the whole reason
+access is per-person rather than a shared password.
+
+**Choosing a role:** Staff for packing and dispatch (no exports, no
+refunds); Manager for someone running the shop day to day; Viewer for an
+investor or partner who should see revenue but not customer details;
+Super Admin only for an owner — it is the only role that can grant
+access to others.
+
+**If a phone is lost or stolen**, remove that person in Team straight
+away. Their session dies immediately; re-invite once they have the
+number back on a new SIM.
+
+**Check what happened.** Portal → **Activity**. Every status change,
+moderation decision, team change and CSV export, with who and when.
+Nobody can edit or delete it, including a Super Admin.
 
 ### First Super Admin (one-time)
 

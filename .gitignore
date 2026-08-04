@@ -19,11 +19,9 @@ Thumbs.db
 serviceAccountKey.json
 *-firebase-adminsdk-*.json
 
-# Exports produced by scripts/export-orders.js (contain customer PII)
-/orders.csv
-/supportTickets.csv
-/newsletterSubscribers.csv
-/reviews.csv
+# CSV exports from the admin portal (contain customer PII). Broad on
+# purpose — a file saved here by accident must never reach a public repo.
+/*.csv
 
 # Cloud Functions
 functions/node_modules/
