@@ -213,10 +213,27 @@ That file is public and is the first thing a curious visitor reads, so a
 the function already returns `X-Robots-Tag: noindex` and a 404 without a
 session, leaving crawlers nothing to index.
 
-**Phase 3 — Operations UI.** Order list with filters and status buttons,
-order detail with everything needed to pack and ship, review moderation
-queue with approve/reject, support ticket inbox, and a summary strip
-(orders today, revenue this week, reviews waiting).
+**Phase 3 — Operations UI. ✅ Done.** Order list with status filters and
+advance/cancel buttons, order detail with everything needed to pack and
+ship, review moderation queue, support ticket inbox, Team management,
+the audit log viewer, and a summary strip (orders today, revenue this
+week, awaiting dispatch, reviews waiting).
+
+Every read goes through the **`adminQuery`** callable and every write
+through **`adminAction`** — the browser never queries Firestore directly.
+That keeps PII masking in one server-side place: a Viewer's masked order
+is *built* on the server, so the customer's name, street address and
+pincode never leave it. `firestore.rules` still gate direct access as a
+second line of defence.
+
+The tab strip and every button are rendered from the caller's row of the
+matrix in `functions/admin.js`, passed into the page — so the UI hides
+what a role cannot do without keeping a second copy of the rules that
+could drift. Hiding is cosmetic; each call is re-authorised server-side.
+
+Firestore rules now deploy automatically alongside functions
+(`.github/workflows/firebase-functions-deploy.yml`), because rules that
+lag behind the code would lock the portal out of its own data.
 
 **Phase 4 — Team management.** The Team screen: invite by number, assign
 role, revoke access, view the audit log.

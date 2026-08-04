@@ -1,14 +1,22 @@
-name: Deploy Cloud Functions
+name: Deploy Cloud Functions and Firestore rules
 
-# Deploys functions/ to Firebase automatically, so no local CLI is
-# needed. Runs on pushes to main that touch the functions code (or this
-# workflow / firebase.json), and can be started by hand from the
-# Actions tab via "Run workflow".
+# Deploys functions/ AND firestore.rules to Firebase automatically, so no
+# local CLI is needed. Runs on pushes to main that touch either (or this
+# workflow / firebase.json), and can be started by hand from the Actions
+# tab via "Run workflow".
+#
+# The rules ship here rather than with Hosting deliberately: the admin
+# portal's role checks live in firestore.rules, and rules that lag behind
+# the functions would either lock the portal out of its own data or leave
+# an old, looser policy in force. Deploying them together keeps the two
+# halves of the permission model in step.
 #
 # Auth reuses the FIREBASE_SERVICE_ACCOUNT repo secret that the hosting
-# deploy workflow already uses. Deploying functions needs broader
-# permissions than hosting: the service account must have the Editor
-# role (or equivalent) in Google Cloud IAM on project hawaa-air-27548.
+# deploy workflow already uses. Deploying functions needs far broader
+# permissions than hosting; the service account on hawaa-air-27548 needs
+# Editor plus Service Account User, Cloud Functions Admin and Secret
+# Manager Admin — the last three because Editor deliberately excludes
+# granting permissions, which a functions deploy has to do.
 
 on:
   push:
@@ -17,6 +25,8 @@ on:
     paths:
       - "functions/**"
       - "firebase.json"
+      - "firestore.rules"
+      - "firestore.indexes.json"
       - ".github/workflows/firebase-functions-deploy.yml"
   workflow_dispatch:
 
@@ -43,5 +53,5 @@ jobs:
         with:
           credentials_json: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
 
-      - name: Deploy functions
-        run: npx -y firebase-tools@latest deploy --only functions --project hawaa-air-27548 --force
+      - name: Deploy functions and Firestore rules
+        run: npx -y firebase-tools@latest deploy --only functions,firestore:rules --project hawaa-air-27548 --force

@@ -436,6 +436,25 @@ exports.syncAdminClaims = onDocumentWritten(
 // Returns null when the caller has no claim to admin access — callers
 // translate that into a deliberately uninformative response.
 // Requires the bootstrapSuperAdminPhone secret to be bound.
+// Writes the role into the account's custom claim so firestore.rules can
+// gate reads without a document lookup. Deliberately does NOT revoke
+// refresh tokens: this runs during sign-in, and revoking would invalidate
+// the very token about to be exchanged for a session cookie. Revocation
+// on demotion is handled by syncAdminClaims and the team.* actions.
+async function syncRoleClaim(uid, role) {
+    try {
+        const user = await admin.auth().getUser(uid);
+        const current = (user.customClaims && user.customClaims.role) || null;
+        if (current === role) return;
+        await admin.auth().setCustomUserClaims(uid, role ? { role } : null);
+        logger.info('Role claim synced at sign-in', { uid, from: current, to: role });
+    } catch (err) {
+        // Non-fatal: the portal authorises from the roster document, so a
+        // failed claim sync costs Firestore reads, not access control.
+        logger.error('Could not sync role claim', { uid, role, err });
+    }
+}
+
 async function resolveOrRedeemAdmin(uid, tokenPhone, fallbackName) {
     const phone = adminCore.normalisePhone(tokenPhone);
     if (!phone) return null;
@@ -446,6 +465,8 @@ async function resolveOrRedeemAdmin(uid, tokenPhone, fallbackName) {
     const existing = await adminRef.get();
     if (existing.exists) {
         const current = existing.data();
+        // Repairs drift if the roster was edited outside the portal.
+        await syncRoleClaim(uid, current.role);
         return { role: current.role, name: current.name, phone, redeemed: false };
     }
 
@@ -490,6 +511,12 @@ async function resolveOrRedeemAdmin(uid, tokenPhone, fallbackName) {
     batch.set(db.collection('admin_audit').doc(),
         auditEntry({ uid, role, phone }, 'team.redeem', uid, { role, source }));
     await batch.commit();
+
+    // Set the claim here as well as via syncAdminClaims: the trigger is
+    // asynchronous, and the browser is about to load the portal and read
+    // Firestore under these rules. Waiting for the trigger would show a
+    // brand-new admin a permission error on their first page load.
+    await syncRoleClaim(uid, role);
 
     logger.info('Admin invite redeemed', { uid, role, source });
     return { role, name, phone, redeemed: true };
@@ -687,6 +714,215 @@ exports.adminAction = onCall(
     }
 );
 
+// Every read the portal performs. Routed through one callable rather
+// than read straight from Firestore in the browser so that PII masking
+// happens in exactly one place — a Viewer's masked order is built on the
+// server and the unmasked fields never leave it. firestore.rules still
+// gate direct access as a second line of defence.
+function timestampToMs(value) {
+    if (!value) return null;
+    if (typeof value.toMillis === 'function') return value.toMillis();
+    if (value instanceof Date) return value.getTime();
+    return null;
+}
+
+function orderToPlain(doc) {
+    const data = doc.data();
+    return {
+        id: doc.id,
+        qtyPurifierOnetime: data.qtyPurifierOnetime || 0,
+        qtyPurifierSubscribe: data.qtyPurifierSubscribe || 0,
+        qtyFilter: data.qtyFilter || 0,
+        filterInterval: data.filterInterval || null,
+        subtotal: data.subtotal || 0,
+        gst: data.gst || 0,
+        total: data.total || 0,
+        address: data.address || {},
+        paymentMethod: data.paymentMethod || 'cod',
+        razorpay: data.razorpay || null,
+        status: data.status || 'placed',
+        createdAt: timestampToMs(data.createdAt),
+        createdAtMs: timestampToMs(data.createdAt)
+    };
+}
+
+const QUERY_LIMIT_DEFAULT = 50;
+const QUERY_LIMIT_MAX = 200;
+
+function boundedLimit(value) {
+    const n = parseInt(value, 10);
+    if (!Number.isFinite(n) || n <= 0) return QUERY_LIMIT_DEFAULT;
+    return Math.min(n, QUERY_LIMIT_MAX);
+}
+
+exports.adminQuery = onCall(
+    {
+        region: 'asia-south1',
+        timeoutSeconds: 60,
+        memory: '256MiB',
+        cors: true
+    },
+    async (request) => {
+        const data = request.data || {};
+        const resource = data.resource;
+        const db = admin.firestore();
+
+        if (resource === 'summary') {
+            const actor = await requireAdmin(request, 'dashboard');
+            // Thirty days is enough for "today" and "this week" and keeps
+            // the read count flat as the order history grows.
+            const since = new Date(Date.now() - (30 * 86400000));
+            const snap = await db.collection('orders')
+                .where('createdAt', '>=', since)
+                .orderBy('createdAt', 'desc')
+                .limit(1000)
+                .get();
+
+            const summary = adminCore.summariseOrders(
+                snap.docs.map(function (doc) {
+                    const d = doc.data();
+                    return {
+                        total: d.total,
+                        status: d.status,
+                        createdAtMs: timestampToMs(d.createdAt)
+                    };
+                }),
+                Date.now()
+            );
+
+            if (adminCore.can(actor.role, 'reviews.moderate')) {
+                const pending = await db.collection('reviews')
+                    .where('status', '==', 'pending').count().get();
+                summary.pendingReviews = pending.data().count;
+            }
+            return summary;
+        }
+
+        if (resource === 'orders') {
+            const actor = await requireAdmin(request, 'orders.read');
+            const snap = await db.collection('orders')
+                .orderBy('createdAt', 'desc')
+                .limit(boundedLimit(data.limit))
+                .get();
+
+            let orders = snap.docs.map(orderToPlain);
+            if (typeof data.status === 'string' && data.status) {
+                orders = orders.filter(function (o) { return o.status === data.status; });
+            }
+            return {
+                orders: orders.map(function (order) {
+                    const projected = adminCore.projectOrder(order, actor.role);
+                    projected.id = order.id;
+                    return projected;
+                }),
+                masked: !adminCore.can(actor.role, 'orders.readPii')
+            };
+        }
+
+        if (resource === 'reviews') {
+            const actor = await requireAdmin(request, 'reviews.read');
+            const status = typeof data.status === 'string' && data.status
+                ? data.status : 'pending';
+            const snap = await db.collection('reviews')
+                .where('status', '==', status)
+                .limit(boundedLimit(data.limit))
+                .get();
+
+            const reviews = snap.docs.map(function (doc) {
+                const d = doc.data();
+                return {
+                    id: doc.id,
+                    name: d.name || '',
+                    rating: d.rating || 0,
+                    title: d.title || '',
+                    content: d.content || '',
+                    status: d.status,
+                    verified: d.verified === true,
+                    helpful: d.helpful || 0,
+                    createdAt: timestampToMs(d.createdAt)
+                };
+            });
+            reviews.sort(function (a, b) { return (b.createdAt || 0) - (a.createdAt || 0); });
+            return { reviews };
+        }
+
+        if (resource === 'tickets') {
+            await requireAdmin(request, 'tickets.read');
+            const snap = await db.collection('supportTickets')
+                .orderBy('createdAt', 'desc')
+                .limit(boundedLimit(data.limit))
+                .get();
+            return {
+                tickets: snap.docs.map(function (doc) {
+                    const d = doc.data();
+                    return {
+                        id: doc.id,
+                        name: d.name || '',
+                        email: d.email || '',
+                        message: d.message || '',
+                        page: d.page || '',
+                        createdAt: timestampToMs(d.createdAt)
+                    };
+                })
+            };
+        }
+
+        if (resource === 'team') {
+            await requireAdmin(request, 'team.manage');
+            const [roster, invites] = await Promise.all([
+                db.collection('admins').limit(100).get(),
+                db.collection('admin_invites').limit(100).get()
+            ]);
+            return {
+                members: roster.docs.map(function (doc) {
+                    const d = doc.data();
+                    return {
+                        uid: doc.id,
+                        name: d.name || '',
+                        phone: d.phone || '',
+                        role: d.role,
+                        createdAt: timestampToMs(d.createdAt)
+                    };
+                }),
+                invites: invites.docs.map(function (doc) {
+                    const d = doc.data();
+                    return {
+                        phone: doc.id,
+                        name: d.name || '',
+                        role: d.role,
+                        createdAt: timestampToMs(d.createdAt)
+                    };
+                })
+            };
+        }
+
+        if (resource === 'audit') {
+            await requireAdmin(request, 'audit.read');
+            const snap = await db.collection('admin_audit')
+                .orderBy('at', 'desc')
+                .limit(boundedLimit(data.limit))
+                .get();
+            return {
+                entries: snap.docs.map(function (doc) {
+                    const d = doc.data();
+                    return {
+                        id: doc.id,
+                        actorUid: d.actorUid,
+                        actorRole: d.actorRole,
+                        actorPhone: d.actorPhone || '',
+                        action: d.action,
+                        target: d.target || '',
+                        details: d.details || {},
+                        at: timestampToMs(d.at)
+                    };
+                })
+            };
+        }
+
+        throw new HttpsError('invalid-argument', 'Unknown resource.');
+    }
+);
+
 // ========================================
 // The gate — serves hawaa.in/hawaa-ops-7k11s
 //
@@ -828,8 +1064,10 @@ exports.adminPortal = onRequest(
             return sendNotFound(res);
         }
 
+        const member = snap.data();
         applySecurityHeaders(res);
-        return res.status(200).type('text/html')
-            .send(portal.portalShellHtml(snap.data()));
+        return res.status(200).type('text/html').send(
+            portal.portalShellHtml(member,
+                adminCore.PERMISSIONS[member.role] || []));
     }
 );

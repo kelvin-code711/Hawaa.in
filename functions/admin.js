@@ -195,10 +195,58 @@ function projectOrder(order, role) {
     return can(role, 'orders.readPii') ? order : maskOrderForViewer(order);
 }
 
+// ---- Dashboard summary ----
+// The shop runs on Indian time, so "today" must mean the IST day, not
+// the UTC day. Getting this wrong would make every order placed after
+// 5:30am IST count as yesterday's.
+
+const IST_OFFSET_MS = ((5 * 60) + 30) * 60 * 1000;
+
+function istDayStartMs(nowMs) {
+    const shifted = nowMs + IST_OFFSET_MS;
+    return (Math.floor(shifted / 86400000) * 86400000) - IST_OFFSET_MS;
+}
+
+// Cancelled orders still count as orders placed, but never as revenue.
+function summariseOrders(orders, nowMs) {
+    const dayStart = istDayStartMs(nowMs);
+    const weekStart = dayStart - (6 * 86400000); // today plus the previous six days
+    const summary = {
+        ordersToday: 0,
+        revenueToday: 0,
+        ordersWeek: 0,
+        revenueWeek: 0,
+        awaitingDispatch: 0
+    };
+
+    (orders || []).forEach(function (order) {
+        if (!order || typeof order.createdAtMs !== 'number') return;
+        const total = typeof order.total === 'number' ? order.total : 0;
+        const earnsRevenue = order.status !== 'cancelled';
+
+        if (order.createdAtMs >= dayStart) {
+            summary.ordersToday += 1;
+            if (earnsRevenue) summary.revenueToday += total;
+        }
+        if (order.createdAtMs >= weekStart) {
+            summary.ordersWeek += 1;
+            if (earnsRevenue) summary.revenueWeek += total;
+        }
+        if (order.status === 'placed' || order.status === 'confirmed') {
+            summary.awaitingDispatch += 1;
+        }
+    });
+
+    return summary;
+}
+
 module.exports = {
     ROLES,
     PERMISSIONS,
     ORDER_TRANSITIONS,
+    IST_OFFSET_MS,
+    istDayStartMs,
+    summariseOrders,
     isRole,
     rankOf,
     can,

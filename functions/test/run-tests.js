@@ -371,13 +371,69 @@ assert.strictEqual(/hawaa/i.test(login.replace(/hawaa-air-27548|hawaa\.in|hawaa-
 assert.strictEqual(/admin|staff|portal|operations/i.test(login), false);
 
 // ---- Portal shell escapes stored values ----
-const shell = gate.portalShellHtml({ name: '<script>x</script>Asha', role: 'manager' });
+const shell = gate.portalShellHtml(
+    { name: '<script>x</script>Asha', role: 'manager' },
+    ['orders.read', 'reviews.moderate']);
 assert.strictEqual(shell.includes('<script>x</script>Asha'), false);
 assert.ok(shell.includes('scriptx/scriptAsha'));
-assert.ok(shell.includes('manager'));
-// Missing fields must not render "undefined" at a signed-in admin.
+// The caller's permissions are embedded so the UI can hide what it
+// cannot do — without a second copy of the matrix to drift out of step.
+assert.ok(shell.includes('["orders.read","reviews.moderate"]'));
+
+// Missing name/role must not surface as "undefined" in the header.
 const bare = gate.portalShellHtml({});
-assert.ok(bare.includes('there'));
-assert.strictEqual(bare.includes('undefined'), false);
+const header = bare.slice(bare.indexOf('class="who"'), bare.indexOf('</header>'));
+assert.ok(header.includes('there'));
+assert.strictEqual(header.includes('undefined'), false);
+// A role with no permissions still renders; it just has nothing to show.
+assert.ok(bare.includes('[]'));
 
 console.log('All portal gate tests passed.');
+
+// ===============================================================
+// Dashboard summary — IST day boundaries and revenue rules
+// ===============================================================
+
+// 00:00 IST is 18:30 UTC the previous day. A UTC-based implementation
+// would silently file every order placed before 05:30 IST under the
+// wrong day, so these boundaries are the whole point.
+assert.strictEqual(
+    adm.istDayStartMs(Date.UTC(2026, 7, 4, 10, 0, 0)),   // 15:30 IST, 4 Aug
+    Date.UTC(2026, 7, 3, 18, 30, 0)                       // 00:00 IST, 4 Aug
+);
+assert.strictEqual(
+    adm.istDayStartMs(Date.UTC(2026, 7, 3, 19, 0, 0)),   // 00:30 IST, 4 Aug
+    Date.UTC(2026, 7, 3, 18, 30, 0)
+);
+assert.strictEqual(
+    adm.istDayStartMs(Date.UTC(2026, 7, 3, 18, 29, 0)),  // 23:59 IST, 3 Aug
+    Date.UTC(2026, 7, 2, 18, 30, 0)                       // 00:00 IST, 3 Aug
+);
+
+const NOW_IST = Date.UTC(2026, 7, 4, 10, 0, 0);
+const DAY = 86400000;
+const summary = adm.summariseOrders([
+    { total: 1000, status: 'delivered',  createdAtMs: NOW_IST - 3600000 },
+    { total: 5000, status: 'cancelled',  createdAtMs: NOW_IST - 7200000 },
+    { total: 2000, status: 'placed',     createdAtMs: NOW_IST - (3 * DAY) },
+    { total: 3000, status: 'confirmed',  createdAtMs: NOW_IST - (5 * DAY) },
+    { total: 9999, status: 'delivered',  createdAtMs: NOW_IST - (10 * DAY) }
+], NOW_IST);
+
+assert.strictEqual(summary.ordersToday, 2);
+// A cancelled order still happened, but it is not money.
+assert.strictEqual(summary.revenueToday, 1000);
+assert.strictEqual(summary.ordersWeek, 4);
+assert.strictEqual(summary.revenueWeek, 1000 + 2000 + 3000);
+// Anything not yet shipped needs attention, regardless of age.
+assert.strictEqual(summary.awaitingDispatch, 2);
+
+// Garbage in must never throw — this runs on every dashboard load.
+assert.deepStrictEqual(adm.summariseOrders([], NOW_IST).ordersToday, 0);
+assert.deepStrictEqual(adm.summariseOrders(null, NOW_IST).revenueWeek, 0);
+assert.deepStrictEqual(
+    adm.summariseOrders([null, {}, { total: 'x', createdAtMs: NOW_IST }], NOW_IST).revenueToday,
+    0
+);
+
+console.log('All dashboard summary tests passed.');
