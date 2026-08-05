@@ -401,6 +401,15 @@ service cloud.firestore {
     }
 
     // ===============================================================
+    // admin_rate — sign-in pre-check throttling, doc ID = a SHA-256 of
+    // the caller's IP (hashed so this never becomes a log of who opened
+    // the portal from where). Written only by the Admin SDK.
+    // ===============================================================
+    match /admin_rate/{clientKey} {
+      allow read, write: if false;
+    }
+
+    // ===============================================================
     // Default deny: everything not matched above is inaccessible.
     // This keeps the device backend's collections (users, device_owners)
     // server-only.

@@ -249,6 +249,21 @@ so callables authorise against the document instead: revoking someone
 takes effect on their next request, not whenever their token expires.
 `syncAdminClaims` additionally revokes refresh tokens on demotion.
 
+**No OTP for numbers that were never invited.** The login page POSTs to
+`/hawaa-ops-7k11s/precheck` *before* asking Firebase to send an SMS. The
+number must already exist in `admins` or `admin_invites`; otherwise the
+page says "No account exists for this number" and no message is sent —
+no SMS billing, and no stray code arriving on a stranger's phone.
+
+That check necessarily answers "does this number have access?", which is
+an enumeration oracle, so it is rate-limited to 5 attempts per 15 minutes
+per client, keyed by a SHA-256 of the IP in `admin_rate/{hash}` (hashed
+so the collection never becomes a record of who opened the portal from
+where). **It is a front-door check, not a wall:** the Firebase web config
+is public, so someone could still call Firebase Auth directly and trigger
+an SMS outside this page. Closing that requires App Check enforcement on
+Authentication — still outstanding.
+
 **Sign-in is phone-only for admins.** Invites are keyed by phone number
 and redeemed against the verified `phone_number` claim in the ID token,
 so access is tied to a physical SIM. There are no admin passwords.

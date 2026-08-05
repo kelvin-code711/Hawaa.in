@@ -240,10 +240,36 @@ function summariseOrders(orders, nowMs) {
     return summary;
 }
 
+// ---- Fixed-window rate limiting ----
+// Used by the sign-in pre-check, which is the one endpoint an anonymous
+// stranger can reach. Without a limit it would be both an SMS-billing
+// tap and a way to test thousands of numbers for admin access.
+//
+// Pure so the window arithmetic is testable; the caller supplies the
+// stored record and persists the returned one.
+function rateLimitNext(existing, nowMs, max, windowMs) {
+    const inWindow = existing &&
+        typeof existing.windowStart === 'number' &&
+        (nowMs - existing.windowStart) < windowMs;
+    const count = inWindow ? (existing.count || 0) : 0;
+    const windowStart = inWindow ? existing.windowStart : nowMs;
+
+    if (count >= max) {
+        return {
+            allowed: false,
+            count,
+            windowStart,
+            retryAfterMs: Math.max(0, (windowStart + windowMs) - nowMs)
+        };
+    }
+    return { allowed: true, count: count + 1, windowStart, retryAfterMs: 0 };
+}
+
 module.exports = {
     ROLES,
     PERMISSIONS,
     ORDER_TRANSITIONS,
+    rateLimitNext,
     IST_OFFSET_MS,
     istDayStartMs,
     summariseOrders,

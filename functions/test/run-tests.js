@@ -514,3 +514,56 @@ assert.strictEqual(sorted[2].createdAt, '2026-08-01 10:00 IST');
 assert.doesNotThrow(() => csvlib.sortNewestFirst([{}, { createdAt: '2026-08-01 10:00 IST' }]));
 
 console.log('All CSV export tests passed.');
+
+// ===============================================================
+// Sign-in pre-check rate limiting
+// ===============================================================
+const WINDOW = 15 * 60 * 1000;
+const MAX = 5;
+
+// First attempt from an unseen client starts a window.
+const first = adm.rateLimitNext(null, 1000, MAX, WINDOW);
+assert.strictEqual(first.allowed, true);
+assert.strictEqual(first.count, 1);
+assert.strictEqual(first.windowStart, 1000);
+
+// Attempts accumulate inside the window.
+let state = { count: 4, windowStart: 1000 };
+const fifth = adm.rateLimitNext(state, 1000 + 60000, MAX, WINDOW);
+assert.strictEqual(fifth.allowed, true);
+assert.strictEqual(fifth.count, 5);
+
+// The sixth is refused, and the window is NOT extended by the refusal —
+// otherwise a persistent prober would lock themselves out forever and
+// never learn the limit had reset.
+const sixth = adm.rateLimitNext({ count: 5, windowStart: 1000 }, 1000 + 60000, MAX, WINDOW);
+assert.strictEqual(sixth.allowed, false);
+assert.strictEqual(sixth.count, 5);
+assert.strictEqual(sixth.windowStart, 1000);
+assert.strictEqual(sixth.retryAfterMs, WINDOW - 60000);
+
+// Once the window passes, the count resets.
+const afterWindow = adm.rateLimitNext({ count: 5, windowStart: 1000 }, 1000 + WINDOW + 1, MAX, WINDOW);
+assert.strictEqual(afterWindow.allowed, true);
+assert.strictEqual(afterWindow.count, 1);
+assert.strictEqual(afterWindow.windowStart, 1000 + WINDOW + 1);
+
+// Corrupt or missing stored state must fail open into a fresh window,
+// never throw — this runs before any authentication.
+assert.strictEqual(adm.rateLimitNext({}, 5000, MAX, WINDOW).allowed, true);
+assert.strictEqual(adm.rateLimitNext({ count: 'x' }, 5000, MAX, WINDOW).count, 1);
+assert.strictEqual(adm.rateLimitNext(undefined, 5000, MAX, WINDOW).allowed, true);
+assert.strictEqual(adm.rateLimitNext({ windowStart: 'nope', count: 99 }, 5000, MAX, WINDOW).allowed, true);
+
+// ---- The login page must not send an SMS before the check ----
+const loginHtml = gate.loginPageHtml();
+assert.ok(loginHtml.includes('/precheck'), 'login page must call the pre-check');
+assert.ok(
+    loginHtml.indexOf('/precheck') < loginHtml.indexOf('signInWithPhoneNumber(auth'),
+    'the pre-check must run before the SMS is requested'
+);
+assert.ok(loginHtml.includes('No account exists for this number.'));
+// And it still must not reveal what the portal is.
+assert.strictEqual(/admin|staff|portal|operations/i.test(loginHtml), false);
+
+console.log('All sign-in pre-check tests passed.');

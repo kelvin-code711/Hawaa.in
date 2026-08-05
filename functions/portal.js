@@ -157,6 +157,23 @@ $('send').addEventListener('click', async () => {
   }
   $('send').disabled = true; fail('');
   try {
+    // Ask the server whether this number is on the list *before* asking
+    // Firebase to send an SMS. A number nobody invited never gets a
+    // message: no cost, and no stray code arriving on a stranger's phone.
+    const pre = await fetch('${PORTAL_PATH}/precheck', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ phone: raw })
+    });
+    if (pre.status === 429) {
+      $('send').disabled = false;
+      return fail('Too many attempts. Try again in a few minutes.');
+    }
+    if (!pre.ok) {
+      $('send').disabled = false;
+      return fail('No account exists for this number.');
+    }
+
     confirmation = await signInWithPhoneNumber(auth, raw, verifier);
     $('step1').style.display = 'none';
     $('step2').style.display = 'block';
