@@ -22,6 +22,7 @@ const { onRequest, onCall, HttpsError } = require('firebase-functions/v2/https')
 const { onDocumentWritten } = require('firebase-functions/v2/firestore');
 const { defineSecret } = require('firebase-functions/params');
 const logger = require('firebase-functions/logger');
+const crypto = require('node:crypto');
 const admin = require('firebase-admin');
 
 const { buildCitySnapshot } = require('./aqi');
@@ -1003,6 +1004,53 @@ function sendLoginPage(res) {
     res.status(200).type('text/html').send(portal.loginPageHtml());
 }
 
+// Sign-in pre-check limits. Deliberately tight: a real person types one
+// number, occasionally two. Anything beyond that is probing.
+const PRECHECK_MAX = 5;
+const PRECHECK_WINDOW_MS = 15 * 60 * 1000;
+
+// Hashed so the rate-limit collection never becomes a log of who visited
+// the portal from where.
+function clientKey(req) {
+    const forwarded = String(req.headers['x-forwarded-for'] || '').split(',')[0].trim();
+    const ip = forwarded || req.ip || 'unknown';
+    return crypto.createHash('sha256').update(ip).digest('hex').slice(0, 32);
+}
+
+async function allowPrecheck(req) {
+    const ref = admin.firestore().doc(`admin_rate/${clientKey(req)}`);
+    return admin.firestore().runTransaction(async (tx) => {
+        const snap = await tx.get(ref);
+        const decision = adminCore.rateLimitNext(
+            snap.exists ? snap.data() : null, Date.now(),
+            PRECHECK_MAX, PRECHECK_WINDOW_MS);
+        tx.set(ref, {
+            count: decision.count,
+            windowStart: decision.windowStart,
+            updatedAt: admin.firestore.FieldValue.serverTimestamp()
+        });
+        return decision;
+    });
+}
+
+// Is this number allowed to receive an OTP at all? Called before the
+// browser asks Firebase to send an SMS, so a number that was never
+// invited never triggers a message — no cost, no confusing code arriving
+// on a stranger's phone.
+//
+// This necessarily answers "does this number have access?", which is an
+// enumeration oracle. The rate limit above is what keeps that from being
+// usable at scale, and App Check (once enabled) is what stops the SMS
+// being requested from outside this page entirely.
+async function phoneMayReceiveOtp(phone) {
+    const db = admin.firestore();
+    const invite = await db.doc(`admin_invites/${phone}`).get();
+    if (invite.exists) return true;
+    const roster = await db.collection('admins')
+        .where('phone', '==', phone).limit(1).get();
+    return !roster.empty;
+}
+
 exports.adminPortal = onRequest(
     {
         region: 'asia-south1',
@@ -1021,6 +1069,28 @@ exports.adminPortal = onRequest(
         if (rawPath === base) sub = '/';
         else if (rawPath.indexOf(base + '/') === 0) sub = rawPath.slice(base.length);
         else return sendNotFound(res);
+
+        // ---- Is this number allowed an OTP? ----
+        if (sub === '/precheck' && req.method === 'POST') {
+            applySecurityHeaders(res);
+
+            const decision = await allowPrecheck(req);
+            if (!decision.allowed) {
+                return res.status(429).json({
+                    error: 'too many attempts',
+                    retryAfterMs: decision.retryAfterMs
+                });
+            }
+
+            const phone = adminCore.normalisePhone(req.body && req.body.phone);
+            if (!phone) return res.status(400).json({ error: 'bad number' });
+
+            if (!(await phoneMayReceiveOtp(phone))) {
+                logger.info('OTP refused for unlisted number');
+                return res.status(404).json({ error: 'not listed' });
+            }
+            return res.status(200).json({ ok: true });
+        }
 
         // ---- Exchange a verified ID token for the session cookie ----
         if (sub === '/session' && req.method === 'POST') {
