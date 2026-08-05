@@ -2,7 +2,7 @@
 
 A staff-only operations portal for managing orders, reviews and support
 tickets, replacing day-to-day work in the Firebase console and the
-`scripts/export-orders.js` CSV script.
+`scripts/export-orders.js` CSV script (both now retired).
 
 Everything here runs inside the existing Firebase project
 (`hawaa-air-27548`) and the existing deploy pipeline. No new domain, no
@@ -132,9 +132,11 @@ offered as an option rather than the default.
 
 Seven layers. An attacker has to defeat all of them.
 
-**Layer 1 — Discovery.** Unguessable address; a `robots.txt` rule and a
-`noindex` tag so the page can never appear in Google; no link to it from
-anywhere on the public site.
+**Layer 1 — Discovery.** Unguessable address, an `X-Robots-Tag: noindex`
+header on every portal response, and no link to it from anywhere on the
+public site. Note `robots.txt` deliberately does *not* mention the
+portal: that file is public, so a `Disallow` line would advertise the
+address while protecting nothing.
 
 **Layer 2 — The gate.** The portal is not a plain file. A Cloud Function
 serves it and checks for a valid signed session first. Three outcomes:
@@ -238,10 +240,30 @@ lag behind the code would lock the portal out of its own data.
 **Phase 4 — Team management.** The Team screen: invite by number, assign
 role, revoke access, view the audit log.
 
-**Phase 5 — Hardening and handover.** App Check across the site, CSV
-export from the browser, delete and revoke the service-account key, 2-step
-verification on the Google accounts, and a short written runbook for
-adding and removing staff.
+**Phase 5 — Hardening and handover. ◑ Partly done.**
+
+Done:
+- **CSV export from the portal** — `adminQuery({resource:'export'})`,
+  Manager and above, over an allowlist of four collections so the shared
+  device backend's `users` / `device_owners` can never be reached. Every
+  export writes an audit entry with the row count.
+- **`scripts/export-orders.js` deleted.** It was the only reason
+  `serviceAccountKey.json` existed. Formatting moved to
+  `functions/csv.js`, unit-tested including the CSV-injection guard.
+- **Runbook** in `BACKEND.md` — inviting, changing roles, removing
+  someone, lost phones, reading the audit log.
+- `.gitignore` widened to `/*.csv`, since exports now land wherever the
+  browser puts them.
+
+Outstanding — needs the owner:
+- **Revoke the service-account key** in the Firebase console. Deleting
+  the local file is not enough; the key stays valid until revoked. This
+  is the single largest remaining security improvement.
+- **2-step verification** on the Google account that owns the project.
+- **App Check** — needs a reCAPTCHA v3 site key generated in the Firebase
+  console before the code can be written. Enable in monitor-only mode
+  first: turning on enforcement before metrics look clean would block
+  real customers from the live site.
 
 ---
 

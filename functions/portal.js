@@ -448,6 +448,38 @@ function orderRow(o, masked) {
     '</div>';
 }
 
+// Builds the file in the browser from the CSV the server returns. The
+// BOM is what makes Excel read it as UTF-8 — without it, rupee signs and
+// Indian names arrive as mojibake.
+function downloadCsv(filename, text) {
+  const blob = new Blob(['\\ufeff' + text], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+const EXPORTABLE = [
+  ['orders', 'Orders'],
+  ['supportTickets', 'Support messages'],
+  ['newsletterSubscribers', 'Newsletter emails'],
+  ['reviews', 'Reviews']
+];
+
+function exportBar() {
+  if (!can('export')) return '';
+  return '<form class="invite" id="exportForm" style="grid-template-columns:1fr auto">' +
+    '<select name="collection">' + EXPORTABLE.map((c) =>
+      '<option value="' + c[0] + '">' + c[1] + '</option>').join('') + '</select>' +
+    '<button type="submit">Download CSV</button></form>' +
+    '<p class="note">Opens in Excel or Google Sheets. Downloads are recorded ' +
+    'in Activity, because an export is a copy of customer data.</p>';
+}
+
 async function loadOrders() {
   const filters = ['', 'placed', 'confirmed', 'shipped', 'delivered', 'cancelled'];
   const chips = '<div class="chips">' + filters.map((f) =>
@@ -459,7 +491,7 @@ async function loadOrders() {
   const note = res.masked
     ? '<p class="note">Customer names, phone numbers and addresses are hidden for your role.</p>'
     : '';
-  $('view').innerHTML = chips + note + (res.orders.length
+  $('view').innerHTML = exportBar() + chips + note + (res.orders.length
     ? res.orders.map((o) => orderRow(o, res.masked)).join('')
     : '<div class="empty">No orders here yet.</div>');
 }
@@ -616,12 +648,39 @@ $('view').addEventListener('change', (e) => {
   }
 });
 
-$('view').addEventListener('submit', (e) => {
-  if (e.target.id !== 'inviteForm') return;
-  e.preventDefault();
-  const f = new FormData(e.target);
-  run({ action: 'team.invite', name: f.get('name'), phone: f.get('phone'),
-    role: f.get('role') });
+$('view').addEventListener('submit', async (e) => {
+  if (e.target.id === 'inviteForm') {
+    e.preventDefault();
+    const f = new FormData(e.target);
+    return run({ action: 'team.invite', name: f.get('name'), phone: f.get('phone'),
+      role: f.get('role') });
+  }
+
+  if (e.target.id === 'exportForm') {
+    e.preventDefault();
+    const collection = new FormData(e.target).get('collection');
+    const button = e.target.querySelector('button');
+    button.disabled = true;
+    button.textContent = 'Preparing…';
+    showError('');
+    try {
+      const res = (await query({ resource: 'export', collection })).data;
+      if (!res.rows) {
+        showError('Nothing to export from ' + collection + ' yet.');
+      } else {
+        const day = new Date().toISOString().slice(0, 10);
+        downloadCsv(collection + '-' + day + '.csv', res.csv);
+        if (res.capped) {
+          showError('Showing the first ' + res.rows +
+            ' rows — there are more than one file can hold.');
+        }
+      }
+    } catch (err) {
+      handleFailure(err);
+    }
+    button.disabled = false;
+    button.textContent = 'Download CSV';
+  }
 });
 
 // The page cookie and the browser's Firebase sign-in are separate; the
