@@ -480,6 +480,77 @@ function publicOffer(definition) {
     };
 }
 
+// ---- Firestore glue ----
+//
+// Still no Firebase imports: the caller hands in its own `db`, so all of
+// this stays exercisable with a plain object that mimics the Admin SDK's
+// shape.
+//
+// The asymmetry that matters, and that this adapter exists for: a
+// Transaction reads through `tx.get(ref)`, but the Firestore instance
+// has no `get()` of its own at all — a DocumentReference or a Query
+// carries one. Passing the database where a transaction was expected
+// therefore fails at runtime and nowhere else, which is exactly how it
+// reached production the first time.
+function readerFor(tx) {
+    if (tx) return function (target) { return tx.get(target); };
+    return function (target) { return target.get(); };
+}
+
+function codeDocPath(code) {
+    return 'promo_codes/' + code;
+}
+
+// One document per (code, account). The composite ID means a
+// per-customer limit is enforced by a single read inside the same
+// transaction that writes the order — no query, no race.
+function redemptionDocPath(code, uid) {
+    return 'promo_redemptions/' + code + '__' + uid;
+}
+
+// Everything evaluate() needs about one code and one shopper.
+async function readContext(db, tx, code, uid) {
+    const read = readerFor(tx);
+
+    const snap = await read(db.doc(codeDocPath(code)));
+    const definition = snap.exists ? normaliseDefinition(snap.data()) : null;
+    if (!definition || !uid) {
+        return { definition, userRedemptions: 0, hasPriorOrders: false };
+    }
+
+    const redemption = await read(db.doc(redemptionDocPath(code, uid)));
+    const userRedemptions = redemption.exists
+        ? (Number(redemption.data().count) || 0) : 0;
+
+    // Only ask the first-order question when a code actually cares:
+    // otherwise every promo preview costs an extra query.
+    let hasPriorOrders = false;
+    if (definition.firstOrderOnly) {
+        const prior = await read(
+            db.collection('orders').where('uid', '==', uid).limit(1));
+        hasPriorOrders = !prior.empty;
+    }
+
+    return { definition, userRedemptions, hasPriorOrders };
+}
+
+// Prices a cart against a code for one shopper. `tx` is null for the
+// preview and a Transaction on the paths that write an order, where the
+// read has to be consistent with the write that follows it.
+async function evaluateFor(db, tx, code, uid, quantities, nowMs) {
+    const context = await readContext(db, tx, code, uid);
+    return {
+        definition: context.definition,
+        result: evaluate(context.definition, {
+            quantities,
+            nowMs: typeof nowMs === 'number' ? nowMs : Date.now(),
+            authed: !!uid,
+            userRedemptions: context.userRedemptions,
+            hasPriorOrders: context.hasPriorOrders
+        })
+    };
+}
+
 module.exports = {
     CODE_PATTERN,
     MAX_PERCENT,
@@ -501,5 +572,10 @@ module.exports = {
     validateUpdateInput,
     MUTABLE_FIELDS,
     statusOf,
-    publicOffer
+    publicOffer,
+    readerFor,
+    codeDocPath,
+    redemptionDocPath,
+    readContext,
+    evaluateFor
 };

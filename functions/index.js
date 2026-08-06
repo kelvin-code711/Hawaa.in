@@ -208,55 +208,14 @@ exports.refreshAqiHttp = onRequest(
 // pair below, both of which price the cart here on the server.
 // ========================================
 
+// Paths come from promo.js so the reads there and the writes here can
+// never point at different documents.
 function promoDocRef(db, code) {
-    return db.doc(`promo_codes/${code}`);
+    return db.doc(promo.codeDocPath(code));
 }
 
-// One document per (code, account). The composite ID means the
-// per-customer limit is enforced by a single read inside the same
-// transaction that writes the order — no query, no race.
 function redemptionDocRef(db, code, uid) {
-    return db.doc(`promo_redemptions/${code}__${uid}`);
-}
-
-// Everything promo.evaluate() needs about one code and one shopper.
-// `reader` is either a transaction (order paths, where the read has to
-// be consistent with the write) or the database itself (preview).
-async function readPromoContext(db, reader, code, uid) {
-    const snap = await reader.get(promoDocRef(db, code));
-    const definition = snap.exists ? promo.normaliseDefinition(snap.data()) : null;
-    if (!definition || !uid) {
-        return { definition, userRedemptions: 0, hasPriorOrders: false };
-    }
-
-    const redemption = await reader.get(redemptionDocRef(db, code, uid));
-    const userRedemptions = redemption.exists
-        ? (Number(redemption.data().count) || 0) : 0;
-
-    // Only ask the first-order question when a code actually cares:
-    // otherwise every promo preview costs an extra query.
-    let hasPriorOrders = false;
-    if (definition.firstOrderOnly) {
-        const prior = await reader.get(
-            db.collection('orders').where('uid', '==', uid).limit(1));
-        hasPriorOrders = !prior.empty;
-    }
-
-    return { definition, userRedemptions, hasPriorOrders };
-}
-
-async function evaluatePromo(db, reader, code, uid, quantities) {
-    const context = await readPromoContext(db, reader, code, uid);
-    return {
-        definition: context.definition,
-        result: promo.evaluate(context.definition, {
-            quantities,
-            nowMs: Date.now(),
-            authed: !!uid,
-            userRedemptions: context.userRedemptions,
-            hasPriorOrders: context.hasPriorOrders
-        })
-    };
+    return db.doc(promo.redemptionDocPath(code, uid));
 }
 
 // What gets stored on the order. A snapshot, not a reference: if the
@@ -367,7 +326,7 @@ exports.validatePromoCode = onCall(
         }
 
         const db = admin.firestore();
-        const { result } = await evaluatePromo(db, db, code, uid, quantities);
+        const { result } = await promo.evaluateFor(db, null, code, uid, quantities);
 
         if (!result.ok && result.reason === 'not-found') {
             const decision = await allowPromoMiss(promoRateKey(request));
@@ -415,7 +374,7 @@ exports.placePromoOrder = onCall(
         const orderRef = db.collection('orders').doc();
 
         const pricing = await db.runTransaction(async (tx) => {
-            const { definition, result } = await evaluatePromo(db, tx, code, uid, payload);
+            const { definition, result } = await promo.evaluateFor(db, tx, code, uid, payload);
             if (!result.ok) {
                 // failed-precondition rather than invalid-argument: the
                 // request was well formed, the code just cannot be used
@@ -571,7 +530,7 @@ exports.createRazorpayOrder = onCall(
         let appliedPromo = null;
         const code = promo.normaliseCode((request.data || {}).promoCode);
         if (code) {
-            const { definition, result } = await evaluatePromo(db, db, code, uid, payload);
+            const { definition, result } = await promo.evaluateFor(db, null, code, uid, payload);
             if (!result.ok) {
                 throw new HttpsError('failed-precondition', result.message);
             }

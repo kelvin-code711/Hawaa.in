@@ -942,3 +942,140 @@ assert.deepStrictEqual(
 );
 
 console.log('All promo integration tests passed.');
+
+// ===============================================================
+// Promo Firestore glue
+//
+// The layer that shipped broken: promo.js was pure and fully covered,
+// the cart was driven in a browser against a stubbed callable, and the
+// code in between — which reads Firestore — had no test at all. It
+// passed the Firestore instance where a Transaction was expected and
+// called .get(ref) on it, which only fails at runtime.
+//
+// The double below therefore mimics the Admin SDK's real shape, and
+// deliberately gives the database no get() of its own.
+// ===============================================================
+
+function fakeDb(docs, orderUids) {
+    const reads = [];
+    const snapshotFor = (path) => ({
+        exists: Object.prototype.hasOwnProperty.call(docs, path),
+        data: () => docs[path]
+    });
+    const db = {
+        doc(path) {
+            return { __path: path, get: () => { reads.push(path); return Promise.resolve(snapshotFor(path)); } };
+        },
+        collection(name) {
+            return {
+                where(field, op, value) {
+                    return {
+                        limit() {
+                            return {
+                                get: () => {
+                                    reads.push(name + '?' + field + op + value);
+                                    return Promise.resolve({
+                                        empty: (orderUids || []).indexOf(value) === -1
+                                    });
+                                }
+                            };
+                        }
+                    };
+                }
+            };
+        }
+    };
+    return { db, reads };
+}
+
+// A Transaction reads through tx.get(target); nothing else does.
+function fakeTx() {
+    const reads = [];
+    return { reads, tx: { get: (target) => { reads.push('tx'); return target.get(); } } };
+}
+
+(async function promoGlueTests() {
+    // The bug, pinned: the Admin SDK's Firestore instance has no get().
+    // Anything that assumes otherwise throws only when a real customer
+    // types a code.
+    const { db: shapeDb } = fakeDb({});
+    assert.strictEqual(typeof shapeDb.get, 'undefined',
+        'the database must not have a get() — that is what broke');
+    assert.strictEqual(typeof shapeDb.doc('x').get, 'function');
+
+    const LIVE = {
+        code: 'SAVE10', type: 'percent', value: 10, active: true, perUserLimit: 1
+    };
+    const CART = { qtyPurifierOnetime: 1, qtyPurifierSubscribe: 0, qtyFilter: 0 };
+
+    // ---- The preview path: no transaction ----
+    const preview = fakeDb({ 'promo_codes/SAVE10': LIVE });
+    const previewOut = await pr.evaluateFor(preview.db, null, 'SAVE10', 'uid1', CART);
+    assert.strictEqual(previewOut.result.ok, true);
+    assert.strictEqual(previewOut.result.discount, 600);
+    assert.deepStrictEqual(preview.reads,
+        ['promo_codes/SAVE10', 'promo_redemptions/SAVE10__uid1']);
+
+    // ---- The order path: inside a transaction, same answer ----
+    const ordered = fakeDb({ 'promo_codes/SAVE10': LIVE });
+    const t = fakeTx();
+    const orderedOut = await pr.evaluateFor(ordered.db, t.tx, 'SAVE10', 'uid1', CART);
+    assert.strictEqual(orderedOut.result.ok, true);
+    assert.strictEqual(orderedOut.result.discount, 600);
+    // Every read went through the transaction, or it would not be
+    // consistent with the order write that follows it.
+    assert.strictEqual(t.reads.length, ordered.reads.length);
+
+    // ---- A code nobody created ----
+    const missing = fakeDb({});
+    const missingOut = await pr.evaluateFor(missing.db, null, 'NOPE10', 'uid1', CART);
+    assert.strictEqual(missingOut.result.reason, 'not-found');
+    assert.strictEqual(missingOut.definition, null);
+    // A miss costs exactly one read; the per-account lookups are skipped.
+    assert.deepStrictEqual(missing.reads, ['promo_codes/NOPE10']);
+
+    // ---- A signed-out shopper: no account, so no account reads ----
+    const anon = fakeDb({ 'promo_codes/SAVE10': LIVE });
+    const anonOut = await pr.evaluateFor(anon.db, null, 'SAVE10', null, CART);
+    assert.strictEqual(anonOut.result.ok, true);
+    assert.deepStrictEqual(anonOut.result.deferred, ['per-customer']);
+    assert.deepStrictEqual(anon.reads, ['promo_codes/SAVE10']);
+
+    // ---- The per-customer limit is read, not guessed ----
+    const used = fakeDb({
+        'promo_codes/SAVE10': LIVE,
+        'promo_redemptions/SAVE10__uid1': { count: 1 }
+    });
+    assert.strictEqual(
+        (await pr.evaluateFor(used.db, null, 'SAVE10', 'uid1', CART)).result.reason,
+        'user-limit');
+
+    // ---- first-order-only costs an orders query, and only then ----
+    const firstOnly = Object.assign({}, LIVE, { firstOrderOnly: true });
+    const returning = fakeDb({ 'promo_codes/SAVE10': firstOnly }, ['uid1']);
+    assert.strictEqual(
+        (await pr.evaluateFor(returning.db, null, 'SAVE10', 'uid1', CART)).result.reason,
+        'not-first-order');
+    assert.ok(returning.reads.indexOf('orders?uid==uid1') !== -1);
+
+    const brandNew = fakeDb({ 'promo_codes/SAVE10': firstOnly }, []);
+    assert.strictEqual(
+        (await pr.evaluateFor(brandNew.db, null, 'SAVE10', 'uid1', CART)).result.ok, true);
+
+    // A code that does not care must not pay for the query.
+    const noCare = fakeDb({ 'promo_codes/SAVE10': LIVE }, ['uid1']);
+    await pr.evaluateFor(noCare.db, null, 'SAVE10', 'uid1', CART);
+    assert.strictEqual(noCare.reads.indexOf('orders?uid==uid1'), -1);
+
+    // ---- Reads and writes must address the same documents ----
+    // index.js builds its write refs from these, so a change to one
+    // without the other would count a redemption in the wrong place.
+    assert.strictEqual(pr.codeDocPath('SAVE10'), 'promo_codes/SAVE10');
+    assert.strictEqual(pr.redemptionDocPath('SAVE10', 'uid1'),
+        'promo_redemptions/SAVE10__uid1');
+
+    console.log('All promo Firestore glue tests passed.');
+})().catch((err) => {
+    console.error(err);
+    process.exit(1);
+});

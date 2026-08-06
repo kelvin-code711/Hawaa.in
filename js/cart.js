@@ -476,9 +476,14 @@
                 promo.state = promo.discount > 0 ? 'applied' : 'blocked';
             }
             if (!silent) {
+                // Surface the underlying code the way the Razorpay path
+                // does. "Check your connection" sent a real server fault
+                // back as a wifi problem once already; the code makes
+                // the difference visible in a screenshot.
+                var detail = (err && (err.code || err.message)) || 'unknown';
                 promo.message = (err && err.code === 'functions/resource-exhausted')
                     ? 'Too many attempts. Please try again in a few minutes.'
-                    : 'Could not check that code. Please check your connection.';
+                    : 'Could not check that code. Please try again. (' + detail + ')';
             }
             renderPromo();
         });
