@@ -6340,25 +6340,32 @@ body.buy-page,
 
 /* ========================================
    CART PROMO CODE
-   Deliberately quiet. A prominent empty "enter a code" box reads as
-   "everyone else is paying less than you" and sends people off to hunt
-   for a code they never come back from. The offers above it are the
-   counterweight: a code you can see is a code you never leave to look
-   for, and one tap beats typing on a phone keyboard.
+
+   Built from the cart footer's own vocabulary — hairline-separated
+   rows, 12px cards on --mist-deep, pill buttons, tiny Outfit type —
+   so the promo block reads as part of the drawer instead of a widget
+   bolted onto it. No dashed "coupon ticket" borders, no filled green
+   blocks: --success appears only as text here, the way .cart-free
+   already uses it.
+
+   The field itself stays a closed, low-contrast disclosure. An open
+   "enter a code" box reads as everyone else paying less than you and
+   sends people off hunting for a code they do not come back from; the
+   offers above it are the counterweight.
 ======================================== */
 .cart-promo[hidden] { display: none; }
 
 .cart-promo {
-    padding: 12px 0 2px;
+    padding: 2px 0;
     border-bottom: 1px solid var(--ink-line);
 }
 
-/* One-tap offers the shop is running right now */
+/* ---- One-tap offers ---- */
 .cart-promo-offers {
     display: flex;
     flex-direction: column;
     gap: 8px;
-    margin-bottom: 10px;
+    padding: 14px 0 2px;
 }
 
 .cart-promo-offers[hidden] { display: none; }
@@ -6366,59 +6373,78 @@ body.buy-page,
 .cart-promo-offer {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
     width: 100%;
-    padding: 10px 12px;
+    padding: 12px 14px;
     background: var(--teal-tint-soft);
-    border: 1px dashed var(--teal-deep);
-    border-radius: 10px;
+    border: 1px solid var(--teal-tint);
+    border-radius: 12px;
     cursor: pointer;
     font-family: 'Outfit', sans-serif;
     text-align: left;
-    transition: background 0.2s ease;
+    transition: background 0.2s ease, border-color 0.2s ease;
 }
 
-.cart-promo-offer:hover { background: var(--teal-tint); }
+.cart-promo-offer:hover {
+    background: var(--teal-tint);
+    border-color: var(--teal-deep);
+}
 
-.cart-promo-offer-tag {
+.cart-promo-offer-icon {
+    width: 18px;
+    height: 18px;
     flex-shrink: 0;
-    padding: 3px 8px;
-    background: var(--paper);
-    border: 1px solid var(--teal-deep);
-    border-radius: 5px;
-    font-size: 0.68rem;
-    font-weight: 700;
-    letter-spacing: 0.06em;
     color: var(--teal-deep);
 }
 
-.cart-promo-offer-text {
+.cart-promo-offer-body {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
     flex: 1;
     min-width: 0;
-    font-size: 0.74rem;
-    font-weight: 400;
-    color: var(--ink);
 }
 
+.cart-promo-offer-headline {
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--ink);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.cart-promo-offer-code {
+    font-size: 0.65rem;
+    font-weight: 400;
+    color: var(--ink-soft);
+    letter-spacing: 0.02em;
+}
+
+/* Matches .cart-upsell-btn, the pill directly below it */
 .cart-promo-offer-apply {
     flex-shrink: 0;
+    padding: 6px 14px;
+    background: var(--paper);
+    border: 1.5px solid var(--teal-deep);
+    border-radius: 9999px;
     font-size: 0.72rem;
-    font-weight: 600;
+    font-weight: 500;
     color: var(--teal-deep);
 }
 
-/* The disclosure — closed by default */
+/* ---- The disclosure ---- */
 .cart-promo-toggle {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 9px;
     width: 100%;
-    padding: 6px 0;
+    padding: 14px 0;
     background: none;
     border: none;
     cursor: pointer;
     font-family: 'Outfit', sans-serif;
-    font-size: 0.78rem;
+    font-size: 0.8rem;
     font-weight: 500;
     color: var(--ink-soft);
     transition: color 0.2s ease;
@@ -6426,20 +6452,22 @@ body.buy-page,
 
 .cart-promo-toggle[hidden] { display: none; }
 .cart-promo-toggle:hover { color: var(--ink); }
-.cart-promo-toggle svg { width: 15px; height: 15px; flex-shrink: 0; }
 
 .cart-promo-chevron {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
     margin-left: auto;
     transition: transform 0.3s ease;
 }
 
 .cart-promo-toggle.open .cart-promo-chevron { transform: rotate(180deg); }
 
-/* Code entry */
+/* ---- Code entry ---- */
 .cart-promo-entry {
     display: flex;
     gap: 8px;
-    padding: 8px 0 2px;
+    padding: 0 0 14px;
 }
 
 .cart-promo-entry[hidden] { display: none; }
@@ -6447,16 +6475,16 @@ body.buy-page,
 .cart-promo-input {
     flex: 1;
     min-width: 0;
-    /* 16px keeps iOS Safari from zooming the page on focus */
     font-family: 'Outfit', sans-serif;
+    /* 16px keeps iOS Safari from zooming the page on focus */
     font-size: 16px;
     font-weight: 600;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
-    padding: 10px 12px;
+    padding: 11px 14px;
     background: var(--paper);
     border: 1px solid var(--ink-line);
-    border-radius: 9px;
+    border-radius: 12px;
     color: var(--ink);
     outline: none;
     transition: border-color 0.15s ease;
@@ -6464,6 +6492,7 @@ body.buy-page,
 
 .cart-promo-input::placeholder {
     font-weight: 400;
+    font-size: 0.85rem;
     letter-spacing: normal;
     text-transform: none;
     color: var(--ink-faint);
@@ -6473,79 +6502,76 @@ body.buy-page,
 
 .cart-promo-apply {
     flex-shrink: 0;
-    padding: 10px 18px;
-    background: var(--ink);
+    padding: 11px 22px;
+    background: var(--teal-deep);
     border: none;
-    border-radius: 9px;
+    border-radius: 9999px;
     font-family: 'Outfit', sans-serif;
-    font-size: 0.78rem;
+    font-size: 0.8rem;
     font-weight: 600;
-    color: var(--on-ink);
+    color: var(--on-teal);
     cursor: pointer;
-    transition: opacity 0.2s ease;
+    transition: background 0.2s ease, opacity 0.2s ease;
 }
 
+.cart-promo-apply:hover:not(:disabled) { background: var(--teal-deep-hover); }
+
 .cart-promo-apply:disabled {
-    opacity: 0.35;
+    opacity: 0.4;
     cursor: default;
 }
 
-/* Applied — and its warning twin, for a code that is attached but not
-   currently qualifying (cart dipped under the minimum, say). Keeping the
-   code attached means re-adding an item silently restores the discount
-   instead of making someone type it again. */
+/* ---- Applied, and its warning twin ----
+   A code that is attached but not currently qualifying keeps its place
+   rather than being thrown away, so re-adding an item restores the
+   discount instead of making someone type it again. */
 .cart-promo-applied {
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 10px 12px;
-    margin: 6px 0 2px;
-    background: var(--success-tint);
-    border-radius: 10px;
+    gap: 12px;
+    padding: 12px 14px;
+    margin: 14px 0;
+    background: var(--teal-tint-soft);
+    border: 1px solid var(--teal-tint);
+    border-radius: 12px;
 }
 
 .cart-promo-applied[hidden] { display: none; }
 
 .cart-promo-mark {
     flex-shrink: 0;
-    width: 18px;
-    height: 18px;
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     border-radius: 50%;
-    background: var(--success);
-    position: relative;
+    background: var(--teal-deep);
+    color: var(--on-teal);
 }
 
-.cart-promo-mark::after {
-    content: '';
-    position: absolute;
-    left: 5px;
-    top: 4px;
-    width: 5px;
-    height: 9px;
-    border: solid var(--paper);
-    border-width: 0 2px 2px 0;
-    transform: rotate(45deg);
-}
+.cart-promo-mark svg { width: 13px; height: 13px; }
+.cart-promo-mark .cart-promo-mark-wait { display: none; }
 
 .cart-promo-applied-body {
     display: flex;
     flex-direction: column;
     gap: 1px;
-    min-width: 0;
     flex: 1;
+    min-width: 0;
 }
 
 .cart-promo-applied-code {
     font-family: 'Outfit', sans-serif;
     font-size: 0.78rem;
-    font-weight: 700;
-    letter-spacing: 0.05em;
+    font-weight: 600;
+    letter-spacing: 0.06em;
     color: var(--ink);
 }
 
 .cart-promo-applied-note {
     font-family: 'Outfit', sans-serif;
-    font-size: 0.68rem;
+    font-size: 0.65rem;
     color: var(--ink-soft);
     overflow: hidden;
     text-overflow: ellipsis;
@@ -6555,15 +6581,15 @@ body.buy-page,
 .cart-promo-applied-amount {
     flex-shrink: 0;
     font-family: 'Outfit', sans-serif;
-    font-size: 0.82rem;
-    font-weight: 700;
+    font-size: 0.85rem;
+    font-weight: 600;
     color: var(--success);
 }
 
 .cart-promo-remove {
     flex-shrink: 0;
-    width: 26px;
-    height: 26px;
+    width: 24px;
+    height: 24px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -6571,54 +6597,41 @@ body.buy-page,
     border: none;
     border-radius: 50%;
     cursor: pointer;
-    color: var(--ink-soft);
+    color: var(--ink-faint);
     transition: background 0.2s ease, color 0.2s ease;
 }
 
-.cart-promo-remove svg { width: 14px; height: 14px; }
+.cart-promo-remove svg { width: 13px; height: 13px; }
 
 .cart-promo-remove:hover {
     background: var(--mist-deeper);
     color: var(--ink);
 }
 
-.cart-promo-applied.is-blocked { background: var(--warning-tint); }
+/* Attached but not earning anything yet */
+.cart-promo-applied.is-blocked {
+    background: var(--warning-tint);
+    border-color: var(--warning-tint);
+}
 
 .cart-promo-applied.is-blocked .cart-promo-mark {
-    background: var(--warning);
+    background: none;
+    color: var(--warning);
 }
 
-/* An exclamation instead of the tick */
-.cart-promo-applied.is-blocked .cart-promo-mark::after {
-    left: 8px;
-    top: 3px;
-    width: 2px;
-    height: 8px;
-    border: none;
-    border-radius: 1px;
-    background: var(--paper);
-    box-shadow: 0 10px 0 var(--paper);
-    transform: none;
-}
+.cart-promo-applied.is-blocked .cart-promo-mark-ok { display: none; }
+.cart-promo-applied.is-blocked .cart-promo-mark-wait { display: block; }
+.cart-promo-applied.is-blocked .cart-promo-mark svg { width: 20px; height: 20px; }
 
-.cart-promo-applied.is-checking .cart-promo-mark {
-    background: var(--ink-line);
-    animation: cart-promo-pulse 1s ease-in-out infinite;
-}
-
-.cart-promo-applied.is-checking .cart-promo-mark::after { display: none; }
-
-@keyframes cart-promo-pulse {
-    0%, 100% { opacity: 0.4; }
-    50%      { opacity: 1; }
-}
+/* Being re-priced. Nothing moves; it just stops looking settled. */
+.cart-promo-applied.is-checking { opacity: 0.55; }
 
 .cart-promo-msg {
     font-family: 'Outfit', sans-serif;
-    font-size: 0.7rem;
-    line-height: 1.45;
+    font-size: 0.72rem;
+    line-height: 1.5;
     color: var(--ink-soft);
-    margin: 6px 0 4px;
+    margin: 0 0 14px;
 }
 
 .cart-promo-msg[hidden] { display: none; }
@@ -6694,7 +6707,7 @@ body.buy-page,
 /* Cart Total */
 .cart-total-row {
     display: flex;
-    align-items: center;
+    align-items: baseline;
     justify-content: space-between;
     padding: 14px 0 16px;
     border-top: 1px solid var(--ink-line);
@@ -6706,34 +6719,34 @@ body.buy-page,
    jumps under a thumb — but it stops looking final. */
 .cart-total-row.is-updating { opacity: 0.5; }
 
+/* The saving rides with the number it changed, so the row grows by one
+   line instead of needing a negative margin to sit close to it. */
+.cart-total-value {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 1px;
+}
+
 .cart-savings {
-    font-family: 'Outfit', sans-serif;
-    font-size: 0.74rem;
-    font-weight: 600;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
     color: var(--success);
-    text-align: right;
-    margin: -10px 0 12px;
 }
 
 .cart-savings[hidden] { display: none; }
 
-@media (prefers-reduced-motion: reduce) {
-    .cart-total-row,
-    .cart-promo-chevron,
-    .cart-promo-offer,
-    .cart-promo-applied .cart-promo-mark {
-        transition: none;
-        animation: none;
-    }
-}
-
-.cart-total-row span:first-child {
+/* Direct children only: the amount now sits in a wrapper alongside the
+   savings line, and a descendant selector would catch it as a
+   first-child and shrink the total. */
+.cart-total-row > span:first-child {
     font-size: 0.9rem;
     font-weight: 600;
     color: var(--ink);
 }
 
-.cart-total-row span:last-child {
+.cart-total-row > span:last-child {
     font-size: 1rem;
     font-weight: 700;
     color: var(--ink);
