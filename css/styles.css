@@ -6338,6 +6338,293 @@ body.buy-page,
     border-color: var(--ink);
 }
 
+/* ========================================
+   CART PROMO CODE
+   Deliberately quiet. A prominent empty "enter a code" box reads as
+   "everyone else is paying less than you" and sends people off to hunt
+   for a code they never come back from. The offers above it are the
+   counterweight: a code you can see is a code you never leave to look
+   for, and one tap beats typing on a phone keyboard.
+======================================== */
+.cart-promo[hidden] { display: none; }
+
+.cart-promo {
+    padding: 12px 0 2px;
+    border-bottom: 1px solid var(--ink-line);
+}
+
+/* One-tap offers the shop is running right now */
+.cart-promo-offers {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.cart-promo-offers[hidden] { display: none; }
+
+.cart-promo-offer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 10px 12px;
+    background: var(--teal-tint-soft);
+    border: 1px dashed var(--teal-deep);
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: 'Outfit', sans-serif;
+    text-align: left;
+    transition: background 0.2s ease;
+}
+
+.cart-promo-offer:hover { background: var(--teal-tint); }
+
+.cart-promo-offer-tag {
+    flex-shrink: 0;
+    padding: 3px 8px;
+    background: var(--paper);
+    border: 1px solid var(--teal-deep);
+    border-radius: 5px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--teal-deep);
+}
+
+.cart-promo-offer-text {
+    flex: 1;
+    min-width: 0;
+    font-size: 0.74rem;
+    font-weight: 400;
+    color: var(--ink);
+}
+
+.cart-promo-offer-apply {
+    flex-shrink: 0;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--teal-deep);
+}
+
+/* The disclosure — closed by default */
+.cart-promo-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 6px 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--ink-soft);
+    transition: color 0.2s ease;
+}
+
+.cart-promo-toggle[hidden] { display: none; }
+.cart-promo-toggle:hover { color: var(--ink); }
+.cart-promo-toggle svg { width: 15px; height: 15px; flex-shrink: 0; }
+
+.cart-promo-chevron {
+    margin-left: auto;
+    transition: transform 0.3s ease;
+}
+
+.cart-promo-toggle.open .cart-promo-chevron { transform: rotate(180deg); }
+
+/* Code entry */
+.cart-promo-entry {
+    display: flex;
+    gap: 8px;
+    padding: 8px 0 2px;
+}
+
+.cart-promo-entry[hidden] { display: none; }
+
+.cart-promo-input {
+    flex: 1;
+    min-width: 0;
+    /* 16px keeps iOS Safari from zooming the page on focus */
+    font-family: 'Outfit', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 10px 12px;
+    background: var(--paper);
+    border: 1px solid var(--ink-line);
+    border-radius: 9px;
+    color: var(--ink);
+    outline: none;
+    transition: border-color 0.15s ease;
+}
+
+.cart-promo-input::placeholder {
+    font-weight: 400;
+    letter-spacing: normal;
+    text-transform: none;
+    color: var(--ink-faint);
+}
+
+.cart-promo-input:focus { border-color: var(--teal-deep); }
+
+.cart-promo-apply {
+    flex-shrink: 0;
+    padding: 10px 18px;
+    background: var(--ink);
+    border: none;
+    border-radius: 9px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--on-ink);
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+}
+
+.cart-promo-apply:disabled {
+    opacity: 0.35;
+    cursor: default;
+}
+
+/* Applied — and its warning twin, for a code that is attached but not
+   currently qualifying (cart dipped under the minimum, say). Keeping the
+   code attached means re-adding an item silently restores the discount
+   instead of making someone type it again. */
+.cart-promo-applied {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    margin: 6px 0 2px;
+    background: var(--success-tint);
+    border-radius: 10px;
+}
+
+.cart-promo-applied[hidden] { display: none; }
+
+.cart-promo-mark {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--success);
+    position: relative;
+}
+
+.cart-promo-mark::after {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 4px;
+    width: 5px;
+    height: 9px;
+    border: solid var(--paper);
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.cart-promo-applied-body {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    min-width: 0;
+    flex: 1;
+}
+
+.cart-promo-applied-code {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: var(--ink);
+}
+
+.cart-promo-applied-note {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.68rem;
+    color: var(--ink-soft);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.cart-promo-applied-amount {
+    flex-shrink: 0;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--success);
+}
+
+.cart-promo-remove {
+    flex-shrink: 0;
+    width: 26px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    color: var(--ink-soft);
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.cart-promo-remove svg { width: 14px; height: 14px; }
+
+.cart-promo-remove:hover {
+    background: var(--mist-deeper);
+    color: var(--ink);
+}
+
+.cart-promo-applied.is-blocked { background: var(--warning-tint); }
+
+.cart-promo-applied.is-blocked .cart-promo-mark {
+    background: var(--warning);
+}
+
+/* An exclamation instead of the tick */
+.cart-promo-applied.is-blocked .cart-promo-mark::after {
+    left: 8px;
+    top: 3px;
+    width: 2px;
+    height: 8px;
+    border: none;
+    border-radius: 1px;
+    background: var(--paper);
+    box-shadow: 0 10px 0 var(--paper);
+    transform: none;
+}
+
+.cart-promo-applied.is-checking .cart-promo-mark {
+    background: var(--ink-line);
+    animation: cart-promo-pulse 1s ease-in-out infinite;
+}
+
+.cart-promo-applied.is-checking .cart-promo-mark::after { display: none; }
+
+@keyframes cart-promo-pulse {
+    0%, 100% { opacity: 0.4; }
+    50%      { opacity: 1; }
+}
+
+.cart-promo-msg {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.7rem;
+    line-height: 1.45;
+    color: var(--ink-soft);
+    margin: 6px 0 4px;
+}
+
+.cart-promo-msg[hidden] { display: none; }
+.cart-promo-msg.is-error { color: var(--error); }
+.cart-promo-msg.is-warning { color: var(--warning); }
+
 /* Price Breakdown */
 .cart-breakdown-toggle {
     display: flex;
@@ -6397,6 +6684,13 @@ body.buy-page,
     font-weight: 500;
 }
 
+.cart-breakdown-discount[hidden] { display: none; }
+
+.cart-breakdown-discount span:last-child {
+    color: var(--success);
+    font-weight: 600;
+}
+
 /* Cart Total */
 .cart-total-row {
     display: flex;
@@ -6405,6 +6699,32 @@ body.buy-page,
     padding: 14px 0 16px;
     border-top: 1px solid var(--ink-line);
     font-family: 'Outfit', sans-serif;
+    transition: opacity 0.2s ease;
+}
+
+/* While a promo is being re-priced. The figure stays put — nothing
+   jumps under a thumb — but it stops looking final. */
+.cart-total-row.is-updating { opacity: 0.5; }
+
+.cart-savings {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.74rem;
+    font-weight: 600;
+    color: var(--success);
+    text-align: right;
+    margin: -10px 0 12px;
+}
+
+.cart-savings[hidden] { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+    .cart-total-row,
+    .cart-promo-chevron,
+    .cart-promo-offer,
+    .cart-promo-applied .cart-promo-mark {
+        transition: none;
+        animation: none;
+    }
 }
 
 .cart-total-row span:first-child {
@@ -9764,6 +10084,43 @@ body.account-page {
     border-top: 1px solid var(--ink-line-soft);
 }
 
+/* The discount has to be visible on the screen that carries the Place
+   Order button, not only back in the cart — this is where someone
+   checks the number against what they were promised. */
+.checkout-promo-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-family: 'Outfit', sans-serif;
+    font-size: 13px;
+    color: var(--ink-soft);
+    padding: 4px 0 0;
+}
+
+.checkout-promo-row[hidden] { display: none; }
+
+.checkout-promo-row b {
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: var(--ink);
+}
+
+.checkout-promo-row span:last-child {
+    font-weight: 600;
+    color: var(--success);
+}
+
+.checkout-success-saved {
+    font-family: 'Outfit', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--success);
+    text-align: center;
+    margin: 0;
+}
+
+.checkout-success-saved[hidden] { display: none; }
+
 .checkout-success-icon {
     width: 56px;
     height: 56px;
@@ -9814,6 +10171,14 @@ body.account-page {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.account-order-promo {
+    display: block;
+    font-size: 11.5px;
+    font-style: normal;
+    font-weight: 500;
+    color: var(--success);
 }
 
 .account-order-total {

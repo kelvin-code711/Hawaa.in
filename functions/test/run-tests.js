@@ -567,3 +567,378 @@ assert.ok(loginHtml.includes('No account exists for this number.'));
 assert.strictEqual(/admin|staff|portal|operations/i.test(loginHtml), false);
 
 console.log('All sign-in pre-check tests passed.');
+
+// ===============================================================
+// Promo codes (../promo.js)
+// ===============================================================
+const pr = require(path.join(__dirname, '..', 'promo.js'));
+
+// ---- Code normalisation ----
+// People type codes off packaging and out of emails: lowercase, padded,
+// with a stray space in the middle. All of those are the same code.
+assert.strictEqual(pr.normaliseCode('first10'), 'FIRST10');
+assert.strictEqual(pr.normaliseCode('  first 10 '), 'FIRST10');
+assert.strictEqual(pr.normaliseCode('MONSOON-500'), 'MONSOON-500');
+// Too short, illegal characters, or leading punctuation are not codes.
+assert.strictEqual(pr.normaliseCode('AB'), null);
+assert.strictEqual(pr.normaliseCode('-LEAD'), null);
+assert.strictEqual(pr.normaliseCode('SAVE_10'), null);
+assert.strictEqual(pr.normaliseCode('A'.repeat(21)), null);
+assert.strictEqual(pr.normaliseCode(undefined), null);
+assert.strictEqual(pr.normaliseCode(42), null);
+
+const ONE_PURIFIER = { qtyPurifierOnetime: 1, qtyPurifierSubscribe: 0, qtyFilter: 0 };
+const ONE_FILTER = { qtyPurifierOnetime: 0, qtyPurifierSubscribe: 0, qtyFilter: 1 };
+const BOTH = { qtyPurifierOnetime: 1, qtyPurifierSubscribe: 0, qtyFilter: 1 };
+
+function code(overrides) {
+    return pr.normaliseDefinition(Object.assign({
+        code: 'SAVE10', type: 'percent', value: 10, active: true, perUserLimit: 1
+    }, overrides));
+}
+
+// ---- The discounted value is what GST is charged on ----
+// A discount recorded on the invoice at the time of supply is excluded
+// from the value of supply (s.15(3)(a) CGST Act), so tax is computed on
+// what is actually paid. Charging GST on the list price would overtax
+// every discounted order.
+const priced = pr.priceCart(ONE_PURIFIER, 600);
+assert.strictEqual(priced.subtotal, 5999);
+assert.strictEqual(priced.discount, 600);
+assert.strictEqual(priced.taxable, 5399);
+assert.strictEqual(priced.gst, 972);          // NOT 1080, which is 18% of 5999
+assert.strictEqual(priced.total, 6371);
+
+// With no discount the arithmetic must be bit-identical to the
+// undiscounted path in firestore.rules and js/cart.js.
+const undiscounted = pr.priceCart(ONE_PURIFIER, 0);
+assert.strictEqual(undiscounted.gst, rzp.computeAmounts(1, 0, 0).gst);
+assert.strictEqual(undiscounted.total, rzp.computeAmounts(1, 0, 0).total);
+assert.strictEqual(pr.priceCart(BOTH, 0).total, rzp.computeAmounts(1, 0, 1).total);
+
+// A discount can take an order to zero but never below it.
+assert.strictEqual(pr.priceCart(ONE_FILTER, 99999).discount, 1499);
+assert.strictEqual(pr.priceCart(ONE_FILTER, 99999).total, 0);
+assert.strictEqual(pr.priceCart(ONE_PURIFIER, -50).discount, 0);
+
+// ---- Percentages round half-up in integer arithmetic ----
+// Float maths here is how a cart total ends up a rupee away from the
+// total the order was written with.
+assert.strictEqual(pr.discountFor(code({ value: 10 }), 5999), 600);   // 599.9 -> 600
+assert.strictEqual(pr.discountFor(code({ value: 10 }), 1499), 150);   // 149.9 -> 150
+assert.strictEqual(pr.discountFor(code({ value: 1 }), 1499), 15);     // 14.99 -> 15
+assert.strictEqual(pr.discountFor(code({ value: 50 }), 5999), 3000);
+// The cap wins over the percentage.
+assert.strictEqual(pr.discountFor(code({ value: 50, maxDiscount: 800 }), 5999), 800);
+// A flat amount is never more than what it applies to.
+assert.strictEqual(pr.discountFor(code({ type: 'flat', value: 500 }), 5999), 500);
+assert.strictEqual(pr.discountFor(code({ type: 'flat', value: 5000 }), 1499), 1499);
+assert.strictEqual(pr.discountFor(code({ type: 'flat', value: 500 }), 0), 0);
+
+// ---- appliesTo restricts what a code can discount ----
+assert.strictEqual(pr.eligibleSubtotal(BOTH, 'all'), 5999 + 1499);
+assert.strictEqual(pr.eligibleSubtotal(BOTH, 'purifier'), 5999);
+assert.strictEqual(pr.eligibleSubtotal(BOTH, 'filter'), 1499);
+assert.strictEqual(pr.eligibleSubtotal(ONE_PURIFIER, 'filter'), 0);
+// A filter-only code on a mixed cart discounts the filter, not the cart.
+const filterOnly = pr.evaluate(code({ appliesTo: 'filter', value: 10 }),
+    { quantities: BOTH, authed: true });
+assert.strictEqual(filterOnly.ok, true);
+assert.strictEqual(filterOnly.discount, 150);
+assert.strictEqual(filterOnly.pricing.subtotal, 7498);
+
+console.log('All promo arithmetic tests passed.');
+
+// ---- Evaluation: every refusal, and why ----
+const NOW_MS = Date.UTC(2026, 7, 6, 6, 0, 0);
+const ev = (definition, extra) => pr.evaluate(definition,
+    Object.assign({ quantities: ONE_PURIFIER, nowMs: NOW_MS, authed: true }, extra));
+
+assert.strictEqual(ev(null).reason, 'not-found');
+assert.strictEqual(ev(code({ active: false })).reason, 'inactive');
+assert.strictEqual(ev(code({ startsAt: NOW_MS + 86400000 })).reason, 'not-started');
+assert.strictEqual(ev(code({ expiresAt: NOW_MS - 1 })).reason, 'expired');
+// The boundary belongs to the shopper: a code is live right up to its
+// expiry instant, and dead at it.
+assert.strictEqual(ev(code({ expiresAt: NOW_MS + 1 })).ok, true);
+assert.strictEqual(ev(code({ expiresAt: NOW_MS })).reason, 'expired');
+assert.strictEqual(ev(code({ startsAt: NOW_MS })).ok, true);
+
+assert.strictEqual(ev(code({ maxRedemptions: 50, redemptions: 50 })).reason, 'exhausted');
+assert.strictEqual(ev(code({ maxRedemptions: 50, redemptions: 49 })).ok, true);
+// No cap means no cap, however many have gone out.
+assert.strictEqual(ev(code({ maxRedemptions: 0, redemptions: 9999 })).ok, true);
+
+assert.strictEqual(
+    ev(code({ firstOrderOnly: true }), { hasPriorOrders: true }).reason, 'not-first-order');
+assert.strictEqual(ev(code({ firstOrderOnly: true }), { hasPriorOrders: false }).ok, true);
+
+assert.strictEqual(ev(code({ perUserLimit: 1 }), { userRedemptions: 1 }).reason, 'user-limit');
+assert.strictEqual(ev(code({ perUserLimit: 3 }), { userRedemptions: 2 }).ok, true);
+assert.strictEqual(ev(code({ perUserLimit: 3 }), { userRedemptions: 3 }).reason, 'user-limit');
+
+// A minimum that is not met is the shopper's to fix, so the message
+// says exactly how much more — it is the difference between a dead end
+// and an upsell.
+const short = ev(code({ minSubtotal: 7500 }));
+assert.strictEqual(short.reason, 'below-minimum');
+assert.strictEqual(short.shortfall, 1501);
+assert.ok(short.message.includes('₹1,501'), short.message);
+assert.strictEqual(ev(code({ minSubtotal: 5999 })).ok, true);
+
+// A code that applies to nothing in this cart.
+const wrongItems = ev(code({ appliesTo: 'filter' }));
+assert.strictEqual(wrongItems.reason, 'not-applicable');
+assert.ok(wrongItems.message.includes('filters'), wrongItems.message);
+
+assert.strictEqual(pr.evaluate(code({}), {
+    quantities: { qtyPurifierOnetime: 0, qtyPurifierSubscribe: 0, qtyFilter: 0 },
+    nowMs: NOW_MS, authed: true
+}).reason, 'empty-cart');
+
+// Every refusal carries a sentence a shopper can act on, and it names
+// the code so a screenshot is enough to support it.
+['inactive', 'not-started', 'expired', 'exhausted', 'user-limit'].forEach(function (reason) {
+    const cases = {
+        inactive: code({ active: false }),
+        'not-started': code({ startsAt: NOW_MS + 86400000 }),
+        expired: code({ expiresAt: NOW_MS - 1 }),
+        exhausted: code({ maxRedemptions: 1, redemptions: 1 }),
+        'user-limit': code({})
+    };
+    const out = ev(cases[reason], { userRedemptions: 1 });
+    assert.strictEqual(out.reason, reason);
+    assert.ok(out.message.length > 10, reason);
+    assert.ok(out.message.includes('SAVE10'), reason + ': ' + out.message);
+});
+
+// ---- Signed-out shoppers ----
+// Per-account rules cannot be answered without an account, so they are
+// skipped and named rather than guessed at. The cart shows the offer
+// with a caveat; the order path re-runs this with authed=true.
+const anon = pr.evaluate(code({ firstOrderOnly: true, perUserLimit: 1 }),
+    { quantities: ONE_PURIFIER, nowMs: NOW_MS, authed: false, hasPriorOrders: true });
+assert.strictEqual(anon.ok, true);
+assert.deepStrictEqual(anon.deferred, ['first-order', 'per-customer']);
+// The same shopper, signed in, is refused.
+assert.strictEqual(
+    ev(code({ firstOrderOnly: true }), { hasPriorOrders: true }).reason, 'not-first-order');
+// A code with no per-account rules still defers the per-customer count,
+// because that is a count against an account that does not exist yet.
+assert.deepStrictEqual(pr.evaluate(code({}), {
+    quantities: ONE_PURIFIER, nowMs: NOW_MS, authed: false
+}).deferred, ['per-customer']);
+// A signed-in shopper with nothing outstanding defers nothing.
+assert.deepStrictEqual(ev(code({})).deferred, []);
+
+// A successful evaluation carries the whole money picture, so the cart
+// never has to work any of it out.
+const good = ev(code({ value: 10 }));
+assert.strictEqual(good.code, 'SAVE10');
+assert.strictEqual(good.discount, 600);
+assert.deepStrictEqual(good.pricing,
+    { subtotal: 5999, discount: 600, taxable: 5399, gst: 972, total: 6371 });
+
+console.log('All promo evaluation tests passed.');
+
+// ---- Admin input: the guardrails that stop an expensive typo ----
+const created = pr.validateDefinitionInput({
+    code: 'monsoon10', label: 'Monsoon', type: 'percent', value: 10,
+    maxDiscount: 800, minSubtotal: 4999, appliesTo: 'purifier',
+    maxRedemptions: 200, perUserLimit: 1, firstOrderOnly: true
+});
+assert.strictEqual(created.code, 'MONSOON10');
+assert.strictEqual(created.active, true);
+assert.strictEqual(created.firstOrderOnly, true);
+
+// "50" meaning half the order and "50" meaning fifty rupees look
+// identical in a form field, so the range checks have to be tight.
+assert.throws(() => pr.validateDefinitionInput({ code: 'X1', value: 10 }), /3-20 characters/);
+assert.strictEqual(pr.validateDefinitionInput({ code: 'X10', value: 10 }).code, 'X10');
+assert.throws(() => pr.validateDefinitionInput({ code: 'SAVE', value: 0 }), /between 1% and 90%/);
+assert.throws(() => pr.validateDefinitionInput({ code: 'SAVE', value: 91 }), /between 1% and 90%/);
+assert.throws(() => pr.validateDefinitionInput({ code: 'SAVE', value: 10.5 }), /whole number/);
+assert.throws(() => pr.validateDefinitionInput({ code: 'SAVE', type: 'flat', value: 0 }), /flat discount must be/);
+// A 100%-off code produces an order no gateway will accept.
+assert.strictEqual(pr.validateDefinitionInput({ code: 'SAVE', value: 90 }).value, 90);
+// A cap on a flat amount is a contradiction, not a refinement.
+assert.throws(() => pr.validateDefinitionInput(
+    { code: 'SAVE', type: 'flat', value: 500, maxDiscount: 100 }), /already a fixed amount/);
+// A flat filter discount worth more than a filter makes filters free.
+assert.throws(() => pr.validateDefinitionInput(
+    { code: 'SAVE', type: 'flat', value: 1499, appliesTo: 'filter' }), /would make it free/);
+assert.strictEqual(pr.validateDefinitionInput(
+    { code: 'SAVE', type: 'flat', value: 1498, appliesTo: 'filter' }).value, 1498);
+assert.throws(() => pr.validateDefinitionInput({
+    code: 'SAVE', value: 10, startsAt: '2026-09-10', expiresAt: '2026-09-01'
+}), /after the start date/);
+assert.throws(() => pr.validateDefinitionInput(
+    { code: 'SAVE', value: 10, expiresAt: 'whenever' }), /not a date/);
+assert.throws(() => pr.validateDefinitionInput(
+    { code: 'SAVE', value: 10, perUserLimit: 0 }), /at least once/);
+
+// A showcased code appears in every cart, so it always ends up with
+// copy — written by the admin, or derived from its own rules.
+const shown = pr.validateDefinitionInput({
+    code: 'FIRST10', value: 10, maxDiscount: 800, minSubtotal: 4999,
+    firstOrderOnly: true, showcase: true
+});
+assert.ok(shown.headline.includes('10% off'), shown.headline);
+assert.ok(shown.headline.includes('₹4,999'), shown.headline);
+assert.ok(shown.headline.includes('first order only'), shown.headline);
+assert.strictEqual(pr.validateDefinitionInput({
+    code: 'FIRST10', value: 10, showcase: true, headline: 'Welcome gift'
+}).headline, 'Welcome gift');
+assert.throws(() => pr.validateDefinitionInput(
+    { code: 'SAVE', value: 10, showcase: true, headline: 'x'.repeat(61) }), /under 60/);
+
+// ---- Editing a live code ----
+const live = code({ code: 'LIVE10', redemptions: 10, maxRedemptions: 50 });
+assert.deepStrictEqual(pr.validateUpdateInput(live, { active: false }), { active: false });
+assert.deepStrictEqual(pr.validateUpdateInput(live, { maxRedemptions: 100 }),
+    { maxRedemptions: 100 });
+// What a code is worth is fixed once it exists: changing it would make
+// the orders that already used it unexplainable.
+assert.throws(() => pr.validateUpdateInput(live, { value: 50 }), /Nothing to change/);
+assert.throws(() => pr.validateUpdateInput(live, { type: 'flat' }), /Nothing to change/);
+assert.throws(() => pr.validateUpdateInput(live, { firstOrderOnly: true }), /Nothing to change/);
+assert.throws(() => pr.validateUpdateInput(live, { code: 'OTHER' }), /Nothing to change/);
+// A cap below what has already gone out cannot be honoured.
+assert.throws(() => pr.validateUpdateInput(live, { maxRedemptions: 5 }), /already been used 10/);
+assert.throws(() => pr.validateUpdateInput(live, { perUserLimit: 0 }), /at least once/);
+// Ticking "show in cart" on a code with no copy fills the copy in.
+assert.ok(pr.validateUpdateInput(live, { showcase: true }).headline.includes('10% off'));
+
+console.log('All promo admin-input tests passed.');
+
+// ---- Status is derived, never stored, so it cannot go stale ----
+assert.strictEqual(pr.statusOf(code({}), NOW_MS), 'live');
+assert.strictEqual(pr.statusOf(code({ active: false }), NOW_MS), 'paused');
+assert.strictEqual(pr.statusOf(code({ startsAt: NOW_MS + 1000 }), NOW_MS), 'scheduled');
+assert.strictEqual(pr.statusOf(code({ expiresAt: NOW_MS - 1000 }), NOW_MS), 'expired');
+assert.strictEqual(
+    pr.statusOf(code({ maxRedemptions: 5, redemptions: 5 }), NOW_MS), 'claimed');
+// Paused beats everything: an admin who hit Pause expects it to say so.
+assert.strictEqual(
+    pr.statusOf(code({ active: false, expiresAt: NOW_MS - 1 }), NOW_MS), 'paused');
+
+// ---- Published offers carry no more than the cart needs ----
+const offer = pr.publicOffer(code({
+    maxRedemptions: 50, redemptions: 7, value: 25,
+    startsAt: NOW_MS, expiresAt: NOW_MS + 86400000
+}));
+assert.strictEqual(offer.code, 'SAVE10');
+assert.ok(offer.headline.length > 0);
+// The window travels with the offer. Nothing writes to a promo document
+// when the clock passes its start or end, so a cart that could not see
+// these would show a code a day early and keep showing it a week late.
+assert.strictEqual(offer.startsAt, NOW_MS);
+assert.strictEqual(offer.expiresAt, NOW_MS + 86400000);
+// How the discount is computed, how many are left, and who has used it
+// are the shop's business, not the internet's.
+['value', 'type', 'maxDiscount', 'redemptions', 'maxRedemptions', 'discountGiven',
+    'active', 'perUserLimit', 'label'].forEach(function (field) {
+    assert.strictEqual(offer[field], undefined, 'publicOffer leaked ' + field);
+});
+
+// ---- Stored documents survive missing and malformed fields ----
+// A code written by an older portal must still evaluate predictably
+// rather than producing NaN rupees.
+const sparse = pr.normaliseDefinition({ code: 'BARE', type: 'percent', value: 5, active: true });
+assert.strictEqual(sparse.perUserLimit, 1);
+assert.strictEqual(sparse.maxRedemptions, 0);
+assert.strictEqual(sparse.minSubtotal, 0);
+assert.strictEqual(sparse.appliesTo, 'all');
+assert.strictEqual(sparse.startsAt, null);
+assert.strictEqual(sparse.firstOrderOnly, false);
+assert.strictEqual(pr.evaluate(sparse, { quantities: ONE_PURIFIER, authed: true }).ok, true);
+assert.strictEqual(pr.normaliseDefinition(null), null);
+assert.strictEqual(pr.normaliseDefinition({ code: '??' }), null);
+assert.strictEqual(pr.normaliseDefinition({ code: 'OK10', appliesTo: 'moon' }).appliesTo, 'all');
+// Timestamps arrive in whichever shape the SDK hands over.
+assert.strictEqual(pr.toMillis({ _seconds: 1000 }), 1000000);
+assert.strictEqual(pr.toMillis({ toMillis: () => 42 }), 42);
+assert.strictEqual(pr.toMillis(new Date(7)), 7);
+assert.strictEqual(pr.toMillis('nope'), null);
+
+console.log('All promo definition tests passed.');
+
+// ===============================================================
+// Promo integration points
+// ===============================================================
+
+// ---- The quantity-only validator the promo preview relies on ----
+assert.deepStrictEqual(rzp.validateQuantities({
+    qtyPurifierOnetime: 1, qtyPurifierSubscribe: 0, qtyFilter: 2
+}), { qtyPurifierOnetime: 1, qtyPurifierSubscribe: 0, qtyFilter: 2 });
+assert.throws(() => rzp.validateQuantities({
+    qtyPurifierOnetime: 0, qtyPurifierSubscribe: 0, qtyFilter: 0
+}), /cart is empty/);
+assert.throws(() => rzp.validateQuantities({
+    qtyPurifierOnetime: 11, qtyPurifierSubscribe: 0, qtyFilter: 0
+}), /Invalid item quantities/);
+assert.throws(() => rzp.validateQuantities(null), /Missing checkout details/);
+
+// ---- Roles ----
+// Staff answer the phone when a code does not work, so they can see
+// what is running; creating money-off codes is a Manager decision.
+assert.strictEqual(adm.can('staff', 'promos.read'), true);
+assert.strictEqual(adm.can('staff', 'promos.manage'), false);
+assert.strictEqual(adm.can('manager', 'promos.manage'), true);
+assert.strictEqual(adm.can('super_admin', 'promos.manage'), true);
+assert.strictEqual(adm.can('viewer', 'promos.read'), false);
+
+// ---- The dashboard counts what discounts cost ----
+const discounted = adm.summariseOrders([
+    { total: 6371, discount: 600, status: 'delivered', createdAtMs: NOW_IST - 3600000 },
+    { total: 5000, discount: 999, status: 'cancelled', createdAtMs: NOW_IST - 7200000 },
+    { total: 4000, discount: 400, status: 'placed', createdAtMs: NOW_IST - (3 * DAY) },
+    { total: 9999, discount: 900, status: 'delivered', createdAtMs: NOW_IST - (10 * DAY) }
+], NOW_IST);
+// A cancelled order gave nothing away, and last month is not this week.
+assert.strictEqual(discounted.discountWeek, 1000);
+// Orders written before promos existed have no discount field at all.
+assert.strictEqual(adm.summariseOrders([
+    { total: 5000, status: 'placed', createdAtMs: NOW_IST }
+], NOW_IST).discountWeek, 0);
+
+// ---- A Viewer sees the discount but still no customer ----
+const maskedDiscounted = adm.projectOrder(Object.assign({
+    discount: 600, promo: { code: 'SAVE10', discount: 600 }
+}, fullOrder), 'viewer');
+assert.strictEqual(maskedDiscounted.discount, 600);
+assert.strictEqual(maskedDiscounted.promo.code, 'SAVE10');
+assert.strictEqual(maskedDiscounted.address.name, undefined);
+
+// ---- The portal ----
+const promoShell = gate.portalShellHtml(
+    { name: 'Asha', role: 'manager' }, adm.PERMISSIONS.manager, rzp.CATALOG);
+assert.ok(promoShell.includes("id: 'promos'"));
+// The preview is priced from the same catalog the checkout charges.
+assert.ok(promoShell.includes(JSON.stringify(rzp.CATALOG)));
+assert.ok(promoShell.includes('promo_codes'));
+// A role without promos.read gets the tab filtered out client-side by
+// the permissions it is handed.
+const viewerShell = gate.portalShellHtml(
+    { name: 'V', role: 'viewer' }, adm.PERMISSIONS.viewer, rzp.CATALOG);
+assert.strictEqual(viewerShell.includes('"promos.read"'), false);
+
+// ---- CSV ----
+// The discount sits beside the total, not at the far right, because it
+// is the first thing anyone reconciling an export looks for.
+assert.ok(csvlib.ORDER_COLUMNS.indexOf('discount') > csvlib.ORDER_COLUMNS.indexOf('subtotal'));
+assert.ok(csvlib.ORDER_COLUMNS.indexOf('promo.code') < csvlib.ORDER_COLUMNS.indexOf('gst'));
+const promoCsvCols = csvlib.buildColumns('promo_codes', [
+    { docId: 'SAVE10', code: 'SAVE10', redemptions: 3, surpriseField: 'x' }
+]);
+assert.strictEqual(promoCsvCols[0], 'docId');
+assert.ok(promoCsvCols.indexOf('redemptions') !== -1);
+// A field added later is never silently dropped.
+assert.ok(promoCsvCols.indexOf('surpriseField') !== -1);
+// Orders still export exactly as before when no promo is involved.
+assert.deepStrictEqual(
+    csvlib.buildColumns('orders', [{ orderId: 'a', total: 1, status: 'placed' }]),
+    ['orderId', 'status', 'total']
+);
+
+console.log('All promo integration tests passed.');

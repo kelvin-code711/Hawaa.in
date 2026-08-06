@@ -27,6 +27,7 @@ const admin = require('firebase-admin');
 
 const { buildCitySnapshot } = require('./aqi');
 const rzp = require('./razorpay');
+const promo = require('./promo');
 const adminCore = require('./admin');
 const portal = require('./portal');
 const csv = require('./csv');
@@ -187,6 +188,346 @@ exports.refreshAqiHttp = onRequest(
 );
 
 // ========================================
+// Promo codes — shared machinery
+//
+// Three collections, none of them client-readable:
+//   promo_codes/{CODE}            the definition and its counters
+//   promo_redemptions/{CODE}__uid how often one account has used one code
+//   promo_rate/{clientKey}        throttling for wrong-code guessing
+//
+// `promo_codes` is deliberately unreadable even to a signed-in shopper.
+// A browsable list of live codes is a discount for anyone who opens
+// devtools, so the only way to learn a code is to be told it — or to be
+// shown it, if an admin ticked "show in the cart", which publishes just
+// that code to promo_public/featured.
+//
+// firestore.rules forbids a client from writing an order that carries a
+// `promo` or `discount` field at all (isValidNewOrder uses hasOnly). A
+// discounted order therefore cannot be written from a browser by
+// construction: it has to come through placePromoOrder or the Razorpay
+// pair below, both of which price the cart here on the server.
+// ========================================
+
+function promoDocRef(db, code) {
+    return db.doc(`promo_codes/${code}`);
+}
+
+// One document per (code, account). The composite ID means the
+// per-customer limit is enforced by a single read inside the same
+// transaction that writes the order — no query, no race.
+function redemptionDocRef(db, code, uid) {
+    return db.doc(`promo_redemptions/${code}__${uid}`);
+}
+
+// Everything promo.evaluate() needs about one code and one shopper.
+// `reader` is either a transaction (order paths, where the read has to
+// be consistent with the write) or the database itself (preview).
+async function readPromoContext(db, reader, code, uid) {
+    const snap = await reader.get(promoDocRef(db, code));
+    const definition = snap.exists ? promo.normaliseDefinition(snap.data()) : null;
+    if (!definition || !uid) {
+        return { definition, userRedemptions: 0, hasPriorOrders: false };
+    }
+
+    const redemption = await reader.get(redemptionDocRef(db, code, uid));
+    const userRedemptions = redemption.exists
+        ? (Number(redemption.data().count) || 0) : 0;
+
+    // Only ask the first-order question when a code actually cares:
+    // otherwise every promo preview costs an extra query.
+    let hasPriorOrders = false;
+    if (definition.firstOrderOnly) {
+        const prior = await reader.get(
+            db.collection('orders').where('uid', '==', uid).limit(1));
+        hasPriorOrders = !prior.empty;
+    }
+
+    return { definition, userRedemptions, hasPriorOrders };
+}
+
+async function evaluatePromo(db, reader, code, uid, quantities) {
+    const context = await readPromoContext(db, reader, code, uid);
+    return {
+        definition: context.definition,
+        result: promo.evaluate(context.definition, {
+            quantities,
+            nowMs: Date.now(),
+            authed: !!uid,
+            userRedemptions: context.userRedemptions,
+            hasPriorOrders: context.hasPriorOrders
+        })
+    };
+}
+
+// What gets stored on the order. A snapshot, not a reference: if the
+// code is later edited or deleted, the order still says exactly what was
+// given and why.
+function promoSnapshot(definition, discount) {
+    return {
+        code: definition.code,
+        type: definition.type,
+        value: definition.value,
+        discount
+    };
+}
+
+// Records a redemption against both counters. Call inside the same
+// transaction as the order write so a redemption cannot be counted for
+// an order that failed to save, or an order saved without being counted.
+function commitRedemption(db, tx, code, uid, discount) {
+    tx.update(promoDocRef(db, code), {
+        redemptions: admin.firestore.FieldValue.increment(1),
+        discountGiven: admin.firestore.FieldValue.increment(discount),
+        lastRedeemedAt: admin.firestore.FieldValue.serverTimestamp()
+    });
+    tx.set(redemptionDocRef(db, code, uid), {
+        code,
+        uid,
+        count: admin.firestore.FieldValue.increment(1),
+        lastAt: admin.firestore.FieldValue.serverTimestamp()
+    }, { merge: true });
+}
+
+// Guessing codes is the one thing this endpoint makes possible, so only
+// a miss costs an attempt: someone re-checking a code they legitimately
+// hold — which happens on every cart change — never burns quota.
+const PROMO_MISS_MAX = 20;
+const PROMO_MISS_WINDOW_MS = 10 * 60 * 1000;
+
+async function allowPromoMiss(key) {
+    const ref = admin.firestore().doc(`promo_rate/${key}`);
+    return admin.firestore().runTransaction(async (tx) => {
+        const snap = await tx.get(ref);
+        const decision = adminCore.rateLimitNext(
+            snap.exists ? snap.data() : null, Date.now(),
+            PROMO_MISS_MAX, PROMO_MISS_WINDOW_MS);
+        tx.set(ref, {
+            count: decision.count,
+            windowStart: decision.windowStart,
+            updatedAt: admin.firestore.FieldValue.serverTimestamp()
+        });
+        return decision;
+    });
+}
+
+// A signed-in shopper is throttled by account; everyone else by a hash
+// of their address, so this collection never becomes a log of who tried
+// which code from where.
+function promoRateKey(request) {
+    if (request.auth) return `uid_${request.auth.uid}`;
+    const raw = request.rawRequest || {};
+    const forwarded = String((raw.headers && raw.headers['x-forwarded-for']) || '')
+        .split(',')[0].trim();
+    const ip = forwarded || raw.ip || 'unknown';
+    return crypto.createHash('sha256').update(ip).digest('hex').slice(0, 32);
+}
+
+// Prices a cart against a code without committing anything. Used by the
+// cart drawer on every apply and on every quantity change while a code
+// is attached, so it has to be cheap and it has to be exact — the
+// numbers it returns are the numbers the shopper sees.
+//
+// Never throws for a bad code: a refusal is a normal answer with a
+// sentence the cart can show. Only a malformed request or a flood of
+// wrong guesses is an error.
+exports.validatePromoCode = onCall(
+    {
+        region: 'asia-south1',
+        timeoutSeconds: 20,
+        memory: '256MiB',
+        cors: true
+    },
+    async (request) => {
+        const data = request.data || {};
+        let quantities;
+        try {
+            quantities = rzp.validateQuantities(data);
+        } catch (err) {
+            throw new HttpsError('invalid-argument', err.message);
+        }
+
+        // Echoed back untouched so the cart can discard an answer that
+        // arrived after the shopper changed the cart again.
+        const cartKey = typeof data.cartKey === 'string' ? data.cartKey.slice(0, 40) : '';
+        const code = promo.normaliseCode(data.code);
+        const uid = request.auth ? request.auth.uid : null;
+
+        if (!code) {
+            const decision = await allowPromoMiss(promoRateKey(request));
+            if (!decision.allowed) {
+                throw new HttpsError('resource-exhausted',
+                    'Too many attempts. Please try again in a few minutes.');
+            }
+            return {
+                ok: false,
+                reason: 'not-found',
+                message: 'That code is not valid. Check the spelling and try again.',
+                cartKey
+            };
+        }
+
+        const db = admin.firestore();
+        const { result } = await evaluatePromo(db, db, code, uid, quantities);
+
+        if (!result.ok && result.reason === 'not-found') {
+            const decision = await allowPromoMiss(promoRateKey(request));
+            if (!decision.allowed) {
+                throw new HttpsError('resource-exhausted',
+                    'Too many attempts. Please try again in a few minutes.');
+            }
+        }
+
+        return Object.assign({ cartKey }, result);
+    }
+);
+
+// Cash on Delivery with a promo code. The plain COD path stays where it
+// was — a direct client write validated by firestore.rules — because it
+// works and it is audited. This is the discounted twin: same result,
+// same order shape, but priced and counted on the server because rules
+// cannot check a usage limit atomically.
+exports.placePromoOrder = onCall(
+    {
+        region: 'asia-south1',
+        timeoutSeconds: 30,
+        memory: '256MiB',
+        cors: true
+    },
+    async (request) => {
+        if (!request.auth) {
+            throw new HttpsError('unauthenticated', 'Sign in to place an order.');
+        }
+
+        let payload;
+        try {
+            payload = rzp.validateCheckoutPayload(request.data);
+        } catch (err) {
+            throw new HttpsError('invalid-argument', err.message);
+        }
+
+        const code = promo.normaliseCode((request.data || {}).promoCode);
+        if (!code) {
+            throw new HttpsError('invalid-argument', 'That promo code is not valid.');
+        }
+
+        const db = admin.firestore();
+        const uid = request.auth.uid;
+        const orderRef = db.collection('orders').doc();
+
+        const pricing = await db.runTransaction(async (tx) => {
+            const { definition, result } = await evaluatePromo(db, tx, code, uid, payload);
+            if (!result.ok) {
+                // failed-precondition rather than invalid-argument: the
+                // request was well formed, the code just cannot be used
+                // for this cart right now. The cart shows result.message.
+                throw new HttpsError('failed-precondition', result.message);
+            }
+
+            const order = {
+                uid,
+                qtyPurifierOnetime: payload.qtyPurifierOnetime,
+                qtyPurifierSubscribe: payload.qtyPurifierSubscribe,
+                qtyFilter: payload.qtyFilter,
+                subtotal: result.pricing.subtotal,
+                discount: result.pricing.discount,
+                gst: result.pricing.gst,
+                total: result.pricing.total,
+                promo: promoSnapshot(definition, result.pricing.discount),
+                address: payload.address,
+                paymentMethod: 'cod',
+                status: 'placed',
+                createdAt: admin.firestore.FieldValue.serverTimestamp()
+            };
+            if (payload.filterInterval) order.filterInterval = payload.filterInterval;
+
+            tx.set(orderRef, order);
+            commitRedemption(db, tx, code, uid, result.pricing.discount);
+            return result.pricing;
+        });
+
+        logger.info('Promo COD order placed', {
+            orderId: orderRef.id, code, uid, discount: pricing.discount
+        });
+        return { orderId: orderRef.id, pricing };
+    }
+);
+
+// Publishes the codes an admin ticked "show in the cart" to a single
+// public document, so the drawer can offer them as one tap instead of
+// asking someone to type. Rebuilt only when something a shopper would
+// see changes — a redemption counter ticking up rewrites nothing until
+// it actually exhausts the code.
+const FEATURED_OFFERS_DOC = 'promo_public/featured';
+const MAX_FEATURED_OFFERS = 4;
+
+function showcaseSignature(raw) {
+    const definition = raw ? promo.normaliseDefinition(raw) : null;
+    // A code that is not shown in carts cannot change what is: its
+    // redemption counter moves on every order it is used on, and none
+    // of those need to touch the published list.
+    if (!definition || !definition.showcase) return 'none';
+    return [
+        promo.statusOf(definition, Date.now()),
+        definition.headline,
+        definition.minSubtotal,
+        definition.appliesTo,
+        definition.firstOrderOnly ? 1 : 0,
+        definition.expiresAt || 0
+    ].join('|');
+}
+
+async function rebuildFeaturedOffers() {
+    const db = admin.firestore();
+    const snap = await db.collection('promo_codes')
+        .where('showcase', '==', true).limit(50).get();
+    const now = Date.now();
+
+    // Codes that have not started yet are published too, carrying their
+    // start time: nothing writes to a promo document when the clock
+    // reaches it, so a code scheduled for Monday would otherwise never
+    // appear. The cart reveals it on the hour; validatePromoCode still
+    // refuses it until then.
+    const offers = snap.docs
+        .map(function (doc) { return promo.normaliseDefinition(doc.data()); })
+        .filter(function (definition) {
+            if (!definition) return false;
+            const status = promo.statusOf(definition, now);
+            return status === 'live' || status === 'scheduled';
+        })
+        // Easiest to qualify for first: an offer someone can use today
+        // is worth more than a bigger one they cannot reach.
+        .sort(function (a, b) { return a.minSubtotal - b.minSubtotal; })
+        .slice(0, MAX_FEATURED_OFFERS)
+        .map(promo.publicOffer);
+
+    await db.doc(FEATURED_OFFERS_DOC).set({
+        offers,
+        updatedAt: admin.firestore.FieldValue.serverTimestamp()
+    });
+    return offers.length;
+}
+
+exports.syncFeaturedOffers = onDocumentWritten(
+    { document: 'promo_codes/{code}', region: 'asia-south1' },
+    async (event) => {
+        const before = event.data && event.data.before;
+        const after = event.data && event.data.after;
+        const wasShown = showcaseSignature(before && before.exists ? before.data() : null);
+        const isShown = showcaseSignature(after && after.exists ? after.data() : null);
+        if (wasShown === isShown) return;
+
+        try {
+            const count = await rebuildFeaturedOffers();
+            logger.info('Featured offers rebuilt', { code: event.params.code, count });
+        } catch (err) {
+            // Non-fatal: the cart falls back to the type-a-code field,
+            // and every offer is re-validated on apply anyway.
+            logger.error('Could not rebuild featured offers', err);
+        }
+    }
+);
+
+// ========================================
 // Razorpay online payments
 //
 // Flow: the cart calls createRazorpayOrder with quantities + address
@@ -221,11 +562,35 @@ exports.createRazorpayOrder = onCall(
 
         const keyId = razorpayKeyId.value().trim();
         const uid = request.auth.uid;
+        const db = admin.firestore();
+
+        // A promo is priced here, not held here. The redemption is only
+        // counted once the payment is verified, so an abandoned checkout
+        // never consumes someone else's chance to use the code.
+        let amounts = payload.amounts;
+        let appliedPromo = null;
+        const code = promo.normaliseCode((request.data || {}).promoCode);
+        if (code) {
+            const { definition, result } = await evaluatePromo(db, db, code, uid, payload);
+            if (!result.ok) {
+                throw new HttpsError('failed-precondition', result.message);
+            }
+            amounts = result.pricing;
+            appliedPromo = promoSnapshot(definition, result.pricing.discount);
+        }
+
+        // Razorpay cannot charge nothing. Reachable only with a flat
+        // code worth the whole cart, which the admin form already tries
+        // to prevent — this is the backstop.
+        if (amounts.total < 1) {
+            throw new HttpsError('failed-precondition',
+                'This order comes to ₹0 — please choose Cash on Delivery.');
+        }
 
         let order;
         try {
             order = await rzp.createRazorpayOrder(keyId, razorpayKeySecret.value().trim(), {
-                amountPaise: payload.amounts.total * 100,
+                amountPaise: amounts.total * 100,
                 // Receipt is capped at 40 chars by Razorpay; uid is 28.
                 receipt: `web-${uid}`.slice(0, 40),
                 notes: { uid, source: 'hawaa.in cart' }
@@ -241,9 +606,10 @@ exports.createRazorpayOrder = onCall(
             qtyPurifierOnetime: payload.qtyPurifierOnetime,
             qtyPurifierSubscribe: payload.qtyPurifierSubscribe,
             qtyFilter: payload.qtyFilter,
-            subtotal: payload.amounts.subtotal,
-            gst: payload.amounts.gst,
-            total: payload.amounts.total,
+            subtotal: amounts.subtotal,
+            discount: amounts.discount || 0,
+            gst: amounts.gst,
+            total: amounts.total,
             address: payload.address,
             status: 'created',
             // Recorded so orders paid with test keys are recognizable.
@@ -251,8 +617,9 @@ exports.createRazorpayOrder = onCall(
             createdAt: admin.firestore.FieldValue.serverTimestamp()
         };
         if (payload.filterInterval) pending.filterInterval = payload.filterInterval;
+        if (appliedPromo) pending.promo = appliedPromo;
 
-        await admin.firestore().doc(`razorpay_orders/${order.id}`).set(pending);
+        await db.doc(`razorpay_orders/${order.id}`).set(pending);
 
         return {
             keyId,
@@ -302,9 +669,20 @@ exports.verifyRazorpayPayment = onCall(
                 throw new HttpsError('permission-denied', 'This payment belongs to another account.');
             }
             // Retried verification (double-click, flaky network): the
-            // order was already written, just return it again.
+            // order was already written, just return it again. Returning
+            // before any write is also what keeps a retry from counting
+            // the promo redemption twice.
             if (pending.status === 'paid' && pending.orderDocId) {
                 return pending.orderDocId;
+            }
+
+            // All reads must precede the writes below.
+            const pendingPromo = pending.promo || null;
+            let promoDefinition = null;
+            if (pendingPromo && pendingPromo.code) {
+                const promoSnap = await tx.get(promoDocRef(db, pendingPromo.code));
+                promoDefinition = promoSnap.exists
+                    ? promo.normaliseDefinition(promoSnap.data()) : null;
             }
 
             const order = {
@@ -326,6 +704,35 @@ exports.verifyRazorpayPayment = onCall(
                 createdAt: admin.firestore.FieldValue.serverTimestamp()
             };
             if (pending.filterInterval) order.filterInterval = pending.filterInterval;
+
+            if (pendingPromo) {
+                order.discount = pending.discount || 0;
+                order.promo = pendingPromo;
+
+                // The money already moved. Two people can reach a
+                // gateway holding the last use of a code, and the one
+                // who pays second must not be told their payment was
+                // wasted — so the cap is allowed to overshoot, the
+                // overshoot is recorded on the order, and the portal
+                // shows "51 / 50 used" rather than quietly losing it.
+                if (promoDefinition) {
+                    if (promoDefinition.maxRedemptions &&
+                        promoDefinition.redemptions >= promoDefinition.maxRedemptions) {
+                        order.promo = Object.assign({}, pendingPromo, { overLimit: true });
+                        logger.warn('Promo redeemed past its limit', {
+                            code: pendingPromo.code, razorpayOrderId, uid
+                        });
+                    }
+                    commitRedemption(db, tx, pendingPromo.code, uid, order.discount);
+                } else {
+                    // The code was deleted between paying and verifying.
+                    // Honour the price that was charged; there is no
+                    // counter left to increment.
+                    logger.warn('Promo code vanished before verification', {
+                        code: pendingPromo.code, razorpayOrderId, uid
+                    });
+                }
+            }
 
             tx.set(orderRef, order);
             tx.update(pendingRef, {
@@ -624,6 +1031,106 @@ exports.adminAction = onCall(
             });
         }
 
+        // ---- Promos: create a code ----
+        if (action === 'promo.create') {
+            const actor = await requireAdmin(request, 'promos.manage');
+            let definition;
+            try {
+                definition = promo.validateDefinitionInput(data);
+            } catch (err) {
+                throw new HttpsError('invalid-argument', err.message);
+            }
+
+            const ref = promoDocRef(db, definition.code);
+            await db.runTransaction(async (tx) => {
+                const existing = await tx.get(ref);
+                // Reusing a code silently would attach new terms to the
+                // history of the old one.
+                if (existing.exists) {
+                    throw new HttpsError('already-exists',
+                        `${definition.code} already exists. Pick a different code.`);
+                }
+                tx.set(ref, Object.assign({}, definition, {
+                    startsAt: definition.startsAt
+                        ? admin.firestore.Timestamp.fromMillis(definition.startsAt) : null,
+                    expiresAt: definition.expiresAt
+                        ? admin.firestore.Timestamp.fromMillis(definition.expiresAt) : null,
+                    redemptions: 0,
+                    discountGiven: 0,
+                    createdBy: actor.uid,
+                    createdByName: actor.name || '',
+                    createdAt: admin.firestore.FieldValue.serverTimestamp()
+                }));
+                tx.set(db.collection('admin_audit').doc(),
+                    auditEntry(actor, 'promo.create', definition.code, {
+                        type: definition.type,
+                        value: definition.value,
+                        maxRedemptions: definition.maxRedemptions || null,
+                        showcase: definition.showcase
+                    }));
+            });
+            return { code: definition.code };
+        }
+
+        // ---- Promos: pause, resume, retune, end ----
+        if (action === 'promo.update') {
+            const actor = await requireAdmin(request, 'promos.manage');
+            const code = promo.normaliseCode(data.code);
+            if (!code) throw new HttpsError('invalid-argument', 'Missing code.');
+            const ref = promoDocRef(db, code);
+
+            return db.runTransaction(async (tx) => {
+                const snap = await tx.get(ref);
+                if (!snap.exists) throw new HttpsError('not-found', 'That code does not exist.');
+                const current = promo.normaliseDefinition(snap.data());
+
+                let patch;
+                try {
+                    patch = promo.validateUpdateInput(current, data.changes);
+                } catch (err) {
+                    throw new HttpsError('failed-precondition', err.message);
+                }
+
+                const write = Object.assign({}, patch, {
+                    updatedBy: actor.uid,
+                    updatedAt: admin.firestore.FieldValue.serverTimestamp()
+                });
+                if ('expiresAt' in patch) {
+                    write.expiresAt = patch.expiresAt
+                        ? admin.firestore.Timestamp.fromMillis(patch.expiresAt) : null;
+                }
+                tx.update(ref, write);
+                tx.set(db.collection('admin_audit').doc(),
+                    auditEntry(actor, 'promo.update', code, patch));
+                return { code, changed: Object.keys(patch) };
+            });
+        }
+
+        // ---- Promos: delete a code nobody has used ----
+        if (action === 'promo.delete') {
+            const actor = await requireAdmin(request, 'promos.manage');
+            const code = promo.normaliseCode(data.code);
+            if (!code) throw new HttpsError('invalid-argument', 'Missing code.');
+            const ref = promoDocRef(db, code);
+
+            return db.runTransaction(async (tx) => {
+                const snap = await tx.get(ref);
+                if (!snap.exists) throw new HttpsError('not-found', 'That code does not exist.');
+                // A used code is part of the order history. Deleting it
+                // would leave orders pointing at a discount nobody can
+                // explain, so a used code can only ever be ended.
+                if ((Number(snap.data().redemptions) || 0) > 0) {
+                    throw new HttpsError('failed-precondition',
+                        `${code} has already been used, so it cannot be deleted. ` +
+                        'Pause or end it instead — the orders that used it stay readable.');
+                }
+                tx.delete(ref);
+                tx.set(db.collection('admin_audit').doc(),
+                    auditEntry(actor, 'promo.delete', code, {}));
+                return { code, deleted: true };
+            });
+        }
+
         // ---- Team: invite someone by phone number ----
         if (action === 'team.invite') {
             const actor = await requireAdmin(request, 'team.manage');
@@ -737,6 +1244,8 @@ function orderToPlain(doc) {
         qtyFilter: data.qtyFilter || 0,
         filterInterval: data.filterInterval || null,
         subtotal: data.subtotal || 0,
+        discount: data.discount || 0,
+        promo: data.promo || null,
         gst: data.gst || 0,
         total: data.total || 0,
         address: data.address || {},
@@ -755,7 +1264,8 @@ const QUERY_LIMIT_MAX = 200;
 // project shares a Firebase project with the device backend, whose
 // `users` and `device_owners` collections must never be reachable from
 // the website's admin surface.
-const EXPORTABLE = ['orders', 'supportTickets', 'newsletterSubscribers', 'reviews'];
+const EXPORTABLE = ['orders', 'supportTickets', 'newsletterSubscribers', 'reviews',
+    'promo_codes'];
 
 // A callable response is capped at 10 MB. This keeps the largest
 // plausible export well inside that and bounds the read cost of a
@@ -796,6 +1306,7 @@ exports.adminQuery = onCall(
                     const d = doc.data();
                     return {
                         total: d.total,
+                        discount: d.discount || 0,
                         status: d.status,
                         createdAtMs: timestampToMs(d.createdAt)
                     };
@@ -857,6 +1368,30 @@ exports.adminQuery = onCall(
             });
             reviews.sort(function (a, b) { return (b.createdAt || 0) - (a.createdAt || 0); });
             return { reviews };
+        }
+
+        if (resource === 'promos') {
+            const actor = await requireAdmin(request, 'promos.read');
+            const snap = await db.collection('promo_codes').limit(200).get();
+            const now = Date.now();
+            const promos = snap.docs
+                .map(function (doc) { return promo.normaliseDefinition(doc.data()); })
+                .filter(Boolean)
+                .map(function (definition) {
+                    return Object.assign({}, definition, {
+                        status: promo.statusOf(definition, now),
+                        summary: promo.describe(definition)
+                    });
+                });
+
+            // Whatever needs attention first: live codes, then the ones
+            // waiting to start, then everything already finished.
+            const rank = { live: 0, scheduled: 1, paused: 2, claimed: 3, expired: 4 };
+            promos.sort(function (a, b) {
+                if (rank[a.status] !== rank[b.status]) return rank[a.status] - rank[b.status];
+                return a.code.localeCompare(b.code);
+            });
+            return { promos, canManage: adminCore.can(actor.role, 'promos.manage') };
         }
 
         if (resource === 'tickets') {
@@ -1185,6 +1720,6 @@ exports.adminPortal = onRequest(
         applySecurityHeaders(res);
         return res.status(200).type('text/html').send(
             portal.portalShellHtml(member,
-                adminCore.PERMISSIONS[member.role] || []));
+                adminCore.PERMISSIONS[member.role] || [], rzp.CATALOG));
     }
 );

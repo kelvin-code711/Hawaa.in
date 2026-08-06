@@ -77,27 +77,48 @@ function toCsv(rows, columns) {
 // Preferred column order for orders; anything unexpected is appended so
 // a new field is never silently dropped from an export.
 const ORDER_COLUMNS = [
-    'orderId', 'createdAt', 'status', 'paymentMethod', 'total', 'subtotal', 'gst',
+    'orderId', 'createdAt', 'status', 'paymentMethod', 'total', 'subtotal',
+    'discount', 'promo.code', 'gst',
     'qtyPurifierOnetime', 'qtyPurifierSubscribe', 'qtyFilter', 'filterInterval',
     'address.name', 'address.phone', 'address.line1', 'address.line2',
     'address.city', 'address.state', 'address.pincode',
+    'promo.type', 'promo.value', 'promo.discount', 'promo.overLimit',
     'razorpay.paymentId', 'razorpay.orderId', 'razorpay.keyMode', 'uid'
 ];
 
-function orderColumns(rows) {
-    const seen = new Set();
+// Promo exports are read to answer "what did this campaign cost us",
+// so the counters sit next to the code rather than at the far right.
+const PROMO_COLUMNS = [
+    'docId', 'code', 'label', 'type', 'value', 'maxDiscount', 'appliesTo',
+    'minSubtotal', 'firstOrderOnly', 'perUserLimit',
+    'redemptions', 'maxRedemptions', 'discountGiven',
+    'active', 'showcase', 'headline', 'startsAt', 'expiresAt',
+    'createdAt', 'createdByName', 'lastRedeemedAt'
+];
+
+// Preferred order first, then anything unexpected, so a field added
+// later is never silently dropped from an export.
+function orderedColumns(preferredOrder, rows, always) {
+    const seen = new Set(always || []);
     rows.forEach(function (r) {
         Object.keys(r).forEach(function (k) { seen.add(k); });
     });
-    const preferred = ORDER_COLUMNS.filter(function (c) { return seen.has(c); });
+    const preferred = preferredOrder.filter(function (c) { return seen.has(c); });
     const rest = Array.from(seen).filter(function (c) {
-        return ORDER_COLUMNS.indexOf(c) === -1;
+        return preferredOrder.indexOf(c) === -1;
     }).sort();
     return preferred.concat(rest);
 }
 
+function orderColumns(rows) {
+    return orderedColumns(ORDER_COLUMNS, rows);
+}
+
 function buildColumns(collection, rows) {
     if (collection === 'orders') return orderColumns(rows);
+    if (collection === 'promo_codes') {
+        return orderedColumns(PROMO_COLUMNS, rows, ['docId']);
+    }
     const seen = new Set(['docId']);
     rows.forEach(function (r) {
         Object.keys(r).forEach(function (k) { seen.add(k); });
@@ -124,5 +145,6 @@ module.exports = {
     toCsv,
     buildColumns,
     sortNewestFirst,
-    ORDER_COLUMNS
+    ORDER_COLUMNS,
+    PROMO_COLUMNS
 };
