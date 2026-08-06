@@ -22,17 +22,22 @@ const PERMISSIONS = {
     super_admin: [
         'orders.read', 'orders.readPii', 'orders.updateStatus', 'orders.cancel',
         'reviews.read', 'reviews.moderate',
+        'promos.read', 'promos.manage',
         'tickets.read', 'export', 'dashboard',
         'team.manage', 'audit.read'
     ],
     manager: [
         'orders.read', 'orders.readPii', 'orders.updateStatus', 'orders.cancel',
         'reviews.read', 'reviews.moderate',
+        'promos.read', 'promos.manage',
         'tickets.read', 'export', 'dashboard'
     ],
+    // Staff can see which codes are running — they answer the phone when
+    // someone says a code did not work — but creating money-off codes is
+    // a Manager decision.
     staff: [
         'orders.read', 'orders.readPii', 'orders.updateStatus',
-        'tickets.read'
+        'promos.read', 'tickets.read'
     ],
     viewer: [
         'orders.read', 'dashboard'
@@ -174,6 +179,10 @@ function maskOrderForViewer(order) {
         qtyPurifierSubscribe: source.qtyPurifierSubscribe,
         qtyFilter: source.qtyFilter,
         subtotal: source.subtotal,
+        // A discount is commercial information, not personal information:
+        // a Viewer needs it for the totals to add up.
+        discount: source.discount,
+        promo: source.promo,
         gst: source.gst,
         total: source.total,
         paymentMethod: source.paymentMethod,
@@ -207,7 +216,8 @@ function istDayStartMs(nowMs) {
     return (Math.floor(shifted / 86400000) * 86400000) - IST_OFFSET_MS;
 }
 
-// Cancelled orders still count as orders placed, but never as revenue.
+// Cancelled orders still count as orders placed, but never as revenue —
+// and never as a discount given, because nothing was given away.
 function summariseOrders(orders, nowMs) {
     const dayStart = istDayStartMs(nowMs);
     const weekStart = dayStart - (6 * 86400000); // today plus the previous six days
@@ -216,12 +226,14 @@ function summariseOrders(orders, nowMs) {
         revenueToday: 0,
         ordersWeek: 0,
         revenueWeek: 0,
+        discountWeek: 0,
         awaitingDispatch: 0
     };
 
     (orders || []).forEach(function (order) {
         if (!order || typeof order.createdAtMs !== 'number') return;
         const total = typeof order.total === 'number' ? order.total : 0;
+        const discount = typeof order.discount === 'number' ? order.discount : 0;
         const earnsRevenue = order.status !== 'cancelled';
 
         if (order.createdAtMs >= dayStart) {
@@ -230,7 +242,10 @@ function summariseOrders(orders, nowMs) {
         }
         if (order.createdAtMs >= weekStart) {
             summary.ordersWeek += 1;
-            if (earnsRevenue) summary.revenueWeek += total;
+            if (earnsRevenue) {
+                summary.revenueWeek += total;
+                summary.discountWeek += discount;
+            }
         }
         if (order.status === 'placed' || order.status === 'confirmed') {
             summary.awaitingDispatch += 1;

@@ -111,6 +111,15 @@
         return parts.join(' + ') || 'Order';
     }
 
+    // Someone comparing this list against their bank statement needs to
+    // see why an order cost less than the sticker price.
+    function orderPromoLabel(d) {
+        if (!d.discount) return '';
+        var code = d.promo && d.promo.code ? d.promo.code : '';
+        return (code ? code + ' · ' : '') +
+            '₹' + d.discount.toLocaleString('en-IN') + ' off';
+    }
+
     function loadMyOrders(user) {
         if (!ordersEl) return;
         var q = fb.query(fb.collection(fb.db, 'orders'), fb.where('uid', '==', user.uid));
@@ -120,6 +129,7 @@
                 var d = docSnap.data();
                 items.push({
                     label: orderItemsLabel(d),
+                    promo: orderPromoLabel(d),
                     total: d.total || 0,
                     status: d.status || 'placed',
                     date: d.createdAt && d.createdAt.toDate ? d.createdAt.toDate() : new Date()
@@ -136,7 +146,9 @@
             for (var i = 0; i < items.length; i++) {
                 var o = items[i];
                 html += '<div class="account-order-row">' +
-                    '<span class="account-order-items">' + escapeHTML(o.label) + '</span>' +
+                    '<span class="account-order-items">' + escapeHTML(o.label) +
+                        (o.promo ? '<em class="account-order-promo">' + escapeHTML(o.promo) + '</em>' : '') +
+                    '</span>' +
                     '<span class="account-order-total">₹' + o.total.toLocaleString('en-IN') + '</span>' +
                     '<span class="account-order-status ' + escapeHTML(o.status) + '">' + escapeHTML(o.status) + '</span>' +
                     '<span class="account-order-date">' + o.date.toLocaleDateString('en-IN', { year: 'numeric', month: 'short', day: 'numeric' }) + '</span>' +

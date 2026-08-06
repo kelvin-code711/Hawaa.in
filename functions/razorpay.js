@@ -71,9 +71,9 @@ function validateAddress(a) {
     return address;
 }
 
-// Validates the createRazorpayOrder request body. Returns a normalized
-// payload or throws an Error whose message is safe to show the client.
-function validateCheckoutPayload(data) {
+// The quantity half of a checkout payload, on its own — the promo
+// preview needs to price a cart before there is an address to validate.
+function validateQuantities(data) {
     if (!data || typeof data !== 'object') {
         throw new Error('Missing checkout details.');
     }
@@ -86,6 +86,18 @@ function validateCheckoutPayload(data) {
     if (qtyOnetime + qtySubscribe + qtyFilter < 1) {
         throw new Error('The cart is empty.');
     }
+    return {
+        qtyPurifierOnetime: qtyOnetime,
+        qtyPurifierSubscribe: qtySubscribe,
+        qtyFilter: qtyFilter
+    };
+}
+
+// Validates the createRazorpayOrder request body. Returns a normalized
+// payload or throws an Error whose message is safe to show the client.
+function validateCheckoutPayload(data) {
+    const { qtyPurifierOnetime: qtyOnetime, qtyPurifierSubscribe: qtySubscribe,
+        qtyFilter } = validateQuantities(data);
     const address = validateAddress(data.address);
     if (!address) {
         throw new Error('Invalid delivery address.');
@@ -93,7 +105,7 @@ function validateCheckoutPayload(data) {
     const payload = {
         qtyPurifierOnetime: qtyOnetime,
         qtyPurifierSubscribe: qtySubscribe,
-        qtyFilter: qtyFilter,
+        qtyFilter,
         address,
         amounts: computeAmounts(qtyOnetime, qtySubscribe, qtyFilter)
     };
@@ -151,6 +163,7 @@ module.exports = {
     gstOf,
     computeAmounts,
     validateAddress,
+    validateQuantities,
     validateCheckoutPayload,
     verifyPaymentSignature,
     createRazorpayOrder

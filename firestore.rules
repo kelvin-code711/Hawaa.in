@@ -299,6 +299,17 @@ service cloud.firestore {
     // never change what an order costs:
     //   purifier one-time ₹5999 | purifier subscription ₹5499 |
     //   replacement filter ₹1499 | GST 18% (round half-up) | free delivery
+    //
+    // Discounts are deliberately absent. The hasOnly() list below has no
+    // 'promo' and no 'discount', so a browser cannot write a discounted
+    // order at all — not a tampered one, not a legitimate one. A promo
+    // needs a usage limit checked and a counter incremented in the same
+    // breath as the order is written, and rules cannot do that. So a
+    // discounted order is placed by placePromoOrder (Cash on Delivery)
+    // or by verifyRazorpayPayment (paid online), both of which price the
+    // cart on the server and write with the Admin SDK. Adding 'discount'
+    // to this list would open exactly the hole those two functions exist
+    // to close.
     // ===============================================================
 
     function isValidOrderAddress(a) {
@@ -407,6 +418,61 @@ service cloud.firestore {
     // ===============================================================
     match /admin_rate/{clientKey} {
       allow read, write: if false;
+    }
+
+    // ===============================================================
+    // promo_codes/{CODE} — discount definitions and their counters.
+    //
+    // Unreadable by everyone, including a signed-in customer and
+    // including staff: a list of live codes is a discount for anyone who
+    // opens devtools, and even a single-document read would let someone
+    // test codes for free. Shoppers reach a code only through the
+    // validatePromoCode callable, which never returns the definition —
+    // just a yes or a no and, if yes, an amount. The portal reads them
+    // through adminQuery, which checks 'promos.read' first.
+    //
+    // Writes are denied outright. A code is created and retuned only by
+    // adminAction, which enforces the caps in functions/promo.js and
+    // writes an audit entry in the same transaction; the counters move
+    // only inside the transaction that writes the order they belong to.
+    // ===============================================================
+    match /promo_codes/{code} {
+      allow read, write: if false;
+    }
+
+    // ===============================================================
+    // promo_redemptions/{CODE__uid} — how many times one account has
+    // used one code. The composite ID is what makes a per-customer
+    // limit enforceable in the same transaction as the order write.
+    // Server-only, in both directions.
+    // ===============================================================
+    match /promo_redemptions/{redemptionId} {
+      allow read, write: if false;
+    }
+
+    // ===============================================================
+    // promo_rate/{clientKey} — throttling for wrong-code guessing,
+    // keyed by account or by a hash of the caller's address. Only a miss
+    // costs an attempt. Written only by the Admin SDK.
+    // ===============================================================
+    match /promo_rate/{clientKey} {
+      allow read, write: if false;
+    }
+
+    // ===============================================================
+    // promo_public/featured — the one document in this area that is
+    // meant to be read by anyone: the codes an admin explicitly ticked
+    // "show in the cart", so the drawer can offer them as one tap
+    // instead of asking someone to type. Rebuilt by the
+    // syncFeaturedOffers trigger; never writable from a client.
+    //
+    // Publishing a code here does not weaken anything — every offer is
+    // re-validated through validatePromoCode when it is applied, and
+    // again when the order is placed.
+    // ===============================================================
+    match /promo_public/{docId} {
+      allow read: if true;
+      allow write: if false;
     }
 
     // ===============================================================

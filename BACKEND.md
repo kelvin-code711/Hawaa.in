@@ -19,6 +19,7 @@ web clients. All website collections are separate.
 | Newsletter signup | `index.html` footer | `newsletterSubscribers` (doc ID = email) |
 | Checkout — Cash on Delivery (sign-in required) | `buy.html` cart | `orders` (created as `status: "placed"`) |
 | Checkout — Pay Online via Razorpay (sign-in required) | `buy.html` cart | `orders` via Cloud Function (+ server-only `razorpay_orders`) |
+| Promo codes (cart drawer, any page) | cart drawer | server-only `promo_codes` / `promo_redemptions`, public `promo_public/featured` |
 | Order history | `account.html` | own `orders` |
 
 `js/firebase.js` initializes the Firebase SDK (CDN, no build step) and exposes:
@@ -119,8 +120,8 @@ Firebase console → Firestore → Data:
 ## Exporting to CSV / Excel
 
 Use the admin portal's **Download CSV** control (Orders tab, Manager and
-above). It exports `orders`, `supportTickets`, `newsletterSubscribers` or
-`reviews` as a spreadsheet-ready file: UTF-8 BOM so ₹ and Indian names
+above). It exports `orders`, `supportTickets`, `newsletterSubscribers`,
+`reviews` or `promo_codes` as a spreadsheet-ready file: UTF-8 BOM so ₹ and Indian names
 survive Excel, IST timestamps, nested maps flattened to `address.city` /
 `razorpay.paymentId`, newest first. Formatting lives in `functions/csv.js`
 and is unit-tested.
@@ -160,6 +161,8 @@ Clients can never read others' orders (address PII), update, or delete.
 FILTER_PRICE), the `isValidNewOrder` arithmetic in `firestore.rules`, AND
 `CATALOG` in `functions/razorpay.js`, then redeploy rules + functions —
 otherwise checkout (COD and online alike) will be rejected.**
+(`functions/promo.js` and the portal's promo preview both read `CATALOG`
+from `functions/razorpay.js`, so neither needs touching.)
 
 ## Orders (Pay Online — Razorpay)
 
@@ -215,6 +218,127 @@ Generate live keys after Razorpay KYC/activation, run the two
 functions. Nothing in the repo changes; optionally make Pay Online the
 default by moving the `checked` attribute between the two payment-method
 radios in `js/cart.js`.
+
+## Promo codes
+
+Discount codes live in three server-only collections plus one public
+document:
+
+| Collection | What it holds |
+| --- | --- |
+| `promo_codes/{CODE}` | the definition and its counters (doc ID = the code) |
+| `promo_redemptions/{CODE}__{uid}` | how many times one account has used one code |
+| `promo_rate/{clientKey}` | throttling for wrong-code guessing |
+| `promo_public/featured` | the codes an admin ticked "show in the cart" — **the only one clients can read** |
+
+**`promo_codes` is unreadable by every client, including staff.** A
+browsable list of live codes is a discount for anyone who opens devtools.
+Shoppers reach a code only through the `validatePromoCode` callable,
+which never returns a definition — only a yes or a no, and if yes, an
+amount. The portal reads them through `adminQuery`.
+
+### The one rule that shapes everything
+
+**The browser never names a discount.** Prices and GST are mirrored in
+three places because all three have to agree; a discount has *one*
+implementation, `functions/promo.js`, and `js/cart.js` contains no
+discount arithmetic at all. Every rupee shown in the cart came back from
+`validatePromoCode`, so there is nothing to drift.
+
+`firestore.rules` enforces the same boundary from the other side: the
+`hasOnly()` list in `isValidNewOrder` has no `promo` and no `discount`,
+so a browser cannot write a discounted order at all — not a tampered
+one, not a legitimate one. A promo needs a usage limit checked and a
+counter incremented in the same breath as the order is written, and
+rules cannot do that. **Adding `discount` to that list would open exactly
+the hole the two functions below exist to close.**
+
+### GST is charged on the discounted value
+
+A discount recorded on the invoice at the time of supply is excluded
+from the value of supply (s.15(3)(a) CGST Act), so the order of
+operations is **subtotal → discount → GST on the remainder → total**,
+never GST on the full subtotal. On a ₹5,999 purifier with 10% off:
+₹600 off, ₹5,399 taxable, ₹972 GST, **₹6,371 paid** — not ₹6,479.
+
+### How an order gets placed
+
+| Cart | Path | Why |
+| --- | --- | --- |
+| no promo, COD | direct client write, validated by `firestore.rules` | unchanged; it works and it is audited |
+| **promo, COD** | **`placePromoOrder`** callable | prices the cart and reserves the redemption in one transaction |
+| any, online | `createRazorpayOrder` → `verifyRazorpayPayment` | already server-priced; the promo rides along |
+
+Redemptions are counted in the same transaction that writes the order,
+so a redemption can never be counted for an order that failed to save,
+nor an order saved without being counted.
+
+**On the online path the cap is allowed to overshoot.** Two people can
+reach the gateway holding the last use of a code; the one who pays
+second must not be told their payment was wasted. So `verifyRazorpayPayment`
+never refuses a paid order — it records `promo.overLimit: true`, logs a
+warning, and the portal shows "51 / 50 used" rather than quietly losing
+it. The COD path has no such race and refuses cleanly before anything
+is charged.
+
+### The cart
+
+The promo field is a **closed disclosure**, deliberately low-contrast.
+An open "enter a code" box reads as *everyone else is paying less than
+you* and sends people off to hunt for a code they never come back from
+([Baymard](https://baymard.com/learn/reduce-cart-abandonment)). The
+counterweight is the offers row above it: codes an admin ticked "show in
+the cart" appear as one-tap chips, so a code you can see is a code you
+never leave to look for — and one tap beats typing on a phone keyboard.
+
+Only offers the current cart already qualifies for are shown; an offer
+that fails when tapped is worse than no offer at all.
+
+A code that stops qualifying — the cart dipped under the minimum, say —
+**stays attached** and shows how much more is needed. Re-adding an item
+restores the discount silently instead of making someone type it again.
+A code that can never work (expired, exhausted, already used) is
+detached with the reason.
+
+The cart is re-priced on every change (debounced 350 ms) and answers are
+discarded if they name a different cart than the one on screen. The
+checkout screen re-quotes on entry: by then the shopper has signed in,
+so the per-account rules that had to be skipped in the cart are finally
+answerable. Codes also arrive via `?promo=CODE` and survive navigation
+in `hawaa-cart-meta` — as a *code*, never as an amount.
+
+### Managing codes
+
+Portal → **Promos** (Manager and Super Admin create; Staff can look).
+
+The create form prices every keystroke against a real cart and shows the
+answer in rupees: *"On one Hawaa Edge (₹5,999): ₹600 off. The customer
+pays ₹6,371."* This is the guardrail that matters — "10" means a tenth
+of an order in one field and ten rupees in another, and nobody notices
+until the discount has been given away.
+
+Hard limits: percentages 1–90%, codes 3–20 characters, a flat filter
+discount cannot exceed a filter's price, an end date must follow its
+start date, and a usage cap cannot be lowered below what has already
+gone out.
+
+**What a code is worth is fixed once it exists** — the discount, what it
+applies to, and the first-order rule cannot be edited, because orders
+that used it have to keep meaning what they meant. Everything else
+(pause, resume, end now, extend, raise the cap, show/hide in cart) can
+change. A code nobody has used can be deleted; a used one can only be
+ended. Every change is written to `admin_audit`.
+
+Codes export to CSV alongside orders, and orders carry `discount` and
+`promo.code` columns. The dashboard gains a **Discounts this week** tile
+once any discount has been given.
+
+**Showing a code in the cart makes it public immediately** — the portal
+asks for confirmation, and `promo_public/featured` is rebuilt by the
+`syncFeaturedOffers` trigger. Scheduled codes are published with their
+start time so the cart can reveal them on the hour; nothing writes to a
+promo document when its clock runs out, so the window is checked in the
+browser too.
 
 ## Admin portal — access control (Phase 1)
 
@@ -303,13 +427,14 @@ that file for why listing a secret URL there is counterproductive.
 ### The screens (Phase 3)
 
 The portal is a single page served by `adminPortal`, with tabs gated by
-the caller's permissions: **Orders**, **Reviews**, **Support**, **Team**
-and **Activity** (the audit log). A summary strip shows orders today,
-revenue this week, orders awaiting dispatch, and reviews waiting.
+the caller's permissions: **Orders**, **Reviews**, **Promos**,
+**Support**, **Team** and **Activity** (the audit log). A summary strip
+shows orders today, revenue this week, orders awaiting dispatch,
+discounts given this week (once any have been), and reviews waiting.
 
 All reads go through the **`adminQuery`** callable
-(`resource: 'summary' | 'orders' | 'reviews' | 'tickets' | 'team' |
-'audit'`) and all writes through **`adminAction`**. The browser never
+(`resource: 'summary' | 'orders' | 'reviews' | 'promos' | 'tickets' |
+'team' | 'audit'`) and all writes through **`adminAction`**. The browser never
 queries Firestore directly, which is what makes the Viewer role's
 masking real: `projectOrder()` strips name, street address and pincode
 **on the server**, so the unmasked values are never transmitted. Rules
@@ -363,10 +488,27 @@ next click. Do this the day a person leaves — it is the whole reason
 access is per-person rather than a shared password.
 
 **Choosing a role:** Staff for packing and dispatch (no exports, no
-refunds); Manager for someone running the shop day to day; Viewer for an
-investor or partner who should see revenue but not customer details;
-Super Admin only for an owner — it is the only role that can grant
-access to others.
+refunds, can see promo codes but not create them); Manager for someone
+running the shop day to day; Viewer for an investor or partner who
+should see revenue but not customer details; Super Admin only for an
+owner — it is the only role that can grant access to others.
+
+**Run a promotion.** Portal → **Promos** → fill the form, watching the
+rupee preview underneath as you type. Tick **show this code in every
+shopper's cart** to turn it into a one-tap offer in the cart drawer —
+that is the version that converts, because nobody has to know the code
+exists or type it. Leave it unticked for a code you hand out by email,
+on packaging, or over the phone.
+
+**Stop a promotion.** Pause (reversible) or **End now** (sets the expiry
+to this instant; the code stays in the history, and every order that
+used it still reads correctly). Never delete a code people have used —
+the portal will not let you.
+
+**A customer says a code did not work.** Promos shows the live state of
+every code: paused, scheduled, expired, or fully claimed. The cart tells
+the shopper which of those it was, in plain words, so a screenshot from
+them is usually enough to answer without looking anything up.
 
 **If a phone is lost or stolen**, remove that person in Team straight
 away. Their session dies immediately; re-invite once they have the

@@ -18,7 +18,7 @@
     };
 
     var cart = []; // Array of { id, name, variant, price, qty, img }
-    var meta = { filterInterval: 5 };
+    var meta = { filterInterval: 5, promoCode: null };
     var listeners = [];
 
     function loadCart() {
@@ -31,6 +31,11 @@
             if (savedMeta && (savedMeta.filterInterval === 5 || savedMeta.filterInterval === 6)) {
                 meta.filterInterval = savedMeta.filterInterval;
             }
+            // The code survives navigation, the discount does not: only
+            // the server may say what a code is worth, so it is
+            // re-validated on load rather than restored from storage.
+            meta.promoCode = typeof savedMeta.promoCode === 'string'
+                ? savedMeta.promoCode.slice(0, 20) : null;
         } catch (e) { /* keep defaults */ }
     }
 
@@ -76,17 +81,43 @@
                             '<button class="cart-upsell-btn" id="cart-add-filter">Add</button>' +
                         '</div>' +
                     '</div>' +
+                    '<div class="cart-promo" id="cart-promo" hidden>' +
+                        '<div class="cart-promo-offers" id="cart-promo-offers"></div>' +
+                        '<button type="button" class="cart-promo-toggle" id="cart-promo-toggle" aria-expanded="false" aria-controls="cart-promo-entry">' +
+                            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.6 13.4l-7.2 7.2a2 2 0 01-2.8 0l-7.2-7.2a2 2 0 01-.6-1.4V4a1 1 0 011-1h8a2 2 0 011.4.6l7.4 7.4a2 2 0 010 2.8z"/><circle cx="7.5" cy="7.5" r="1.2"/></svg>' +
+                            '<span>Have a promo code?</span>' +
+                            '<svg class="cart-promo-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>' +
+                        '</button>' +
+                        '<div class="cart-promo-entry" id="cart-promo-entry" hidden>' +
+                            '<input type="text" class="cart-promo-input" id="cart-promo-input" placeholder="Enter code" maxlength="20" autocomplete="off" autocorrect="off" spellcheck="false" autocapitalize="characters" enterkeyhint="done" aria-label="Promo code">' +
+                            '<button type="button" class="cart-promo-apply" id="cart-promo-apply" disabled>Apply</button>' +
+                        '</div>' +
+                        '<div class="cart-promo-applied" id="cart-promo-applied" hidden>' +
+                            '<span class="cart-promo-mark" id="cart-promo-mark" aria-hidden="true"></span>' +
+                            '<span class="cart-promo-applied-body">' +
+                                '<span class="cart-promo-applied-code" id="cart-promo-applied-code"></span>' +
+                                '<span class="cart-promo-applied-note" id="cart-promo-applied-note"></span>' +
+                            '</span>' +
+                            '<span class="cart-promo-applied-amount" id="cart-promo-applied-amount"></span>' +
+                            '<button type="button" class="cart-promo-remove" id="cart-promo-remove" aria-label="Remove promo code">' +
+                                '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>' +
+                            '</button>' +
+                        '</div>' +
+                        '<p class="cart-promo-msg" id="cart-promo-msg" role="status" aria-live="polite"></p>' +
+                    '</div>' +
                     '<button class="cart-breakdown-toggle" id="cart-breakdown-toggle">' +
                         '<span>Price Details</span>' +
                         '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>' +
                     '</button>' +
                     '<div class="cart-breakdown" id="cart-breakdown">' +
                         '<div class="cart-breakdown-row"><span>Subtotal</span><span id="cart-subtotal">₹0</span></div>' +
+                        '<div class="cart-breakdown-row cart-breakdown-discount" id="cart-discount-row" hidden><span id="cart-discount-label">Discount</span><span id="cart-discount">−₹0</span></div>' +
                         '<div class="cart-breakdown-row"><span>GST (18%)</span><span id="cart-gst">₹0</span></div>' +
                         '<div class="cart-breakdown-row"><span>Delivery Fee</span><span id="cart-delivery" class="cart-free">Free</span></div>' +
                         '<div class="cart-breakdown-row"><span>Shipping Fee</span><span id="cart-shipping" class="cart-free">Free</span></div>' +
                     '</div>' +
-                    '<div class="cart-total-row"><span>Total</span><span id="cart-total">₹0</span></div>' +
+                    '<div class="cart-total-row" id="cart-total-row"><span>Total</span><span id="cart-total">₹0</span></div>' +
+                    '<p class="cart-savings" id="cart-savings" hidden></p>' +
                     '<button class="cart-checkout-btn" id="cart-checkout-btn">Checkout</button>' +
                 '</div>' +
                 '<div class="checkout-view hidden" id="checkout-view">' +
@@ -117,6 +148,10 @@
                             '</label>' +
                         '</div>' +
                         '<p class="checkout-error" id="checkout-error"></p>' +
+                        '<div class="checkout-promo-row" id="checkout-promo-row" hidden>' +
+                            '<span>Promo <b id="checkout-promo-code"></b></span>' +
+                            '<span id="checkout-promo-amount">−₹0</span>' +
+                        '</div>' +
                         '<div class="checkout-total-row"><span id="checkout-total-label">Total</span><span id="checkout-total">₹0</span></div>' +
                         '<button type="submit" class="cart-checkout-btn" id="checkout-place-btn">Place Order</button>' +
                     '</form>' +
@@ -127,6 +162,7 @@
                     '</div>' +
                     '<h3 class="checkout-title" style="text-align:center;">Order placed!</h3>' +
                     '<p class="checkout-success-text">Order ID: <strong id="order-success-id"></strong></p>' +
+                    '<p class="checkout-success-saved" id="order-success-saved" hidden></p>' +
                     '<p class="checkout-success-text" id="order-success-note">Pay in cash when your Hawaa arrives. Track it anytime on your <a href="account.html">account page</a>.</p>' +
                     '<button type="button" class="cart-checkout-btn" id="order-success-done">Done</button>' +
                 '</div>' +
@@ -156,8 +192,32 @@
     var cartDelivery = document.getElementById('cart-delivery');
     var cartShipping = document.getElementById('cart-shipping');
     var cartTotal = document.getElementById('cart-total');
+    var cartTotalRow = document.getElementById('cart-total-row');
+    var cartSavings = document.getElementById('cart-savings');
+    var cartDiscountRow = document.getElementById('cart-discount-row');
+    var cartDiscountLabel = document.getElementById('cart-discount-label');
+    var cartDiscount = document.getElementById('cart-discount');
     var cartTitleCount = document.getElementById('cart-title-count');
     var cartEmptyCta = document.getElementById('cart-empty-cta');
+
+    var promoWrap = document.getElementById('cart-promo');
+    var promoOffersBox = document.getElementById('cart-promo-offers');
+    var promoToggle = document.getElementById('cart-promo-toggle');
+    var promoEntry = document.getElementById('cart-promo-entry');
+    var promoInput = document.getElementById('cart-promo-input');
+    var promoApplyBtn = document.getElementById('cart-promo-apply');
+    var promoAppliedBox = document.getElementById('cart-promo-applied');
+    var promoMark = document.getElementById('cart-promo-mark');
+    var promoAppliedCode = document.getElementById('cart-promo-applied-code');
+    var promoAppliedNote = document.getElementById('cart-promo-applied-note');
+    var promoAppliedAmount = document.getElementById('cart-promo-applied-amount');
+    var promoRemoveBtn = document.getElementById('cart-promo-remove');
+    var promoMsg = document.getElementById('cart-promo-msg');
+
+    var checkoutPromoRow = document.getElementById('checkout-promo-row');
+    var checkoutPromoCode = document.getElementById('checkout-promo-code');
+    var checkoutPromoAmount = document.getElementById('checkout-promo-amount');
+    var successSaved = document.getElementById('order-success-saved');
 
     var checkoutBtn = document.getElementById('cart-checkout-btn');
     var checkoutView = document.getElementById('checkout-view');
@@ -268,6 +328,310 @@
         return total;
     }
 
+    // Quantities per SKU — the only thing the server needs to price the
+    // cart, and the only thing it will accept. Colour is a suffix on the
+    // purifier id (e.g. 'purifier-onetime-grey'); both colours share the
+    // same SKU price, so match by prefix. Plain ids from carts saved
+    // before colours existed still match too.
+    function cartQuantities() {
+        var q = { qtyPurifierOnetime: 0, qtyPurifierSubscribe: 0, qtyFilter: 0 };
+        for (var i = 0; i < cart.length; i++) {
+            if (cart[i].id.indexOf('purifier-onetime') === 0) q.qtyPurifierOnetime += cart[i].qty;
+            else if (cart[i].id.indexOf('purifier-subscribe') === 0) q.qtyPurifierSubscribe += cart[i].qty;
+            else if (cart[i].id === 'filter') q.qtyFilter += cart[i].qty;
+        }
+        return q;
+    }
+
+    // Identifies exactly what was priced. A promo answer that names a
+    // different cart arrived after the shopper changed their mind, and
+    // is thrown away rather than shown.
+    function cartKey() {
+        var q = cartQuantities();
+        return q.qtyPurifierOnetime + '-' + q.qtyPurifierSubscribe + '-' + q.qtyFilter;
+    }
+
+    // ========================================
+    // PROMO CODES
+    //
+    // This file contains no discount arithmetic, deliberately. Prices
+    // and GST are mirrored here, in firestore.rules and in the Cloud
+    // Functions because all three have to agree; a discount has one
+    // implementation, on the server, and every rupee shown below came
+    // back from validatePromoCode. Nothing here can drift, because
+    // there is nothing here to drift from.
+    // ========================================
+    var promo = {
+        code: null,       // attached code, uppercase
+        discount: 0,      // 0 while attached but not currently qualifying
+        headline: '',
+        pricing: null,    // server totals, valid for pricedKey only
+        pricedKey: '',
+        state: 'none',    // none | checking | applied | blocked | error
+        message: ''
+    };
+
+    var featuredOffers = [];
+    var promoSeq = 0;
+    var promoTimer = null;
+
+    // Refusals that describe the cart rather than the code: the shopper
+    // can fix them by adding something, so the code stays attached and
+    // re-applies itself the moment it qualifies.
+    var RECOVERABLE = ['below-minimum', 'not-applicable', 'empty-cart'];
+
+    function promoAvailable() {
+        var fb = window.hawaaFirebase;
+        return !!(fb && fb.functions && fb.httpsCallable);
+    }
+
+    function callValidate(code) {
+        var fb = window.hawaaFirebase;
+        var q = cartQuantities();
+        var validate = fb.httpsCallable(fb.functions, 'validatePromoCode');
+        return validate({
+            code: code,
+            qtyPurifierOnetime: q.qtyPurifierOnetime,
+            qtyPurifierSubscribe: q.qtyPurifierSubscribe,
+            qtyFilter: q.qtyFilter,
+            cartKey: cartKey()
+        }).then(function (res) { return res.data; });
+    }
+
+    function clearPromo(message) {
+        promo.code = null;
+        promo.discount = 0;
+        promo.headline = '';
+        promo.pricing = null;
+        promo.pricedKey = '';
+        promo.state = message ? 'error' : 'none';
+        promo.message = message || '';
+        meta.promoCode = null;
+        saveCart();
+    }
+
+    function absorbResult(code, data) {
+        if (data && data.ok) {
+            promo.code = code;
+            promo.discount = data.discount;
+            promo.headline = data.headline || '';
+            promo.pricing = data.pricing;
+            promo.pricedKey = data.cartKey || cartKey();
+            promo.state = 'applied';
+            // Per-account rules cannot be answered for a signed-out
+            // shopper. Say so plainly rather than promising a discount
+            // that checkout might take back.
+            promo.message = (data.deferred && data.deferred.length)
+                ? 'Sign in at checkout to confirm this offer.'
+                : '';
+            meta.promoCode = code;
+            saveCart();
+            return;
+        }
+
+        var message = (data && data.message) ||
+            'That code could not be applied. Please try again.';
+        if (data && RECOVERABLE.indexOf(data.reason) !== -1) {
+            promo.code = code;
+            promo.discount = 0;
+            promo.pricing = null;
+            promo.pricedKey = '';
+            promo.state = 'blocked';
+            promo.message = message;
+            meta.promoCode = code;
+            saveCart();
+            return;
+        }
+        clearPromo(message);
+    }
+
+    // `silent` is set for the automatic re-check after a cart change:
+    // a code that stops qualifying should update quietly, not flash an
+    // error at someone who only tapped "+".
+    function checkPromo(code, silent) {
+        if (!promoAvailable()) return Promise.resolve();
+        var seq = ++promoSeq;
+        var keyAtSend = cartKey();
+        if (!silent || promo.state === 'applied') {
+            promo.state = 'checking';
+            renderPromo();
+        }
+
+        return callValidate(code).then(function (data) {
+            // A stale answer, or one that priced a cart the shopper has
+            // since changed. The newer request is already in flight.
+            if (seq !== promoSeq) return;
+            if (data && data.cartKey && data.cartKey !== cartKey()) return;
+            absorbResult(code, data);
+            updatePriceBreakdown();
+            renderPromo();
+            renderOffers();
+        }).catch(function (err) {
+            if (seq !== promoSeq) return;
+            console.warn('Promo check failed:', err);
+            // Offline or throttled. Keep whatever was already applied —
+            // the order path re-validates and is the check that binds —
+            // but never invent a discount that was not granted.
+            if (promo.state === 'checking') {
+                promo.state = promo.discount > 0 ? 'applied' : 'blocked';
+            }
+            if (!silent) {
+                promo.message = (err && err.code === 'functions/resource-exhausted')
+                    ? 'Too many attempts. Please try again in a few minutes.'
+                    : 'Could not check that code. Please check your connection.';
+            }
+            renderPromo();
+        });
+    }
+
+    function applyPromoFromInput(code, source) {
+        var cleaned = String(code || '').replace(/\s+/g, '').toUpperCase();
+        if (cleaned.length < 3) return;
+        if (!promoAvailable()) {
+            promo.state = 'error';
+            promo.message = 'Promo codes are unavailable right now. Please refresh the page.';
+            renderPromo();
+            return;
+        }
+        promo.message = '';
+        checkPromo(cleaned, false).then(function () {
+            if (promo.state === 'applied') {
+                if (promoInput) promoInput.value = '';
+                setPromoEntryOpen(false);
+                gaTrack('select_promotion', {
+                    promotion_id: cleaned,
+                    creative_slot: source || 'input',
+                    items: gaItems()
+                });
+            }
+        });
+    }
+
+    // Re-priced on every cart change, debounced so holding "+" does not
+    // fire a call per tap.
+    function schedulePromoRecheck() {
+        if (!promo.code) return;
+        if (promoTimer) clearTimeout(promoTimer);
+        promoTimer = setTimeout(function () {
+            promoTimer = null;
+            if (promo.code) checkPromo(promo.code, true);
+        }, 350);
+    }
+
+    // ---- Featured offers (public, admin-curated) ----
+    // Read straight from Firestore rather than through a callable: this
+    // has to be on screen before the drawer finishes opening, and a cold
+    // function is slower than a cached document read.
+    function loadFeaturedOffers() {
+        var fb = window.hawaaFirebase;
+        if (!fb || !fb.getDoc || !fb.doc) return;
+        fb.getDoc(fb.doc(fb.db, 'promo_public', 'featured')).then(function (snap) {
+            if (!snap.exists()) return;
+            var data = snap.data() || {};
+            featuredOffers = Array.isArray(data.offers) ? data.offers : [];
+            renderOffers();
+        }).catch(function () { /* no offers is a normal state */ });
+    }
+
+    // Only offers this cart already qualifies for are shown. An offer
+    // that fails when tapped is worse than no offer at all.
+    function eligibleOffers() {
+        if (!promoAvailable() || promo.code || cart.length === 0) return [];
+        var q = cartQuantities();
+        var subtotal = getSubtotal();
+        var now = Date.now();
+        return featuredOffers.filter(function (offer) {
+            if (!offer || !offer.code) return false;
+            // The published list is rebuilt when a code is edited, not
+            // when its clock runs out, so the window is checked here.
+            if (offer.startsAt && now < offer.startsAt) return false;
+            if (offer.expiresAt && now >= offer.expiresAt) return false;
+            if (offer.minSubtotal && subtotal < offer.minSubtotal) return false;
+            if (offer.appliesTo === 'filter' && q.qtyFilter === 0) return false;
+            if (offer.appliesTo === 'purifier' &&
+                q.qtyPurifierOnetime + q.qtyPurifierSubscribe === 0) return false;
+            return true;
+        }).slice(0, 2);
+    }
+
+    function escapeText(value) {
+        return String(value === undefined || value === null ? '' : value)
+            .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    function renderOffers() {
+        if (!promoOffersBox) return;
+        var offers = eligibleOffers();
+        promoOffersBox.innerHTML = offers.map(function (offer) {
+            return '<button type="button" class="cart-promo-offer" data-code="' +
+                escapeText(offer.code) + '">' +
+                '<span class="cart-promo-offer-tag">' + escapeText(offer.code) + '</span>' +
+                '<span class="cart-promo-offer-text">' + escapeText(offer.headline) + '</span>' +
+                '<span class="cart-promo-offer-apply">Apply</span>' +
+                '</button>';
+        }).join('');
+        promoOffersBox.hidden = offers.length === 0;
+    }
+
+    function setPromoEntryOpen(open) {
+        if (!promoEntry || !promoToggle) return;
+        promoEntry.hidden = !open;
+        promoToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+        promoToggle.classList.toggle('open', open);
+        if (open && promoInput) promoInput.focus();
+    }
+
+    function renderPromo() {
+        if (!promoWrap) return;
+
+        // Nothing to offer and no way to check a code: show no promo UI
+        // at all rather than a field that cannot work.
+        promoWrap.hidden = cart.length === 0 || !promoAvailable();
+
+        var attached = !!promo.code;
+        var checking = promo.state === 'checking';
+
+        if (promoAppliedBox) {
+            promoAppliedBox.hidden = !attached;
+            promoAppliedBox.classList.toggle('is-blocked', promo.state === 'blocked');
+            promoAppliedBox.classList.toggle('is-checking', checking);
+        }
+        if (promoToggle) promoToggle.hidden = attached;
+        if (attached) setPromoEntryOpen(false);
+
+        if (attached) {
+            if (promoAppliedCode) promoAppliedCode.textContent = promo.code;
+            if (promoAppliedNote) {
+                promoAppliedNote.textContent = promo.state === 'blocked'
+                    ? 'Not applied yet'
+                    : (promo.headline || 'Discount applied');
+            }
+            if (promoAppliedAmount) {
+                promoAppliedAmount.textContent = promo.discount > 0
+                    ? '−' + formatPrice(promo.discount)
+                    : '';
+            }
+            if (promoRemoveBtn) {
+                promoRemoveBtn.setAttribute('aria-label', 'Remove promo code ' + promo.code);
+            }
+        }
+
+        if (promoMsg) {
+            promoMsg.textContent = checking ? '' : promo.message;
+            promoMsg.hidden = checking || !promo.message;
+            promoMsg.className = 'cart-promo-msg' +
+                (promo.state === 'error' ? ' is-error' : '') +
+                (promo.state === 'blocked' ? ' is-warning' : '');
+        }
+
+        if (promoApplyBtn && promoInput) {
+            promoApplyBtn.disabled = checking ||
+                promoInput.value.replace(/\s+/g, '').length < 3;
+            promoApplyBtn.textContent = checking ? 'Checking…' : 'Apply';
+        }
+    }
+
     // ========================================
     // RENDERING
     // ========================================
@@ -298,6 +662,9 @@
 
         renderCartItems();
         updatePriceBreakdown();
+        renderPromo();
+        renderOffers();
+        schedulePromoRecheck();
 
         for (var i = 0; i < listeners.length; i++) {
             try { listeners[i](); } catch (e) { /* listener error must not break cart */ }
@@ -339,15 +706,48 @@
         }
     }
 
-    function updatePriceBreakdown() {
+    // The totals the shopper is looking at. With a promo applied these
+    // are the server's own figures, echoed back — the cart never adds
+    // a discount to a number it worked out itself, so what is on screen
+    // is always a quote something actually issued.
+    function currentPricing() {
+        if (promo.state === 'applied' && promo.pricing &&
+            promo.pricedKey === cartKey()) {
+            return promo.pricing;
+        }
         var subtotal = getSubtotal();
         var gst = gstOf(subtotal);
+        return { subtotal: subtotal, discount: 0, taxable: subtotal, gst: gst,
+            total: subtotal + gst };
+    }
+
+    function updatePriceBreakdown() {
+        var pricing = currentPricing();
+        var subtotal = pricing.subtotal;
+        var gst = pricing.gst;
         var delivery = 0;
         var shipping = 0;
-        var total = subtotal + gst + delivery + shipping;
+        var total = pricing.total + delivery + shipping;
 
         if (cartSubtotal) cartSubtotal.textContent = formatPrice(subtotal);
         if (cartGst) cartGst.textContent = formatPrice(gst);
+
+        if (cartDiscountRow) cartDiscountRow.hidden = pricing.discount <= 0;
+        if (pricing.discount > 0) {
+            if (cartDiscountLabel) cartDiscountLabel.textContent = 'Discount (' + promo.code + ')';
+            if (cartDiscount) cartDiscount.textContent = '−' + formatPrice(pricing.discount);
+        }
+        if (cartSavings) {
+            cartSavings.hidden = pricing.discount <= 0;
+            cartSavings.textContent = pricing.discount > 0
+                ? 'You save ' + formatPrice(pricing.discount) : '';
+        }
+        // A quiet dip while a re-check is in flight: the number stays
+        // put so nothing jumps, but it stops looking settled.
+        if (cartTotalRow) {
+            cartTotalRow.classList.toggle('is-updating', promo.state === 'checking');
+        }
+
         if (cartDelivery) {
             cartDelivery.textContent = delivery === 0 ? 'Free' : formatPrice(delivery);
             cartDelivery.className = delivery === 0 ? 'cart-free' : '';
@@ -411,12 +811,22 @@
         if (e.key === 'Escape') closeCart();
     });
 
-    // Another tab changed the cart: re-read and re-render.
+    // Another tab changed the cart: re-read and re-render. A code
+    // applied in the other tab arrives as a code, never as a discount,
+    // so it is re-priced here before it can affect a total.
     window.addEventListener('storage', function(e) {
-        if (e.key === CART_STORAGE_KEY || e.key === META_STORAGE_KEY) {
-            loadCart();
-            updateCartUI();
+        if (e.key !== CART_STORAGE_KEY && e.key !== META_STORAGE_KEY) return;
+        loadCart();
+        if (meta.promoCode !== promo.code) {
+            promoSeq++;
+            promo.code = meta.promoCode;
+            promo.discount = 0;
+            promo.pricing = null;
+            promo.pricedKey = '';
+            promo.state = meta.promoCode ? 'blocked' : 'none';
+            promo.message = '';
         }
+        updateCartUI();
     });
 
     // ========================================
@@ -438,8 +848,7 @@
 
     function refreshPayMethodUI() {
         var method = getPayMethod();
-        var subtotal = getSubtotal();
-        var total = subtotal + gstOf(subtotal);
+        var total = currentPricing().total;
         if (checkoutTotalLabel) {
             checkoutTotalLabel.textContent = method === 'cod'
                 ? 'Total (Cash on Delivery)'
@@ -456,17 +865,45 @@
         payMethodBox.addEventListener('change', refreshPayMethodUI);
     }
 
+    // Keeps the checkout screen's numbers in step with the cart's. Also
+    // called after a re-quote, which is why it does not reset the error
+    // line.
+    function refreshCheckoutTotals() {
+        var pricing = currentPricing();
+        if (checkoutTotal) checkoutTotal.textContent = formatPrice(pricing.total);
+        if (checkoutPromoRow) checkoutPromoRow.hidden = pricing.discount <= 0;
+        if (pricing.discount > 0) {
+            if (checkoutPromoCode) checkoutPromoCode.textContent = promo.code;
+            if (checkoutPromoAmount) {
+                checkoutPromoAmount.textContent = '−' + formatPrice(pricing.discount);
+            }
+        }
+        refreshPayMethodUI();
+    }
+
     function showCheckoutView() {
         if (cartBody) cartBody.classList.add('hidden');
         if (cartFooter) cartFooter.classList.add('hidden');
         if (successView) successView.classList.add('hidden');
         if (checkoutView) checkoutView.classList.remove('hidden');
 
-        var subtotal = getSubtotal();
-        var total = subtotal + gstOf(subtotal);
-        if (checkoutTotal) checkoutTotal.textContent = formatPrice(total);
         if (checkoutError) checkoutError.textContent = '';
-        refreshPayMethodUI();
+        refreshCheckoutTotals();
+
+        // The moment the amount actually matters. Re-quote so the figure
+        // above "Place Order" is a fresh answer from the server — by now
+        // the shopper has signed in, so the per-account rules that were
+        // skipped in the cart are finally answerable.
+        if (promo.code) {
+            checkPromo(promo.code, true).then(function () {
+                if (checkoutView && !checkoutView.classList.contains('hidden')) {
+                    refreshCheckoutTotals();
+                    if (promo.state !== 'applied' && promo.message && checkoutError) {
+                        checkoutError.textContent = promo.message;
+                    }
+                }
+            });
+        }
 
         // Prefill from the signed-in account where possible.
         var fb = window.hawaaFirebase;
@@ -479,12 +916,16 @@
         }
     }
 
-    function showSuccessView(orderId, method) {
+    function showSuccessView(orderId, method, saved) {
         if (cartBody) cartBody.classList.add('hidden');
         if (cartFooter) cartFooter.classList.add('hidden');
         if (checkoutView) checkoutView.classList.add('hidden');
         if (successView) successView.classList.remove('hidden');
         if (successId) successId.textContent = orderId;
+        if (successSaved) {
+            successSaved.hidden = !saved;
+            successSaved.textContent = saved ? 'You saved ' + formatPrice(saved) : '';
+        }
         if (successNote) {
             // Static strings only — safe as innerHTML (keeps the account link).
             successNote.innerHTML = method === 'razorpay'
@@ -504,10 +945,12 @@
                 if (profileBtn) profileBtn.click();
                 return;
             }
-            var subtotal = getSubtotal();
+            var pricing = currentPricing();
             gaTrack('begin_checkout', {
                 currency: 'INR',
-                value: subtotal + gstOf(subtotal),
+                value: pricing.total,
+                coupon: (promo.state === 'applied' && promo.code) || undefined,
+                discount: pricing.discount || undefined,
                 items: gaItems()
             });
             showCheckoutView();
@@ -562,15 +1005,10 @@
 
         // Quantities per SKU — the security rules recompute and verify
         // every amount from these, so tampering can't change the price.
-        // Colour is a suffix on the purifier id (e.g. 'purifier-onetime-grey');
-        // both colours share the same SKU price, so match by prefix. Plain
-        // ids from carts saved before colours existed still match too.
-        var qtyOnetime = 0, qtySubscribe = 0, qtyFilter = 0;
-        for (var i = 0; i < cart.length; i++) {
-            if (cart[i].id.indexOf('purifier-onetime') === 0) qtyOnetime += cart[i].qty;
-            else if (cart[i].id.indexOf('purifier-subscribe') === 0) qtySubscribe += cart[i].qty;
-            else if (cart[i].id === 'filter') qtyFilter += cart[i].qty;
-        }
+        var quantities = cartQuantities();
+        var qtyOnetime = quantities.qtyPurifierOnetime;
+        var qtySubscribe = quantities.qtyPurifierSubscribe;
+        var qtyFilter = quantities.qtyFilter;
         if (qtyOnetime + qtySubscribe + qtyFilter === 0) return;
 
         var subtotal = qtyOnetime * PRICES.onetime + qtySubscribe * PRICES.subscribe + qtyFilter * FILTER_PRICE;
@@ -589,6 +1027,17 @@
 
         // Snapshot items before the cart is cleared on success.
         var orderedItems = gaItems();
+        // Only a code the server has already accepted for this exact
+        // cart may be sent; it re-checks anyway, but sending a code the
+        // shopper has been shown as "not applied yet" would produce an
+        // error they were not expecting.
+        var promoCode = (promo.state === 'applied' && promo.code) ? promo.code : null;
+        var discount = 0;
+        if (promoCode) {
+            var quoted = currentPricing();
+            total = quoted.total;
+            discount = quoted.discount;
+        }
 
         if (getPayMethod() === 'razorpay') {
             payWithRazorpay({
@@ -597,6 +1046,20 @@
                 qtyFilter: qtyFilter,
                 address: address,
                 total: total,
+                discount: discount,
+                promoCode: promoCode,
+                orderedItems: orderedItems
+            });
+            return;
+        }
+
+        if (promoCode) {
+            placeDiscountedOrder({
+                qtyOnetime: qtyOnetime,
+                qtySubscribe: qtySubscribe,
+                qtyFilter: qtyFilter,
+                address: address,
+                promoCode: promoCode,
                 orderedItems: orderedItems
             });
             return;
@@ -621,16 +1084,12 @@
 
         fb.addDoc(fb.collection(fb.db, 'orders'), order).then(function(ref) {
             setPlaceBtnReady();
-            gaTrack('purchase', {
-                transaction_id: ref.id,
-                currency: 'INR',
-                value: total,
-                payment_type: 'cod',
-                items: orderedItems
+            completeOrder(ref.id, 'cod', {
+                total: total,
+                discount: 0,
+                promoCode: null,
+                orderedItems: orderedItems
             });
-            cart = [];
-            updateCartUI();
-            showSuccessView(ref.id, 'cod');
         }).catch(function(err) {
             console.error('Order failed:', err);
             gaTrack('payment_failed', {
@@ -644,6 +1103,89 @@
                 checkoutError.textContent = err && err.code === 'permission-denied'
                     ? 'Order could not be validated. Please refresh the page and try again.'
                     : 'Could not place the order. Please check your connection and try again.';
+            }
+        });
+    }
+
+    // Shared tail of every successful order, whichever path placed it.
+    // Clearing the promo matters: a single-use code left attached would
+    // make the next cart look discounted until the first re-check.
+    function completeOrder(orderId, method, ctx) {
+        gaTrack('purchase', {
+            transaction_id: orderId,
+            currency: 'INR',
+            value: ctx.total,
+            payment_type: method,
+            coupon: ctx.promoCode || undefined,
+            discount: ctx.discount || undefined,
+            items: ctx.orderedItems
+        });
+        cart = [];
+        promoSeq++; // no in-flight answer may resurrect the code
+        clearPromo('');
+        updateCartUI();
+        showSuccessView(orderId, method, ctx.discount);
+    }
+
+    // Cash on Delivery with a promo code. The undiscounted path writes
+    // the order straight to Firestore under firestore.rules; this one
+    // cannot, because rules have no way to check a usage limit and
+    // increment a counter in the same breath. So the server places it.
+    function placeDiscountedOrder(ctx) {
+        var fb = window.hawaaFirebase;
+        if (!promoAvailable()) {
+            if (checkoutError) {
+                checkoutError.textContent = 'Promo codes are unavailable right now. ' +
+                    'Please refresh the page and try again.';
+            }
+            return;
+        }
+
+        var payload = {
+            qtyPurifierOnetime: ctx.qtyOnetime,
+            qtyPurifierSubscribe: ctx.qtySubscribe,
+            qtyFilter: ctx.qtyFilter,
+            address: ctx.address,
+            promoCode: ctx.promoCode
+        };
+        if (ctx.qtySubscribe > 0) payload.filterInterval = meta.filterInterval;
+
+        setPlaceBtnBusy('Placing order...');
+        if (checkoutError) checkoutError.textContent = '';
+
+        fb.httpsCallable(fb.functions, 'placePromoOrder')(payload).then(function(result) {
+            setPlaceBtnReady();
+            var pricing = (result.data && result.data.pricing) || {};
+            completeOrder(result.data.orderId, 'cod', {
+                total: pricing.total,
+                discount: pricing.discount,
+                promoCode: ctx.promoCode,
+                orderedItems: ctx.orderedItems
+            });
+        }).catch(function(err) {
+            console.error('Promo order failed:', err);
+            setPlaceBtnReady();
+            gaTrack('payment_failed', {
+                currency: 'INR',
+                payment_type: 'cod',
+                coupon: ctx.promoCode,
+                error_code: (err && err.code) || 'unknown'
+            });
+            if (!checkoutError) return;
+            // failed-precondition carries the server's own sentence
+            // about why the code stopped working. Drop the code so the
+            // shopper can simply place the order at full price.
+            if (err && err.code === 'functions/failed-precondition') {
+                checkoutError.textContent = err.message +
+                    ' The code has been removed — you can place the order without it.';
+                promoSeq++;
+                clearPromo('');
+                updatePriceBreakdown();
+                renderPromo();
+                refreshCheckoutTotals();
+            } else {
+                checkoutError.textContent =
+                    'Could not place the order. Please check your connection and try again.';
             }
         });
     }
@@ -707,6 +1249,7 @@
             address: ctx.address
         };
         if (ctx.qtySubscribe > 0) payload.filterInterval = meta.filterInterval;
+        if (ctx.promoCode) payload.promoCode = ctx.promoCode;
 
         var createOrder = fb.httpsCallable(fb.functions, 'createRazorpayOrder');
 
@@ -765,15 +1308,27 @@
         }).catch(function(err) {
             console.error('Could not start payment:', err);
             setPlaceBtnReady();
-            if (checkoutError) {
-                // Surface the underlying code — "(functions/not-found)",
-                // "(functions/unavailable)" etc. — so failures can be
-                // diagnosed from a screenshot instead of the console.
-                var detail = (err && (err.code || err.message)) || 'unknown';
-                checkoutError.textContent = (err && err.message === 'razorpay-script-load')
-                    ? 'Could not load the payment window. Please check your connection and try again.'
-                    : 'Could not start the payment. Please try again or choose Cash on Delivery. (' + detail + ')';
+            if (!checkoutError) return;
+            // The promo stopped qualifying between the cart and here.
+            // The server said why; drop the code and let them pay full
+            // price rather than leaving them stuck at a dead button.
+            if (err && err.code === 'functions/failed-precondition' && ctx.promoCode) {
+                checkoutError.textContent = err.message +
+                    ' The code has been removed — you can pay without it.';
+                promoSeq++;
+                clearPromo('');
+                updatePriceBreakdown();
+                renderPromo();
+                refreshCheckoutTotals();
+                return;
             }
+            // Surface the underlying code — "(functions/not-found)",
+            // "(functions/unavailable)" etc. — so failures can be
+            // diagnosed from a screenshot instead of the console.
+            var detail = (err && (err.code || err.message)) || 'unknown';
+            checkoutError.textContent = (err && err.message === 'razorpay-script-load')
+                ? 'Could not load the payment window. Please check your connection and try again.'
+                : 'Could not start the payment. Please try again or choose Cash on Delivery. (' + detail + ')';
         });
     }
 
@@ -788,16 +1343,12 @@
             razorpaySignature: resp.razorpay_signature
         }).then(function(result) {
             setPlaceBtnReady();
-            gaTrack('purchase', {
-                transaction_id: result.data.orderId,
-                currency: 'INR',
-                value: ctx.total,
-                payment_type: 'razorpay',
-                items: ctx.orderedItems
+            completeOrder(result.data.orderId, 'razorpay', {
+                total: ctx.total,
+                discount: ctx.discount,
+                promoCode: ctx.promoCode,
+                orderedItems: ctx.orderedItems
             });
-            cart = [];
-            updateCartUI();
-            showSuccessView(result.data.orderId, 'razorpay');
         }).catch(function(err) {
             console.error('Payment verification failed:', err);
             setPlaceBtnReady();
@@ -823,6 +1374,61 @@
             var isOpen = cartBreakdownToggle.classList.contains('open');
             cartBreakdownToggle.classList.toggle('open', !isOpen);
             if (cartBreakdown) cartBreakdown.classList.toggle('visible', !isOpen);
+        });
+    }
+
+    // ========================================
+    // PROMO INTERACTIONS
+    // ========================================
+    if (promoToggle) {
+        promoToggle.addEventListener('click', function() {
+            var open = promoToggle.getAttribute('aria-expanded') === 'true';
+            promo.message = '';
+            setPromoEntryOpen(!open);
+            renderPromo();
+        });
+    }
+
+    if (promoInput) {
+        promoInput.addEventListener('input', function() {
+            // Codes are uppercase everywhere they are printed; typing
+            // them in lowercase should not feel like a mistake.
+            var upper = promoInput.value.toUpperCase();
+            if (upper !== promoInput.value) promoInput.value = upper;
+            if (promo.state === 'error') {
+                promo.state = 'none';
+                promo.message = '';
+            }
+            renderPromo();
+        });
+
+        promoInput.addEventListener('keydown', function(e) {
+            if (e.key !== 'Enter') return;
+            e.preventDefault();
+            applyPromoFromInput(promoInput.value, 'input');
+        });
+    }
+
+    if (promoApplyBtn) {
+        promoApplyBtn.addEventListener('click', function() {
+            applyPromoFromInput(promoInput ? promoInput.value : '', 'input');
+        });
+    }
+
+    if (promoRemoveBtn) {
+        promoRemoveBtn.addEventListener('click', function() {
+            promoSeq++; // cancel any answer still in flight
+            clearPromo('');
+            updatePriceBreakdown();
+            renderPromo();
+            renderOffers();
+        });
+    }
+
+    if (promoOffersBox) {
+        promoOffersBox.addEventListener('click', function(e) {
+            var offer = e.target.closest('.cart-promo-offer');
+            if (offer) applyPromoFromInput(offer.getAttribute('data-code'), 'featured_offer');
         });
     }
 
@@ -856,12 +1462,50 @@
                 meta.filterInterval = interval;
                 saveCart();
             }
-        }
+        },
+        // Lets a landing page honour ?promo=CODE, or a campaign banner
+        // apply its own offer, without reaching into cart internals.
+        applyPromo: function(code) { applyPromoFromInput(code, 'external'); },
+        promo: function() {
+            return { code: promo.code, discount: promo.discount, state: promo.state };
+        },
+        pricing: currentPricing
     };
 
     // ========================================
     // INITIALIZE
     // ========================================
+    // A code can arrive in the URL from an email or an ad. An explicit
+    // link wins over a code left in storage from a previous visit.
+    try {
+        var urlPromo = new URLSearchParams(window.location.search).get('promo');
+        if (urlPromo) {
+            meta.promoCode = String(urlPromo).replace(/\s+/g, '').toUpperCase().slice(0, 20);
+            saveCart();
+        }
+    } catch (e) { /* no URLSearchParams support */ }
+
+    // A code restored from storage or a link is only a claim until the
+    // server agrees, so it starts blocked and worth nothing.
+    if (meta.promoCode) {
+        promo.code = meta.promoCode;
+        promo.state = 'blocked';
+    }
     updateCartUI();
+
+    // Firestore and the callables are loaded as a module, so they may
+    // arrive after this script has already rendered. Pick the offers up
+    // whenever that happens, then re-price any restored code.
+    function onFirebaseReady() {
+        loadFeaturedOffers();
+        renderPromo();
+        if (promo.code) checkPromo(promo.code, true);
+    }
+
+    if (window.hawaaFirebase) {
+        onFirebaseReady();
+    } else {
+        document.addEventListener('hawaa-firebase-ready', onFirebaseReady, { once: true });
+    }
 
 })();

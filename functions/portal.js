@@ -264,6 +264,31 @@ font-weight:600;text-transform:capitalize}
 .t-pending{background:#4a3a1c;color:#ffd08a}
 .t-approved{background:#1c4630;color:#7fe0a8}
 .t-rejected{background:#4a2630;color:#ff9fb0}
+.t-live{background:#1c4630;color:#7fe0a8}
+.t-scheduled{background:#1f3a52;color:#8fc9ff}
+.t-paused{background:#33383f;color:#c9d1de}
+.t-claimed{background:#3a3357;color:#c3b5ff}
+.t-expired{background:#33383f;color:#8b93a1}
+.code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:14px;
+font-weight:600;letter-spacing:.04em}
+.bar{height:5px;border-radius:3px;background:#232936;overflow:hidden;margin-top:9px}
+.bar i{display:block;height:100%;background:#4d7cfe;border-radius:3px}
+.bar.full i{background:#c3b5ff}
+fieldset{border:1px solid #262b36;border-radius:11px;padding:14px 16px;margin:0 0 12px}
+legend{padding:0 7px;font-size:11px;color:#9aa3b2;text-transform:uppercase;
+letter-spacing:.06em}
+.grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(160px,1fr))}
+.field label{display:block;margin-bottom:5px;font-size:12px;color:#9aa3b2}
+.field input,.field select{width:100%;padding:9px 11px;background:#0f1115;
+border:1px solid #2d3340;border-radius:7px;color:#e8eaed;font-size:14px}
+.field input:focus,.field select:focus{outline:none;border-color:#4d7cfe}
+.field .help{display:block;margin-top:4px;font-size:11px;color:#6b7280}
+.check{display:flex;align-items:flex-start;gap:9px;font-size:13px;color:#c9d1de}
+.check input{width:16px;height:16px;margin:2px 0 0;flex-shrink:0}
+.preview{background:#12151c;border:1px solid #2d3340;border-radius:9px;
+padding:12px 14px;font-size:13px;line-height:1.6;color:#c9d1de}
+.preview b{color:#e8eaed}
+.preview .warn{color:#ffd08a}
 .detail{margin-top:12px;padding-top:12px;border-top:1px solid #262b36;
 display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
 .detail h4{margin:0 0 5px;font-size:11px;color:#9aa3b2;text-transform:uppercase;
@@ -297,7 +322,7 @@ color:#fff;font-weight:600;cursor:pointer}
 // without a second copy of the rules drifting out of step. Hiding a
 // control is cosmetic; every one of these calls is checked again on the
 // server.
-function portalShellHtml(session, permissions) {
+function portalShellHtml(session, permissions, catalog) {
     const safe = function (value, fallback) {
         return String(value === undefined || value === null || value === ''
             ? fallback : value).replace(/[<>&"]/g, '');
@@ -305,6 +330,9 @@ function portalShellHtml(session, permissions) {
     const name = safe(session && session.name, 'there');
     const role = safe(session && session.role, '');
     const perms = JSON.stringify(Array.isArray(permissions) ? permissions : []);
+    // Passed in rather than restated here so the promo preview quotes
+    // the same prices the checkout charges.
+    const prices = JSON.stringify(catalog || {});
 
     return `<!doctype html>
 <html lang="en"><head>
@@ -343,6 +371,7 @@ const act = httpsCallable(fns, 'adminAction');
 
 const PERMS = ${perms};
 const can = (p) => PERMS.indexOf(p) !== -1;
+const CATALOG = ${prices};
 
 const $ = (id) => document.getElementById(id);
 const esc = (v) => String(v === undefined || v === null ? '' : v)
@@ -376,6 +405,7 @@ function handleFailure(err) {
 const TABS = [
   { id: 'orders',  label: 'Orders',   perm: 'orders.read' },
   { id: 'reviews', label: 'Reviews',  perm: 'reviews.read' },
+  { id: 'promos',  label: 'Promos',   perm: 'promos.read' },
   { id: 'tickets', label: 'Support',  perm: 'tickets.read' },
   { id: 'team',    label: 'Team',     perm: 'team.manage' },
   { id: 'audit',   label: 'Activity', perm: 'audit.read' }
@@ -409,6 +439,11 @@ async function loadStats() {
       ['Revenue this week', money(s.revenueWeek)],
       ['Awaiting dispatch', s.awaitingDispatch]
     ];
+    // Only worth a tile once discounts are actually running — an empty
+    // "₹0 discounted" is noise on a dashboard read every morning.
+    if (s.discountWeek > 0) {
+      tiles.push(['Discounts this week', '\\u2212' + money(s.discountWeek)]);
+    }
     if (typeof s.pendingReviews === 'number') {
       tiles.push(['Reviews waiting', s.pendingReviews]);
     }
@@ -455,6 +490,11 @@ function orderRow(o, masked) {
     '<div class="detail">' + contact +
       '<div><h4>Deliver to</h4><p>' + (where || '—') + '</p></div>' +
       '<div><h4>Amounts</h4><p>Subtotal ' + money(o.subtotal) +
+        (o.discount
+          ? '<br>\\u2212' + money(o.discount) + ' (' +
+            esc((o.promo && o.promo.code) || 'discount') + ')' +
+            (o.promo && o.promo.overLimit ? ' \\u00b7 past its limit' : '')
+          : '') +
         '<br>GST ' + money(o.gst) + '<br><b>Total ' + money(o.total) + '</b></p></div>' +
     '</div>' +
     (buttons.length
@@ -484,7 +524,8 @@ const EXPORTABLE = [
   ['orders', 'Orders'],
   ['supportTickets', 'Support messages'],
   ['newsletterSubscribers', 'Newsletter emails'],
-  ['reviews', 'Reviews']
+  ['reviews', 'Reviews'],
+  ['promo_codes', 'Promo codes']
 ];
 
 function exportBar() {
@@ -538,6 +579,218 @@ async function loadReviews() {
           '</div>'
         : '') +
     '</div>').join('') : '<div class="empty">Nothing ' + esc(reviewFilter) + '.</div>');
+}
+
+// ---- Promos -----------------------------------------------------
+//
+// The form is the dangerous part of this screen: "10" means a tenth of
+// an order in one field and ten rupees in another, and nobody notices
+// until the discount has been given away. So every keystroke is priced
+// against a real cart and the answer is shown in rupees, underneath, in
+// the same words a customer would see.
+
+const GST_PCT = 18;
+const roundHalfUp = (n) => Math.floor((n + 50) / 100);
+
+function previewOf(f) {
+  const type = f.type;
+  const value = Number(f.value) || 0;
+  const cap = Number(f.maxDiscount) || 0;
+  const min = Number(f.minSubtotal) || 0;
+  // Price against the smallest cart the code can apply to — that is
+  // where a percentage looks smallest and a flat amount looks largest.
+  const basis = f.appliesTo === 'filter'
+    ? { subtotal: CATALOG.filter, what: 'a replacement filter' }
+    : { subtotal: CATALOG.onetime, what: 'one Hawaa Edge' };
+
+  if (value < 1) return { text: 'Enter a discount to see what it costs.' };
+
+  let off = type === 'percent'
+    ? roundHalfUp(basis.subtotal * value)
+    : value;
+  if (type === 'percent' && cap) off = Math.min(off, cap);
+  off = Math.max(0, Math.min(off, basis.subtotal));
+
+  const taxable = basis.subtotal - off;
+  const gst = roundHalfUp(taxable * GST_PCT);
+  const total = taxable + gst;
+
+  const warn = min > basis.subtotal
+    ? 'A minimum of ' + money(min) + ' means ' + basis.what +
+      ' on its own will not qualify.'
+    : (off >= basis.subtotal ? 'This takes ' + basis.what + ' to zero.' : '');
+
+  return {
+    text: 'On ' + basis.what + ' (' + money(basis.subtotal) + '): <b>' +
+      money(off) + ' off</b>. The customer pays <b>' + money(total) +
+      '</b> — ' + money(taxable) + ' plus ' + money(gst) + ' GST. ' +
+      'You give up ' + money(off) + ' per order.',
+    warn
+  };
+}
+
+function promoFormValues() {
+  const form = $('promoForm');
+  if (!form) return {};
+  const f = new FormData(form);
+  const get = (k) => String(f.get(k) || '').trim();
+  return {
+    code: get('code'), label: get('label'), type: get('type'),
+    value: get('value'), maxDiscount: get('maxDiscount'),
+    minSubtotal: get('minSubtotal'), appliesTo: get('appliesTo'),
+    startsAt: get('startsAt'), expiresAt: get('expiresAt'),
+    maxRedemptions: get('maxRedemptions'), perUserLimit: get('perUserLimit'),
+    firstOrderOnly: !!f.get('firstOrderOnly'), showcase: !!f.get('showcase'),
+    headline: get('headline')
+  };
+}
+
+// A bare date from <input type="date"> is ambiguous. A promotion that
+// "ends 30 Sep" ends when 30 Sep ends in India, not when it begins in
+// London — so the day is pinned to IST before it leaves the browser.
+function istStart(day) { return day ? day + 'T00:00:00+05:30' : ''; }
+function istEnd(day) { return day ? day + 'T23:59:59+05:30' : ''; }
+
+function refreshPromoForm() {
+  const f = promoFormValues();
+  const isPercent = f.type === 'percent';
+
+  const unit = $('valueUnit');
+  if (unit) unit.textContent = isPercent ? '%' : '\\u20B9';
+  const capRow = $('capRow');
+  if (capRow) capRow.style.display = isPercent ? '' : 'none';
+  const headlineRow = $('headlineRow');
+  if (headlineRow) headlineRow.style.display = f.showcase ? '' : 'none';
+
+  const p = previewOf(f);
+  const box = $('promoPreview');
+  if (box) {
+    box.innerHTML = p.text + (p.warn
+      ? '<br><span class="warn">' + esc(p.warn) + '</span>' : '');
+  }
+}
+
+function promoForm() {
+  const opt = (v, l) => '<option value="' + v + '">' + l + '</option>';
+  return '<form id="promoForm">' +
+    '<fieldset><legend>New code</legend>' +
+      '<div class="grid">' +
+        '<div class="field"><label for="p-code">Code</label>' +
+          '<input id="p-code" name="code" placeholder="MONSOON10" maxlength="20" required ' +
+          'style="text-transform:uppercase">' +
+          '<span class="help">What the customer types.</span></div>' +
+        '<div class="field"><label for="p-label">Campaign name</label>' +
+          '<input id="p-label" name="label" placeholder="Monsoon launch" maxlength="80">' +
+          '<span class="help">Only you see this.</span></div>' +
+        '<div class="field"><label for="p-type">Discount type</label>' +
+          '<select id="p-type" name="type">' +
+          opt('percent', 'Percentage off') + opt('flat', 'Flat amount off') +
+          '</select></div>' +
+        '<div class="field"><label for="p-value">Amount <span id="valueUnit">%</span></label>' +
+          '<input id="p-value" name="value" type="number" min="1" step="1" required>' +
+          '</div>' +
+        '<div class="field" id="capRow"><label for="p-cap">Never more than</label>' +
+          '<input id="p-cap" name="maxDiscount" type="number" min="0" step="1" ' +
+          'placeholder="No cap"><span class="help">Caps a percentage on big carts.</span></div>' +
+        '<div class="field"><label for="p-min">Minimum order</label>' +
+          '<input id="p-min" name="minSubtotal" type="number" min="0" step="1" ' +
+          'placeholder="Any amount"></div>' +
+        '<div class="field"><label for="p-applies">Applies to</label>' +
+          '<select id="p-applies" name="appliesTo">' +
+          opt('all', 'Everything in the cart') + opt('purifier', 'Purifiers only') +
+          opt('filter', 'Filters only') + '</select></div>' +
+      '</div></fieldset>' +
+
+    '<fieldset><legend>Limits</legend>' +
+      '<div class="grid">' +
+        '<div class="field"><label for="p-starts">Starts</label>' +
+          '<input id="p-starts" name="startsAt" type="date">' +
+          '<span class="help">Blank = right away.</span></div>' +
+        '<div class="field"><label for="p-ends">Ends after</label>' +
+          '<input id="p-ends" name="expiresAt" type="date">' +
+          '<span class="help">Blank = never. Runs to the end of that day.</span></div>' +
+        '<div class="field"><label for="p-max">Total uses</label>' +
+          '<input id="p-max" name="maxRedemptions" type="number" min="0" step="1" ' +
+          'placeholder="Unlimited"></div>' +
+        '<div class="field"><label for="p-per">Uses per customer</label>' +
+          '<input id="p-per" name="perUserLimit" type="number" min="1" step="1" value="1">' +
+          '</div>' +
+      '</div>' +
+      '<div style="display:grid;gap:10px;margin-top:12px">' +
+        '<label class="check"><input type="checkbox" name="firstOrderOnly">' +
+          '<span>First order only — nobody who has ordered before can use it.</span></label>' +
+        '<label class="check"><input type="checkbox" name="showcase">' +
+          '<span>Show this code in every shopper\\u2019s cart as a one-tap offer. ' +
+          'It becomes public the moment you save.</span></label>' +
+      '</div>' +
+      '<div class="field" id="headlineRow" style="display:none;margin-top:10px">' +
+        '<label for="p-headline">What the cart says</label>' +
+        '<input id="p-headline" name="headline" maxlength="60" ' +
+        'placeholder="10% off your first order">' +
+        '<span class="help">Blank = we write it from the rules above.</span></div>' +
+    '</fieldset>' +
+
+    '<div class="preview" id="promoPreview">Enter a discount to see what it costs.</div>' +
+    '<div class="actions" style="margin-top:12px">' +
+      '<button type="submit">Create code</button></div>' +
+    '</form>' +
+    '<p class="note">The discount, what it applies to and the first-order rule ' +
+    'are fixed once a code exists — orders that used it have to keep meaning ' +
+    'what they meant. Everything else can be changed, and a code nobody has ' +
+    'used yet can be deleted.</p>';
+}
+
+function promoRow(p, canManage) {
+  const used = p.redemptions || 0;
+  const cap = p.maxRedemptions || 0;
+  const pct = cap ? Math.min(100, Math.round((used / cap) * 100)) : 0;
+  const usage = cap ? used + ' of ' + cap + ' used' :
+    (used === 1 ? '1 use' : used + ' uses');
+
+  const facts = [esc(p.summary)];
+  if (p.perUserLimit > 1) facts.push(p.perUserLimit + ' per customer');
+  if (p.startsAt && p.status === 'scheduled') facts.push('starts ' + when(p.startsAt));
+  if (p.expiresAt) facts.push((p.status === 'expired' ? 'ended ' : 'ends ') + when(p.expiresAt));
+  if (p.showcase) facts.push('shown in cart');
+
+  const buttons = [];
+  if (canManage) {
+    if (p.status === 'paused') buttons.push(['resume', 'Resume', 'ghost']);
+    else if (p.status === 'live' || p.status === 'scheduled') {
+      buttons.push(['pause', 'Pause', 'ghost']);
+      buttons.push(['end', 'End now', 'danger']);
+    }
+    buttons.push([p.showcase ? 'unshow' : 'show',
+      p.showcase ? 'Hide from cart' : 'Show in cart', 'ghost']);
+    if (used === 0) buttons.push(['delete', 'Delete', 'danger']);
+  }
+
+  return '<div class="row">' +
+    '<div class="top"><span class="tag t-' + esc(p.status) + '">' + esc(p.status) +
+      '</span><span class="code">' + esc(p.code) + '</span>' +
+      (p.label ? '<span class="id">' + esc(p.label) + '</span>' : '') +
+      '<span class="amt">' + money(p.discountGiven) + ' given</span></div>' +
+    '<div class="meta">' + facts.join(' &middot; ') + '</div>' +
+    '<div class="meta">' + esc(usage) + '</div>' +
+    (cap ? '<div class="bar' + (pct >= 100 ? ' full' : '') +
+      '"><i style="width:' + pct + '%"></i></div>' : '') +
+    (buttons.length ? '<div class="actions">' + buttons.map((b) =>
+      '<button class="' + b[2] + '" data-promo="' + esc(p.code) +
+      '" data-do="' + b[0] + '">' + b[1] + '</button>').join('') + '</div>' : '') +
+    '</div>';
+}
+
+async function loadPromos() {
+  const res = (await query({ resource: 'promos' })).data;
+  const live = res.promos.filter((p) => p.status === 'live').length;
+  $('view').innerHTML = (res.canManage ? promoForm() : '') +
+    '<p class="note">' + (live === 1 ? '1 code is live' : live + ' codes are live') +
+    ' right now. Codes are never shown to shoppers unless you tick ' +
+    '\\u201cshow in cart\\u201d.</p>' +
+    (res.promos.length
+      ? res.promos.map((p) => promoRow(p, res.canManage)).join('')
+      : '<div class="empty">No promo codes yet.</div>');
+  if (res.canManage) refreshPromoForm();
 }
 
 // ---- Support ----------------------------------------------------
@@ -608,8 +861,8 @@ async function loadAudit() {
 
 // ---- Dispatch ---------------------------------------------------
 const LOADERS = {
-  orders: loadOrders, reviews: loadReviews, tickets: loadTickets,
-  team: loadTeam, audit: loadAudit
+  orders: loadOrders, reviews: loadReviews, promos: loadPromos,
+  tickets: loadTickets, team: loadTeam, audit: loadAudit
 };
 
 async function load() {
@@ -656,6 +909,29 @@ $('view').addEventListener('click', (e) => {
     return run({ action: 'team.revoke', uid: revoke.dataset.revoke },
       'Remove this person\\u2019s access? They lose it immediately.');
   }
+
+  const promoBtn = e.target.closest('button[data-promo]');
+  if (promoBtn) {
+    const code = promoBtn.dataset.promo;
+    const verb = promoBtn.dataset.do;
+    if (verb === 'delete') {
+      return run({ action: 'promo.delete', code },
+        'Delete ' + code + '? Nobody has used it, so nothing is lost.');
+    }
+    const changes =
+      verb === 'pause'  ? { active: false } :
+      verb === 'resume' ? { active: true } :
+      verb === 'show'   ? { showcase: true } :
+      verb === 'unshow' ? { showcase: false } :
+      // "End now" stops the code without deleting it, so every order
+      // that used it still says what it used.
+      { expiresAt: new Date().toISOString() };
+    const confirmText =
+      verb === 'end'  ? 'End ' + code + ' now? Nobody will be able to use it again.' :
+      verb === 'show' ? 'Show ' + code + ' in every cart? Anyone visiting the site will see it.' :
+      null;
+    return run({ action: 'promo.update', code, changes }, confirmText);
+  }
 });
 
 $('view').addEventListener('change', (e) => {
@@ -663,9 +939,41 @@ $('view').addEventListener('change', (e) => {
   if (setrole) {
     run({ action: 'team.setRole', uid: setrole.dataset.setrole, role: setrole.value });
   }
+  if (e.target.closest('#promoForm')) refreshPromoForm();
+});
+
+// Priced live rather than on blur: the number that stops a costly typo
+// has to appear while the typo is still on screen.
+$('view').addEventListener('input', (e) => {
+  if (e.target.closest('#promoForm')) refreshPromoForm();
 });
 
 $('view').addEventListener('submit', async (e) => {
+  if (e.target.id === 'promoForm') {
+    e.preventDefault();
+    const f = promoFormValues();
+    return run({
+      action: 'promo.create',
+      code: f.code,
+      label: f.label,
+      type: f.type,
+      value: f.value === '' ? 0 : Number(f.value),
+      maxDiscount: f.maxDiscount === '' ? 0 : Number(f.maxDiscount),
+      minSubtotal: f.minSubtotal === '' ? 0 : Number(f.minSubtotal),
+      appliesTo: f.appliesTo,
+      startsAt: istStart(f.startsAt),
+      expiresAt: istEnd(f.expiresAt),
+      maxRedemptions: f.maxRedemptions === '' ? 0 : Number(f.maxRedemptions),
+      perUserLimit: f.perUserLimit === '' ? 1 : Number(f.perUserLimit),
+      firstOrderOnly: f.firstOrderOnly,
+      showcase: f.showcase,
+      headline: f.headline
+    }, f.showcase
+      ? 'Create ' + f.code.toUpperCase() +
+        ' and show it in every cart? The code becomes public immediately.'
+      : null);
+  }
+
   if (e.target.id === 'inviteForm') {
     e.preventDefault();
     const f = new FormData(e.target);
