@@ -84,7 +84,6 @@
                     '<div class="cart-promo" id="cart-promo" hidden>' +
                         '<div class="cart-promo-offers" id="cart-promo-offers"></div>' +
                         '<button type="button" class="cart-promo-toggle" id="cart-promo-toggle" aria-expanded="false" aria-controls="cart-promo-entry">' +
-                            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.6 13.4l-7.2 7.2a2 2 0 01-2.8 0l-7.2-7.2a2 2 0 01-.6-1.4V4a1 1 0 011-1h8a2 2 0 011.4.6l7.4 7.4a2 2 0 010 2.8z"/><circle cx="7.5" cy="7.5" r="1.2"/></svg>' +
                             '<span>Have a promo code?</span>' +
                             '<svg class="cart-promo-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>' +
                         '</button>' +
@@ -93,7 +92,10 @@
                             '<button type="button" class="cart-promo-apply" id="cart-promo-apply" disabled>Apply</button>' +
                         '</div>' +
                         '<div class="cart-promo-applied" id="cart-promo-applied" hidden>' +
-                            '<span class="cart-promo-mark" id="cart-promo-mark" aria-hidden="true"></span>' +
+                            '<span class="cart-promo-mark" aria-hidden="true">' +
+                                '<svg class="cart-promo-mark-ok" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>' +
+                                '<svg class="cart-promo-mark-wait" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7.6v5"/><path d="M12 16.2v.01"/></svg>' +
+                            '</span>' +
                             '<span class="cart-promo-applied-body">' +
                                 '<span class="cart-promo-applied-code" id="cart-promo-applied-code"></span>' +
                                 '<span class="cart-promo-applied-note" id="cart-promo-applied-note"></span>' +
@@ -116,8 +118,13 @@
                         '<div class="cart-breakdown-row"><span>Delivery Fee</span><span id="cart-delivery" class="cart-free">Free</span></div>' +
                         '<div class="cart-breakdown-row"><span>Shipping Fee</span><span id="cart-shipping" class="cart-free">Free</span></div>' +
                     '</div>' +
-                    '<div class="cart-total-row" id="cart-total-row"><span>Total</span><span id="cart-total">₹0</span></div>' +
-                    '<p class="cart-savings" id="cart-savings" hidden></p>' +
+                    '<div class="cart-total-row" id="cart-total-row">' +
+                        '<span>Total</span>' +
+                        '<span class="cart-total-value">' +
+                            '<span id="cart-total">₹0</span>' +
+                            '<small class="cart-savings" id="cart-savings" hidden></small>' +
+                        '</span>' +
+                    '</div>' +
                     '<button class="cart-checkout-btn" id="cart-checkout-btn">Checkout</button>' +
                 '</div>' +
                 '<div class="checkout-view hidden" id="checkout-view">' +
@@ -476,9 +483,14 @@
                 promo.state = promo.discount > 0 ? 'applied' : 'blocked';
             }
             if (!silent) {
+                // Surface the underlying code the way the Razorpay path
+                // does. "Check your connection" sent a real server fault
+                // back as a wifi problem once already; the code makes
+                // the difference visible in a screenshot.
+                var detail = (err && (err.code || err.message)) || 'unknown';
                 promo.message = (err && err.code === 'functions/resource-exhausted')
                     ? 'Too many attempts. Please try again in a few minutes.'
-                    : 'Could not check that code. Please check your connection.';
+                    : 'Could not check that code. Please try again. (' + detail + ')';
             }
             renderPromo();
         });
@@ -563,11 +575,19 @@
     function renderOffers() {
         if (!promoOffersBox) return;
         var offers = eligibleOffers();
+        // Built to the same bones as the Add-Replacement-Filter row it
+        // sits beside — icon, two lines of text, one pill — so an offer
+        // reads as part of the cart rather than an ad pasted into it.
         promoOffersBox.innerHTML = offers.map(function (offer) {
             return '<button type="button" class="cart-promo-offer" data-code="' +
                 escapeText(offer.code) + '">' +
-                '<span class="cart-promo-offer-tag">' + escapeText(offer.code) + '</span>' +
-                '<span class="cart-promo-offer-text">' + escapeText(offer.headline) + '</span>' +
+                '<svg class="cart-promo-offer-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+                    '<path d="M20.6 13.4l-7.2 7.2a2 2 0 01-2.8 0l-7.2-7.2a2 2 0 01-.6-1.4V4a1 1 0 011-1h8a2 2 0 011.4.6l7.4 7.4a2 2 0 010 2.8z"/>' +
+                    '<circle cx="7.5" cy="7.5" r="1.2"/></svg>' +
+                '<span class="cart-promo-offer-body">' +
+                    '<span class="cart-promo-offer-headline">' + escapeText(offer.headline) + '</span>' +
+                    '<span class="cart-promo-offer-code">Code ' + escapeText(offer.code) + '</span>' +
+                '</span>' +
                 '<span class="cart-promo-offer-apply">Apply</span>' +
                 '</button>';
         }).join('');
